@@ -10,7 +10,6 @@
 	import type { Campaign } from '$lib/entities/campaign';
 
 	let sidebarCollapsed = $state(false);
-	let inspectorCollapsed = $state(false);
 	let searchQuery = $state('');
 	let campaigns = $state<Campaign[]>([]);
 	let adventures = $state(new Map<string, AdventureEntity>());
@@ -18,6 +17,13 @@
 	onMount(() => {
 		// Load campaigns from entity store
 		campaigns = entityStore.getCampaigns();
+		loadAdventures();
+	});
+
+	// Reload adventures when entity store changes
+	$effect(() => {
+		// This will re-run when campaigns change (e.g., after adding adventure)
+		campaigns.length;
 		loadAdventures();
 	});
 
@@ -32,10 +38,6 @@
 
 	function toggleSidebar() {
 		sidebarCollapsed = !sidebarCollapsed;
-	}
-
-	function toggleInspector() {
-		inspectorCollapsed = !inspectorCollapsed;
 	}
 
 	function openCampaign(campaign: Campaign) {
@@ -296,6 +298,32 @@
 						{/if}
 					</div>
 
+					<!-- Adventures List -->
+					<div class="sidebar-section">
+						<h3 class="section-title">🗺️ Adventures</h3>
+						{#if adventures.size > 0}
+							<ul class="entity-list">
+								{#each Array.from(adventures.values()) as adventure}
+									<li class="entity-item">
+										<button onclick={() => openAdventure(adventure)} class="entity-button">
+											<span class="entity-icon">🗺️</span>
+											<span class="entity-name">{adventure.name}</span>
+											{#if adventure.campaignId}
+												{#each campaigns as campaign}
+													{#if campaign.id === adventure.campaignId}
+														<span class="entity-tag">{campaign.name}</span>
+													{/if}
+												{/each}
+											{/if}
+										</button>
+									</li>
+								{/each}
+							</ul>
+						{:else}
+							<p class="empty-message">No adventures yet</p>
+						{/if}
+					</div>
+
 					<!-- Recent Section -->
 					<div class="sidebar-section">
 						<h3 class="section-title">⏱️ Recent</h3>
@@ -347,49 +375,6 @@
 				{/if}
 			</div>
 		</div>
-
-		<!-- Right Inspector -->
-		<aside class="inspector {inspectorCollapsed ? 'collapsed' : ''}">
-			<div class="inspector-header">
-				<button onclick={toggleInspector} class="collapse-btn">
-					{inspectorCollapsed ? '←' : '→'}
-				</button>
-				{#if !inspectorCollapsed}
-					<h2 class="inspector-title">Inspector</h2>
-				{/if}
-			</div>
-
-			{#if !inspectorCollapsed}
-				<div class="inspector-content">
-					{#if $activeTab}
-						<!-- Quick Actions -->
-						<div class="inspector-section">
-							<h3 class="section-title">Quick Actions</h3>
-							<button class="action-btn">
-								<span>+ Add Related Entity</span>
-							</button>
-							<button class="action-btn">
-								<span>🎲 Roll Table</span>
-							</button>
-						</div>
-
-						<!-- Related Entities -->
-						<div class="inspector-section">
-							<h3 class="section-title">Related Entities</h3>
-							<p class="empty-message">No related entities</p>
-						</div>
-
-						<!-- Tags -->
-						<div class="inspector-section">
-							<h3 class="section-title">Tags</h3>
-							<p class="empty-message">No tags</p>
-						</div>
-					{:else}
-						<p class="empty-message">Select an entity to see details</p>
-					{/if}
-				</div>
-			{/if}
-		</aside>
 	</div>
 </div>
 
@@ -646,6 +631,19 @@
 		text-overflow: ellipsis;
 	}
 
+	.entity-tag {
+		flex-shrink: 0;
+		font-size: 0.65rem;
+		padding: 0.125rem 0.375rem;
+		background: rgb(168 85 247 / 0.2);
+		color: rgb(216 180 254 / 0.7);
+		border-radius: 0.25rem;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-width: 80px;
+	}
+
 	.pin-icon {
 		flex-shrink: 0;
 		font-size: 0.75rem;
@@ -738,64 +736,5 @@
 	.empty-description {
 		color: rgb(216 180 254);
 		font-size: 0.875rem;
-	}
-
-	/* Inspector */
-	.inspector {
-		width: 280px;
-		background: rgb(30 27 75 / 0.3);
-		border-left: 1px solid rgb(168 85 247 / 0.2);
-		display: flex;
-		flex-direction: column;
-		overflow: hidden;
-		transition: width 0.3s;
-	}
-
-	.inspector.collapsed {
-		width: 48px;
-	}
-
-	.inspector-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 1rem;
-		border-bottom: 1px solid rgb(168 85 247 / 0.1);
-	}
-
-	.inspector-title {
-		font-size: 0.875rem;
-		font-weight: 600;
-		color: rgb(216 180 254);
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
-	.inspector-content {
-		flex: 1;
-		overflow-y: auto;
-		padding: 1rem;
-	}
-
-	.inspector-section {
-		margin-bottom: 1.5rem;
-	}
-
-	.action-btn {
-		width: 100%;
-		padding: 0.5rem 0.75rem;
-		background: linear-gradient(to right, rgb(147 51 234), rgb(219 39 119));
-		border: none;
-		border-radius: 0.5rem;
-		color: white;
-		font-size: 0.875rem;
-		cursor: pointer;
-		transition: all 0.2s;
-		margin-bottom: 0.5rem;
-	}
-
-	.action-btn:hover {
-		transform: translateY(-1px);
-		box-shadow: 0 4px 12px rgb(168 85 247 / 0.5);
 	}
 </style>
