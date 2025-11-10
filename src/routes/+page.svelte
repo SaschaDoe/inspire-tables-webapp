@@ -91,6 +91,15 @@
 		<!-- Quick Action Buttons -->
 		<div class="flex justify-center gap-4 mb-20 flex-wrap">
 			<a
+				href="/workspace"
+				class="group relative px-10 py-5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-xl font-bold rounded-2xl shadow-2xl shadow-indigo-500/50 transition-all duration-300 hover:scale-105 hover:shadow-indigo-500/70"
+			>
+				<span class="relative z-10 flex items-center gap-3">
+					<span class="text-3xl">🚀</span>
+					<span>Open Workspace</span>
+				</span>
+			</a>
+			<a
 				href="/campaigns"
 				class="group relative px-10 py-5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white text-xl font-bold rounded-2xl shadow-2xl shadow-blue-500/50 transition-all duration-300 hover:scale-105 hover:shadow-blue-500/70"
 			>
