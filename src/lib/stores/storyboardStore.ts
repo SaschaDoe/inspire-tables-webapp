@@ -323,6 +323,26 @@ function createStoryBoardStore() {
 			});
 		},
 
+		selectNodes(boardId: string, nodeIds: string[]) {
+			update((state) => {
+				const board = state.boards.get(boardId);
+				if (!board) return state;
+
+				// Select all specified nodes (adds to existing selection)
+				nodeIds.forEach((nodeId) => {
+					const node = board.nodes.find((n) => n.id === nodeId);
+					if (node) {
+						node.selected = true;
+						if (!board.selectedNodeIds.includes(nodeId)) {
+							board.selectedNodeIds.push(nodeId);
+						}
+					}
+				});
+
+				return state;
+			});
+		},
+
 		deselectAll(boardId: string) {
 			update((state) => {
 				const board = state.boards.get(boardId);

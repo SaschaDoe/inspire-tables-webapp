@@ -149,7 +149,12 @@
 	.node.selected {
 		border-color: rgb(59 130 246);
 		border-width: 3px;
-		box-shadow: 0 0 0 3px rgb(59 130 246 / 0.2);
+		box-shadow:
+			0 0 0 3px rgb(59 130 246 / 0.3),
+			0 0 20px rgb(59 130 246 / 0.4),
+			0 8px 32px rgb(59 130 246 / 0.3);
+		transform: translateY(-2px);
+		z-index: 10;
 	}
 
 	.node.dragging {
@@ -170,6 +175,10 @@
 
 	.node:hover .node-glow {
 		opacity: 0.3;
+	}
+
+	.node.selected .node-glow {
+		opacity: 0.5;
 	}
 
 	.node-content {

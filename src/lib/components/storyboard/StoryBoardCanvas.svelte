@@ -10,6 +10,11 @@
 	let panStart = $state({ x: 0, y: 0 });
 	let isSpacePressed = $state(false);
 
+	// Selection box state
+	let isBoxSelecting = $state(false);
+	let selectionBoxStart = $state({ x: 0, y: 0 });
+	let selectionBoxEnd = $state({ x: 0, y: 0 });
+
 	function handleMouseDown(e: MouseEvent) {
 		if (!$activeBoard) return;
 
@@ -21,23 +26,90 @@
 				x: e.clientX - $activeBoard.viewport.x,
 				y: e.clientY - $activeBoard.viewport.y
 			};
+		} else if (e.button === 0 && !isSpacePressed) {
+			// Left click on canvas background - start box selection or deselect
+			const rect = canvasElement?.getBoundingClientRect();
+			if (rect) {
+				// Convert screen coordinates to canvas coordinates
+				const canvasX = (e.clientX - rect.left - $activeBoard.viewport.x) / $activeBoard.viewport.zoom;
+				const canvasY = (e.clientY - rect.top - $activeBoard.viewport.y) / $activeBoard.viewport.zoom;
+
+				isBoxSelecting = true;
+				selectionBoxStart = { x: canvasX, y: canvasY };
+				selectionBoxEnd = { x: canvasX, y: canvasY };
+
+				// Deselect all unless shift is held
+				if (!e.shiftKey) {
+					storyboardStore.deselectAll($activeBoard.id);
+				}
+			}
 		}
 	}
 
 	function handleMouseMove(e: MouseEvent) {
-		if (!$activeBoard || !isPanning) return;
+		if (!$activeBoard) return;
 
-		const newX = e.clientX - panStart.x;
-		const newY = e.clientY - panStart.y;
+		// Handle panning
+		if (isPanning) {
+			const newX = e.clientX - panStart.x;
+			const newY = e.clientY - panStart.y;
 
-		storyboardStore.setViewport($activeBoard.id, {
-			...$activeBoard.viewport,
-			x: newX,
-			y: newY
-		});
+			storyboardStore.setViewport($activeBoard.id, {
+				...$activeBoard.viewport,
+				x: newX,
+				y: newY
+			});
+		}
+
+		// Handle box selection
+		if (isBoxSelecting) {
+			const rect = canvasElement?.getBoundingClientRect();
+			if (rect) {
+				const canvasX = (e.clientX - rect.left - $activeBoard.viewport.x) / $activeBoard.viewport.zoom;
+				const canvasY = (e.clientY - rect.top - $activeBoard.viewport.y) / $activeBoard.viewport.zoom;
+
+				selectionBoxEnd = { x: canvasX, y: canvasY };
+			}
+		}
 	}
 
 	function handleMouseUp() {
+		// Complete box selection
+		if (isBoxSelecting && $activeBoard) {
+			// Calculate selection box bounds
+			const boxLeft = Math.min(selectionBoxStart.x, selectionBoxEnd.x);
+			const boxRight = Math.max(selectionBoxStart.x, selectionBoxEnd.x);
+			const boxTop = Math.min(selectionBoxStart.y, selectionBoxEnd.y);
+			const boxBottom = Math.max(selectionBoxStart.y, selectionBoxEnd.y);
+
+			// Only select if the box has some size (not just a click)
+			const boxWidth = boxRight - boxLeft;
+			const boxHeight = boxBottom - boxTop;
+
+			if (boxWidth > 5 || boxHeight > 5) {
+				// Find nodes that intersect with selection box
+				const nodesToSelect = $activeNodes.filter((node) => {
+					const nodeRight = node.x + node.width;
+					const nodeBottom = node.y + node.height;
+
+					return !(
+						nodeRight < boxLeft ||
+						node.x > boxRight ||
+						nodeBottom < boxTop ||
+						node.y > boxBottom
+					);
+				});
+
+				// Select the nodes
+				const nodeIds = nodesToSelect.map((n) => n.id);
+				if (nodeIds.length > 0) {
+					storyboardStore.selectNodes($activeBoard.id, nodeIds);
+				}
+			}
+
+			isBoxSelecting = false;
+		}
+
 		isPanning = false;
 	}
 
@@ -87,6 +159,18 @@
 	}
 
 	let cursorStyle = $derived(isPanning || isSpacePressed ? 'grabbing' : 'default');
+
+	// Calculate selection box dimensions for rendering
+	let selectionBox = $derived(() => {
+		if (!isBoxSelecting) return null;
+
+		const x = Math.min(selectionBoxStart.x, selectionBoxEnd.x);
+		const y = Math.min(selectionBoxStart.y, selectionBoxEnd.y);
+		const width = Math.abs(selectionBoxEnd.x - selectionBoxStart.x);
+		const height = Math.abs(selectionBoxEnd.y - selectionBoxStart.y);
+
+		return { x, y, width, height };
+	});
 </script>
 
 <svelte:window onkeydown={handleKeyDown} onkeyup={handleKeyUp} />
@@ -112,6 +196,21 @@
 		{#each $activeNodes as node (node.id)}
 			<StoryBoardNode {node} />
 		{/each}
+
+		<!-- Selection box -->
+		{#if isBoxSelecting && selectionBox && (selectionBox.width > 0 || selectionBox.height > 0)}
+			<rect
+				x={selectionBox.x}
+				y={selectionBox.y}
+				width={selectionBox.width}
+				height={selectionBox.height}
+				fill="rgba(59, 130, 246, 0.1)"
+				stroke="rgba(59, 130, 246, 0.5)"
+				stroke-width="2"
+				stroke-dasharray="5,5"
+				pointer-events="none"
+			/>
+		{/if}
 	</svg>
 </div>
 
