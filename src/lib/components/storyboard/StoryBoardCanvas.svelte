@@ -2,6 +2,7 @@
 	import { activeBoard, activeNodes, storyboardStore } from '$lib/stores/storyboardStore';
 	import StoryBoardNode from './StoryBoardNode.svelte';
 	import StoryBoardGrid from './StoryBoardGrid.svelte';
+	import StoryBoardDrawingLayer from './StoryBoardDrawingLayer.svelte';
 
 	let canvasElement = $state<HTMLDivElement>();
 
@@ -191,6 +192,9 @@
 		style="transform: translate({$activeBoard?.viewport.x || 0}px, {$activeBoard?.viewport.y || 0}px) scale({$activeBoard?.viewport.zoom || 1})"
 	>
 		<StoryBoardGrid showGrid={$activeBoard?.settings.showGrid} gridSize={$activeBoard?.settings.gridSize} />
+
+		<!-- Drawing layer -->
+		<StoryBoardDrawingLayer />
 
 		<!-- Nodes -->
 		{#each $activeNodes as node (node.id)}

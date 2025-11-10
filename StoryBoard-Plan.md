@@ -531,9 +531,11 @@ export const boardMode = derived(
 
 ## 🎬 Implementation Phases
 
-### Phase 1: Core Canvas (MVP) 🟢
+### Phase 1: Core Canvas (MVP) ✅ COMPLETE
 
 **Goal:** Functional brainstorming canvas with essential editing features
+
+**Status:** ✅ Completed - All features implemented and working
 
 **Tasks:**
 1. **Data Models** - Create TypeScript interfaces (StoryBoard, StoryBoardNode, etc.)
@@ -581,9 +583,11 @@ export const boardMode = derived(
 
 ---
 
-### Phase 2: Drawing Layer & Search 🟢
+### Phase 2: Drawing Layer & Search 🔄 IN PROGRESS
 
 **Goal:** Freehand annotation and findability
+
+**Status:** 🔄 In Progress - Currently implementing
 
 **Tasks:**
 1. **Drawing Layer** - Implement StoryBoardDrawingLayer.svelte (SVG-based)

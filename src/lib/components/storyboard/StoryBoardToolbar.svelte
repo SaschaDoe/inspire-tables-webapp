@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { storyboardStore, activeBoard, canUndo, canRedo, selectedNodes } from '$lib/stores/storyboardStore';
+	import { storyboardStore, activeBoard, canUndo, canRedo, selectedNodes, boardMode } from '$lib/stores/storyboardStore';
 
 	function addCard() {
 		if (!$activeBoard) return;
@@ -54,10 +54,25 @@
 		if (!$activeBoard) return;
 		storyboardStore.resetViewport($activeBoard.id);
 	}
+
+	function toggleDrawMode() {
+		if (!$activeBoard) return;
+		const newMode = $boardMode === 'draw' ? 'select' : 'draw';
+		storyboardStore.setMode($activeBoard.id, newMode);
+	}
 </script>
 
 <div class="toolbar">
 	<div class="toolbar-section">
+		<button
+			onclick={toggleDrawMode}
+			class="toolbar-btn {$boardMode === 'draw' ? 'active' : ''}"
+			title="Toggle Draw Mode (D)"
+		>
+			<span class="icon">✏️</span>
+			<span>{$boardMode === 'draw' ? 'Select' : 'Draw'}</span>
+		</button>
+
 		<button onclick={addCard} class="toolbar-btn primary" title="Add Card (Ctrl+N)">
 			<span class="icon">+</span>
 			<span>Add Card</span>
@@ -160,6 +175,12 @@
 	.toolbar-btn:disabled {
 		opacity: 0.4;
 		cursor: not-allowed;
+	}
+
+	.toolbar-btn.active {
+		background: rgb(168 85 247 / 0.3);
+		border-color: rgb(168 85 247);
+		box-shadow: 0 0 0 2px rgb(168 85 247 / 0.2);
 	}
 
 	.toolbar-btn.primary {

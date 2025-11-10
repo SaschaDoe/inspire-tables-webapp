@@ -458,6 +458,65 @@ function createStoryBoardStore() {
 			});
 		},
 
+		// Drawing operations
+		addDrawing(boardId: string, drawing: Omit<StoryBoardDrawing, 'id' | 'metadata'>) {
+			update((state) => {
+				const board = state.boards.get(boardId);
+				if (!board) return state;
+
+				const newDrawing: StoryBoardDrawing = {
+					...drawing,
+					id: `drawing-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+					metadata: {
+						createdAt: new Date()
+					}
+				};
+
+				board.drawings.push(newDrawing);
+				this.saveAndCreateSnapshot(board, 'Add drawing');
+				return state;
+			});
+		},
+
+		deleteDrawing(boardId: string, drawingId: string) {
+			update((state) => {
+				const board = state.boards.get(boardId);
+				if (!board) return state;
+
+				board.drawings = board.drawings.filter((d) => d.id !== drawingId);
+				this.saveAndCreateSnapshot(board, 'Delete drawing');
+				return state;
+			});
+		},
+
+		clearDrawings(boardId: string) {
+			update((state) => {
+				const board = state.boards.get(boardId);
+				if (!board) return state;
+
+				board.drawings = [];
+				this.saveAndCreateSnapshot(board, 'Clear drawings');
+				return state;
+			});
+		},
+
+		updateDrawingSettings(boardId: string, color?: string, width?: number) {
+			update((state) => {
+				const board = state.boards.get(boardId);
+				if (!board) return state;
+
+				if (color !== undefined) {
+					board.settings.drawingColor = color;
+				}
+				if (width !== undefined) {
+					board.settings.drawingWidth = width;
+				}
+
+				saveToLocalStorage(state.boards);
+				return state;
+			});
+		},
+
 		// Utility
 		getBoardsByAdventure(adventureId: string): StoryBoard[] {
 			let boards: StoryBoard[] = [];

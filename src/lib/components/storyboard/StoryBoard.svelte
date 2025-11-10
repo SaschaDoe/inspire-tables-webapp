@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { storyboardStore, activeBoard, selectedNodes } from '$lib/stores/storyboardStore';
+	import { storyboardStore, activeBoard, selectedNodes, boardMode } from '$lib/stores/storyboardStore';
 	import StoryBoardToolbar from './StoryBoardToolbar.svelte';
 	import StoryBoardCanvas from './StoryBoardCanvas.svelte';
+	import StoryBoardDrawingTools from './StoryBoardDrawingTools.svelte';
+	import StoryBoardSearch from './StoryBoardSearch.svelte';
 
 	interface Props {
 		adventureId: string;
@@ -76,6 +78,13 @@
 			const nodeIds = $selectedNodes.map((n) => n.id);
 			storyboardStore.moveNodes($activeBoard.id, nodeIds, deltaX, deltaY);
 		}
+
+		// D key - Toggle draw mode
+		if (e.key === 'd' || e.key === 'D') {
+			e.preventDefault();
+			const newMode = $boardMode === 'draw' ? 'select' : 'draw';
+			storyboardStore.setMode($activeBoard.id, newMode);
+		}
 	}
 </script>
 
@@ -84,7 +93,9 @@
 <div class="storyboard-container">
 	{#if $activeBoard}
 		<StoryBoardToolbar />
+		<StoryBoardDrawingTools />
 		<StoryBoardCanvas />
+		<StoryBoardSearch />
 	{:else}
 		<div class="loading">
 			<p>Loading story board...</p>
