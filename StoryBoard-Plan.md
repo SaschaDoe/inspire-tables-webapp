@@ -583,11 +583,11 @@ export const boardMode = derived(
 
 ---
 
-### Phase 2: Drawing Layer & Search 🔄 IN PROGRESS
+### Phase 2: Drawing Layer & Search ✅ COMPLETE
 
 **Goal:** Freehand annotation and findability
 
-**Status:** 🔄 In Progress - Currently implementing
+**Status:** ✅ Completed - All features implemented and working
 
 **Tasks:**
 1. **Drawing Layer** - Implement StoryBoardDrawingLayer.svelte (SVG-based)
