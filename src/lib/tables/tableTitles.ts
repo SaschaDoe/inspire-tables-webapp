@@ -127,5 +127,15 @@ export enum TableTitles {
 	Limitation = 'Limitation',
 	RelationshipType = 'Relationship Type',
 	Vocal = 'Vocal',
-	Consonant = 'Consonant'
+	Consonant = 'Consonant',
+
+	// Genre tables
+	MainGenre = 'Main Genre',
+	FantasySubGenre = 'Fantasy Sub-Genre',
+	SciFiSubGenre = 'Sci-Fi Sub-Genre',
+	HorrorSubGenre = 'Horror Sub-Genre',
+	ActionSubGenre = 'Action Sub-Genre',
+
+	// Campaign tables
+	CampaignStatement = 'Campaign Statement'
 }

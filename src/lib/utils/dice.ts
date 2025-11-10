@@ -9,6 +9,14 @@ export class Dice {
 		return sum + diceRole.modifier;
 	}
 
+	getRandom(): number {
+		return Math.random();
+	}
+
+	rollInterval(min: number, max: number): number {
+		return this.randomInt(min, max);
+	}
+
 	private randomInt(min: number, max: number): number {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}

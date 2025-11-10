@@ -98,6 +98,12 @@ export const tableMetadata: TableCategory[] = [
 			{ title: TableTitles.Quality, type: TableType.Other, importPath: 'otherTables/qualityTable', className: 'QualityTable' },
 			{ title: TableTitles.Colour, type: TableType.Other, importPath: 'otherTables/colourTable', className: 'ColourTable' },
 		]
+	},
+	{
+		type: TableType.Campaign,
+		tables: [
+			{ title: TableTitles.CampaignStatement, type: TableType.Campaign, importPath: 'campaignTables/campaignStatementTable', className: 'CampaignStatementTable' },
+		]
 	}
 ];
 

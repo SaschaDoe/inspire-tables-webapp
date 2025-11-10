@@ -88,14 +88,23 @@
 			</p>
 		</div>
 
-		<!-- Quick Action Button -->
-		<div class="flex justify-center gap-4 mb-20">
+		<!-- Quick Action Buttons -->
+		<div class="flex justify-center gap-4 mb-20 flex-wrap">
+			<a
+				href="/campaigns"
+				class="group relative px-10 py-5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white text-xl font-bold rounded-2xl shadow-2xl shadow-blue-500/50 transition-all duration-300 hover:scale-105 hover:shadow-blue-500/70"
+			>
+				<span class="relative z-10 flex items-center gap-3">
+					<span class="text-3xl">🎭</span>
+					<span>Create Campaign</span>
+				</span>
+			</a>
 			<a
 				href="/tables"
 				class="group relative px-10 py-5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-xl font-bold rounded-2xl shadow-2xl shadow-purple-500/50 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/70"
 			>
 				<span class="relative z-10 flex items-center gap-3">
-					<span>Browse All Tables</span>
+					<span>Browse Tables</span>
 					<svg class="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
 					</svg>
