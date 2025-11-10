@@ -1,19 +1,14 @@
 <script lang="ts">
 	import { storyboardStore, activeBoard, canUndo, canRedo, selectedNodes } from '$lib/stores/storyboardStore';
 
-	let activeBoard_ = $derived(activeBoard);
-	let canUndo_ = $derived(canUndo);
-	let canRedo_ = $derived(canRedo);
-	let selectedNodes_ = $derived(selectedNodes);
-
 	function addCard() {
-		if (!activeBoard_) return;
+		if (!$activeBoard) return;
 
 		// Add card at center of viewport
-		const centerX = -activeBoard_.viewport.x / activeBoard_.viewport.zoom + 400;
-		const centerY = -activeBoard_.viewport.y / activeBoard_.viewport.zoom + 300;
+		const centerX = -$activeBoard.viewport.x / $activeBoard.viewport.zoom + 400;
+		const centerY = -$activeBoard.viewport.y / $activeBoard.viewport.zoom + 300;
 
-		storyboardStore.addNode(activeBoard_.id, {
+		storyboardStore.addNode($activeBoard.id, {
 			x: centerX,
 			y: centerY,
 			label: 'New Card'
@@ -21,43 +16,43 @@
 	}
 
 	function deleteSelected() {
-		if (!activeBoard_ || selectedNodes_.length === 0) return;
+		if (!$activeBoard || $selectedNodes.length === 0) return;
 
-		const nodeIds = selectedNodes_.map((n) => n.id);
-		storyboardStore.deleteNodes(activeBoard_.id, nodeIds);
+		const nodeIds = $selectedNodes.map((n) => n.id);
+		storyboardStore.deleteNodes($activeBoard.id, nodeIds);
 	}
 
 	function undo() {
-		if (!activeBoard_) return;
-		storyboardStore.undo(activeBoard_.id);
+		if (!$activeBoard) return;
+		storyboardStore.undo($activeBoard.id);
 	}
 
 	function redo() {
-		if (!activeBoard_) return;
-		storyboardStore.redo(activeBoard_.id);
+		if (!$activeBoard) return;
+		storyboardStore.redo($activeBoard.id);
 	}
 
 	function clearAll() {
-		if (!activeBoard_) return;
+		if (!$activeBoard) return;
 		if (confirm('Clear all cards from this board? This cannot be undone.')) {
-			const nodeIds = activeBoard_.nodes.map((n) => n.id);
-			storyboardStore.deleteNodes(activeBoard_.id, nodeIds, 'Clear all');
+			const nodeIds = $activeBoard.nodes.map((n) => n.id);
+			storyboardStore.deleteNodes($activeBoard.id, nodeIds, 'Clear all');
 		}
 	}
 
 	function zoomIn() {
-		if (!activeBoard_) return;
-		storyboardStore.zoomIn(activeBoard_.id);
+		if (!$activeBoard) return;
+		storyboardStore.zoomIn($activeBoard.id);
 	}
 
 	function zoomOut() {
-		if (!activeBoard_) return;
-		storyboardStore.zoomOut(activeBoard_.id);
+		if (!$activeBoard) return;
+		storyboardStore.zoomOut($activeBoard.id);
 	}
 
 	function resetView() {
-		if (!activeBoard_) return;
-		storyboardStore.resetViewport(activeBoard_.id);
+		if (!$activeBoard) return;
+		storyboardStore.resetViewport($activeBoard.id);
 	}
 </script>
 
@@ -71,7 +66,7 @@
 		<button
 			onclick={deleteSelected}
 			class="toolbar-btn danger"
-			disabled={!selectedNodes_ || selectedNodes_.length === 0}
+			disabled={!$selectedNodes || $selectedNodes.length === 0}
 			title="Delete Selected (Delete)"
 		>
 			<span class="icon">🗑️</span>
@@ -85,12 +80,12 @@
 	</div>
 
 	<div class="toolbar-section">
-		<button onclick={undo} class="toolbar-btn" disabled={!canUndo_} title="Undo (Ctrl+Z)">
+		<button onclick={undo} class="toolbar-btn" disabled={!$canUndo} title="Undo (Ctrl+Z)">
 			<span class="icon">↶</span>
 			<span>Undo</span>
 		</button>
 
-		<button onclick={redo} class="toolbar-btn" disabled={!canRedo_} title="Redo (Ctrl+Y)">
+		<button onclick={redo} class="toolbar-btn" disabled={!$canRedo} title="Redo (Ctrl+Y)">
 			<span class="icon">↷</span>
 			<span>Redo</span>
 		</button>
@@ -101,7 +96,7 @@
 			<span class="icon">−</span>
 		</button>
 
-		<span class="zoom-level">{activeBoard_ ? Math.round(activeBoard_.viewport.zoom * 100) : 100}%</span>
+		<span class="zoom-level">{$activeBoard ? Math.round($activeBoard.viewport.zoom * 100) : 100}%</span>
 
 		<button onclick={zoomIn} class="toolbar-btn" title="Zoom In (Ctrl+Scroll)">
 			<span class="icon">+</span>

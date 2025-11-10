@@ -8,8 +8,6 @@
 
 	let { node }: Props = $props();
 
-	let activeBoard_ = $derived(activeBoard);
-
 	// Drag state
 	let isDragging = $state(false);
 	let dragStart = $state({ x: 0, y: 0 });
@@ -24,23 +22,23 @@
 		nodeStart = { x: node.x, y: node.y };
 
 		// Select this node
-		if (!activeBoard_) return;
+		if (!$activeBoard) return;
 		const addToSelection = e.shiftKey;
-		storyboardStore.selectNode(activeBoard_.id, node.id, addToSelection);
+		storyboardStore.selectNode($activeBoard.id, node.id, addToSelection);
 	}
 
 	function handleMouseMove(e: MouseEvent) {
-		if (!isDragging || !activeBoard_) return;
+		if (!isDragging || !$activeBoard) return;
 
-		const dx = (e.clientX - dragStart.x) / activeBoard_.viewport.zoom;
-		const dy = (e.clientY - dragStart.y) / activeBoard_.viewport.zoom;
+		const dx = (e.clientX - dragStart.x) / $activeBoard.viewport.zoom;
+		const dy = (e.clientY - dragStart.y) / $activeBoard.viewport.zoom;
 
 		// Move node (skip snapshot during drag for performance)
-		storyboardStore.moveNode(activeBoard_.id, node.id, nodeStart.x + dx, nodeStart.y + dy, true);
+		storyboardStore.moveNode($activeBoard.id, node.id, nodeStart.x + dx, nodeStart.y + dy, true);
 	}
 
 	function handleMouseUp() {
-		if (isDragging && activeBoard_) {
+		if (isDragging && $activeBoard) {
 			isDragging = false;
 			// Create snapshot now that drag is complete
 			// The current position is already updated, just need to save and create snapshot
@@ -52,16 +50,16 @@
 	}
 
 	function handleClick(e: MouseEvent) {
-		if (e.detail === 2 && activeBoard_) {
+		if (e.detail === 2 && $activeBoard) {
 			// Double-click - start editing
 			// For now just select
 		}
 	}
 
 	function handleLabelInput(e: Event) {
-		if (!activeBoard_) return;
+		if (!$activeBoard) return;
 		const target = e.currentTarget as HTMLInputElement;
-		storyboardStore.updateNode(activeBoard_.id, node.id, { label: target.value });
+		storyboardStore.updateNode($activeBoard.id, node.id, { label: target.value });
 	}
 
 	// Color mapping for entity types

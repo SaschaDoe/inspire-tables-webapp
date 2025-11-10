@@ -3,9 +3,6 @@
 	import StoryBoardNode from './StoryBoardNode.svelte';
 	import StoryBoardGrid from './StoryBoardGrid.svelte';
 
-	let activeBoard_ = $derived(activeBoard);
-	let activeNodes_ = $derived(activeNodes);
-
 	let canvasElement = $state<HTMLDivElement>();
 
 	// Pan state
@@ -14,27 +11,27 @@
 	let isSpacePressed = $state(false);
 
 	function handleMouseDown(e: MouseEvent) {
-		if (!activeBoard_) return;
+		if (!$activeBoard) return;
 
 		// Middle mouse or Space+click for panning
 		if (e.button === 1 || (isSpacePressed && e.button === 0)) {
 			e.preventDefault();
 			isPanning = true;
 			panStart = {
-				x: e.clientX - activeBoard_.viewport.x,
-				y: e.clientY - activeBoard_.viewport.y
+				x: e.clientX - $activeBoard.viewport.x,
+				y: e.clientY - $activeBoard.viewport.y
 			};
 		}
 	}
 
 	function handleMouseMove(e: MouseEvent) {
-		if (!activeBoard_ || !isPanning) return;
+		if (!$activeBoard || !isPanning) return;
 
 		const newX = e.clientX - panStart.x;
 		const newY = e.clientY - panStart.y;
 
-		storyboardStore.setViewport(activeBoard_.id, {
-			...activeBoard_.viewport,
+		storyboardStore.setViewport($activeBoard.id, {
+			...$activeBoard.viewport,
 			x: newX,
 			y: newY
 		});
@@ -45,14 +42,14 @@
 	}
 
 	function handleWheel(e: WheelEvent) {
-		if (!activeBoard_) return;
+		if (!$activeBoard) return;
 
 		// Only zoom with Ctrl
 		if (e.ctrlKey) {
 			e.preventDefault();
 
 			const delta = e.deltaY > 0 ? 0.9 : 1.1;
-			const newZoom = Math.max(0.5, Math.min(2, activeBoard_.viewport.zoom * delta));
+			const newZoom = Math.max(0.5, Math.min(2, $activeBoard.viewport.zoom * delta));
 
 			// Zoom toward mouse position
 			const rect = canvasElement?.getBoundingClientRect();
@@ -60,14 +57,14 @@
 				const mouseX = e.clientX - rect.left;
 				const mouseY = e.clientY - rect.top;
 
-				const oldZoom = activeBoard_.viewport.zoom;
+				const oldZoom = $activeBoard.viewport.zoom;
 				const zoomDiff = newZoom - oldZoom;
 
 				// Adjust pan to zoom toward mouse
-				const newX = activeBoard_.viewport.x - (mouseX - activeBoard_.viewport.x) * (zoomDiff / oldZoom);
-				const newY = activeBoard_.viewport.y - (mouseY - activeBoard_.viewport.y) * (zoomDiff / oldZoom);
+				const newX = $activeBoard.viewport.x - (mouseX - $activeBoard.viewport.x) * (zoomDiff / oldZoom);
+				const newY = $activeBoard.viewport.y - (mouseY - $activeBoard.viewport.y) * (zoomDiff / oldZoom);
 
-				storyboardStore.setViewport(activeBoard_.id, {
+				storyboardStore.setViewport($activeBoard.id, {
 					x: newX,
 					y: newY,
 					zoom: newZoom
@@ -107,12 +104,12 @@
 >
 	<svg
 		class="canvas-svg"
-		style="transform: translate({activeBoard_?.viewport.x || 0}px, {activeBoard_?.viewport.y || 0}px) scale({activeBoard_?.viewport.zoom || 1})"
+		style="transform: translate({$activeBoard?.viewport.x || 0}px, {$activeBoard?.viewport.y || 0}px) scale({$activeBoard?.viewport.zoom || 1})"
 	>
-		<StoryBoardGrid showGrid={activeBoard_?.settings.showGrid} gridSize={activeBoard_?.settings.gridSize} />
+		<StoryBoardGrid showGrid={$activeBoard?.settings.showGrid} gridSize={$activeBoard?.settings.gridSize} />
 
 		<!-- Nodes -->
-		{#each activeNodes_ as node (node.id)}
+		{#each $activeNodes as node (node.id)}
 			<StoryBoardNode {node} />
 		{/each}
 	</svg>

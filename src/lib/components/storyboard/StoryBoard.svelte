@@ -10,9 +10,6 @@
 
 	let { adventureId }: Props = $props();
 
-	let activeBoard_ = $derived(activeBoard);
-	let selectedNodes_ = $derived(selectedNodes);
-
 	onMount(() => {
 		// Load or create board for this adventure
 		const boards = storyboardStore.getBoardsByAdventure(adventureId);
@@ -25,47 +22,47 @@
 
 	// Keyboard shortcuts
 	function handleKeyDown(e: KeyboardEvent) {
-		if (!activeBoard_) return;
+		if (!$activeBoard) return;
 
 		// Delete / Backspace - Delete selected
-		if ((e.key === 'Delete' || e.key === 'Backspace') && selectedNodes_.length > 0) {
+		if ((e.key === 'Delete' || e.key === 'Backspace') && $selectedNodes.length > 0) {
 			e.preventDefault();
-			const nodeIds = selectedNodes_.map((n) => n.id);
+			const nodeIds = $selectedNodes.map((n) => n.id);
 
 			// Confirm if deleting many cards
 			if (nodeIds.length > 3) {
 				if (!confirm(`Delete ${nodeIds.length} cards?`)) return;
 			}
 
-			storyboardStore.deleteNodes(activeBoard_.id, nodeIds);
+			storyboardStore.deleteNodes($activeBoard.id, nodeIds);
 		}
 
 		// Ctrl+Z - Undo
 		if (e.ctrlKey && e.key === 'z' && !e.shiftKey) {
 			e.preventDefault();
-			storyboardStore.undo(activeBoard_.id);
+			storyboardStore.undo($activeBoard.id);
 		}
 
 		// Ctrl+Y or Ctrl+Shift+Z - Redo
 		if ((e.ctrlKey && e.key === 'y') || (e.ctrlKey && e.shiftKey && e.key === 'z')) {
 			e.preventDefault();
-			storyboardStore.redo(activeBoard_.id);
+			storyboardStore.redo($activeBoard.id);
 		}
 
 		// Escape - Deselect all
 		if (e.key === 'Escape') {
 			e.preventDefault();
-			storyboardStore.deselectAll(activeBoard_.id);
+			storyboardStore.deselectAll($activeBoard.id);
 		}
 
 		// Ctrl+A - Select all
 		if (e.ctrlKey && e.key === 'a') {
 			e.preventDefault();
-			storyboardStore.selectAll(activeBoard_.id);
+			storyboardStore.selectAll($activeBoard.id);
 		}
 
 		// Arrow keys - Nudge selected nodes
-		if (selectedNodes_.length > 0 && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+		if ($selectedNodes.length > 0 && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
 			e.preventDefault();
 			const distance = e.shiftKey ? 10 : 1;
 			let deltaX = 0;
@@ -76,8 +73,8 @@
 			if (e.key === 'ArrowUp') deltaY = -distance;
 			if (e.key === 'ArrowDown') deltaY = distance;
 
-			const nodeIds = selectedNodes_.map((n) => n.id);
-			storyboardStore.moveNodes(activeBoard_.id, nodeIds, deltaX, deltaY);
+			const nodeIds = $selectedNodes.map((n) => n.id);
+			storyboardStore.moveNodes($activeBoard.id, nodeIds, deltaX, deltaY);
 		}
 	}
 </script>
