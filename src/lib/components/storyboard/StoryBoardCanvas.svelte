@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { activeBoard, activeNodes, storyboardStore } from '$lib/stores/storyboardStore';
+	import { activeBoard, activeNodes, storyboardStore, boardMode } from '$lib/stores/storyboardStore';
 	import StoryBoardNode from './StoryBoardNode.svelte';
 	import StoryBoardGrid from './StoryBoardGrid.svelte';
 	import StoryBoardDrawingLayer from './StoryBoardDrawingLayer.svelte';
@@ -159,7 +159,9 @@
 		}
 	}
 
-	let cursorStyle = $derived(isPanning || isSpacePressed ? 'grabbing' : 'default');
+	let cursorStyle = $derived(
+		isPanning || isSpacePressed ? 'grabbing' : $boardMode === 'draw' ? 'crosshair' : 'default'
+	);
 
 	// Calculate selection box dimensions for rendering
 	let selectionBox = $derived(() => {

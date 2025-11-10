@@ -5,27 +5,47 @@
 	// Drawing state
 	let isDrawing = $state(false);
 	let currentPath = $state<{ x: number; y: number }[]>([]);
+	let svgElement = $state<SVGSVGElement | null>(null);
+
+	function getCanvasCoordinates(e: PointerEvent): { x: number; y: number } | null {
+		if (!$activeBoard) return null;
+
+		// Get the SVG element by traversing up the DOM tree
+		let target = e.target as Element;
+		while (target && !(target instanceof SVGSVGElement)) {
+			target = target.parentElement as Element;
+		}
+
+		if (!target) return null;
+
+		const svg = target as SVGSVGElement;
+		const rect = svg.getBoundingClientRect();
+
+		// Calculate coordinates relative to the SVG, accounting for viewport transform
+		const x = (e.clientX - rect.left - $activeBoard.viewport.x) / $activeBoard.viewport.zoom;
+		const y = (e.clientY - rect.top - $activeBoard.viewport.y) / $activeBoard.viewport.zoom;
+
+		return { x, y };
+	}
 
 	function handlePointerDown(e: PointerEvent) {
 		if (!$activeBoard || $boardMode !== 'draw') return;
 
+		const coords = getCanvasCoordinates(e);
+		if (!coords) return;
+
 		// Start new drawing
 		isDrawing = true;
-		const rect = (e.currentTarget as SVGElement).getBoundingClientRect();
-		const x = (e.clientX - rect.left - $activeBoard.viewport.x) / $activeBoard.viewport.zoom;
-		const y = (e.clientY - rect.top - $activeBoard.viewport.y) / $activeBoard.viewport.zoom;
-
-		currentPath = [{ x, y }];
+		currentPath = [coords];
 	}
 
 	function handlePointerMove(e: PointerEvent) {
 		if (!$activeBoard || !isDrawing || $boardMode !== 'draw') return;
 
-		const rect = (e.currentTarget as SVGElement).getBoundingClientRect();
-		const x = (e.clientX - rect.left - $activeBoard.viewport.x) / $activeBoard.viewport.zoom;
-		const y = (e.clientY - rect.top - $activeBoard.viewport.y) / $activeBoard.viewport.zoom;
+		const coords = getCanvasCoordinates(e);
+		if (!coords) return;
 
-		currentPath = [...currentPath, { x, y }];
+		currentPath = [...currentPath, coords];
 	}
 
 	function handlePointerUp() {
@@ -83,13 +103,22 @@
 </script>
 
 <!-- Drawing layer sits below nodes but above grid -->
-<g
-	class="drawing-layer"
-	onpointerdown={handlePointerDown}
-	onpointermove={handlePointerMove}
-	onpointerup={handlePointerUp}
-	style="pointer-events: {$boardMode === 'draw' ? 'all' : 'none'}"
->
+<g class="drawing-layer" style="pointer-events: {$boardMode === 'draw' ? 'all' : 'none'}">
+	<!-- Invisible rect to capture pointer events across entire canvas -->
+	{#if $boardMode === 'draw'}
+		<rect
+			x="-5000"
+			y="-5000"
+			width="10000"
+			height="10000"
+			fill="transparent"
+			onpointerdown={handlePointerDown}
+			onpointermove={handlePointerMove}
+			onpointerup={handlePointerUp}
+			style="cursor: crosshair"
+		/>
+	{/if}
+
 	<!-- Render saved drawings -->
 	{#each $activeDrawings as drawing (drawing.id)}
 		{#if drawing.type === 'freehand' && drawing.points}

@@ -512,7 +512,7 @@ function createStoryBoardStore() {
 					board.settings.drawingWidth = width;
 				}
 
-				saveToLocalStorage(state.boards);
+				saveToStorage(state);
 				return state;
 			});
 		},
