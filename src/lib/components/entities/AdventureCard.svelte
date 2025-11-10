@@ -7,6 +7,7 @@
 		onDelete?: (id: string) => void;
 		onNameChange?: (id: string, name: string) => void;
 		onStatusChange?: (id: string, status: string) => void;
+		onOpenStoryBoard?: (adventureId: string) => void;
 	}
 
 	let {
@@ -14,7 +15,8 @@
 		showActions = true,
 		onDelete,
 		onNameChange,
-		onStatusChange
+		onStatusChange,
+		onOpenStoryBoard
 	}: Props = $props();
 
 	function handleNameChange(e: Event) {
@@ -81,6 +83,19 @@
 					</span>
 				{/if}
 			</div>
+
+			<!-- Story Board Button -->
+			{#if showActions && onOpenStoryBoard}
+				<div>
+					<button
+						onclick={() => onOpenStoryBoard?.(adventure.id)}
+						class="w-full px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-lg transition-all shadow-lg flex items-center justify-center gap-2"
+					>
+						<span class="text-xl">📋</span>
+						<span>Open Story Board</span>
+					</button>
+				</div>
+			{/if}
 
 			<!-- Description -->
 			{#if adventure.description}

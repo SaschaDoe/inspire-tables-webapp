@@ -5,6 +5,7 @@
 	import { entityStore } from '$lib/stores/entityStore';
 	import CampaignCard from '$lib/components/entities/CampaignCard.svelte';
 	import AdventureCard from '$lib/components/entities/AdventureCard.svelte';
+	import StoryBoard from '$lib/components/storyboard/StoryBoard.svelte';
 	import type { Entity, AdventureEntity } from '$lib/types/entity';
 	import { EntityType } from '$lib/types/entity';
 	import type { Campaign } from '$lib/entities/campaign';
@@ -60,6 +61,28 @@
 
 	function openAdventure(adventure: AdventureEntity) {
 		tabStore.openTab(adventure);
+	}
+
+	function openStoryBoard(adventureId: string) {
+		const adventure = adventures.get(adventureId);
+		if (!adventure) return;
+
+		// Create a special tab for the story board
+		const storyboardTab: Entity = {
+			id: `storyboard-${adventureId}`,
+			type: 'storyboard' as any,
+			name: `${adventure.name} - Story Board`,
+			description: 'Visual story planning canvas',
+			tags: [],
+			metadata: {
+				createdAt: new Date(),
+				updatedAt: new Date()
+			},
+			relationships: [],
+			customFields: { adventureId }
+		};
+
+		tabStore.openTab(storyboardTab);
 	}
 
 	function addAdventure(campaignId: string) {
@@ -158,6 +181,12 @@
 		const tab = $activeTab;
 		if (!tab || tab.entityType !== 'adventure') return null;
 		return adventures.get(tab.entityId) || null;
+	});
+
+	let currentStoryBoardAdventureId = $derived.by(() => {
+		const tab = $activeTab;
+		if (!tab || tab.entityType !== 'storyboard') return null;
+		return tab.customFields?.adventureId || null;
 	});
 
 	let breadcrumbs = $derived.by(() => {
@@ -357,7 +386,10 @@
 						onDelete={deleteAdventure}
 						onNameChange={updateAdventureName}
 						onStatusChange={updateAdventureStatus}
+						onOpenStoryBoard={openStoryBoard}
 					/>
+				{:else if currentStoryBoardAdventureId}
+					<StoryBoard adventureId={currentStoryBoardAdventureId} />
 				{:else if $activeTab}
 					<div class="entity-content">
 						<h1 class="entity-title">{$activeTab.title}</h1>
