@@ -31,8 +31,14 @@
 	function handlePointerDown(e: PointerEvent) {
 		if (!$activeBoard || $boardMode !== 'draw') return;
 
+		// Only draw on primary button (left click)
+		if (e.button !== 0) return;
+
 		const coords = getCanvasCoordinates(e);
 		if (!coords) return;
+
+		// Capture pointer to continue receiving events even if pointer leaves element
+		(e.target as Element).setPointerCapture(e.pointerId);
 
 		// Start new drawing
 		isDrawing = true;
@@ -48,8 +54,13 @@
 		currentPath = [...currentPath, coords];
 	}
 
-	function handlePointerUp() {
-		if (!$activeBoard || !isDrawing || currentPath.length < 2) {
+	function handlePointerUp(e: PointerEvent) {
+		if (!$activeBoard || $boardMode !== 'draw') return;
+
+		// Release pointer capture
+		(e.target as Element).releasePointerCapture(e.pointerId);
+
+		if (!isDrawing || currentPath.length < 2) {
 			isDrawing = false;
 			currentPath = [];
 			return;
