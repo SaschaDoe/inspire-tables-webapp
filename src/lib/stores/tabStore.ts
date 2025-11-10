@@ -8,6 +8,7 @@ export interface Tab {
 	title: string;
 	isPinned: boolean;
 	isModified: boolean;
+	customFields?: Record<string, any>;
 }
 
 interface TabState {
@@ -42,7 +43,8 @@ function createTabStore() {
 					entityType: entity.type,
 					title: entity.name,
 					isPinned: false,
-					isModified: false
+					isModified: false,
+					customFields: entity.customFields
 				};
 
 				return {
