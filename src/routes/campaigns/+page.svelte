@@ -7,6 +7,7 @@
 	import { Dice } from '$lib/utils/dice';
 	import CampaignCard from '$lib/components/entities/CampaignCard.svelte';
 	import { entityStore } from '$lib/stores/entityStore';
+	import { tabStore } from '$lib/stores/tabStore';
 	import type { AdventureEntity } from '$lib/types/entity';
 	import { EntityType } from '$lib/types/entity';
 	import { goto } from '$app/navigation';
@@ -126,13 +127,23 @@
 
 		entityStore.createEntity(newAdventure);
 
-		// Navigate to workspace to see the new adventure
-		goto('/workspace');
+		// Update campaign to trigger re-render of CampaignCard
+		campaign.updatedAt = new Date();
+		saveCampaigns();
+		campaigns = [...campaigns];
 	}
 
 	function openAdventure(adventureId: string) {
-		// Navigate to workspace (the adventure will be opened there)
-		goto('/workspace');
+		// Get the adventure entity from the store
+		const allEntities = entityStore.searchEntities('');
+		const adventure = allEntities.find(e => e.id === adventureId && e.type === EntityType.Adventure) as AdventureEntity;
+
+		if (adventure) {
+			// Open the adventure in a tab
+			tabStore.openTab(adventure);
+			// Navigate to workspace to see it
+			goto('/workspace');
+		}
 	}
 </script>
 

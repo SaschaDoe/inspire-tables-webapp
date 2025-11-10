@@ -33,6 +33,13 @@
 		loadAdventures();
 	});
 
+	// Reload adventures when campaign changes (e.g., after adding new adventure)
+	$effect(() => {
+		// Watch for changes to campaign.updatedAt to reload adventures
+		campaign.updatedAt;
+		loadAdventures();
+	});
+
 	function loadAdventures() {
 		const allEntities = entityStore.searchEntities('');
 		adventures = allEntities
