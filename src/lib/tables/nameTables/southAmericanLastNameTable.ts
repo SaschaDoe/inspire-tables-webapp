@@ -1,0 +1,65 @@
+import {Table} from "../table";
+import {TableEntry} from "../tableEntry";
+import {TableTitles} from "../tableTitles";
+import {TableType} from "../tableType";
+
+export class SouthAmericanLastNameTable extends Table{
+    constructor(){
+        let entries = [] as TableEntry[];
+        entries.push(new TableEntry("Acostez"))
+        entries.push(new TableEntry("Albahir"))
+        entries.push(new TableEntry("Almanzar"))
+        entries.push(new TableEntry("Alvarez"))
+        entries.push(new TableEntry("Anthos"))
+        entries.push(new TableEntry("Arragenos"))
+        entries.push(new TableEntry("Barrera"))
+        entries.push(new TableEntry("Belafloros"))
+        entries.push(new TableEntry("Beratas"))
+        entries.push(new TableEntry("Boronez"))
+        entries.push(new TableEntry("Botero"))
+        entries.push(new TableEntry("Casarez"))
+        entries.push(new TableEntry("Comitez"))
+        entries.push(new TableEntry("Cornio"))
+        entries.push(new TableEntry("Delazar"))
+        entries.push(new TableEntry("Dominquez"))
+        entries.push(new TableEntry("Erabenas"))
+        entries.push(new TableEntry("Fontanez"))
+        entries.push(new TableEntry("Fontanoya"))
+        entries.push(new TableEntry("Fiovarez"))
+        entries.push(new TableEntry("Golgarez"))
+        entries.push(new TableEntry("Gorodez"))
+        entries.push(new TableEntry("Gorralas"))
+        entries.push(new TableEntry("Gredo"))
+        entries.push(new TableEntry("Inezano"))
+        entries.push(new TableEntry("Jacobella"))
+        entries.push(new TableEntry("Kalando"))
+        entries.push(new TableEntry("Koriguez"))
+        entries.push(new TableEntry("Lanistos"))
+        entries.push(new TableEntry("Lupinez"))
+        entries.push(new TableEntry("Madarez"))
+        entries.push(new TableEntry("Malagro"))
+        entries.push(new TableEntry("Marquez"))
+        entries.push(new TableEntry("Meridiana"))
+        entries.push(new TableEntry("Montez"))
+        entries.push(new TableEntry("Morales"))
+        entries.push(new TableEntry("Nirrano"))
+        entries.push(new TableEntry("Porto"))
+        entries.push(new TableEntry("Olibantin"))
+        entries.push(new TableEntry("Phelipez"))
+        entries.push(new TableEntry("Piriones"))
+        entries.push(new TableEntry("Quesada"))
+        entries.push(new TableEntry("Quintone"))
+        entries.push(new TableEntry("Ramirez"))
+        entries.push(new TableEntry("Rivitoz"))
+        entries.push(new TableEntry("Rondriquez"))
+        entries.push(new TableEntry("Salmonantes"))
+        entries.push(new TableEntry("Sandoz"))
+        entries.push(new TableEntry("Santana"))
+        entries.push(new TableEntry("Sylvaron"))
+        entries.push(new TableEntry("Tiamartin"))
+        entries.push(new TableEntry("Uludaz"))
+        entries.push(new TableEntry("Zaldahan"))
+        super(entries, TableTitles.SouthAmericanLastName);
+        this.tableType = TableType.Other;
+    }
+}

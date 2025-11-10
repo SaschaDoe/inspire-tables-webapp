@@ -1,0 +1,76 @@
+import {Table} from "../table";
+import {TableEntry} from "../tableEntry";
+import {TableTitles} from "../tableTitles";
+
+export class ElfenFemaleNameTable extends Table {
+    constructor() {
+        let entries = [] as TableEntry[];
+        entries.push(new TableEntry("Adailana"));
+        entries.push(new TableEntry("Adaloe"));
+        entries.push(new TableEntry("Ailiniel"));
+        entries.push(new TableEntry("Alaniel"));
+        entries.push(new TableEntry("Alari"));
+        entries.push(new TableEntry("Alacaya"));
+        entries.push(new TableEntry("Amariel"));
+        entries.push(new TableEntry("Allechandriel"));
+        entries.push(new TableEntry("Asamandra"));
+        entries.push(new TableEntry("Belimone"));
+        entries.push(new TableEntry("Biundrala"));
+        entries.push(new TableEntry("Calaya"));
+        entries.push(new TableEntry("Calenleya"));
+        entries.push(new TableEntry("Cyrianil"));
+        entries.push(new TableEntry("Daleone"));
+        entries.push(new TableEntry("Dariala"));
+        entries.push(new TableEntry("Dariavida"));
+        entries.push(new TableEntry("Darindel"));
+        entries.push(new TableEntry("Dialya"));
+        entries.push(new TableEntry("Dimloe"));
+        entries.push(new TableEntry("Eariel"));
+        entries.push(new TableEntry("Esdirai"));
+        entries.push(new TableEntry("Fälindel"));
+        entries.push(new TableEntry("Feyaria"));
+        entries.push(new TableEntry("Fianna"));
+        entries.push(new TableEntry("Filyina"));
+        entries.push(new TableEntry("Florindel"));
+        entries.push(new TableEntry("Gwendala"));
+        entries.push(new TableEntry("Gwendella"));
+        entries.push(new TableEntry("Himiyana"));
+        entries.push(new TableEntry("Ilmariel"));
+        entries.push(new TableEntry("Ivriel"));
+        entries.push(new TableEntry("Kilanara"));
+        entries.push(new TableEntry("Lauriel"));
+        entries.push(new TableEntry("Leyloen"));
+        entries.push(new TableEntry("Liasanya"));
+        entries.push(new TableEntry("Liloe"));
+        entries.push(new TableEntry("Lorindel"));
+        entries.push(new TableEntry("Lynissel"));
+        entries.push(new TableEntry("Mandara"));
+        entries.push(new TableEntry("Mayana"));
+        entries.push(new TableEntry("Milailee"));
+        entries.push(new TableEntry("Miriel"));
+        entries.push(new TableEntry("Myrima"));
+        entries.push(new TableEntry("Naheniel"));
+        entries.push(new TableEntry("Nindariel"));
+        entries.push(new TableEntry("Odania"));
+        entries.push(new TableEntry("Racalla"));
+        entries.push(new TableEntry("Rhenaya"));
+        entries.push(new TableEntry("Rhiannon"));
+        entries.push(new TableEntry("Rileona"));
+        entries.push(new TableEntry("Safiriel"));
+        entries.push(new TableEntry("Shanaha"));
+        entries.push(new TableEntry("Shayariel"));
+        entries.push(new TableEntry("Silmariel"));
+        entries.push(new TableEntry("Sirinda"));
+        entries.push(new TableEntry("Teleria"));
+        entries.push(new TableEntry("Ufindel"));
+        entries.push(new TableEntry("Valaria"));
+        entries.push(new TableEntry("Valeriana"));
+        entries.push(new TableEntry("Orima"));
+        entries.push(new TableEntry("Taubriel"));
+        entries.push(new TableEntry("Viveana"));
+        entries.push(new TableEntry("Zaliel"));
+        entries.push(new TableEntry("Lyssareth"));
+        super(entries,
+            TableTitles.ElfenFemaleName);
+    }
+}

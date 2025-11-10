@@ -1,0 +1,80 @@
+import {Table} from "../table";
+import {TableEntry} from "../tableEntry";
+import {TableTitles} from "../tableTitles";
+import {MagicUserProfessions} from "./magicUserProfessions";
+import {CraftTable} from "../talentTables/craftTable";
+
+export class ProfessionTable extends Table{
+    constructor(){
+        let entries = [] as TableEntry[];
+        //magic users
+        entries.push(new TableEntry(MagicUserProfessions.priest))
+        entries.push(new TableEntry(MagicUserProfessions.paladin))
+        entries.push(new TableEntry(MagicUserProfessions.shaman))
+        entries.push(new TableEntry(MagicUserProfessions.cultist))
+        entries.push(new TableEntry(MagicUserProfessions.clergyman))
+        entries.push(new TableEntry(MagicUserProfessions.enlightened))
+        entries.push(new TableEntry(MagicUserProfessions.gildMage))
+        entries.push(new TableEntry(MagicUserProfessions.inquisitor))
+        entries.push(new TableEntry(MagicUserProfessions.blackMage))
+        entries.push(new TableEntry(MagicUserProfessions.alchemist))
+        entries.push(new TableEntry(MagicUserProfessions.witch))
+        entries.push(new TableEntry(MagicUserProfessions.druid))
+        entries.push(new TableEntry(MagicUserProfessions.joker))
+
+        entries.push(new TableEntry("militia"))
+        entries.push(new TableEntry("mercenary"))
+        entries.push(new TableEntry("officer"))
+        entries.push(new TableEntry("general"))
+        entries.push(new TableEntry("soldier"))
+        entries.push(new TableEntry("bowman"))
+        entries.push(new TableEntry("hunter"))
+        entries.push(new TableEntry("conscript"))
+        entries.push(new TableEntry("gladiator"))
+        entries.push(new TableEntry("thief"))
+        entries.push(new TableEntry("day laborer"))
+        entries.push(new TableEntry("beggar"))
+        entries.push(new TableEntry("patrician"))
+        entries.push(new TableEntry("dealer"))
+        entries.push(new TableEntry("fence"))
+        entries.push(new TableEntry("burglar"))
+        entries.push(new TableEntry("pickpocket"))
+        entries.push(new TableEntry("juggler"))
+        entries.push(new TableEntry("killer"))
+        entries.push(new TableEntry("fraudster"))
+        entries.push(new TableEntry("whore"))
+        entries.push(new TableEntry("servant"))
+        entries.push(new TableEntry("lawyer"))
+        entries.push(new TableEntry("doctor"))
+        entries.push(new TableEntry("healer"))
+        entries.push(new TableEntry("animal healer"))
+        entries.push(new TableEntry("writer"))
+        entries.push(new TableEntry("scholar"))
+        entries.push(new TableEntry("cartographer"))
+        entries.push(new TableEntry("robber"))
+        entries.push(new TableEntry("grave robber"))
+        entries.push(new TableEntry("scientist"))
+        entries.push(new TableEntry("architect"))
+        entries.push(new TableEntry("barbarian"))
+        entries.push(new TableEntry("prophet"))
+        entries.push(new TableEntry("bodyguard"))
+        entries.push(new TableEntry("musician"))
+        entries.push(new TableEntry("painter"))
+        entries.push(new TableEntry("astronomer"))
+        entries.push(new TableEntry("guide"))
+        entries.push(new TableEntry("advisor"))
+        entries.push(new TableEntry("messenger"))
+        entries.push(new TableEntry("capitan"))
+        entries.push(new TableEntry("slave trader"))
+        entries.push(new TableEntry("bureaucrat"))
+        entries.push(new TableEntry("liberian"))
+        entries.push(new TableEntry("casino worker"))
+        entries.push(new TableEntry("vintner"))
+        entries.push(new TableEntry("bard"))
+        entries.push(new TableEntry("construction worker"))
+        //Crafts
+        entries.push(new TableEntry("craft: ").withCascadingRole(new CraftTable()))
+        entries.push(new TableEntry("good for nothing"))
+        super(entries, TableTitles.Profession);
+    }
+}
