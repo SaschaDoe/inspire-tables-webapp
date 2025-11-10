@@ -464,6 +464,10 @@ function createStoryBoardStore() {
 				const board = state.boards.get(boardId);
 				if (!board) return state;
 
+				// Create snapshot before adding
+				const snapshot = createSnapshot(board, 'Add drawing');
+				addToHistory(board, snapshot);
+
 				const newDrawing: StoryBoardDrawing = {
 					...drawing,
 					id: `drawing-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -473,7 +477,8 @@ function createStoryBoardStore() {
 				};
 
 				board.drawings.push(newDrawing);
-				this.saveAndCreateSnapshot(board, 'Add drawing');
+				board.metadata.updatedAt = new Date();
+				saveToStorage(state);
 				return state;
 			});
 		},
@@ -483,8 +488,13 @@ function createStoryBoardStore() {
 				const board = state.boards.get(boardId);
 				if (!board) return state;
 
+				// Create snapshot before deleting
+				const snapshot = createSnapshot(board, 'Delete drawing');
+				addToHistory(board, snapshot);
+
 				board.drawings = board.drawings.filter((d) => d.id !== drawingId);
-				this.saveAndCreateSnapshot(board, 'Delete drawing');
+				board.metadata.updatedAt = new Date();
+				saveToStorage(state);
 				return state;
 			});
 		},
@@ -494,8 +504,13 @@ function createStoryBoardStore() {
 				const board = state.boards.get(boardId);
 				if (!board) return state;
 
+				// Create snapshot before clearing
+				const snapshot = createSnapshot(board, 'Clear drawings');
+				addToHistory(board, snapshot);
+
 				board.drawings = [];
-				this.saveAndCreateSnapshot(board, 'Clear drawings');
+				board.metadata.updatedAt = new Date();
+				saveToStorage(state);
 				return state;
 			});
 		},
