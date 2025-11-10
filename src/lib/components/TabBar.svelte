@@ -2,13 +2,8 @@
 	import { tabStore } from '$lib/stores/tabStore';
 	import type { Tab } from '$lib/stores/tabStore';
 
-	let tabs = $state($tabStore.tabs);
-	let activeTabId = $state($tabStore.activeTabId);
-
-	$effect(() => {
-		tabs = $tabStore.tabs;
-		activeTabId = $tabStore.activeTabId;
-	});
+	let tabs = $derived($tabStore.tabs);
+	let activeTabId = $derived($tabStore.activeTabId);
 
 	function handleTabClick(tabId: string) {
 		tabStore.setActiveTab(tabId);
@@ -47,6 +42,7 @@
 			<div
 				class="tab {activeTabId === tab.id ? 'active' : ''} {tab.isPinned ? 'pinned' : ''}"
 				onclick={() => handleTabClick(tab.id)}
+				onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleTabClick(tab.id); }}}
 				title={tab.title}
 				role="button"
 				tabindex="0"

@@ -3,17 +3,32 @@
 	import TabBar from '$lib/components/TabBar.svelte';
 	import { tabStore, activeTab } from '$lib/stores/tabStore';
 	import { entityStore } from '$lib/stores/entityStore';
-	import type { Entity } from '$lib/types/entity';
+	import CampaignCard from '$lib/components/entities/CampaignCard.svelte';
+	import AdventureCard from '$lib/components/entities/AdventureCard.svelte';
+	import type { Entity, AdventureEntity } from '$lib/types/entity';
+	import { EntityType } from '$lib/types/entity';
+	import type { Campaign } from '$lib/entities/campaign';
 
 	let sidebarCollapsed = $state(false);
 	let inspectorCollapsed = $state(false);
 	let searchQuery = $state('');
-	let campaigns = $state<any[]>([]);
+	let campaigns = $state<Campaign[]>([]);
+	let adventures = $state(new Map<string, AdventureEntity>());
 
 	onMount(() => {
 		// Load campaigns from entity store
 		campaigns = entityStore.getCampaigns();
+		loadAdventures();
 	});
+
+	function loadAdventures() {
+		const allEntities = entityStore.searchEntities('');
+		adventures = new Map(
+			allEntities
+				.filter(e => e.type === 'adventure')
+				.map(e => [e.id, e as AdventureEntity])
+		);
+	}
 
 	function toggleSidebar() {
 		sidebarCollapsed = !sidebarCollapsed;
@@ -23,7 +38,7 @@
 		inspectorCollapsed = !inspectorCollapsed;
 	}
 
-	function openCampaign(campaign: any) {
+	function openCampaign(campaign: Campaign) {
 		// Convert legacy campaign to entity format for tab
 		const entity: Entity = {
 			id: campaign.id,
@@ -41,10 +56,139 @@
 		tabStore.openTab(entity);
 	}
 
-	let currentTab = $state($activeTab);
-	$effect(() => {
-		currentTab = $activeTab;
+	function openAdventure(adventure: AdventureEntity) {
+		tabStore.openTab(adventure);
+	}
+
+	function addAdventure(campaignId: string) {
+		const campaign = campaigns.find(c => c.id === campaignId);
+		if (!campaign) return;
+
+		const adventureCount = Array.from(adventures.values()).filter(a => a.campaignId === campaignId).length;
+
+		const newAdventure: AdventureEntity = {
+			id: crypto.randomUUID(),
+			type: EntityType.Adventure,
+			name: `Adventure ${adventureCount + 1}`,
+			description: 'A new adventure awaits...',
+			tags: [],
+			parentId: campaignId,
+			campaignId: campaignId,
+			metadata: {
+				createdAt: new Date(),
+				updatedAt: new Date()
+			},
+			relationships: [
+				{
+					targetId: campaignId,
+					type: 'parent',
+					label: 'belongs to'
+				}
+			],
+			customFields: {},
+			status: 'planned',
+			plotStructure: {},
+			sessions: []
+		};
+
+		entityStore.createEntity(newAdventure);
+		loadAdventures();
+		openAdventure(newAdventure);
+	}
+
+	function deleteCampaign(id: string) {
+		const updated = campaigns.filter(c => c.id !== id);
+		entityStore.updateCampaigns(updated);
+		campaigns = updated;
+		tabStore.closeTab(id);
+	}
+
+	function updateCampaignName(id: string, name: string) {
+		const campaign = campaigns.find(c => c.id === id);
+		if (campaign) {
+			campaign.name = name;
+			campaign.updatedAt = new Date();
+			entityStore.updateCampaigns(campaigns);
+			tabStore.updateTabTitle(`tab-${id}*`, name);
+		}
+	}
+
+	function deleteAdventure(id: string) {
+		entityStore.deleteEntity(id);
+		loadAdventures();
+		tabStore.closeTab(id);
+	}
+
+	function updateAdventureName(id: string, name: string) {
+		entityStore.updateEntity(id, { name });
+		loadAdventures();
+	}
+
+	function updateAdventureStatus(id: string, status: string) {
+		const adventure = adventures.get(id);
+		if (adventure) {
+			adventure.status = status as any;
+			entityStore.updateEntity(id, { status } as any);
+			loadAdventures();
+		}
+	}
+
+	// Use $derived for computed values instead of $effect to avoid infinite loops
+	let currentEntity = $derived.by(() => {
+		const tab = $activeTab;
+		if (!tab) return null;
+
+		if (tab.entityType === 'campaign') {
+			return null;
+		} else if (tab.entityType === 'adventure') {
+			return null;
+		}
+		return null;
 	});
+
+	let currentCampaign = $derived.by(() => {
+		const tab = $activeTab;
+		if (!tab || tab.entityType !== 'campaign') return null;
+		return campaigns.find(c => c.id === tab.entityId) || null;
+	});
+
+	let currentAdventure = $derived.by(() => {
+		const tab = $activeTab;
+		if (!tab || tab.entityType !== 'adventure') return null;
+		return adventures.get(tab.entityId) || null;
+	});
+
+	let breadcrumbs = $derived.by(() => {
+		const tab = $activeTab;
+		if (!tab) return [];
+
+		if (tab.entityType === 'campaign') {
+			const campaign = campaigns.find(c => c.id === tab.entityId);
+			return campaign ? [{ id: campaign.id, name: campaign.name, type: 'campaign' }] : [];
+		} else if (tab.entityType === 'adventure') {
+			const adventure = adventures.get(tab.entityId);
+			if (!adventure) return [];
+
+			const campaign = campaigns.find(c => c.id === adventure.campaignId);
+			return campaign
+				? [
+						{ id: campaign.id, name: campaign.name, type: 'campaign' },
+						{ id: adventure.id, name: adventure.name, type: 'adventure' }
+				  ]
+				: [{ id: adventure.id, name: adventure.name, type: 'adventure' }];
+		}
+		return [];
+	});
+
+	function navigateToBreadcrumb(item: { id: string; type: string }) {
+		if (item.type === 'campaign') {
+			const campaign = campaigns.find(c => c.id === item.id);
+			if (campaign) openCampaign(campaign);
+		} else if (item.type === 'adventure') {
+			const adventure = adventures.get(item.id);
+			if (adventure) openAdventure(adventure);
+		}
+	}
 </script>
 
 <div class="workspace">
@@ -56,8 +200,19 @@
 				<span class="logo-text">Inspire Tables</span>
 			</a>
 			<div class="breadcrumb">
-				{#if currentTab}
-					<span class="breadcrumb-item">{currentTab.title}</span>
+				{#if breadcrumbs.length > 0}
+					{#each breadcrumbs as crumb, index}
+						{#if index > 0}
+							<span class="breadcrumb-separator">›</span>
+						{/if}
+						<button
+							onclick={() => navigateToBreadcrumb(crumb)}
+							class="breadcrumb-item"
+						>
+							{crumb.type === 'campaign' ? '🎭' : crumb.type === 'adventure' ? '🗺️' : '📄'}
+							{crumb.name}
+						</button>
+					{/each}
 				{/if}
 			</div>
 		</div>
@@ -155,18 +310,32 @@
 			<TabBar />
 
 			<div class="entity-view">
-				{#if currentTab}
+				{#if currentCampaign}
+					<CampaignCard
+						campaign={currentCampaign}
+						showActions={true}
+						onDelete={deleteCampaign}
+						onNameChange={updateCampaignName}
+						onAddAdventure={addAdventure}
+						onOpenAdventure={(id) => {
+							const adv = adventures.get(id);
+							if (adv) openAdventure(adv);
+						}}
+					/>
+				{:else if currentAdventure}
+					<AdventureCard
+						adventure={currentAdventure}
+						showActions={true}
+						onDelete={deleteAdventure}
+						onNameChange={updateAdventureName}
+						onStatusChange={updateAdventureStatus}
+					/>
+				{:else if $activeTab}
 					<div class="entity-content">
-						<h1 class="entity-title">{currentTab.title}</h1>
-						<p class="entity-type-badge">{currentTab.entityType}</p>
-
-						<!-- This is where specific entity views will be rendered -->
+						<h1 class="entity-title">{$activeTab.title}</h1>
+						<p class="entity-type-badge">{$activeTab.entityType}</p>
 						<div class="entity-details">
-							{#if currentTab.entityType === 'campaign'}
-								<p class="text-purple-200">Campaign details will be shown here...</p>
-							{:else}
-								<p class="text-purple-200">Entity details for {currentTab.entityType} will be shown here...</p>
-							{/if}
+							<p class="text-purple-200">Entity type "{$activeTab.entityType}" view not yet implemented</p>
 						</div>
 					</div>
 				{:else}
@@ -192,7 +361,7 @@
 
 			{#if !inspectorCollapsed}
 				<div class="inspector-content">
-					{#if currentTab}
+					{#if $activeTab}
 						<!-- Quick Actions -->
 						<div class="inspector-section">
 							<h3 class="section-title">Quick Actions</h3>
@@ -274,6 +443,31 @@
 		gap: 0.5rem;
 		color: rgb(216 180 254);
 		font-size: 0.875rem;
+	}
+
+	.breadcrumb-separator {
+		color: rgb(216 180 254 / 0.5);
+		margin: 0 0.25rem;
+		font-size: 0.875rem;
+	}
+
+	.breadcrumb-item {
+		padding: 0.25rem 0.5rem;
+		background: transparent;
+		border: none;
+		color: rgb(216 180 254);
+		font-size: 0.875rem;
+		cursor: pointer;
+		border-radius: 0.25rem;
+		transition: all 0.2s;
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+	}
+
+	.breadcrumb-item:hover {
+		background: rgb(168 85 247 / 0.1);
+		color: white;
 	}
 
 	.nav-center {
