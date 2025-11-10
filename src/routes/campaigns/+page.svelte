@@ -63,6 +63,8 @@
 			campaign.name = newName;
 			campaign.updatedAt = new Date();
 			saveCampaigns();
+			// Trigger reactivity by reassigning the array
+			campaigns = [...campaigns];
 		}
 	}
 
@@ -80,6 +82,8 @@
 			campaign.genreMix.themeStatements.push(result.text);
 			campaign.updatedAt = new Date();
 			saveCampaigns();
+			// Trigger reactivity by reassigning the array
+			campaigns = [...campaigns];
 		}
 	}
 
@@ -89,6 +93,8 @@
 			campaign.genreMix.themeStatements.splice(statementIndex, 1);
 			campaign.updatedAt = new Date();
 			saveCampaigns();
+			// Trigger reactivity by reassigning the array
+			campaigns = [...campaigns];
 		}
 	}
 
