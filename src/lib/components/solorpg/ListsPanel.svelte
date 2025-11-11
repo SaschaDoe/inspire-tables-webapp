@@ -2,6 +2,7 @@
 	// Lists Panel Component - Manages Threads and Characters Lists
 	import { soloRpgStore } from '$lib/stores/soloRpgStore.svelte';
 	import { getDiceForListSize, rollOnList } from '$lib/utils/mythicDice';
+	import ThreadDiscoveryModal from './ThreadDiscoveryModal.svelte';
 
 	// State for adding new items
 	let newThreadText = $state('');
@@ -10,6 +11,7 @@
 	let showThreadForm = $state(false);
 	let showCharacterForm = $state(false);
 	let rollResult = $state<string>('');
+	let showThreadDiscoveryModal = $state(false);
 
 	// Derived data from store
 	let threads = $derived(soloRpgStore.currentSession?.threads || []);
@@ -108,12 +110,22 @@
 				<h3 class="text-xl font-bold text-white">Threads</h3>
 				<span class="text-sm text-slate-500">({activeThreads.length}/25)</span>
 			</div>
-			<button
-				onclick={() => showThreadForm = !showThreadForm}
-				class="px-3 py-1 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg transition-colors"
-			>
-				+ Add
-			</button>
+			<div class="flex gap-2">
+				<button
+					onclick={() => showThreadDiscoveryModal = true}
+					class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors flex items-center gap-1"
+					title="Discover new thread (Mythic Variations)"
+				>
+					<span>🔍</span>
+					<span>Discover</span>
+				</button>
+				<button
+					onclick={() => showThreadForm = !showThreadForm}
+					class="px-3 py-1 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg transition-colors"
+				>
+					+ Add
+				</button>
+			</div>
 		</div>
 
 		<!-- Add Thread Form -->
@@ -301,6 +313,12 @@
 		<div class="font-medium">{rollResult}</div>
 	</div>
 {/if}
+
+<!-- Thread Discovery Modal -->
+<ThreadDiscoveryModal
+	isOpen={showThreadDiscoveryModal}
+	onClose={() => showThreadDiscoveryModal = false}
+/>
 
 <style>
 	@keyframes slide-up {

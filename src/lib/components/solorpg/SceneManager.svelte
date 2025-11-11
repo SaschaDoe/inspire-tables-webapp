@@ -8,6 +8,7 @@
 	import { SceneAdjustmentTable } from '$lib/tables/mythicTables/sceneAdjustmentTable';
 	import DiceVisualizer from './DiceVisualizer.svelte';
 	import SceneBookkeeping from './SceneBookkeeping.svelte';
+	import RandomEventGraftModal from './RandomEventGraftModal.svelte';
 
 	interface Props {
 		onRandomEventNeeded?: () => void;
@@ -27,13 +28,32 @@
 	let showAdjustmentRoll = $state(false);
 	let adjustmentRoll = $state<number | undefined>(undefined);
 	let adjustmentResult = $state<string | undefined>(undefined);
+	let showPerilPoints = $state(false);
+
+	// Altered Scene approach selection (Phase 1A)
+	type AlteredApproach = 'none' | 'adjustment' | 'meaning' | 'graft' | 'manual';
+	let selectedAlteredApproach = $state<AlteredApproach>('none');
+	let meaningWord1 = $state<string>('');
+	let meaningWord2 = $state<string>('');
+	let meaningRoll1 = $state<number | undefined>(undefined);
+	let meaningRoll2 = $state<number | undefined>(undefined);
+
+	// Phase 1B: Random Event Graft modal
+	let showGraftModal = $state(false);
+
+	// Phase 2C: Alternate Scenes integration
+	let showTriggeredScenesPrompt = $state(false);
+	let triggeredScenes = $state<any[]>([]);
 
 	// Derived
 	let currentSession = $derived(soloRpgStore.currentSession);
 	let chaosFactor = $derived(currentSession?.chaosFactor || 5);
+	let perilPoints = $derived(currentSession?.perilPoints || 0);
 	let currentSceneNumber = $derived(currentSession?.currentSceneNumber || 0);
 	let scenes = $derived(currentSession?.scenes || []);
 	let currentScene = $derived(scenes.find(s => s.number === currentSceneNumber));
+	let alternateScenes = $derived(currentSession?.alternateScenes || []);
+	let availableAlternateScenes = $derived(alternateScenes.filter(s => !s.used || s.recurring));
 
 	// Scene testing logic
 	async function testScene() {
@@ -60,9 +80,8 @@
 
 		// Handle scene type
 		if (sceneType === 'Altered') {
-			setTimeout(() => {
-				showAdjustmentRoll = true;
-			}, 500);
+			// Phase 1A: Show approach selection instead of auto-rolling
+			selectedAlteredApproach = 'none';
 		} else if (sceneType === 'Interrupt') {
 			setTimeout(() => {
 				onRandomEventNeeded?.();
@@ -73,6 +92,27 @@
 				createScene(sceneType);
 			}, 1000);
 		}
+	}
+
+	// Phase 1A: Roll on meaning tables for inspiration
+	function rollMeaningInspiration() {
+		// Roll on Actions Table 1 for inspiration (using existing table)
+		meaningRoll1 = Math.floor(Math.random() * 100) + 1;
+		meaningRoll2 = Math.floor(Math.random() * 100) + 1;
+
+		// For now, use placeholder words - we'll integrate actual table lookups
+		// These will come from DescriptionsTable1 and DescriptionsTable2
+		const descriptiveWords = [
+			'Abnormally', 'Adventurously', 'Aggressively', 'Angrily', 'Anxiously',
+			'Beautifully', 'Bleakly', 'Boldly', 'Bravely', 'Calmly'
+		];
+		const adjectives = [
+			'Abandoned', 'Ancient', 'Beautiful', 'Bizarre', 'Dangerous',
+			'Dark', 'Empty', 'Exotic', 'Frightening', 'Mysterious'
+		];
+
+		meaningWord1 = descriptiveWords[meaningRoll1 % descriptiveWords.length];
+		meaningWord2 = adjectives[meaningRoll2 % adjectives.length];
 	}
 
 	// Roll on Scene Adjustment table
@@ -125,14 +165,68 @@
 
 		soloRpgStore.addScene(newScene);
 
-		// Reset state
-		expectedSceneDescription = '';
-		sceneTestRoll = undefined;
-		sceneTestResult = undefined;
-		showSceneSetup = false;
-		showAdjustmentRoll = false;
-		adjustmentRoll = undefined;
-		adjustmentResult = undefined;
+		// Reset all state using cancelSetup to ensure consistency
+		cancelSetup();
+	}
+
+	// Phase 2C: Alternate Scenes functions
+	function checkTriggeredScenes() {
+		if (!currentSession) return;
+
+		// Reset any existing scene setup state first
+		cancelSetup();
+
+		const triggered = soloRpgStore.checkAlternateScenesTriggered();
+		if (triggered.length > 0) {
+			triggeredScenes = triggered;
+			showTriggeredScenesPrompt = true;
+		} else {
+			// No triggered scenes, proceed with normal setup
+			showSceneSetup = true;
+		}
+	}
+
+	function useAlternateScene(alternateScene: any) {
+		if (!currentSession) return;
+
+		// Create scene using alternate scene
+		const newScene: Scene = {
+			number: currentSceneNumber + 1,
+			type: 'Altered', // Alternate scenes are a form of altered scene
+			expectedDescription: expectedSceneDescription || 'Alternate Scene',
+			actualDescription: `${alternateScene.title}: ${alternateScene.description}`,
+			chaosFactorBefore: chaosFactor,
+			chaosFactorAfter: chaosFactor,
+			fateQuestionsAsked: 0,
+			randomEventsOccurred: 0,
+			threadsAdded: [],
+			threadsRemoved: [],
+			charactersAdded: [],
+			charactersRemoved: [],
+			notes: `Alternate Scene: ${alternateScene.title}`,
+			timestamp: new Date()
+		};
+
+		soloRpgStore.addScene(newScene);
+		soloRpgStore.markAlternateSceneUsed(alternateScene.id);
+
+		// Reset all scene setup and triggered scenes state
+		cancelSetup();
+		showTriggeredScenesPrompt = false;
+		triggeredScenes = [];
+	}
+
+	function rollOnAlternateScenesList() {
+		const rolled = soloRpgStore.rollOnAlternateScenes();
+		if (rolled) {
+			if (
+				confirm(`Rolled: "${rolled.title}"\n\n${rolled.description}\n\nUse this scene?`)
+			) {
+				useAlternateScene(rolled);
+			}
+		} else {
+			alert('No available alternate scenes to roll on!');
+		}
 	}
 
 	// Start first scene
@@ -149,11 +243,18 @@
 		showAdjustmentRoll = false;
 		adjustmentRoll = undefined;
 		adjustmentResult = undefined;
+		// Phase 1A: Reset altered scene approach
+		selectedAlteredApproach = 'none';
+		meaningWord1 = '';
+		meaningWord2 = '';
+		meaningRoll1 = undefined;
+		meaningRoll2 = undefined;
 	}
 </script>
 
 <div class="scene-manager bg-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-amber-500/20 shadow-xl">
-	<div class="flex items-center justify-between mb-6">
+	<!-- Header and Stats -->
+	<div class="flex items-start justify-between mb-6 gap-4">
 		<div class="flex items-center gap-3">
 			<span class="text-3xl">🎬</span>
 			<div>
@@ -162,29 +263,105 @@
 			</div>
 		</div>
 
-		<div class="flex gap-2">
-			{#if currentSceneNumber === 0}
-				<button
-					onclick={startFirstScene}
-					class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors"
-				>
-					Start First Scene
-				</button>
+		<!-- Stats Display -->
+		<div class="flex gap-3">
+			<!-- Chaos Factor -->
+			<div class="bg-slate-800/50 rounded-lg p-3 border border-amber-500/30">
+				<div class="text-xs text-amber-300 font-medium mb-1">Chaos Factor</div>
+				<div class="flex items-center gap-2">
+					<button
+						onclick={() => soloRpgStore.decrementChaosFactor()}
+						class="w-7 h-7 bg-slate-700 hover:bg-slate-600 text-white rounded flex items-center justify-center transition-colors"
+						aria-label="Decrease Chaos Factor"
+					>
+						−
+					</button>
+					<div class="w-10 text-center text-2xl font-bold text-amber-400">{chaosFactor}</div>
+					<button
+						onclick={() => soloRpgStore.incrementChaosFactor()}
+						class="w-7 h-7 bg-slate-700 hover:bg-slate-600 text-white rounded flex items-center justify-center transition-colors"
+						aria-label="Increase Chaos Factor"
+					>
+						+
+					</button>
+				</div>
+			</div>
+
+			<!-- Peril Points (Optional) -->
+			{#if showPerilPoints}
+				<div class="bg-red-900/20 rounded-lg p-3 border border-red-500/30">
+					<div class="flex items-center justify-between mb-1">
+						<div class="flex items-center gap-1">
+							<div class="text-xs text-red-300 font-medium">⚠️ Peril Points</div>
+							<button
+								class="text-xs text-red-400 hover:text-red-300 cursor-help"
+								title="Peril Points (Mythic Variations): Track danger accumulation. When peril builds up (combat, traps, hostile situations), increment. When resolved or safe, decrement. At high peril (7-10+), consider increasing scene danger or triggering complications. This is optional and has no automatic effects."
+								aria-label="What are Peril Points?"
+							>
+								ⓘ
+							</button>
+						</div>
+						<button
+							onclick={() => showPerilPoints = false}
+							class="text-xs text-red-400 hover:text-red-300"
+							aria-label="Hide Peril Points"
+						>
+							✕
+						</button>
+					</div>
+					<div class="flex items-center gap-2">
+						<button
+							onclick={() => soloRpgStore.decrementPerilPoints()}
+							class="w-7 h-7 bg-red-900/50 hover:bg-red-900/70 text-white rounded flex items-center justify-center transition-colors"
+							aria-label="Decrease Peril"
+						>
+							−
+						</button>
+						<div class="w-10 text-center text-2xl font-bold text-red-400">{perilPoints}</div>
+						<button
+							onclick={() => soloRpgStore.incrementPerilPoints()}
+							class="w-7 h-7 bg-red-900/50 hover:bg-red-900/70 text-white rounded flex items-center justify-center transition-colors"
+							aria-label="Increase Peril"
+						>
+							+
+						</button>
+					</div>
+				</div>
 			{:else}
 				<button
-					onclick={() => showBookkeepingModal = true}
-					class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+					onclick={() => showPerilPoints = true}
+					class="bg-slate-800/50 hover:bg-slate-800/70 rounded-lg px-3 py-2 border border-slate-600 text-xs text-slate-400 hover:text-slate-300 transition-colors"
+					title="Show Peril Points Tracker - Optional danger accumulation tracker from Mythic Variations. Track tension and threat levels during your adventure."
 				>
-					📋 End Scene
-				</button>
-				<button
-					onclick={() => showSceneSetup = !showSceneSetup}
-					class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors"
-				>
-					+ New Scene
+					+ Peril Points
 				</button>
 			{/if}
 		</div>
+	</div>
+
+	<!-- Action Buttons -->
+	<div class="flex justify-end gap-2 mb-6">
+		{#if currentSceneNumber === 0}
+			<button
+				onclick={startFirstScene}
+				class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors"
+			>
+				Start First Scene
+			</button>
+		{:else}
+			<button
+				onclick={() => showBookkeepingModal = true}
+				class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+			>
+				📋 End Scene
+			</button>
+			<button
+				onclick={checkTriggeredScenes}
+				class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors"
+			>
+				+ New Scene
+			</button>
+		{/if}
 	</div>
 
 	<!-- Current Scene Display -->
@@ -243,6 +420,67 @@
 					<span>Click "End Scene" when primary objective is complete</span>
 				</li>
 			</ul>
+		</div>
+	{/if}
+
+	<!-- Triggered Alternate Scenes Prompt -->
+	{#if showTriggeredScenesPrompt}
+		<div class="space-y-4 p-4 bg-purple-900/20 rounded-lg border border-purple-500/30">
+			<div class="flex items-center gap-3 mb-2">
+				<span class="text-3xl">🎭</span>
+				<div>
+					<h3 class="text-xl font-bold text-purple-300">Alternate Scenes Triggered</h3>
+					<p class="text-sm text-slate-400 mt-1">
+						The following Alternate Scenes are available based on current conditions:
+					</p>
+				</div>
+			</div>
+
+			<!-- Triggered Scenes List -->
+			<div class="space-y-2">
+				{#each triggeredScenes as scene}
+					<div class="p-3 bg-slate-800/50 rounded-lg border border-purple-500/20">
+						<div class="flex items-start justify-between gap-3">
+							<div class="flex-1">
+								<h4 class="font-medium text-white">{scene.title}</h4>
+								<p class="text-sm text-slate-300 mt-1">{scene.description}</p>
+								<div class="flex items-center gap-2 mt-2">
+									<span class="text-xs px-2 py-0.5 bg-purple-600/30 text-purple-300 rounded">
+										{scene.triggerType}
+									</span>
+									{#if scene.recurring}
+										<span class="text-xs px-2 py-0.5 bg-blue-600/30 text-blue-300 rounded">
+											Recurring
+										</span>
+									{/if}
+								</div>
+							</div>
+							<button
+								onclick={() => useAlternateScene(scene)}
+								class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded transition-colors whitespace-nowrap"
+							>
+								Use This Scene
+							</button>
+						</div>
+					</div>
+				{/each}
+			</div>
+
+			<!-- Options -->
+			<div class="flex gap-2 pt-2 border-t border-purple-500/20">
+				<button
+					onclick={() => { showTriggeredScenesPrompt = false; showSceneSetup = true; }}
+					class="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+				>
+					Continue to Normal Scene Setup
+				</button>
+				<button
+					onclick={() => { showTriggeredScenesPrompt = false; }}
+					class="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg transition-colors"
+				>
+					Cancel
+				</button>
+			</div>
 		</div>
 	{/if}
 
@@ -315,27 +553,171 @@
 						</div>
 					</div>
 
-					<!-- Altered Scene - Show Adjustment -->
-					{#if sceneTestResult === 'Altered' && showAdjustmentRoll}
-						<div class="space-y-2">
-							{#if !adjustmentRoll}
-								<button
-									onclick={rollSceneAdjustment}
-									class="w-full px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-lg transition-colors"
-								>
-									🎲 Roll Scene Adjustment
-								</button>
-							{:else}
-								<div class="p-3 bg-yellow-900/20 rounded border border-yellow-500/30">
-									<div class="text-sm text-yellow-400 font-medium mb-1">Scene Adjustment:</div>
-									<div class="text-white whitespace-pre-line">{adjustmentResult}</div>
+					<!-- Altered Scene - Phase 1A: Multiple Approaches -->
+					{#if sceneTestResult === 'Altered'}
+						<div class="space-y-4">
+							<!-- Approach Selection -->
+							{#if selectedAlteredApproach === 'none'}
+								<div class="p-4 bg-yellow-900/20 border border-yellow-500/30 rounded-lg">
+									<h4 class="text-yellow-400 font-bold mb-3 flex items-center gap-2">
+										<span>🔀</span>
+										<span>How to Alter This Scene?</span>
+									</h4>
+									<p class="text-xs text-slate-400 mb-4">
+										Choose one approach to modify your Expected Scene:
+									</p>
+
+									<div class="space-y-2">
+										<!-- Scene Adjustment Table -->
+										<button
+											onclick={() => { selectedAlteredApproach = 'adjustment'; rollSceneAdjustment(); }}
+											class="w-full px-4 py-3 bg-slate-800 hover:bg-slate-700 text-left rounded-lg transition-colors border border-yellow-500/30 hover:border-yellow-500"
+										>
+											<div class="font-medium text-yellow-400 mb-1">🎲 Scene Adjustment Table</div>
+											<div class="text-xs text-slate-400">Randomly determine what element to adjust</div>
+										</button>
+
+										<!-- Meaning Tables Inspiration -->
+										<button
+											onclick={() => { selectedAlteredApproach = 'meaning'; rollMeaningInspiration(); }}
+											class="w-full px-4 py-3 bg-slate-800 hover:bg-slate-700 text-left rounded-lg transition-colors border border-blue-500/30 hover:border-blue-500"
+										>
+											<div class="font-medium text-blue-400 mb-1">💡 Meaning Tables Inspiration</div>
+											<div class="text-xs text-slate-400">Roll for word pair to inspire changes</div>
+										</button>
+
+										<!-- Random Event Graft (Phase 1B) -->
+										<button
+											onclick={() => { selectedAlteredApproach = 'graft'; showGraftModal = true; }}
+											class="w-full px-4 py-3 bg-slate-800 hover:bg-slate-700 text-left rounded-lg transition-colors border border-purple-500/30 hover:border-purple-500"
+										>
+											<div class="font-medium text-purple-400 mb-1">⚡ Random Event Graft</div>
+											<div class="text-xs text-slate-400">Add Random Event to Expected Scene</div>
+										</button>
+
+										<!-- Roll on Alternate Scenes (Phase 2C) -->
+										{#if availableAlternateScenes.length > 0}
+											<button
+												onclick={rollOnAlternateScenesList}
+												class="w-full px-4 py-3 bg-slate-800 hover:bg-slate-700 text-left rounded-lg transition-colors border border-pink-500/30 hover:border-pink-500"
+											>
+												<div class="font-medium text-pink-400 mb-1">🎭 Roll on Alternate Scenes</div>
+												<div class="text-xs text-slate-400">Random scene from your alternate scenes list ({availableAlternateScenes.length} available)</div>
+											</button>
+										{/if}
+
+										<!-- Manual Tweak -->
+										<button
+											onclick={() => { selectedAlteredApproach = 'manual'; }}
+											class="w-full px-4 py-3 bg-slate-800 hover:bg-slate-700 text-left rounded-lg transition-colors border border-green-500/30 hover:border-green-500"
+										>
+											<div class="font-medium text-green-400 mb-1">✍️ Manual Tweak</div>
+											<div class="text-xs text-slate-400">Adjust one element yourself (guidance provided)</div>
+										</button>
+									</div>
 								</div>
-								<button
-									onclick={() => createScene('Altered')}
-									class="w-full px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors"
-								>
-									✓ Create Altered Scene
-								</button>
+							{/if}
+
+							<!-- Scene Adjustment Table Result -->
+							{#if selectedAlteredApproach === 'adjustment'}
+								<div class="space-y-2">
+									<div class="p-3 bg-yellow-900/20 rounded border border-yellow-500/30">
+										<div class="text-sm text-yellow-400 font-medium mb-1">🎲 Scene Adjustment:</div>
+										<div class="text-white whitespace-pre-line">{adjustmentResult}</div>
+									</div>
+									<button
+										onclick={() => createScene('Altered')}
+										class="w-full px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors"
+									>
+										✓ Create Altered Scene
+									</button>
+									<button
+										onclick={() => { selectedAlteredApproach = 'none'; adjustmentRoll = undefined; adjustmentResult = undefined; }}
+										class="w-full px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm rounded-lg transition-colors"
+									>
+										← Choose Different Approach
+									</button>
+								</div>
+							{/if}
+
+							<!-- Meaning Tables Inspiration Result -->
+							{#if selectedAlteredApproach === 'meaning'}
+								<div class="space-y-2">
+									<div class="p-3 bg-blue-900/20 rounded border border-blue-500/30">
+										<div class="text-sm text-blue-400 font-medium mb-2">💡 Meaning Inspiration:</div>
+										<div class="text-center mb-3">
+											<span class="text-2xl font-bold text-white">{meaningWord1}</span>
+											<span class="text-slate-500 mx-2">/</span>
+											<span class="text-2xl font-bold text-white">{meaningWord2}</span>
+										</div>
+										<div class="text-xs text-slate-400 text-center mb-2">
+											Rolls: {meaningRoll1}, {meaningRoll2}
+										</div>
+										<p class="text-xs text-slate-300 italic">
+											Use these words as inspiration to alter one element of your Expected Scene.
+											How might "{meaningWord1}" or "{meaningWord2}" change what happens?
+										</p>
+									</div>
+									<button
+										onclick={rollMeaningInspiration}
+										class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors"
+									>
+										🎲 Reroll Words
+									</button>
+									<button
+										onclick={() => createScene('Altered')}
+										class="w-full px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors"
+									>
+										✓ Create Altered Scene
+									</button>
+									<button
+										onclick={() => { selectedAlteredApproach = 'none'; meaningWord1 = ''; meaningWord2 = ''; }}
+										class="w-full px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm rounded-lg transition-colors"
+									>
+										← Choose Different Approach
+									</button>
+								</div>
+							{/if}
+
+							<!-- Manual Tweak Guidance -->
+							{#if selectedAlteredApproach === 'manual'}
+								<div class="space-y-2">
+									<div class="p-4 bg-green-900/20 rounded border border-green-500/30">
+										<div class="text-sm text-green-400 font-medium mb-2">✍️ Manual Tweak Guidance:</div>
+										<p class="text-sm text-slate-300 mb-3">
+											Think of your Expected Scene's elements:
+										</p>
+										<ul class="text-sm text-slate-300 space-y-2 mb-3">
+											<li class="flex items-start gap-2">
+												<span class="text-green-400">•</span>
+												<span><strong>Characters:</strong> Who's in the scene? Add, remove, or change a character.</span>
+											</li>
+											<li class="flex items-start gap-2">
+												<span class="text-green-400">•</span>
+												<span><strong>Activity:</strong> What's happening? Make it bigger/smaller or different.</span>
+											</li>
+											<li class="flex items-start gap-2">
+												<span class="text-green-400">•</span>
+												<span><strong>Objects:</strong> Important items present? Add or remove one.</span>
+											</li>
+										</ul>
+										<p class="text-xs text-slate-400 italic">
+											Change just ONE element to keep it an Altered Scene (not an Interrupt).
+										</p>
+									</div>
+									<button
+										onclick={() => createScene('Altered')}
+										class="w-full px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors"
+									>
+										✓ Create Altered Scene
+									</button>
+									<button
+										onclick={() => { selectedAlteredApproach = 'none'; }}
+										class="w-full px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm rounded-lg transition-colors"
+									>
+										← Choose Different Approach
+									</button>
+								</div>
 							{/if}
 						</div>
 					{/if}
@@ -408,6 +790,14 @@
 		onComplete={() => showBookkeepingModal = false}
 	/>
 {/if}
+
+<!-- Random Event Graft Modal (Phase 1B) -->
+<RandomEventGraftModal
+	isOpen={showGraftModal}
+	expectedSceneDescription={expectedSceneDescription}
+	onClose={() => { showGraftModal = false; selectedAlteredApproach = 'none'; }}
+	onComplete={() => { createScene('Altered'); }}
+/>
 
 <style>
 	.line-clamp-2 {

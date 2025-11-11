@@ -17,6 +17,7 @@
 	// State
 	let question = $state('');
 	let selectedOdds = $state<OddsLevel>(OddsLevel.FiftyFifty);
+	let isDiscoveryQuestion = $state(false);
 	let isRolling = $state(false);
 	let currentRoll = $state<number | undefined>(undefined);
 	let result = $state<FateQuestionType | undefined>(undefined);
@@ -25,8 +26,47 @@
 
 	// Derived values
 	let chaosFactor = $derived(soloRpgStore.currentSession?.chaosFactor || 5);
-	let thresholds = $derived(getFateThreshold(selectedOdds, chaosFactor));
+	// Discovery Questions always use 50/50 odds
+	let effectiveOdds = $derived(isDiscoveryQuestion ? OddsLevel.FiftyFifty : selectedOdds);
+	let thresholds = $derived(getFateThreshold(effectiveOdds, chaosFactor));
 	let estimatedProbability = $derived(thresholds.yes);
+
+	// NPC Detection for contextual guidance
+	let isNpcQuestion = $derived.by(() => {
+		const q = question.toLowerCase();
+		const npcKeywords = [
+			'does he', 'does she', 'does it', 'does the npc', 'does the character',
+			'will he', 'will she', 'will it', 'will the npc', 'will the character',
+			'can he', 'can she', 'can it', 'can the npc', 'can the character',
+			'is he', 'is she', 'is the npc', 'is the character',
+			'would he', 'would she', 'would the npc', 'would the character'
+		];
+
+		// Check for NPC keywords
+		const hasKeyword = npcKeywords.some(keyword => q.includes(keyword));
+
+		// Check if any character names from the list are mentioned
+		const characters = soloRpgStore.currentSession?.characters || [];
+		const hasCharacterName = characters.some(char =>
+			q.includes(char.name.toLowerCase())
+		);
+
+		return hasKeyword || hasCharacterName;
+	});
+
+	// Get NPC guidance based on answer
+	function getNpcGuidance(answer: string): string {
+		if (answer === 'Exceptional Yes') {
+			return 'The NPC does what you expected, but with exceptional intensity, enthusiasm, or effectiveness.';
+		} else if (answer === 'Yes') {
+			return 'The NPC behaves as you expected or hoped they would.';
+		} else if (answer === 'No') {
+			return 'The NPC does something else instead - different behavior, different motivation, or different action.';
+		} else if (answer === 'Exceptional No') {
+			return 'The NPC does the opposite of what you expected - contrary behavior, hostile action, or unexpected betrayal.';
+		}
+		return '';
+	}
 
 	// Roll the fate question
 	async function rollFate() {
@@ -45,18 +85,18 @@
 		const roll = rollD100();
 		currentRoll = roll;
 
-		// Determine answer
-		const answer = determineFateAnswer(roll, selectedOdds, chaosFactor);
+		// Determine answer (use effectiveOdds for Discovery Questions)
+		const answer = determineFateAnswer(roll, effectiveOdds, chaosFactor);
 
-		// Check for random event
-		const triggeredRandomEvent = checkRandomEvent(roll, chaosFactor);
+		// Check for random event (Discovery Questions skip this)
+		const triggeredRandomEvent = isDiscoveryQuestion ? false : checkRandomEvent(roll, chaosFactor);
 
 		// Create fate question record
 		const fateQuestion: FateQuestionType = {
 			id: crypto.randomUUID(),
 			sceneNumber: soloRpgStore.currentSession.currentSceneNumber,
 			question,
-			odds: selectedOdds,
+			odds: effectiveOdds, // Use effective odds (50/50 for Discovery Questions)
 			chaosFactor,
 			roll,
 			method: 'chart',
@@ -83,6 +123,7 @@
 	function reset() {
 		question = '';
 		selectedOdds = OddsLevel.FiftyFifty;
+		isDiscoveryQuestion = false;
 		currentRoll = undefined;
 		result = undefined;
 		interpretation = '';
@@ -136,12 +177,36 @@
 				<select
 					id="odds-select"
 					bind:value={selectedOdds}
-					class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
+					disabled={isDiscoveryQuestion}
+					class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
 				>
 					{#each ODDS_LEVELS as odds}
 						<option value={odds}>{odds}</option>
 					{/each}
 				</select>
+			</div>
+
+			<!-- Discovery Question Checkbox -->
+			<div class="p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
+				<label class="flex items-start gap-3 cursor-pointer">
+					<input
+						type="checkbox"
+						bind:checked={isDiscoveryQuestion}
+						class="mt-1 w-4 h-4 rounded border-blue-500 bg-slate-800 text-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-0"
+					/>
+					<div class="flex-1">
+						<div class="text-sm font-medium text-blue-300">Discovery Question</div>
+						<div class="text-xs text-blue-200 mt-1">
+							Discovery Questions always use 50/50 odds and never trigger Random Events.
+							Use these when exploring new story elements or discoveries.
+						</div>
+						{#if isDiscoveryQuestion}
+							<div class="text-xs text-blue-400 font-medium mt-2">
+								🔍 Odds locked to 50/50 • Random Events disabled
+							</div>
+						{/if}
+					</div>
+				</label>
 			</div>
 
 			<!-- Stats Display -->
@@ -224,6 +289,19 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- NPC Behavior Guidance -->
+			{#if isNpcQuestion}
+				<div class="p-4 bg-blue-900/20 border border-blue-500/30 rounded-lg">
+					<div class="flex items-center gap-2 mb-2">
+						<span class="text-xl">💡</span>
+						<span class="text-sm font-bold text-blue-300">NPC Behavior Guidance</span>
+					</div>
+					<p class="text-sm text-blue-200">
+						{getNpcGuidance(result.answer)}
+					</p>
+				</div>
+			{/if}
 
 			<!-- Random Event Notification -->
 			{#if result.randomEvent}

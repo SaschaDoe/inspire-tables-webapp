@@ -28,6 +28,99 @@ export interface CharacterListEntry {
 
 export type SceneType = 'First' | 'Expected' | 'Altered' | 'Interrupt';
 
+// Phase 2A: Alternate Scenes (Mythic Magazine Vol 2)
+export type AlternateSceneTriggerType = 'manual' | 'thread' | 'chaos' | 'scene-count' | 'auto';
+
+export interface AlternateSceneTriggerCondition {
+	threadId?: string; // Specific thread must be active
+	chaosMin?: number; // CF >= X
+	chaosMax?: number; // CF <= X
+	sceneMin?: number; // Scene # >= X
+}
+
+export interface AlternateScene {
+	id: string;
+	title: string;
+	description: string;
+	triggerType: AlternateSceneTriggerType;
+	triggerCondition?: AlternateSceneTriggerCondition;
+	recurring: boolean; // Can trigger multiple times?
+	used: boolean;
+	usedInScene?: number;
+	createdInScene: number;
+	position: number; // For rolling on list
+}
+
+// Phase 3: Location Crafter (Mythic Magazine Vol 2)
+import type { RegionType, AreaElement } from '$lib/utils/locationCrafterTables';
+
+export interface KnownElement {
+	id: string;
+	name: string;
+	category: 'Locations' | 'Encounters' | 'Objects';
+	position: number; // 1-10 for rolling
+	crossed: boolean; // Marked as used/exhausted
+}
+
+export interface AreaHistoryEntry {
+	id: string;
+	progressPoints: number; // PP when generated
+	event: string; // Historical event description
+	timestamp: Date;
+}
+
+export interface Area {
+	id: string;
+	number: number; // Sequential number within region
+	progressPoints: number; // PP at time of creation
+
+	// Element results
+	largeLoc: AreaElement;
+	largeLocDescription?: string;
+	smallLoc: AreaElement;
+	smallLocDescription?: string;
+	encounterObj: AreaElement;
+	encounterObjDescription?: string;
+
+	// Mythic Magazine Vol 3: Dungeon Connectors
+	connectorFromPrevious?: string; // Connector that led to this area
+	connectorDescription?: string; // User interpretation of connector
+	isSecretArea?: boolean; // Found via secret door (+1 to rolls)
+
+	notes: string;
+	timestamp: Date;
+}
+
+export interface Region {
+	id: string;
+	name: string;
+	type: RegionType; // Wilderness, City, Structure, Cavern Dungeon, Ancient Dungeon, Palatial Dungeon
+	descriptor1: string;
+	descriptor2: string;
+	description: string; // Player interpretation
+
+	// Mythic Magazine Vol 3: Dungeon Story Descriptors
+	storyDescriptor1?: string; // For dungeons: the "why" behind the dungeon
+	storyDescriptor2?: string;
+	storyDescription?: string; // Player interpretation of story
+
+	progressPoints: number; // Current PP for this region
+	completed: boolean; // When Complete element rolled
+
+	// Known Elements for this region
+	knownElements: KnownElement[];
+
+	// Areas explored
+	areas: Area[];
+	currentAreaNumber: number;
+
+	// History timeline
+	history: AreaHistoryEntry[];
+
+	createdInScene: number;
+	timestamp: Date;
+}
+
 export interface Scene {
 	number: number;
 	type: SceneType;
@@ -104,10 +197,13 @@ export interface SoloRpgSession {
 	adventureName: string;
 	adventureDescription?: string;
 	chaosFactor: number; // 1-9
+	perilPoints?: number; // Optional Mythic Variations feature (0+)
 
 	// Lists
 	threads: Thread[];
 	characters: CharacterListEntry[];
+	alternateScenes: AlternateScene[]; // Phase 2A: Pre-planned scenes (Mythic Magazine Vol 2)
+	regions: Region[]; // Phase 3: Location Crafter regions (Mythic Magazine Vol 2)
 
 	// Scenes
 	scenes: Scene[];
@@ -156,8 +252,11 @@ class SoloRpgStore {
 			adventureName: name,
 			adventureDescription: description,
 			chaosFactor: 5, // Start at middle chaos
+			perilPoints: 0, // Optional Peril Points tracker (Mythic Variations)
 			threads: [],
 			characters: [],
+			alternateScenes: [], // Phase 2A: Pre-planned scenes (Mythic Magazine Vol 2)
+			regions: [], // Phase 3: Location Crafter (Mythic Magazine Vol 2)
 			scenes: [],
 			currentSceneNumber: 0,
 			fateQuestionHistory: [],
@@ -218,6 +317,41 @@ class SoloRpgStore {
 		if (!this.currentSession) return;
 		const newValue = Math.max(1, this.currentSession.chaosFactor - 1);
 		this.updateChaosFactor(newValue);
+	}
+
+	// ===== PERIL POINTS =====
+
+	updatePerilPoints(newValue: number): void {
+		if (!this.currentSession) return;
+		if (newValue < 0) {
+			newValue = 0; // Can't go negative
+		}
+
+		// Initialize if undefined (for backward compatibility)
+		if (this.currentSession.perilPoints === undefined) {
+			this.currentSession.perilPoints = 0;
+		}
+
+		this.currentSession.perilPoints = newValue;
+		this.autoSave();
+	}
+
+	incrementPerilPoints(): void {
+		if (!this.currentSession) return;
+		const current = this.currentSession.perilPoints || 0;
+		this.updatePerilPoints(current + 1);
+	}
+
+	decrementPerilPoints(): void {
+		if (!this.currentSession) return;
+		const current = this.currentSession.perilPoints || 0;
+		const newValue = Math.max(0, current - 1);
+		this.updatePerilPoints(newValue);
+	}
+
+	resetPerilPoints(): void {
+		if (!this.currentSession) return;
+		this.updatePerilPoints(0);
 	}
 
 	// ===== THREADS =====
@@ -315,6 +449,123 @@ class SoloRpgStore {
 		}
 	}
 
+	// ===== ALTERNATE SCENES (Phase 2A - Mythic Magazine Vol 2) =====
+
+	addAlternateScene(
+		title: string,
+		description: string,
+		triggerType: AlternateSceneTriggerType = 'manual',
+		triggerCondition?: AlternateSceneTriggerCondition,
+		recurring: boolean = false
+	): AlternateScene {
+		if (!this.currentSession) throw new Error('No active session');
+
+		const scene: AlternateScene = {
+			id: crypto.randomUUID(),
+			title,
+			description,
+			triggerType,
+			triggerCondition,
+			recurring,
+			used: false,
+			createdInScene: this.currentSession.currentSceneNumber,
+			position: this.currentSession.alternateScenes.length + 1
+		};
+
+		this.currentSession.alternateScenes.push(scene);
+		this.autoSave();
+
+		return scene;
+	}
+
+	removeAlternateScene(id: string): void {
+		if (!this.currentSession) return;
+
+		this.currentSession.alternateScenes = this.currentSession.alternateScenes.filter(
+			(s) => s.id !== id
+		);
+		this.autoSave();
+	}
+
+	updateAlternateScene(id: string, updates: Partial<AlternateScene>): void {
+		if (!this.currentSession) return;
+
+		const scene = this.currentSession.alternateScenes.find((s) => s.id === id);
+		if (scene) {
+			Object.assign(scene, updates);
+			this.autoSave();
+		}
+	}
+
+	markAlternateSceneUsed(id: string): void {
+		if (!this.currentSession) return;
+
+		const scene = this.currentSession.alternateScenes.find((s) => s.id === id);
+		if (scene) {
+			scene.used = true;
+			scene.usedInScene = this.currentSession.currentSceneNumber;
+			this.autoSave();
+		}
+	}
+
+	// Check if any alternate scenes should trigger based on current game state
+	checkAlternateScenesTriggered(): AlternateScene[] {
+		if (!this.currentSession) return [];
+
+		const triggered: AlternateScene[] = [];
+
+		for (const scene of this.currentSession.alternateScenes) {
+			// Skip if already used and not recurring
+			if (scene.used && !scene.recurring) continue;
+
+			// Manual scenes never auto-trigger
+			if (scene.triggerType === 'manual') continue;
+
+			let shouldTrigger = false;
+
+			if (scene.triggerType === 'auto') {
+				// Always check auto scenes
+				shouldTrigger = true;
+			} else if (scene.triggerType === 'thread' && scene.triggerCondition?.threadId) {
+				// Check if specific thread is active
+				const thread = this.currentSession.threads.find(
+					(t) => t.id === scene.triggerCondition!.threadId && !t.completed
+				);
+				shouldTrigger = !!thread;
+			} else if (scene.triggerType === 'chaos' && scene.triggerCondition) {
+				// Check chaos factor range
+				const { chaosMin, chaosMax } = scene.triggerCondition;
+				const cf = this.currentSession.chaosFactor;
+				shouldTrigger =
+					(chaosMin === undefined || cf >= chaosMin) &&
+					(chaosMax === undefined || cf <= chaosMax);
+			} else if (scene.triggerType === 'scene-count' && scene.triggerCondition?.sceneMin) {
+				// Check scene number
+				shouldTrigger = this.currentSession.currentSceneNumber >= scene.triggerCondition.sceneMin;
+			}
+
+			if (shouldTrigger) {
+				triggered.push(scene);
+			}
+		}
+
+		return triggered;
+	}
+
+	// Roll on unused alternate scenes list
+	rollOnAlternateScenes(): AlternateScene | null {
+		if (!this.currentSession) return null;
+
+		const available = this.currentSession.alternateScenes.filter(
+			(s) => !s.used || s.recurring
+		);
+		if (available.length === 0) return null;
+
+		// Roll random
+		const roll = Math.floor(Math.random() * available.length);
+		return available[roll];
+	}
+
 	// ===== LIST WEIGHTING (for important elements) =====
 
 	duplicateThread(id: string): void {
@@ -362,6 +613,216 @@ class SoloRpgStore {
 		};
 
 		this.currentSession.characters.push(duplicate);
+		this.autoSave();
+	}
+
+	// ===== LOCATION CRAFTER (Phase 3 - Mythic Magazine Vol 2) =====
+
+	// Create new region
+	createRegion(
+		name: string,
+		type: RegionType,
+		descriptor1: string,
+		descriptor2: string,
+		description: string
+	): Region {
+		if (!this.currentSession) throw new Error('No active session');
+
+		const region: Region = {
+			id: crypto.randomUUID(),
+			name,
+			type,
+			descriptor1,
+			descriptor2,
+			description,
+			progressPoints: 0,
+			completed: false,
+			knownElements: [],
+			areas: [],
+			currentAreaNumber: 0,
+			history: [],
+			createdInScene: this.currentSession.currentSceneNumber,
+			timestamp: new Date()
+		};
+
+		this.currentSession.regions.push(region);
+		this.autoSave();
+		return region;
+	}
+
+	// Update region
+	updateRegion(
+		regionId: string,
+		updates: Partial<Pick<Region, 'name' | 'description' | 'progressPoints' | 'completed'>>
+	): void {
+		if (!this.currentSession) return;
+
+		const region = this.currentSession.regions.find((r) => r.id === regionId);
+		if (!region) return;
+
+		Object.assign(region, updates);
+		this.autoSave();
+	}
+
+	// Delete region
+	deleteRegion(regionId: string): void {
+		if (!this.currentSession) return;
+
+		this.currentSession.regions = this.currentSession.regions.filter((r) => r.id !== regionId);
+		this.autoSave();
+	}
+
+	// Add known element to region
+	addKnownElement(
+		regionId: string,
+		name: string,
+		category: 'Locations' | 'Encounters' | 'Objects'
+	): KnownElement {
+		if (!this.currentSession) throw new Error('No active session');
+
+		const region = this.currentSession.regions.find((r) => r.id === regionId);
+		if (!region) throw new Error('Region not found');
+
+		const element: KnownElement = {
+			id: crypto.randomUUID(),
+			name,
+			category,
+			position: region.knownElements.filter((e) => e.category === category).length + 1,
+			crossed: false
+		};
+
+		region.knownElements.push(element);
+		this.autoSave();
+		return element;
+	}
+
+	// Update known element
+	updateKnownElement(regionId: string, elementId: string, name: string): void {
+		if (!this.currentSession) return;
+
+		const region = this.currentSession.regions.find((r) => r.id === regionId);
+		if (!region) return;
+
+		const element = region.knownElements.find((e) => e.id === elementId);
+		if (!element) return;
+
+		element.name = name;
+		this.autoSave();
+	}
+
+	// Toggle known element crossed status
+	toggleKnownElementCrossed(regionId: string, elementId: string): void {
+		if (!this.currentSession) return;
+
+		const region = this.currentSession.regions.find((r) => r.id === regionId);
+		if (!region) return;
+
+		const element = region.knownElements.find((e) => e.id === elementId);
+		if (!element) return;
+
+		element.crossed = !element.crossed;
+		this.autoSave();
+	}
+
+	// Delete known element
+	deleteKnownElement(regionId: string, elementId: string): void {
+		if (!this.currentSession) return;
+
+		const region = this.currentSession.regions.find((r) => r.id === regionId);
+		if (!region) return;
+
+		region.knownElements = region.knownElements.filter((e) => e.id !== elementId);
+		this.autoSave();
+	}
+
+	// Add area to region
+	addArea(
+		regionId: string,
+		largeLoc: AreaElement,
+		largeLocDescription: string,
+		smallLoc: AreaElement,
+		smallLocDescription: string,
+		encounterObj: AreaElement,
+		encounterObjDescription: string,
+		notes: string
+	): Area {
+		if (!this.currentSession) throw new Error('No active session');
+
+		const region = this.currentSession.regions.find((r) => r.id === regionId);
+		if (!region) throw new Error('Region not found');
+
+		const area: Area = {
+			id: crypto.randomUUID(),
+			number: region.currentAreaNumber + 1,
+			progressPoints: region.progressPoints,
+			largeLoc,
+			largeLocDescription,
+			smallLoc,
+			smallLocDescription,
+			encounterObj,
+			encounterObjDescription,
+			notes,
+			timestamp: new Date()
+		};
+
+		region.areas.push(area);
+		region.currentAreaNumber = area.number;
+		this.autoSave();
+		return area;
+	}
+
+	// Update area
+	updateArea(regionId: string, areaId: string, updates: Partial<Pick<Area, 'notes'>>): void {
+		if (!this.currentSession) return;
+
+		const region = this.currentSession.regions.find((r) => r.id === regionId);
+		if (!region) return;
+
+		const area = region.areas.find((a) => a.id === areaId);
+		if (!area) return;
+
+		Object.assign(area, updates);
+		this.autoSave();
+	}
+
+	// Delete area
+	deleteArea(regionId: string, areaId: string): void {
+		if (!this.currentSession) return;
+
+		const region = this.currentSession.regions.find((r) => r.id === regionId);
+		if (!region) return;
+
+		region.areas = region.areas.filter((a) => a.id !== areaId);
+		this.autoSave();
+	}
+
+	// Add history entry to region
+	addHistoryEntry(regionId: string, event: string): AreaHistoryEntry {
+		if (!this.currentSession) throw new Error('No active session');
+
+		const region = this.currentSession.regions.find((r) => r.id === regionId);
+		if (!region) throw new Error('Region not found');
+
+		const entry: AreaHistoryEntry = {
+			id: crypto.randomUUID(),
+			progressPoints: region.progressPoints,
+			event,
+			timestamp: new Date()
+		};
+
+		region.history.push(entry);
+		this.autoSave();
+		return entry;
+	}
+
+	// Delete history entry
+	deleteHistoryEntry(regionId: string, entryId: string): void {
+		if (!this.currentSession) return;
+
+		const region = this.currentSession.regions.find((r) => r.id === regionId);
+		if (!region) return;
+
+		region.history = region.history.filter((h) => h.id !== entryId);
 		this.autoSave();
 	}
 

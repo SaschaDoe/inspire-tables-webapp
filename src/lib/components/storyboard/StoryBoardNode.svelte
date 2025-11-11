@@ -201,9 +201,16 @@
 	let gradientColor = $derived(node.entityType ? colorMap[node.entityType] : 'from-purple-500 to-pink-500');
 	let iconEmoji = $derived(node.entityType ? iconMap[node.entityType] : '📝');
 	let isGenerated = $derived(node.entityType === 'generated');
+
+	// Handle window click for context menu
+	function handleWindowClick(e: MouseEvent) {
+		if (showContextMenu) {
+			closeContextMenu();
+		}
+	}
 </script>
 
-<svelte:window onmousemove={handleMouseMove} onmouseup={handleMouseUp} />
+<svelte:window onmousemove={handleMouseMove} onmouseup={handleMouseUp} onclick={handleWindowClick} />
 
 <foreignObject x={node.x} y={node.y} width={node.width} height={node.height}>
 	<div
@@ -303,10 +310,6 @@
 		{/if}
 	</div>
 </foreignObject>
-
-{#if showContextMenu}
-	<svelte:window onclick={closeContextMenu} />
-{/if}
 
 <style>
 	.node {

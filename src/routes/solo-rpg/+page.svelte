@@ -13,8 +13,9 @@
 	import SessionHistory from '$lib/components/solorpg/SessionHistory.svelte';
 	import FirstSceneHelp from '$lib/components/solorpg/FirstSceneHelp.svelte';
 	import FourWGenerator from '$lib/components/solorpg/FourWGenerator.svelte';
+	import LocationCrafterPanel from '$lib/components/solorpg/LocationCrafterPanel.svelte';
 
-	let activeTab = $state<'play' | 'tables' | 'reference'>('play');
+	let activeTab = $state<'play' | 'tables' | 'location' | 'reference'>('play');
 	let showSessionManager = $state(false);
 	let showRandomEventModal = $state(false);
 	let showMeaningDiscovery = $state(false);
@@ -125,6 +126,15 @@
 					{/if}
 				</button>
 				<button
+					class="px-6 py-3 font-medium transition-colors relative {activeTab === 'location' ? 'text-orange-400' : 'text-slate-400 hover:text-slate-300'}"
+					onclick={() => activeTab = 'location'}
+				>
+					🗺️ Location Crafter
+					{#if activeTab === 'location'}
+						<div class="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-400"></div>
+					{/if}
+				</button>
+				<button
 					class="px-6 py-3 font-medium transition-colors relative {activeTab === 'reference' ? 'text-orange-400' : 'text-slate-400 hover:text-slate-300'}"
 					onclick={() => activeTab = 'reference'}
 				>
@@ -205,7 +215,6 @@
 
 						<!-- Lists Panel -->
 						<ListsPanel />
-
 					</div>
 				</div>
 			{/if}
@@ -254,6 +263,40 @@
 					</a>
 				</div>
 			</div>
+		{:else if activeTab === 'location'}
+			<!-- Location Crafter Tab Content -->
+			{#if !hasSession}
+				<!-- No Session - Prompt to create one -->
+				<div class="bg-slate-900/50 backdrop-blur-xl rounded-2xl p-8 border border-orange-500/20">
+					<div class="text-center py-12">
+						<div class="text-6xl mb-4">🗺️</div>
+						<h2 class="text-2xl font-bold text-white mb-4">Location Crafter</h2>
+						<p class="text-orange-200 mb-6 max-w-2xl mx-auto">
+							Randomized location generation system from Mythic Magazine Volume 2. Create and explore procedurally generated regions, areas, and encounters.
+						</p>
+						<p class="text-slate-400 mb-6">Create or load a session to use Location Crafter.</p>
+						<div class="flex gap-4 justify-center">
+							<button
+								onclick={quickStart}
+								class="px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white font-bold rounded-lg shadow-lg transition-all"
+							>
+								🎲 Quick Start
+							</button>
+							<button
+								onclick={() => showSessionManager = true}
+								class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-lg transition-all"
+							>
+								⚙️ Manage Sessions
+							</button>
+						</div>
+					</div>
+				</div>
+			{:else}
+				<!-- Location Crafter Panel -->
+				<div class="h-[calc(100vh-16rem)]">
+					<LocationCrafterPanel />
+				</div>
+			{/if}
 		{:else if activeTab === 'reference'}
 			<!-- Rules Reference Tab Content -->
 			<div class="bg-slate-900/50 backdrop-blur-xl rounded-2xl p-8 border border-orange-500/20">
