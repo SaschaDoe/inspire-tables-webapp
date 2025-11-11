@@ -1,639 +1,395 @@
 # Mythic GME Variations Implementation Plan
 
-This document outlines the plan to implement advanced/optional features from the Mythic GME 2nd Edition VARIATIONS section (p123+).
+## 🎯 Core Focus: Progressive Disclosure + Mythic GME Features
 
-## ✅ Core Features Already Complete
-
-### Implemented in Current Version:
-- ✅ **Fate Questions with Fate Chart** (d100) - Full implementation
-- ✅ **Random Events with Event Focus Table** - All focus types
-- ✅ **Scene Management** - First, Expected, Altered, Interrupt scenes
-- ✅ **Scene Adjustment Table** - Implemented in SceneManager
-- ✅ **Chaos Factor tracking** - With up/down adjustments
-- ✅ **Lists** - Threads (25 max) & Characters (25 max)
-- ✅ **Meaning Tables** - All variants (Actions, Descriptions, Elements, etc.)
-- ✅ **Session History** - Comprehensive audit trail
-- ✅ **Per-Scene Notes** - Scene.notes field exists
-- ✅ **Session Settings** - useFateCheck and chaosFlavor already in store
-
-### Current Data Structures:
-- Thread: id, text, position, completed, createdInScene, completedInScene
-- Character: id, name, description, position, active, isNPC, createdInScene
-- Scene: Full structure with notes, type, chaos tracking, thread/character changes
+No backwards compatibility, no settings panel, no migrations. Just implement the features with smart UX that doesn't overwhelm users.
 
 ---
 
-## 🎯 Phase 1: Enhanced NPC Features
+## 🎨 Progressive Disclosure Strategy
 
-### Feature 2: NPC Behavior Table Guidance
-**Location in Manual**: p108-109
-**What It Is**: Interpretive guidance for Fate Question results about NPC actions
-**Implementation**:
-- **Component**: Tooltip/help icon in `FateQuestion.svelte` result display
-- **Trigger**: Show when user types keywords like "NPC", "does [name]", "will [name]"
-- **Content**: Contextual guidance based on result:
-  - **Yes**: "The NPC does what you expect or continues their action"
-  - **No**: "The NPC does the next most expected behavior"
-  - **Exceptional Yes**: "The NPC does the expected action with greater intensity"
-  - **Exceptional No**: "The NPC does the opposite or breaks away dramatically"
-- **UI**: Subtle info icon (ℹ️) next to result that shows popover with guidance
+### Problem: Current UI is cluttered and overwhelming
 
-**Files to Modify**:
-- `src/lib/components/solorpg/FateQuestion.svelte`
+### Solution: Smart, Contextual Interface
 
-**Design Considerations**:
-- Smart detection: Check if question text contains NPC indicators ("does he", "will she", NPC names from Characters list)
-- Provide contextual help without being intrusive
-- Include examples in tooltip
+**Principle**: Show features when relevant, hide when not needed
 
-**Estimated Effort**: 2-3 hours
+#### Main Solo RPG Interface Redesign:
 
----
+```
+┌─────────────────────────────────────────────────┐
+│ [Adventure Name]               Scene: 1   CF: 5 │ ← Compact header
+├─────────────────────────────────────────────────┤
+│                                                  │
+│ 🎬 SCENE SETUP                                   │ ← Collapsible sections
+│   [Expected Scene Description]                  │
+│   [Test Scene Button]                           │
+│   ↓ Result: Expected Scene                      │
+│                                                  │
+├─────────────────────────────────────────────────┤
+│                                                  │
+│ 🎲 ASK A QUESTION                               │
+│   [Type your question...]                       │
+│   Odds: [50/50 ▼]  [Roll Button]              │
+│   ℹ️ Asking about NPC? [Show NPC guidance]     │ ← Contextual help
+│   □ This is a Discovery Question                │
+│                                                  │
+├─────────────────────────────────────────────────┤
+│                                                  │
+│ 📋 LISTS                                        │
+│   Threads (3)          Characters (2)           │
+│   • Find artifact      • Marcus (NPC)           │
+│     ▓▓▓░░░░░░░ 3/10   • Elena (PC)            │ ← Progress shown when relevant
+│   [+ Add]  [🔍 Discover New Thread]            │ ← Discovery button
+│                                                  │
+├─────────────────────────────────────────────────┤
+│                                                  │
+│ 🛠️ TOOLS (Click to use)                        │
+│   [⚡ Random Event] [🎲 Meaning] [🎯 4W]       │
+│   [📊 NPC Stats]                                │ ← NEW
+│                                                  │
+├─────────────────────────────────────────────────┤
+│                                                  │
+│ 📖 JOURNAL & HISTORY                            │
+│   [View Full History] [View Narrative Journal] │
+│                                                  │
+└─────────────────────────────────────────────────┘
+```
 
-### Feature 3: NPC Statistics Table
-**Location in Manual**: p127
-**What It Is**: Random table for generating NPC combat statistics (Strength, Agility, etc.)
-**Implementation**:
-- **New Table**: Add to `src/lib/tables/mythicTables/`
-  - File: `npcStatisticsTable.ts`
-  - Rolls 1d100 for each stat (Strength, Agility, Intellect, Willpower)
-- **New Component**: `NPCStatisticsGenerator.svelte`
-  - Input: NPC name (optional)
-  - Output: Generated stats (Low/Below Average/Average/Above Average/High/Exceptional)
-  - Button: "Save to Characters List"
-- **Integration**: Add button to Solo RPG interface
-  - Location: Near Lists Panel or as modal tool
-  - Icon: 📊 "Generate NPC Stats"
-
-**Files to Create**:
-- `src/lib/tables/mythicTables/npcStatisticsTable.ts`
-- `src/lib/components/solorpg/NPCStatisticsGenerator.svelte`
-
-**Files to Modify**:
-- `src/routes/solo-rpg/+page.svelte` (add button/modal)
-- `src/lib/data/tableMetadata.ts` (register table)
-
-**Estimated Effort**: 3-4 hours
-
----
-
-## 🎯 Phase 2: Thread Enhancement Features
-
-### Feature 4: Thread Progress Track
-**Location in Manual**: p132-135
-**What It Is**: Visual 10-box track showing progress toward resolving a thread
-**Implementation**:
-- **Data Structure**: Add to Thread type in `soloRpgStore.svelte.ts`:
-  ```typescript
-  interface Thread {
-    name: string;
-    progressTrack?: number; // 0-10, optional
-    // existing fields...
-  }
-  ```
-- **UI Component**: Visual track in `ListsPanel.svelte`
-  - Each thread shows progress boxes: ☐☐☐☐☐☐☐☐☐☐
-  - Click to toggle filled: ☑
-  - Tooltip: "Move Toward: +1 box | Move Away: -1 box | Close: Fill all"
-- **Auto-update from Events**: When Random Event result is:
-  - "Move Toward Thread": Prompt to +1 a thread
-  - "Move Away From Thread": Prompt to -1 a thread
-  - "Close Thread": Prompt to fill thread completely
-- **Optional Feature**: Can be toggled on/off per thread
-
-**Files to Modify**:
-- `src/lib/stores/soloRpgStore.svelte.ts` (add progressTrack field)
-- `src/lib/components/solorpg/ListsPanel.svelte` (add visual track UI)
-- `src/lib/components/solorpg/RandomEventGenerator.svelte` (add progress prompts)
-
-**Estimated Effort**: 4-5 hours
+**Key Design Principles**:
+1. **Collapsible Sections**: Expand/collapse each major area
+2. **Contextual Hints**: Show help only when relevant
+3. **Progressive Features**: Advanced features appear after basic use
+4. **Clean Layout**: One primary action per section
+5. **Persistent State**: Remember what's collapsed/expanded
 
 ---
 
-### Feature 5: Discovery Fate Question
-**Location in Manual**: p136
-**What It Is**: Special Fate Question variant for making discoveries (always uses 50/50 odds)
-**Implementation**:
-- **UI Enhancement**: Add checkbox in `FateQuestion.svelte`
-  - Label: "🔍 Discovery Question (uses 50/50 odds)"
-  - When checked: Forces odds to "50/50" and shows special guidance
-- **Special Behavior**:
-  - If result triggers Random Event → Skip the event (discoveries don't generate events)
-  - Show tooltip: "Discovery Questions use 50/50 odds regardless of likelihood"
-- **Use Case Examples** (show in tooltip):
-  - "Do I find a clue?"
-  - "Is there a secret door?"
-  - "Do I discover the villain's weakness?"
+## 📦 Features to Implement (Simplified)
 
-**Files to Modify**:
-- `src/lib/components/solorpg/FateQuestion.svelte`
+### Feature 1: NPC Behavior Guidance (Contextual)
+**When**: User asks question about NPC (detected by keywords or NPC names)
+**How**: Small info badge appears with guidance
+**Effort**: 1.5 hours
 
-**Estimated Effort**: 2 hours
+### Feature 2: Discovery Fate Questions
+**When**: User checks "Discovery Question" box
+**How**: Forces 50/50 odds, skips Random Events
+**Effort**: 1 hour
 
----
+### Feature 3: Thread Progress Tracks
+**When**: User enables per-thread (checkbox on thread)
+**How**: Visual 10-box track, updates on Random Events
+**Effort**: 3 hours
 
-### Feature 6: Thread Discovery Check
-**Location in Manual**: p137-139
-**What It Is**: Mechanic for discovering new threads during play
-**Implementation**:
-- **When to Use**: After certain Random Events (especially "New NPC", "Ambiguous Event")
-- **Component**: `ThreadDiscoveryCheck.svelte` (modal/inline prompt)
-  - Trigger: Manual button or auto-prompt after specific events
-  - Process:
-    1. Roll 1d100
-    2. If roll ≤ (Chaos Factor × 10): Discovery made
-    3. On success: Roll 2× on Meaning Tables → New thread
-    4. Add thread to Lists automatically
-- **Integration**:
-  - Add "🔍 Check for Thread Discovery" button in Scene Manager
-  - Auto-prompt after "Ambiguous Event" or "New NPC" events
+### Feature 4: Thread Discovery Check
+**When**: User clicks "🔍 Discover New Thread" button
+**How**: Roll vs CF×10, generate thread on success
+**Effort**: 2 hours
 
-**Files to Create**:
-- `src/lib/components/solorpg/ThreadDiscoveryCheck.svelte`
+### Feature 5: NPC Statistics Generator
+**When**: User clicks "📊 NPC Stats" tool
+**How**: Modal with stat roller, save to Characters list
+**Effort**: 3 hours
 
-**Files to Modify**:
-- `src/lib/components/solorpg/SceneManager.svelte` (add button)
-- `src/lib/components/solorpg/RandomEventGenerator.svelte` (auto-prompt)
+### Feature 6: Peril Points Tracker
+**When**: User enables via toggle in Scene Manager
+**How**: Simple counter near Chaos Factor, affects nothing automatically
+**Effort**: 1.5 hours
 
-**Estimated Effort**: 3-4 hours
-
----
-
-## 🎯 Phase 3: Advanced Scene Features
+### Feature 7: Adventure Journal View
+**When**: User clicks "View Narrative Journal"
+**How**: Clean narrative view of all scenes (hide mechanics)
+**Effort**: 3 hours
 
 ### Feature 8: Keyed Scenes
-**Location in Manual**: p149-155
-**What It Is**: Pre-planned scenes with specific content that you want to include
-**Implementation**:
-- **Data Structure**: Add KeyedScene type:
-  ```typescript
-  interface KeyedScene {
-    id: string;
-    name: string;
-    description: string;
-    requiredThreads?: string[]; // Thread names that trigger this scene
-    requiredChaosFactor?: { min?: number; max?: number };
-    isPlayed: boolean;
-    order?: number; // Optional ordering
-  }
-  ```
-- **New Component**: `KeyedScenesManager.svelte`
-  - CRUD for keyed scenes
-  - Mark scenes as played
-  - Trigger conditions (threads, chaos factor range)
-- **Integration with Scene Manager**:
-  - Before normal scene setup, check if any keyed scene should trigger
-  - Show notification: "Keyed Scene Available: [name]"
-  - Option to play keyed scene or continue with expected scene
-- **UI**: Separate panel/modal accessible from Solo RPG interface
-  - Tab: "Keyed Scenes" alongside current tools
-  - List of planned scenes with trigger conditions
+**When**: User wants to pre-plan scenes (advanced feature)
+**How**: Separate "Keyed Scenes" tab, check before scene setup
+**Effort**: 4 hours
 
-**Files to Create**:
-- `src/lib/components/solorpg/KeyedScenesManager.svelte`
-
-**Files to Modify**:
-- `src/lib/stores/soloRpgStore.svelte.ts` (add KeyedScene type and storage)
-- `src/lib/components/solorpg/SceneManager.svelte` (check for keyed scenes)
-- `src/routes/solo-rpg/+page.svelte` (add tab/button)
-
-**Estimated Effort**: 5-6 hours
+**Total**: ~19 hours
 
 ---
 
-## 🎯 Phase 4: Danger Tracking
+## 🎨 Detailed UX Design
 
-### Feature 10: Peril Points
-**Location in Manual**: p170
-**What It Is**: Track accumulated danger/peril that affects scene outcomes
-**Implementation**:
-- **Data Structure**: Add to Session:
-  ```typescript
-  interface Session {
-    // ... existing fields
-    perilPoints?: number; // 0-10+, optional
-    perilThreshold?: number; // Default 5, configurable
-  }
-  ```
-- **UI Component**: Visual tracker in main interface
-  - Location: Near Chaos Factor display
-  - Display: "⚠️ Peril: ▓▓▓▓▓░░░░░ (5/10)"
-  - Controls: +/- buttons, threshold setting
-- **Effects**:
-  - When Peril Points ≥ Threshold: Show warning badge
-  - Optional: Increase Random Event chance
-  - Optional: Modify Fate Question odds (add -1 to rolls)
-- **Reset**: Manual reset or auto-reset at scene end
-- **Integration**:
-  - GM can add peril points during dangerous scenes
-  - Optional auto-increase on "PC Negative" events
+### 1. Collapsible Sections Pattern
 
-**Files to Modify**:
-- `src/lib/stores/soloRpgStore.svelte.ts` (add peril tracking)
-- `src/lib/components/solorpg/ChaosFactorPanel.svelte` (add peril display)
-- `src/lib/components/solorpg/SceneManager.svelte` (optional reset)
-
-**Estimated Effort**: 3 hours
-
----
-
----
-
-## 🎯 Phase 5: Supporting Infrastructure
-
-### Feature 11: Adventure Journal View (NEW)
-**What It Is**: Enhanced view of all scenes with narrative summaries
-**Implementation**:
-- **New Component**: `AdventureJournal.svelte`
-  - Chronological display of all scenes
-  - Each scene shows: number, type, description, chaos before/after, notes
-  - Rich text editor for scene narrative
-  - Print/export friendly view
-- **Features**:
-  - Search/filter scenes by keyword
-  - Jump to specific scene
-  - Inline editing of scene notes
-  - "Story Mode" view (hide mechanics, show only narrative)
-- **Integration**: Button in header "📖 Adventure Journal"
-
-**Files to Create**:
-- `src/lib/components/solorpg/AdventureJournal.svelte`
-
-**Files to Modify**:
-- `src/routes/solo-rpg/+page.svelte` (add button)
-
-**Estimated Effort**: 4-5 hours
-
----
-
-### Feature 12: Settings/Preferences Panel (NEW - CRITICAL)
-**What It Is**: Centralized settings for optional features
-**Implementation**:
-- **New Component**: `SessionSettings.svelte`
-- **Settings to Add**:
-  ```typescript
-  interface SessionSettings {
-    // Existing
-    useFateCheck: boolean;
-    chaosFlavor: 'standard' | 'mid' | 'low' | 'none';
-
-    // New
-    useThreadProgressTracks: boolean;
-    usePerilPoints: boolean;
-    useKeyedScenes: boolean;
-    showNPCBehaviorGuidance: boolean;
-    autoSuggestThreadDiscovery: boolean;
-
-    // UI preferences
-    compactMode: boolean;
-    showTutorialHints: boolean;
-  }
-  ```
-- **UI**: Modal accessible via ⚙️ icon in header
-  - Grouped sections: Mechanics / UI / Advanced
-  - Toggle switches with descriptions
-  - Reset to defaults button
-
-**Files to Modify**:
-- `src/lib/stores/soloRpgStore.svelte.ts` (add SessionSettings interface)
-- `src/routes/solo-rpg/+page.svelte` (add settings button)
-
-**Files to Create**:
-- `src/lib/components/solorpg/SessionSettings.svelte`
-
-**Estimated Effort**: 3-4 hours
-
----
-
-### Feature 13: Data Migration & Compatibility (NEW - CRITICAL)
-**What It Is**: Handle backwards compatibility for existing sessions
-**Implementation**:
-- **Migration Strategy**:
-  1. Add version field to SoloRpgSession: `schemaVersion: number`
-  2. Current version: 1, increment with breaking changes
-  3. Migration functions for each version jump
-- **Default Values**:
-  ```typescript
-  function migrateSession(session: any): SoloRpgSession {
-    // Add missing fields with defaults
-    return {
-      ...session,
-      schemaVersion: 2,
-      settings: session.settings || getDefaultSettings(),
-      // Add new fields with safe defaults
-      threads: session.threads.map(t => ({
-        ...t,
-        progressTrack: t.progressTrack ?? undefined
-      })),
-      // etc.
-    };
-  }
-  ```
-- **Load-time Migration**: Automatically upgrade old sessions when loaded
-
-**Files to Modify**:
-- `src/lib/stores/soloRpgStore.svelte.ts` (add migration logic)
-
-**Estimated Effort**: 2-3 hours
-
----
-
-### Feature 14: Export/Import Sessions (NEW)
-**What It Is**: Export session data to JSON, import from file
-**Implementation**:
-- **Export**: Download session as `.mythic.json` file
-  - Include all session data
-  - Human-readable formatting
-  - Metadata: export date, version
-- **Import**: Upload `.mythic.json` file
-  - Validate structure
-  - Run migrations if needed
-  - Conflict resolution if session ID exists
-- **UI**: Buttons in Session Manager
-  - "📥 Import Session"
-  - "📤 Export Session" (per session)
-
-**Files to Modify**:
-- `src/lib/components/solorpg/SessionManager.svelte` (add import/export buttons)
-- `src/lib/stores/soloRpgStore.svelte.ts` (add import/export methods)
-
-**Estimated Effort**: 3-4 hours
-
----
-
-### Feature 15: Keyboard Shortcuts (NEW - Optional Enhancement)
-**What It Is**: Power user shortcuts for common actions
-**Implementation**:
-- **Shortcuts**:
-  - `Ctrl+F`: Ask Fate Question (focus input)
-  - `Ctrl+E`: Generate Random Event
-  - `Ctrl+S`: Save session
-  - `Ctrl+H`: Open History
-  - `Ctrl+J`: Open Journal
-  - `Esc`: Close modals
-  - `?`: Show keyboard shortcuts help
-- **UI**: Keyboard shortcuts modal (show with `?` key)
-  - List all shortcuts with descriptions
-  - Platform-aware (Cmd on Mac, Ctrl on Windows)
-
-**Files to Create**:
-- `src/lib/components/solorpg/KeyboardShortcutsHelp.svelte`
-
-**Files to Modify**:
-- `src/routes/solo-rpg/+page.svelte` (add global keyboard listener)
-
-**Estimated Effort**: 2-3 hours
-
----
-
-## 📋 Implementation Summary
-
-### Total Estimated Effort: 35-45 hours
-
-### Recommended Order (Priority-Based):
-
-#### 🔴 Phase 0: Critical Infrastructure (MUST DO FIRST)
-1. **Feature 13** (Data Migration) - Foundation for all changes
-2. **Feature 12** (Settings Panel) - Control for optional features
-
-#### 🟢 Phase 1: Quick Wins (High Value, Low Effort)
-3. **Feature 2** (NPC Behavior Guidance) - 2-3h
-4. **Feature 5** (Discovery Fate Question) - 2h
-5. **Feature 10** (Peril Points) - 3h
-
-#### 🟡 Phase 2: Core Enhancements
-6. **Feature 4** (Thread Progress Track) - 4-5h
-7. **Feature 3** (NPC Statistics Generator) - 3-4h
-8. **Feature 11** (Adventure Journal) - 4-5h
-
-#### 🟠 Phase 3: Advanced Features
-9. **Feature 6** (Thread Discovery Check) - 3-4h
-10. **Feature 8** (Keyed Scenes) - 5-6h
-
-#### 🔵 Phase 4: Nice-to-Have
-11. **Feature 14** (Export/Import) - 3-4h
-12. **Feature 15** (Keyboard Shortcuts) - 2-3h
-
-### Technical Considerations:
-- All features should be **optional** (can be toggled on/off per session)
-- Store optional settings in `SessionSettings` interface
-- Maintain backwards compatibility with existing sessions
-- Add feature explanations/tooltips for new users
-- Update Session History to log new mechanics (progress track changes, peril points, etc.)
-
----
-
-## 🎨 UI Integration Plan
-
-### Main Solo RPG Interface Layout:
+```svelte
+<CollapsibleSection
+  title="🎲 Ask A Question"
+  startExpanded={true}
+  rememberState={true}
+  stateKey="fate-question-section"
+>
+  <!-- Content -->
+</CollapsibleSection>
 ```
-┌────────────────────────────────────────┐
-│ Scene Manager | History | Settings     │ ← Existing header
-├────────────────────────────────────────┤
-│ 📊 Chaos Factor: 5    ⚠️ Peril: 3/10  │ ← Add Peril here
-├────────────────────────────────────────┤
-│ Fate Questions                         │
-│   [Question input]                     │
-│   Result: Yes ℹ️ ← NPC Behavior tip    │
-│   □ Discovery Question                 │ ← New checkbox
-├────────────────────────────────────────┤
-│ Lists (Threads & Characters)           │
-│   Thread: Find artifact                │
-│   Progress: ☑☑☑☐☐☐☐☐☐☐             │ ← New track
-│   🔍 Check for Thread Discovery        │ ← New button
-├────────────────────────────────────────┤
-│ Tools: Random Event | Meaning | 4W     │
-│        NPC Stats | Keyed Scenes        │ ← Add buttons
-└────────────────────────────────────────┘
+
+Every major section can collapse to save space. State persists in localStorage.
+
+---
+
+### 2. Contextual NPC Guidance
+
+When user types question containing NPC indicators:
+- Check for: "does he", "will she", "can they", or Character names from list
+- Show small badge: `ℹ️ NPC Question?` with popover on hover/click
+- Popover content based on result:
+
+```
+┌─────────────────────────────────────┐
+│ 💡 NPC Behavior Guidance            │
+│                                     │
+│ Yes: NPC does what you expect       │
+│ No: NPC does something else         │
+│ Exc Yes: Does it with intensity     │
+│ Exc No: Does the opposite           │
+└─────────────────────────────────────┘
 ```
 
 ---
 
-## 📝 Documentation Needs
+### 3. Thread Progress Tracks (Optional per Thread)
 
-Each new feature should include:
-1. **Tooltip/Help Icon**: Brief explanation of what it does
-2. **Example Use Cases**: When to use this feature
-3. **Manual Reference**: Link to page in Mythic GME manual (if applicable)
-4. **"Learn More" Modal**: Detailed explanation with examples
+```
+Thread: Find the ancient artifact
+□ Enable Progress Track
+
+[Enabled state:]
+Thread: Find the ancient artifact ☑
+Progress: ▓▓▓▓░░░░░░ (4/10)
+[−] [+]
+```
+
+Auto-prompt on Random Events:
+- "Move Toward Thread" → Show +1 prompt
+- "Move Away From Thread" → Show -1 prompt
+- "Close Thread" → Fill track
+
+---
+
+### 4. Thread Discovery Check
+
+```
+┌──────────────────────────────────────┐
+│ 🔍 Thread Discovery Check            │
+│                                      │
+│ Current CF: 5                        │
+│ Success if ≤ 50 (CF × 10)          │
+│                                      │
+│ [Roll d100]                          │
+│                                      │
+│ Result: 42 → Success!               │
+│                                      │
+│ New Thread Discovered:               │
+│ "Mysterious / Ancient"               │
+│                                      │
+│ [Add to Threads] [Reroll] [Cancel]  │
+└──────────────────────────────────────┘
+```
+
+---
+
+### 5. NPC Statistics Generator
+
+```
+┌─────────────────────────────────────────┐
+│ 📊 Generate NPC Statistics              │
+│                                         │
+│ NPC Name: [Optional]                    │
+│                                         │
+│ [Roll All Stats]                        │
+│                                         │
+│ Strength:    High (82)                  │
+│ Agility:     Average (55)               │
+│ Intellect:   Above Average (68)         │
+│ Willpower:   Below Average (42)         │
+│                                         │
+│ [Reroll All] [Reroll Individual]        │
+│ [Save to Characters List] [Cancel]      │
+└─────────────────────────────────────────┘
+```
+
+---
+
+### 6. Peril Points Tracker (Opt-in)
+
+In Scene Manager header:
+```
+Chaos Factor: 5 [↓][↑]     ⚠️ Peril: 3 [↓][↑]
+                              └── Optional, hidden by default
+```
+
+Toggle to show/hide in Scene Manager. Just a counter, no automatic effects.
+
+---
+
+### 7. Adventure Journal View
+
+```
+┌───────────────────────────────────────────┐
+│ 📖 Adventure Journal: [Adventure Name]    │
+│                                           │
+│ ═══ Scene 1: The Beginning ═══           │
+│                                           │
+│ Marcus arrived at the abandoned temple,  │
+│ searching for clues about the artifact.  │
+│ He encountered Elena, who claimed to     │
+│ have information...                       │
+│                                           │
+│ [Edit] [Scene Details ▼]                 │
+│                                           │
+│ ═══ Scene 2: Betrayal ═══                │
+│                                           │
+│ Elena revealed her true intentions...    │
+│                                           │
+└───────────────────────────────────────────┘
+```
+
+**Story Mode**: Hide all mechanics, show only narrative
+**Full Mode**: Show scene type, chaos changes, events
+
+---
+
+### 8. Keyed Scenes Manager
+
+Separate tab/section (not visible by default):
+
+```
+┌────────────────────────────────────┐
+│ 🔑 Keyed Scenes                    │
+│                                    │
+│ Planned scenes you want to include │
+│                                    │
+│ □ The Betrayal                     │
+│   Trigger: Thread "Trust" active   │
+│   CF: 6+                           │
+│   [Edit] [Delete]                  │
+│                                    │
+│ ☑ The Final Confrontation          │
+│   Trigger: Manual                  │
+│   [Edit] [Delete] [PLAY NOW]       │
+│                                    │
+│ [+ Add Keyed Scene]                │
+└────────────────────────────────────┘
+```
+
+Before scene setup, check if keyed scene should trigger and prompt user.
+
+---
+
+## 🎯 Implementation Order
+
+### Week 1: Foundation + Quick Wins (7.5h)
+1. **Collapsible Sections Component** (2h) - Reusable pattern
+2. **NPC Behavior Guidance** (1.5h) - Contextual help
+3. **Discovery Fate Questions** (1h) - Simple checkbox
+4. **Peril Points Tracker** (1.5h) - Optional counter
+5. **Thread Discovery Check** (1.5h) - Simple roll modal
+
+### Week 2: Core Features (6h)
+6. **Thread Progress Tracks** (3h) - Visual tracking
+7. **Adventure Journal View** (3h) - Narrative view
+
+### Week 3: Advanced Features (5.5h)
+8. **NPC Statistics Generator** (3h) - Stat roller
+9. **Keyed Scenes** (4h) - Pre-planned scenes
+10. **Polish & Testing** (2h)
+
+**Total**: ~21 hours (with buffer)
+
+---
+
+## 📱 Mobile Considerations
+
+- All modals are mobile-friendly
+- Thread progress: Large touch targets (48×48px minimum)
+- Collapsible sections save screen space
+- Peril/Chaos: Stack vertically on mobile
+- Journal: Full-width, simplified controls
+
+---
+
+## 🎓 Progressive Disclosure Implementation
+
+### First Session:
+- Show only: Scene Setup, Fate Questions, Lists (basic), Random Event button
+- Hide: Thread Progress, Peril Points, Keyed Scenes, Discovery Check
+- Hint badges: "💡 Tip: Try rolling on a Meaning Table" (dismissible)
+
+### After 3 Scenes:
+- Reveal: Thread Discovery Check button
+- Show: "You can enable Progress Tracks on threads"
+
+### After 5 Scenes:
+- Reveal: Peril Points option
+- Reveal: Keyed Scenes tab
+- Show: "You can pre-plan scenes with Keyed Scenes"
+
+### After 10 Scenes:
+- All features visible
+- Tutorial hints dismissed
+- Full power-user mode
+
+**Implementation**: Use localStorage to track:
+```typescript
+interface ProgressionState {
+  scenesPlayed: number;
+  featuresRevealed: string[];
+  hintsShown: string[];
+  hintsDismissed: string[];
+}
+```
 
 ---
 
 ## ✅ Definition of Done
 
-For each feature:
-- [ ] Implementation complete
-- [ ] Svelte 5 compliant (no warnings from autofixer)
-- [ ] Integrated into main Solo RPG interface
-- [ ] Optional/toggleable (doesn't interfere with basic usage)
-- [ ] Session History updated to track new actions
-- [ ] Backwards compatible with existing sessions
-- [ ] User documentation/tooltips added
-- [ ] Tested with existing features (no conflicts)
+Per Feature:
+- [ ] Works on mobile and desktop
+- [ ] Doesn't break existing functionality
+- [ ] Follows progressive disclosure (hidden by default if advanced)
+- [ ] Has contextual help/tooltip
+- [ ] Svelte 5 compliant
+- [ ] Clean, minimal UI
+
+Overall:
+- [ ] Solo RPG section feels cleaner, less overwhelming
+- [ ] New users see only essential features
+- [ ] Advanced users can access all features easily
+- [ ] No regressions in existing features
 
 ---
 
----
+## 🎨 Visual Design Updates
 
-## 📱 Mobile & Responsive Design Considerations
+### Color Coding (Keep Consistent):
+- 🟢 Fate Questions: Green accents
+- 🟣 Random Events: Purple accents
+- 🔵 Meaning/Discovery: Blue accents
+- 🟠 Scene/Narrative: Orange accents
+- ⚫ Tools/Utilities: Gray accents
 
-All new features must work well on mobile:
-- **Thread Progress Tracks**: Touch-friendly boxes (min 44x44px)
-- **Peril Points**: Swipeable or tap-based controls
-- **Settings Panel**: Scrollable sections, thumb-friendly toggles
-- **Keyed Scenes Manager**: Card-based layout for small screens
-- **Adventure Journal**: Readable on phone, hide secondary info on mobile
-- **Keyboard Shortcuts**: Show/hide based on device type
-- **NPC Stats Generator**: Stack vertically on mobile
+### Spacing:
+- Large breathing room between sections
+- Clear visual hierarchy
+- Grouped related controls
 
-**Testing Targets**:
-- Mobile: 375px width (iPhone SE)
-- Tablet: 768px width (iPad)
-- Desktop: 1280px+ width
-
----
-
-## 🎓 Tutorial & Onboarding Strategy
-
-### For New Users:
-1. **First-time Setup Wizard**:
-   - Choose complexity level: Basic / Standard / Advanced
-   - Basic: Core features only (hide optional features)
-   - Standard: Show most features with hints
-   - Advanced: Everything enabled
-
-2. **Contextual Tooltips**:
-   - Show ? icons next to new features
-   - "What's this?" tooltips on first use
-   - Dismissible hints (store in localStorage)
-
-3. **Tutorial Mode** (Optional):
-   - Guided walkthrough of first session
-   - Step-by-step instructions
-   - Can skip at any time
-
-### For Existing Users:
-- **"What's New" Modal**: Show once per version with new features
-- **Feature Announcements**: Small badge on new buttons
-- **Opt-in for Advanced Features**: Don't overwhelm with everything at once
+### Typography:
+- Clear section headers (larger, bold)
+- Consistent icon usage
+- Readable body text (16px minimum)
 
 ---
 
-## 🧪 Testing Checklist
+## 🚀 Let's Implement!
 
-### Per Feature:
-- [ ] Works with existing sessions (backwards compatible)
-- [ ] Works with new sessions
-- [ ] Toggleable on/off (if optional)
-- [ ] Mobile responsive
-- [ ] Keyboard accessible
-- [ ] No Svelte warnings/errors
-- [ ] Session History tracks changes
-- [ ] Data persists to localStorage
-- [ ] Export/import includes new data
+Starting with Week 1 features:
+1. Collapsible Sections Component
+2. NPC Behavior Guidance
+3. Discovery Fate Questions
+4. Peril Points Tracker
+5. Thread Discovery Check
 
-### Integration Testing:
-- [ ] All features work together without conflicts
-- [ ] Settings panel controls all optional features
-- [ ] Data migration handles all version upgrades
-- [ ] Performance acceptable with all features enabled
-
----
-
-## 🚀 Future Enhancements (Beyond This Plan)
-
-These are NOT in scope but could be added later:
-- **Fate Check (2d10)**: Alternative to Fate Chart (we have useFateCheck flag ready)
-- **Alternative Chaos Flavors**: Mid/Low/No-Chaos variants (chaosFlavor exists)
-- **Adventure Crafter Integration**: p171-175
-- **Prepared Adventure Support**: p156+ (Adventure Features List)
-- **NPC Behavior AI Suggestions**: ML-based NPC action predictions
-- **Thread Relationship Graph**: Visual web of connected threads
-- **Session Replay**: Watch your adventure unfold chronologically
-- **Collaborative Play**: Multiple players in same session (real-time sync)
-- **Voice Input**: Speak questions, get spoken answers
-- **Procedural Map Generation**: Visual representation of adventure locations
-
----
-
-## 📝 Documentation Requirements
-
-Each feature needs:
-1. **In-App Help**:
-   - Tooltip explaining what it does
-   - Example use cases
-   - Link to Mythic GME manual page (if applicable)
-
-2. **User Guide**:
-   - Update main documentation
-   - Add feature to feature matrix
-   - Include screenshots
-
-3. **Developer Docs**:
-   - Technical architecture
-   - Data structures
-   - Integration points
-
----
-
-## 🎯 Success Metrics
-
-How to measure if features are useful:
-- **Adoption Rate**: % of sessions using optional features
-- **User Feedback**: Surveys, GitHub issues
-- **Performance**: Page load time, localStorage size
-- **Error Rate**: Console errors, failed operations
-- **Retention**: Users returning to app after 7/30 days
-
----
-
-## ⚠️ Risks & Mitigation
-
-### Risk 1: Feature Overload
-**Mitigation**:
-- Complexity levels (Basic/Standard/Advanced)
-- Progressive disclosure (show features when relevant)
-- Settings panel to hide unused features
-
-### Risk 2: Performance Degradation
-**Mitigation**:
-- Lazy load components
-- Virtualize long lists (thread/character lists)
-- Debounce localStorage saves
-
-### Risk 3: Data Loss
-**Mitigation**:
-- Versioned data format
-- Migration testing
-- Export before updates
-- localStorage size monitoring
-
-### Risk 4: Browser Compatibility
-**Mitigation**:
-- Test on Chrome, Firefox, Safari, Edge
-- Polyfills for older browsers
-- Graceful degradation for missing features
-
----
-
-## 💡 Key Insights from Review
-
-### What We Already Have:
-- ✅ Scene.notes exists (per-scene narrative)
-- ✅ useFateCheck and chaosFlavor settings exist
-- ✅ Scene Adjustment Table fully implemented
-- ✅ Comprehensive Session History system
-
-### What Was Missing from Original Plan:
-- ❌ Adventure Journal view/editor
-- ❌ Centralized Settings panel
-- ❌ Data migration strategy
-- ❌ Export/Import functionality
-- ❌ Mobile optimization plan
-- ❌ Tutorial/onboarding system
-
-### Critical Realizations:
-1. **Settings Panel is CRITICAL** - Must be done before other features
-2. **Data Migration is FOUNDATIONAL** - Must be first to avoid breaking changes
-3. **Mobile Must Be First-Class** - Many users play on phones
-4. **Progressive Disclosure is KEY** - Don't overwhelm new users
+Ready to begin implementation.
