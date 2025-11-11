@@ -22,8 +22,7 @@
 		rollSuspectDescriptors
 	} from '$lib/tables/mythicTables/mysteryDescriptorsTable';
 	import type { FateAnswer } from '$lib/utils/mythicDice';
-	import { getFateAnswer } from '$lib/utils/fateChart';
-	import type { OddsLevel } from '$lib/utils/fateChart';
+	import { determineFateAnswer, OddsLevel } from '$lib/utils/fateChart';
 
 	interface Props {
 		isOpen: boolean;
@@ -33,12 +32,12 @@
 	let { isOpen, onClose }: Props = $props();
 
 	// Workflow state
-	let step = $state<'earned' | 'fate' | 'roll' | 'result' | 'special'>('earned');
-	let category = $state<'clues' | 'suspects'>('clues');
+	let step = $state<'category' | 'earned' | 'fate' | 'roll' | 'result' | 'special'>('category');
+	let category = $state<'clues' | 'suspects' | null>(null);
 	let earnedCheck = $state(false);
 
 	// Fate Question state
-	let odds = $state<OddsLevel>('Likely');
+	let odds = $state<OddsLevel>(OddsLevel.Likely);
 	let fateRoll = $state(0);
 	let fateAnswer = $state<FateAnswer | null>(null);
 
@@ -53,13 +52,14 @@
 	let clueProgressPoints = $derived(currentSession?.mysteryClueProgressPoints || 0);
 	let suspectProgressPoints = $derived(currentSession?.mysterySuspectProgressPoints || 0);
 	let progressPoints = $derived(
-		category === 'clues' ? clueProgressPoints : suspectProgressPoints
+		category === 'clues' ? clueProgressPoints : category === 'suspects' ? suspectProgressPoints : 0
 	);
 
 	function reset() {
-		step = 'earned';
+		step = 'category';
+		category = null;
 		earnedCheck = false;
-		odds = 'Likely';
+		odds = OddsLevel.Likely;
 		fateRoll = 0;
 		fateAnswer = null;
 		elementResult = null;
@@ -68,7 +68,6 @@
 	}
 
 	function startCheck(cat: 'clues' | 'suspects') {
-		reset();
 		category = cat;
 		step = 'earned';
 	}
@@ -80,16 +79,13 @@
 
 	function rollFateQuestion() {
 		fateRoll = rollD100();
-		fateAnswer = getFateAnswer(fateRoll, odds, chaosFactor);
-
-		if (fateAnswer === 'Yes' || fateAnswer === 'Exceptional Yes') {
-			step = 'roll';
-		} else {
-			step = 'result';
-		}
+		fateAnswer = determineFateAnswer(fateRoll, odds, chaosFactor);
+		// Don't change step here - let user see the result and click the button
 	}
 
 	function rollElements() {
+		if (!category) return; // Safety check
+
 		const result = rollMysteryElement(progressPoints, category);
 		elementResult = result;
 
@@ -103,6 +99,23 @@
 			descriptorWords = rollSuspectDescriptors();
 		}
 
+		// Auto-add new clues/suspects based on result
+		if (descriptorWords) {
+			const descriptorText = `${descriptorWords.word1} / ${descriptorWords.word2}`;
+
+			if (result.result === 'New Clue' && category === 'clues') {
+				// Automatically add a new clue with descriptor words
+				soloRpgStore.addMysteryClue(descriptorText);
+			} else if (result.result === 'New Suspect' && category === 'suspects') {
+				// Automatically add a new suspect with descriptor words
+				soloRpgStore.addMysterySuspect(descriptorText);
+			} else if (result.result === 'Clincher Clue' && category === 'clues') {
+				// Automatically add the clincher clue with descriptor words
+				// Note: User will manually link it to the suspect with most points and mark as clincher
+				soloRpgStore.addMysteryClue(descriptorText);
+			}
+		}
+
 		// Check if Special
 		if (result.result === 'Special') {
 			const special = rollMysterySpecial();
@@ -114,7 +127,7 @@
 	}
 
 	function applySpecialEffect() {
-		if (!specialResult) return;
+		if (!specialResult || !category) return;
 
 		switch (specialResult.result) {
 			case 'Progress Points -3':
@@ -148,7 +161,7 @@
 
 			<div class="p-6 space-y-4">
 				<!-- Step 0: Choose Category -->
-				{#if step === 'earned' && !earnedCheck}
+				{#if step === 'category'}
 					<div class="space-y-4">
 						<h3 class="text-lg font-bold text-white">What are you investigating?</h3>
 						<p class="text-sm text-slate-300">
@@ -181,36 +194,49 @@
 				{/if}
 
 				<!-- Step 1: Did you earn the check? -->
-				{#if step === 'earned' && !earnedCheck}
-					<div class="p-4 bg-orange-900/20 border border-orange-500/30 rounded-lg">
-						<h3 class="text-lg font-bold text-orange-300 mb-2">Earning the Discovery Check</h3>
-						<p class="text-sm text-slate-300 mb-3">
-							To make a Discovery Check, your Character must do something with risk or uncertainty.
-							Examples:
-						</p>
-						<ul class="text-sm text-slate-300 list-disc list-inside space-y-1 mb-3">
-							<li>Make a skill roll (Research, Investigation, Perception, etc.)</li>
-							<li>Ask a Fate Question about finding something</li>
-							<li>Fight your way through guards to search a room</li>
-							<li>Crack a safe to access documents</li>
-							<li>Interview a suspect who might not talk</li>
-						</ul>
-						<p class="text-sm text-yellow-300 font-medium">
-							Did your Character succeed at the risky action?
-						</p>
-						<div class="flex gap-2 mt-3">
+				{#if step === 'earned'}
+					<div class="space-y-4">
+						<div class="flex items-center gap-2 text-sm text-purple-300">
 							<button
-								onclick={confirmEarned}
-								class="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded transition-colors"
+								onclick={() => step = 'category'}
+								class="hover:text-purple-100 transition-colors"
 							>
-								✓ Yes, Check Earned
+								← Back to category
 							</button>
-							<button
-								onclick={finish}
-								class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded transition-colors"
-							>
-								No, Failed
-							</button>
+							<span class="text-slate-600">|</span>
+							<span>Investigating: <strong class="capitalize">{category}</strong></span>
+						</div>
+
+						<div class="p-4 bg-orange-900/20 border border-orange-500/30 rounded-lg">
+							<h3 class="text-lg font-bold text-orange-300 mb-2">Earning the Discovery Check</h3>
+							<p class="text-sm text-slate-300 mb-3">
+								To make a Discovery Check, your Character must do something with risk or uncertainty.
+								Examples:
+							</p>
+							<ul class="text-sm text-slate-300 list-disc list-inside space-y-1 mb-3">
+								<li>Make a skill roll (Research, Investigation, Perception, etc.)</li>
+								<li>Ask a Fate Question about finding something</li>
+								<li>Fight your way through guards to search a room</li>
+								<li>Crack a safe to access documents</li>
+								<li>Interview a suspect who might not talk</li>
+							</ul>
+							<p class="text-sm text-yellow-300 font-medium">
+								Did your Character succeed at the risky action?
+							</p>
+							<div class="flex gap-2 mt-3">
+								<button
+									onclick={confirmEarned}
+									class="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded transition-colors"
+								>
+									✓ Yes, Check Earned
+								</button>
+								<button
+									onclick={finish}
+									class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded transition-colors"
+								>
+									No, Failed
+								</button>
+							</div>
 						</div>
 					</div>
 				{/if}
@@ -235,16 +261,15 @@
 										bind:value={odds}
 										class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white focus:outline-none focus:border-purple-500"
 									>
-										<option value="Impossible">Impossible</option>
-										<option value="No Way">No Way</option>
-										<option value="Very Unlikely">Very Unlikely</option>
-										<option value="Unlikely">Unlikely</option>
-										<option value="50/50">50/50</option>
-										<option value="Likely">Likely</option>
-										<option value="Very Likely">Very Likely</option>
-										<option value="Near Sure Thing">Near Sure Thing</option>
-										<option value="A Sure Thing">A Sure Thing</option>
-										<option value="Has To Be">Has To Be</option>
+										<option value={OddsLevel.Impossible}>Impossible</option>
+										<option value={OddsLevel.NearlyImpossible}>Nearly Impossible</option>
+										<option value={OddsLevel.VeryUnlikely}>Very Unlikely</option>
+										<option value={OddsLevel.Unlikely}>Unlikely</option>
+										<option value={OddsLevel.FiftyFifty}>50/50</option>
+										<option value={OddsLevel.Likely}>Likely</option>
+										<option value={OddsLevel.VeryLikely}>Very Likely</option>
+										<option value={OddsLevel.NearlyCertain}>Nearly Certain</option>
+										<option value={OddsLevel.Certain}>Certain</option>
 									</select>
 								</div>
 
@@ -301,10 +326,10 @@
 										</button>
 									{:else}
 										<button
-											onclick={finish}
+											onclick={() => step = 'result'}
 											class="w-full px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded transition-colors"
 										>
-											Close
+											Continue →
 										</button>
 									{/if}
 								</div>
@@ -314,7 +339,7 @@
 				{/if}
 
 				<!-- Step 3: Mystery Elements Result -->
-				{#if step === 'roll' && elementResult}
+				{#if step === 'roll' && elementResult && category}
 					<div class="space-y-4">
 						<div class="p-4 bg-blue-900/20 border border-blue-500/30 rounded-lg">
 							<h3 class="text-lg font-bold text-blue-300 mb-2">Mystery Elements Roll</h3>
@@ -354,7 +379,7 @@
 				{/if}
 
 				<!-- Step 4: Special Result -->
-				{#if step === 'special' && specialResult}
+				{#if step === 'special' && specialResult && category}
 					<div class="space-y-4">
 						<div class="p-4 bg-yellow-900/20 border border-yellow-500/30 rounded-lg">
 							<h3 class="text-lg font-bold text-yellow-300 mb-2">Special Result!</h3>
@@ -408,10 +433,12 @@
 								{/if}
 							{/if}
 
-							<div class="mt-3 text-sm text-slate-400">
-								Progress Points updated: {category === 'clues' ? 'Clue' : 'Suspect'} PP is now {progressPoints
-									+ 1}
-							</div>
+							{#if category}
+								<div class="mt-3 text-sm text-slate-400">
+									Progress Points updated: {category === 'clues' ? 'Clue' : 'Suspect'} PP is now {progressPoints
+										+ 1}
+								</div>
+							{/if}
 						</div>
 
 						<button

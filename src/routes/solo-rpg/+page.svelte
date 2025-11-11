@@ -14,8 +14,9 @@
 	import FirstSceneHelp from '$lib/components/solorpg/FirstSceneHelp.svelte';
 	import FourWGenerator from '$lib/components/solorpg/FourWGenerator.svelte';
 	import LocationCrafterPanel from '$lib/components/solorpg/LocationCrafterPanel.svelte';
+	import MysteryMatrixPanel from '$lib/components/solorpg/MysteryMatrixPanel.svelte';
 
-	let activeTab = $state<'play' | 'tables' | 'location' | 'reference'>('play');
+	let activeTab = $state<'play' | 'tables' | 'location' | 'mystery' | 'reference'>('play');
 	let showSessionManager = $state(false);
 	let showRandomEventModal = $state(false);
 	let showMeaningDiscovery = $state(false);
@@ -26,6 +27,7 @@
 	// Derived state
 	let hasSession = $derived(soloRpgStore.currentSession !== null);
 	let sessionName = $derived(soloRpgStore.currentSession?.adventureName || '');
+	let isMysteryMode = $derived(!!soloRpgStore.currentSession?.mysteryThread);
 
 	function quickStart() {
 		soloRpgStore.createSession('Quick Adventure', 'A quick solo adventure session');
@@ -131,6 +133,18 @@
 				>
 					🗺️ Location Crafter
 					{#if activeTab === 'location'}
+						<div class="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-400"></div>
+					{/if}
+				</button>
+				<button
+					class="px-6 py-3 font-medium transition-colors relative {activeTab === 'mystery' ? 'text-orange-400' : 'text-slate-400 hover:text-slate-300'}"
+					onclick={() => activeTab = 'mystery'}
+				>
+					🔍 Mystery Matrix
+					{#if isMysteryMode}
+						<span class="ml-1 px-1.5 py-0.5 bg-purple-600 text-purple-200 text-[10px] font-bold rounded">ACTIVE</span>
+					{/if}
+					{#if activeTab === 'mystery'}
 						<div class="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-400"></div>
 					{/if}
 				</button>
@@ -295,6 +309,143 @@
 				<!-- Location Crafter Panel -->
 				<div class="h-[calc(100vh-16rem)]">
 					<LocationCrafterPanel />
+				</div>
+			{/if}
+		{:else if activeTab === 'mystery'}
+			<!-- Mystery Matrix Tab Content -->
+			{#if !hasSession}
+				<!-- No Session - Prompt to create one -->
+				<div class="bg-slate-900/50 backdrop-blur-xl rounded-2xl p-8 border border-orange-500/20">
+					<div class="text-center py-12 max-w-3xl mx-auto">
+						<div class="text-6xl mb-4">🔍</div>
+						<h2 class="text-3xl font-bold text-white mb-3">Mystery Matrix</h2>
+						<p class="text-lg text-orange-200 mb-6">
+							Investigation system from Mythic Magazine Volume 6
+						</p>
+						<div class="bg-slate-800/50 rounded-xl p-6 mb-6 text-left">
+							<p class="text-slate-300 mb-4">
+								The Mystery Matrix helps you track and solve mysteries in your solo RPG adventures by visualizing:
+							</p>
+							<ul class="space-y-2 text-slate-300">
+								<li class="flex items-start gap-2">
+									<span class="text-blue-400">📎</span> <span><strong>Clues</strong> you discover</span>
+								</li>
+								<li class="flex items-start gap-2">
+									<span class="text-red-400">👤</span> <span><strong>Suspects</strong> you investigate</span>
+								</li>
+								<li class="flex items-start gap-2">
+									<span class="text-purple-400">🔗</span> <span><strong>Links</strong> connecting clues to suspects</span>
+								</li>
+							</ul>
+						</div>
+						<p class="text-slate-400 mb-6">Create or load a session to start using the Mystery Matrix.</p>
+						<div class="flex gap-4 justify-center">
+							<button
+								onclick={quickStart}
+								class="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold rounded-lg shadow-lg transition-all"
+							>
+								🎲 Quick Start
+							</button>
+							<button
+								onclick={() => showSessionManager = true}
+								class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-lg transition-all"
+							>
+								⚙️ Manage Sessions
+							</button>
+						</div>
+					</div>
+				</div>
+			{:else if !isMysteryMode}
+				<!-- Session Active but Mystery Not Activated -->
+				<div class="bg-slate-900/50 backdrop-blur-xl rounded-2xl p-8 border border-orange-500/20">
+					<div class="py-8 max-w-4xl mx-auto">
+						<div class="text-center mb-8">
+							<div class="text-6xl mb-4">🔍</div>
+							<h2 class="text-3xl font-bold text-white mb-3">Mystery Matrix</h2>
+							<p class="text-lg text-orange-200">
+								Investigation system from Mythic Magazine Volume 6
+							</p>
+						</div>
+
+						<div class="bg-slate-800/50 rounded-xl p-6 mb-6">
+							<h3 class="text-xl font-bold text-purple-300 mb-4">What is the Mystery Matrix?</h3>
+							<p class="text-slate-300 mb-4">
+								The Mystery Matrix is a visual investigation tool that helps you solve mysteries in your solo RPG adventures. It tracks:
+							</p>
+							<ul class="space-y-2 text-slate-300 mb-4">
+								<li class="flex items-start gap-2">
+									<span class="text-blue-400 font-bold">📎</span>
+									<span><strong class="text-blue-300">Clues</strong> - Evidence, facts, and information you discover (20 slots)</span>
+								</li>
+								<li class="flex items-start gap-2">
+									<span class="text-red-400 font-bold">👤</span>
+									<span><strong class="text-red-300">Suspects</strong> - People of interest in your investigation (10 slots)</span>
+								</li>
+								<li class="flex items-start gap-2">
+									<span class="text-purple-400 font-bold">🔗</span>
+									<span><strong class="text-purple-300">Links</strong> - Connections between clues and suspects that build your case</span>
+								</li>
+							</ul>
+							<p class="text-slate-300">
+								As you link clues to suspects, they accumulate "Clue Points". When a suspect reaches 6 clue points, you've solved the mystery!
+							</p>
+						</div>
+
+						<div class="bg-slate-800/50 rounded-xl p-6 mb-6">
+							<h3 class="text-xl font-bold text-purple-300 mb-4">How to Activate Mystery Mode</h3>
+							<div class="space-y-4">
+								<div class="flex items-start gap-4">
+									<div class="flex-shrink-0 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold">1</div>
+									<div>
+										<p class="text-white font-medium mb-1">Go to the Play tab</p>
+										<p class="text-slate-400 text-sm">Navigate to the main Play tab where you manage your adventure</p>
+									</div>
+								</div>
+								<div class="flex items-start gap-4">
+									<div class="flex-shrink-0 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold">2</div>
+									<div>
+										<p class="text-white font-medium mb-1">Create or select a Thread</p>
+										<p class="text-slate-400 text-sm">In the Threads section, either create a new thread like "Investigate the murder" or use an existing one</p>
+									</div>
+								</div>
+								<div class="flex items-start gap-4">
+									<div class="flex-shrink-0 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold">3</div>
+									<div>
+										<p class="text-white font-medium mb-1">Click the 🔍 button</p>
+										<p class="text-slate-400 text-sm">Hover over your thread and click the 🔍 magnifying glass button that appears on the right</p>
+									</div>
+								</div>
+								<div class="flex items-start gap-4">
+									<div class="flex-shrink-0 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold">4</div>
+									<div>
+										<p class="text-white font-medium mb-1">Confirm activation</p>
+										<p class="text-slate-400 text-sm">Confirm the conversion - this will activate the Mystery Matrix and enable special investigation features</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5 mb-6">
+							<h4 class="text-lg font-bold text-blue-300 mb-2">💡 Pro Tip</h4>
+							<p class="text-slate-300 text-sm">
+								When Mystery Mode is active, Random Events will use a special Mystery Event Focus table that can give you free clue and suspect discoveries!
+							</p>
+						</div>
+
+						<div class="text-center">
+							<button
+								onclick={() => activeTab = 'play'}
+								class="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white text-lg font-bold rounded-xl shadow-lg transition-all hover:scale-105"
+							>
+								🎮 Go to Play Tab
+							</button>
+						</div>
+					</div>
+				</div>
+			{:else}
+				<!-- Mystery Matrix Panel -->
+				<div class="h-[calc(100vh-16rem)]">
+					<MysteryMatrixPanel />
 				</div>
 			{/if}
 		{:else if activeTab === 'reference'}

@@ -14,7 +14,22 @@
 	} from '$lib/utils/eventFocus';
 	import { rollD100, rollOnList } from '$lib/utils/mythicDice';
 	import { rollOnMeaningTable, getAllMeaningTableNames, getTableCategories } from '$lib/utils/mythicTableLookup';
+	import {
+		rollMysteryEventFocus,
+		getMysteryEventFocusDescription,
+		grantsFreeElementRoll,
+		type MysteryEventFocus
+	} from '$lib/tables/mythicTables/mysteryEventFocusTable';
+	import {
+		rollMysteryElement,
+		getMysteryElementDescription
+	} from '$lib/tables/mythicTables/mysteryElementsTable';
+	import {
+		rollClueDescriptors,
+		rollSuspectDescriptors
+	} from '$lib/tables/mythicTables/mysteryDescriptorsTable';
 	import DiceVisualizer from './DiceVisualizer.svelte';
+	import MysteryDiscoveryCheck from './MysteryDiscoveryCheck.svelte';
 
 	interface Props {
 		autoContext?: string;
@@ -24,11 +39,16 @@
 	let { autoContext = '', onComplete }: Props = $props();
 
 	// State
-	let step = $state<'context' | 'focus' | 'lists' | 'meaning' | 'interpretation'>('context');
+	let step = $state<'context' | 'focus' | 'lists' | 'meaning' | 'interpretation' | 'mystery-element'>('context');
 	let context = $state(autoContext);
-	let selectedFocus = $state<EventFocus | null>(null);
+	let selectedFocus = $state<MysteryEventFocus | null>(null);
 	let focusRoll = $state<number | undefined>(undefined);
 	let focusChosen = $state(false);
+
+	// Mystery-specific state
+	let mysteryElementResult = $state<string | null>(null);
+	let mysteryElementCategory = $state<'clues' | 'suspects' | null>(null);
+	let mysteryDescriptorWords = $state<{ word1: string; word2: string } | null>(null);
 
 	// List rolling
 	let listRollResult = $state<string>('');
@@ -49,8 +69,9 @@
 	// Derived
 	let threads = $derived(soloRpgStore.activeThreads);
 	let characters = $derived(soloRpgStore.activeCharacters);
-	let needsList = $derived(selectedFocus ? needsListRoll(selectedFocus) : null);
-	let suggestedTables = $derived(selectedFocus ? suggestMeaningTables(selectedFocus) : []);
+	let isMysteryMode = $derived(!!soloRpgStore.currentSession?.mysteryThread);
+	let needsList = $derived(selectedFocus ? needsListRoll(selectedFocus as EventFocus) : null);
+	let suggestedTables = $derived(selectedFocus ? suggestMeaningTables(selectedFocus as EventFocus) : []);
 	let allTableNames = $derived(getAllMeaningTableNames());
 	let tableCategories = $derived(getTableCategories());
 
@@ -59,11 +80,30 @@
 		isRolling = true;
 		await new Promise(resolve => setTimeout(resolve, 1000));
 
-		const roll = rollD100();
-		focusRoll = roll;
-		selectedFocus = getEventFocus(roll);
-		focusChosen = false;
-		isRolling = false;
+		// Use Mystery Event Focus table if in mystery mode
+		if (isMysteryMode) {
+			const result = rollMysteryEventFocus();
+			focusRoll = result.roll;
+			selectedFocus = result.focus;
+			focusChosen = false;
+			isRolling = false;
+
+			// Check if this grants a free mystery element roll
+			const elementCheck = grantsFreeElementRoll(result.focus);
+			if (elementCheck.grants && elementCheck.category) {
+				// Auto-roll mystery element
+				setTimeout(() => {
+					rollMysteryElementForEvent(elementCheck.category!);
+				}, 1500);
+				return;
+			}
+		} else {
+			const roll = rollD100();
+			focusRoll = roll;
+			selectedFocus = getEventFocus(roll);
+			focusChosen = false;
+			isRolling = false;
+		}
 
 		// Auto-advance to next step
 		setTimeout(() => {
@@ -75,11 +115,43 @@
 		}, 1500);
 	}
 
+	// Roll Mystery Element for Event (Clue Element / Suspect Element)
+	function rollMysteryElementForEvent(category: 'clues' | 'suspects') {
+		const session = soloRpgStore.currentSession;
+		if (!session) return;
+
+		mysteryElementCategory = category;
+		const progressPoints = category === 'clues'
+			? session.mysteryClueProgressPoints || 0
+			: session.mysterySuspectProgressPoints || 0;
+
+		const result = rollMysteryElement(progressPoints, category);
+		mysteryElementResult = result.result;
+
+		// Roll descriptor words for inspiration
+		const descriptors = category === 'clues' ? rollClueDescriptors() : rollSuspectDescriptors();
+		mysteryDescriptorWords = descriptors;
+
+		// Increment progress points
+		soloRpgStore.incrementMysteryProgressPoints(category);
+
+		step = 'mystery-element';
+	}
+
 	// Choose Event Focus manually
-	function chooseFocus(focus: EventFocus) {
+	function chooseFocus(focus: MysteryEventFocus) {
 		selectedFocus = focus;
 		focusChosen = true;
 		focusRoll = undefined;
+
+		// Check if this grants a free mystery element roll
+		if (isMysteryMode) {
+			const elementCheck = grantsFreeElementRoll(focus);
+			if (elementCheck.grants && elementCheck.category) {
+				rollMysteryElementForEvent(elementCheck.category);
+				return;
+			}
+		}
 
 		if (needsList) {
 			step = 'lists';
@@ -219,6 +291,9 @@
 		meaningRoll2 = undefined;
 		meaningResult2 = '';
 		interpretation = '';
+		mysteryElementResult = null;
+		mysteryElementCategory = null;
+		mysteryDescriptorWords = null;
 	}
 </script>
 
@@ -226,13 +301,19 @@
 	<div class="flex items-center gap-3 mb-6">
 		<span class="text-4xl">⚡</span>
 		<h2 class="text-2xl font-bold text-white">Random Event</h2>
+		{#if isMysteryMode}
+			<span class="ml-auto px-3 py-1 bg-purple-600/30 border border-purple-500 text-purple-300 text-xs font-bold rounded-full">
+				🔍 MYSTERY MODE
+			</span>
+		{/if}
 	</div>
 
 	<!-- Progress Indicator -->
 	<div class="flex items-center gap-2 mb-6 text-xs">
-		<div class="flex-1 h-1 rounded-full {step === 'context' || step === 'focus' || step === 'lists' || step === 'meaning' || step === 'interpretation' ? 'bg-orange-500' : 'bg-slate-700'}"></div>
-		<div class="flex-1 h-1 rounded-full {step === 'focus' || step === 'lists' || step === 'meaning' || step === 'interpretation' ? 'bg-orange-500' : 'bg-slate-700'}"></div>
-		<div class="flex-1 h-1 rounded-full {step === 'lists' || step === 'meaning' || step === 'interpretation' ? 'bg-orange-500' : 'bg-slate-700'}"></div>
+		<div class="flex-1 h-1 rounded-full {step === 'context' || step === 'focus' || step === 'lists' || step === 'mystery-element' || step === 'meaning' || step === 'interpretation' ? 'bg-orange-500' : 'bg-slate-700'}"></div>
+		<div class="flex-1 h-1 rounded-full {step === 'focus' || step === 'lists' || step === 'mystery-element' || step === 'meaning' || step === 'interpretation' ? 'bg-orange-500' : 'bg-slate-700'}"></div>
+		<div class="flex-1 h-1 rounded-full {step === 'lists' || step === 'mystery-element' || step === 'meaning' || step === 'interpretation' ? 'bg-orange-500' : 'bg-slate-700'}"></div>
+		<div class="flex-1 h-1 rounded-full {step === 'mystery-element' || step === 'meaning' || step === 'interpretation' ? 'bg-orange-500' : 'bg-slate-700'}"></div>
 		<div class="flex-1 h-1 rounded-full {step === 'meaning' || step === 'interpretation' ? 'bg-orange-500' : 'bg-slate-700'}"></div>
 		<div class="flex-1 h-1 rounded-full {step === 'interpretation' ? 'bg-orange-500' : 'bg-slate-700'}"></div>
 	</div>
@@ -275,9 +356,16 @@
 			<div class="text-sm text-orange-200 mb-4">
 				{#if selectedFocus}
 					<strong>Selected: {selectedFocus}</strong>
-					<p class="text-xs text-slate-400 mt-1">{getEventFocusDescription(selectedFocus)}</p>
+					<p class="text-xs text-slate-400 mt-1">
+						{isMysteryMode
+							? getMysteryEventFocusDescription(selectedFocus)
+							: getEventFocusDescription(selectedFocus as EventFocus)}
+					</p>
 				{:else}
 					Choose how to determine the event focus
+					{#if isMysteryMode}
+						<span class="ml-2 text-xs text-purple-400">(Mystery Mode Active)</span>
+					{/if}
 				{/if}
 			</div>
 
@@ -481,11 +569,54 @@
 			{/if}
 		</div>
 
+	{:else if step === 'mystery-element'}
+		<!-- Mystery Element Result (Clue/Suspect Element from Event Focus) -->
+		<div class="space-y-4">
+			<div class="p-4 bg-purple-900/20 border border-purple-500/30 rounded-lg">
+				<h3 class="text-lg font-bold text-purple-300 mb-2">
+					🔍 {mysteryElementCategory === 'clues' ? 'Clue' : 'Suspect'} Element Discovered!
+				</h3>
+				<p class="text-sm text-slate-300 mb-3">
+					The Random Event has revealed a free discovery! This {mysteryElementCategory === 'clues' ? 'clue' : 'suspect'} should be immediately apparent in the scene.
+				</p>
+
+				<div class="p-3 bg-slate-700/50 rounded mb-3">
+					<div class="text-lg font-bold text-white mb-1">{mysteryElementResult}</div>
+					<p class="text-sm text-slate-400">
+						{getMysteryElementDescription(mysteryElementResult!, mysteryElementCategory!)}
+					</p>
+				</div>
+
+				{#if mysteryDescriptorWords}
+					<div class="p-3 bg-blue-900/30 border border-blue-500/30 rounded">
+						<div class="text-sm text-blue-300 mb-1">Inspiration Words:</div>
+						<div class="text-lg font-bold text-white">
+							{mysteryDescriptorWords.word1} / {mysteryDescriptorWords.word2}
+						</div>
+					</div>
+				{/if}
+			</div>
+
+			<div class="p-3 bg-yellow-900/20 border border-yellow-500/30 rounded text-sm text-yellow-300">
+				<strong>Note:</strong> Add this {mysteryElementCategory === 'clues' ? 'clue' : 'suspect'} to your Mystery Matrix after interpreting the full event.
+			</div>
+
+			<button
+				onclick={() => step = 'meaning'}
+				class="w-full px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white font-bold rounded-xl transition-all"
+			>
+				Continue to Meaning →
+			</button>
+		</div>
+
 	{:else if step === 'interpretation'}
 		<!-- Interpretation -->
 		<div class="space-y-4">
 			<div class="p-4 bg-slate-800/30 rounded-lg space-y-2 text-sm">
 				<div><strong class="text-orange-300">Event Focus:</strong> <span class="text-white">{selectedFocus}</span></div>
+				{#if mysteryElementResult}
+					<div><strong class="text-purple-300">Mystery Element:</strong> <span class="text-white">{mysteryElementResult} ({mysteryElementCategory})</span></div>
+				{/if}
 				{#if involvedThread}
 					<div><strong class="text-purple-300">Thread:</strong> <span class="text-white">{involvedThread}</span></div>
 				{/if}

@@ -181,6 +181,18 @@
 							</div>
 						</div>
 						<button
+							onclick={() => {
+								if (confirm(`Convert "${thread.text}" to Mystery Mode?\n\nThis will remove it from Threads and activate the Mystery Matrix.`)) {
+									soloRpgStore.activateMystery(thread.text);
+								}
+							}}
+							class="opacity-0 group-hover:opacity-100 text-yellow-400 hover:text-yellow-300 text-xs transition-opacity flex-shrink-0"
+							aria-label="Convert to Mystery"
+							title="Convert to Mystery"
+						>
+							🔍
+						</button>
+						<button
 							onclick={() => removeThread(thread.id)}
 							class="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 text-xs transition-opacity flex-shrink-0"
 							aria-label="Remove"
