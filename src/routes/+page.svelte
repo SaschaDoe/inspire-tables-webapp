@@ -109,6 +109,15 @@
 				</span>
 			</a>
 			<a
+				href="/solo-rpg"
+				class="group relative px-10 py-5 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white text-xl font-bold rounded-2xl shadow-2xl shadow-orange-500/50 transition-all duration-300 hover:scale-105 hover:shadow-orange-500/70"
+			>
+				<span class="relative z-10 flex items-center gap-3">
+					<span class="text-3xl">🎮</span>
+					<span>Play Solo RPG</span>
+				</span>
+			</a>
+			<a
 				href="/tables"
 				class="group relative px-10 py-5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-xl font-bold rounded-2xl shadow-2xl shadow-purple-500/50 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/70"
 			>

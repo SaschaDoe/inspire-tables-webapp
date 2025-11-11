@@ -3,6 +3,7 @@
 	import StoryBoardNode from './StoryBoardNode.svelte';
 	import StoryBoardGrid from './StoryBoardGrid.svelte';
 	import StoryBoardDrawingLayer from './StoryBoardDrawingLayer.svelte';
+	import StoryBoardConnectionLayer from './StoryBoardConnectionLayer.svelte';
 
 	let canvasElement = $state<HTMLDivElement>();
 
@@ -202,6 +203,9 @@
 		{#each $activeNodes as node (node.id)}
 			<StoryBoardNode {node} />
 		{/each}
+
+		<!-- Connections -->
+		<StoryBoardConnectionLayer />
 
 		<!-- Selection box -->
 		{#if isBoxSelecting && selectionBox && (selectionBox.width > 0 || selectionBox.height > 0)}

@@ -137,5 +137,63 @@ export enum TableTitles {
 	ActionSubGenre = 'Action Sub-Genre',
 
 	// Campaign tables
-	CampaignStatement = 'Campaign Statement'
+	CampaignStatement = 'Campaign Statement',
+
+	// Mythic GME tables - Core Mechanics
+	MythicFateChart = 'Fate Chart',
+	MythicEventFocus = 'Event Focus',
+	MythicSceneAdjustment = 'Scene Adjustment',
+
+	// Mythic GME tables - Actions
+	MythicActionsTable1 = 'Actions Table 1',
+	MythicActionsTable2 = 'Actions Table 2',
+
+	// Mythic GME tables - Descriptions
+	MythicDescriptionsTable1 = 'Descriptions Table 1',
+	MythicDescriptionsTable2 = 'Descriptions Table 2',
+
+	// Mythic GME tables - Core Elements
+	MythicLocationsElements = 'Locations Elements',
+	MythicCharactersElements = 'Characters Elements',
+	MythicObjectsElements = 'Objects Elements',
+
+	// Mythic GME tables - Character Specialized
+	MythicCharacterAppearance = 'Character Appearance',
+	MythicCharacterBackground = 'Character Background',
+	MythicCharacterConversations = 'Character Conversations',
+	MythicCharacterDescriptors = 'Character Descriptors',
+	MythicCharacterIdentity = 'Character Identity',
+	MythicCharacterMotivations = 'Character Motivations',
+	MythicCharacterPersonality = 'Character Personality',
+	MythicCharacterSkills = 'Character Skills',
+	MythicCharacterTraitsFlaws = 'Character Traits & Flaws',
+	MythicCharacterActionsCombat = 'Character Actions (Combat)',
+	MythicCharacterActionsGeneral = 'Character Actions (General)',
+
+	// Mythic GME tables - Location Specialized
+	MythicCavernDescriptors = 'Cavern Descriptors',
+	MythicCityDescriptors = 'City Descriptors',
+	MythicCivilizationDescriptors = 'Civilization Descriptors',
+	MythicDomicileDescriptors = 'Domicile Descriptors',
+	MythicDungeonDescriptors = 'Dungeon Descriptors',
+	MythicForestDescriptors = 'Forest Descriptors',
+	MythicTerrainDescriptors = 'Terrain Descriptors',
+	MythicWastelandDescriptors = 'Wasteland Descriptors',
+	MythicStarshipDescriptors = 'Starship Descriptors',
+	MythicUrbanDescriptors = 'Urban Descriptors',
+
+	// Mythic GME tables - Creature Specialized
+	MythicAnimalActions = 'Animal Actions',
+	MythicCreatureDescriptors = 'Creature Descriptors',
+	MythicUndeadDescriptors = 'Undead Descriptors',
+	MythicAlienSpeciesDescriptors = 'Alien Species Descriptors',
+
+	// Mythic GME tables - Military & Objects
+	MythicArmyDescriptors = 'Army Descriptors',
+	MythicMagicItemDescriptors = 'Magic Item Descriptors',
+	MythicMutationDescriptors = 'Mutation Descriptors',
+
+	// Mythic GME tables - Meta/Narrative
+	MythicAdventureTone = 'Adventure Tone',
+	MythicPlotTwists = 'Plot Twists'
 }

@@ -10,6 +10,7 @@ import type {
 interface StoryBoardState {
 	boards: Map<string, StoryBoard>; // boardId -> StoryBoard
 	activeBoardId: string | null;
+	connectingFromNodeId: string | null; // Node ID when creating connection
 }
 
 const STORAGE_KEY = 'storyboards';
@@ -17,7 +18,8 @@ const STORAGE_KEY = 'storyboards';
 function createStoryBoardStore() {
 	const { subscribe, set, update } = writable<StoryBoardState>({
 		boards: new Map(),
-		activeBoardId: null
+		activeBoardId: null,
+		connectingFromNodeId: null
 	});
 
 	// Load from localStorage on init
@@ -44,13 +46,14 @@ function createStoryBoardStore() {
 				}
 				return {
 					boards,
-					activeBoardId: parsed.activeBoardId || null
+					activeBoardId: parsed.activeBoardId || null,
+					connectingFromNodeId: null
 				};
 			}
 		} catch (error) {
 			console.error('Failed to load storyboards from localStorage:', error);
 		}
-		return { boards: new Map(), activeBoardId: null };
+		return { boards: new Map(), activeBoardId: null, connectingFromNodeId: null };
 	}
 
 	function saveToStorage(state: StoryBoardState) {
@@ -532,6 +535,112 @@ function createStoryBoardStore() {
 			});
 		},
 
+		// Connection operations
+		addConnection(boardId: string, fromNodeId: string, toNodeId: string, label?: string) {
+			update((state) => {
+				const board = state.boards.get(boardId);
+				if (!board) return state;
+
+				// Create snapshot before adding
+				const snapshot = createSnapshot(board, 'Add connection');
+				addToHistory(board, snapshot);
+
+				const newConnection: StoryBoardConnection = {
+					id: crypto.randomUUID(),
+					fromNodeId,
+					toNodeId,
+					lineType: 'solid',
+					label,
+					endMarker: 'arrow',
+					metadata: {
+						createdAt: new Date()
+					}
+				};
+
+				board.connections.push(newConnection);
+				board.metadata.updatedAt = new Date();
+				saveToStorage(state);
+				return state;
+			});
+		},
+
+		deleteConnection(boardId: string, connectionId: string) {
+			update((state) => {
+				const board = state.boards.get(boardId);
+				if (!board) return state;
+
+				// Create snapshot before deleting
+				const snapshot = createSnapshot(board, 'Delete connection');
+				addToHistory(board, snapshot);
+
+				board.connections = board.connections.filter((c) => c.id !== connectionId);
+				board.metadata.updatedAt = new Date();
+				saveToStorage(state);
+				return state;
+			});
+		},
+
+		updateConnection(boardId: string, connectionId: string, updates: Partial<StoryBoardConnection>) {
+			update((state) => {
+				const board = state.boards.get(boardId);
+				if (!board) return state;
+
+				const connection = board.connections.find((c) => c.id === connectionId);
+				if (connection) {
+					Object.assign(connection, updates);
+					board.metadata.updatedAt = new Date();
+					saveToStorage(state);
+				}
+				return state;
+			});
+		},
+
+		// Connection mode operations
+		startConnection(nodeId: string) {
+			update((state) => {
+				state.connectingFromNodeId = nodeId;
+				return state;
+			});
+		},
+
+		completeConnection(toNodeId: string, label?: string) {
+			update((state) => {
+				if (state.connectingFromNodeId && state.connectingFromNodeId !== toNodeId && state.activeBoardId) {
+					const board = state.boards.get(state.activeBoardId);
+					if (board) {
+						// Create snapshot before adding
+						const snapshot = createSnapshot(board, 'Add connection');
+						addToHistory(board, snapshot);
+
+						const newConnection: StoryBoardConnection = {
+							id: crypto.randomUUID(),
+							fromNodeId: state.connectingFromNodeId,
+							toNodeId,
+							lineType: 'solid',
+							label,
+							endMarker: 'arrow',
+							metadata: {
+								createdAt: new Date()
+							}
+						};
+
+						board.connections.push(newConnection);
+						board.metadata.updatedAt = new Date();
+						saveToStorage(state);
+					}
+				}
+				state.connectingFromNodeId = null;
+				return state;
+			});
+		},
+
+		cancelConnection() {
+			update((state) => {
+				state.connectingFromNodeId = null;
+				return state;
+			});
+		},
+
 		// Utility
 		getBoardsByAdventure(adventureId: string): StoryBoard[] {
 			let boards: StoryBoard[] = [];
@@ -569,3 +678,5 @@ export const canRedo = derived(activeBoard, ($board) => {
 });
 
 export const boardMode = derived(activeBoard, ($board) => $board?.mode || 'select');
+
+export const connectingFromNodeId = derived(storyboardStore, ($store) => $store.connectingFromNodeId);

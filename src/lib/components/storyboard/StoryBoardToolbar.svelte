@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { storyboardStore, activeBoard, canUndo, canRedo, selectedNodes, boardMode } from '$lib/stores/storyboardStore';
+	import StoryBoardGenerator from './StoryBoardGenerator.svelte';
+
+	let showGenerator = $state(false);
 
 	function addCard() {
 		if (!$activeBoard) return;
@@ -13,6 +16,10 @@
 			y: centerY,
 			label: 'New Card'
 		});
+	}
+
+	function openGenerator() {
+		showGenerator = true;
 	}
 
 	function deleteSelected() {
@@ -78,6 +85,11 @@
 			<span>Add Card</span>
 		</button>
 
+		<button onclick={openGenerator} class="toolbar-btn generate" title="Generate from Tables (G)">
+			<span class="icon">🎲</span>
+			<span>Generate</span>
+		</button>
+
 		<button
 			onclick={deleteSelected}
 			class="toolbar-btn danger"
@@ -122,6 +134,8 @@
 		</button>
 	</div>
 </div>
+
+<StoryBoardGenerator show={showGenerator} onClose={() => (showGenerator = false)} />
 
 <style>
 	.toolbar {
@@ -212,6 +226,17 @@
 
 	.toolbar-btn.danger-outline:hover {
 		background: rgb(220 38 38 / 0.1);
+	}
+
+	.toolbar-btn.generate {
+		background: linear-gradient(to right, rgb(251 191 36), rgb(245 158 11));
+		border: none;
+		color: rgb(15 23 42);
+		font-weight: 600;
+	}
+
+	.toolbar-btn.generate:hover {
+		background: linear-gradient(to right, rgb(245 158 11), rgb(217 119 6));
 	}
 
 	.icon {

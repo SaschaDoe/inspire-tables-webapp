@@ -13,6 +13,7 @@
 		getEventFocusDescription
 	} from '$lib/utils/eventFocus';
 	import { rollD100, rollOnList } from '$lib/utils/mythicDice';
+	import { rollOnMeaningTable, getAllMeaningTableNames, getTableCategories } from '$lib/utils/mythicTableLookup';
 	import DiceVisualizer from './DiceVisualizer.svelte';
 
 	interface Props {
@@ -50,6 +51,8 @@
 	let characters = $derived(soloRpgStore.activeCharacters);
 	let needsList = $derived(selectedFocus ? needsListRoll(selectedFocus) : null);
 	let suggestedTables = $derived(selectedFocus ? suggestMeaningTables(selectedFocus) : []);
+	let allTableNames = $derived(getAllMeaningTableNames());
+	let tableCategories = $derived(getTableCategories());
 
 	// Roll for Event Focus
 	async function rollEventFocus() {
@@ -123,15 +126,26 @@
 		isRolling = true;
 		await new Promise(resolve => setTimeout(resolve, 1000));
 
-		const roll = rollD100();
-
-		if (tableNumber === 1) {
-			meaningRoll1 = roll;
-			// In a real implementation, we'd load the table and get the actual result
-			meaningResult1 = `[${meaningTable1}] Result ${roll}`;
-		} else {
-			meaningRoll2 = roll;
-			meaningResult2 = `[${meaningTable2}] Result ${roll}`;
+		try {
+			if (tableNumber === 1) {
+				const result = rollOnMeaningTable(meaningTable1);
+				meaningRoll1 = result.roll;
+				meaningResult1 = result.result;
+			} else {
+				const result = rollOnMeaningTable(meaningTable2);
+				meaningRoll2 = result.roll;
+				meaningResult2 = result.result;
+			}
+		} catch (error) {
+			console.error('Error rolling on meaning table:', error);
+			// Fallback to error message
+			if (tableNumber === 1) {
+				meaningRoll1 = 0;
+				meaningResult1 = 'Error: Table not found';
+			} else {
+				meaningRoll2 = 0;
+				meaningResult2 = 'Error: Table not found';
+			}
 		}
 
 		isRolling = false;
@@ -386,13 +400,20 @@
 					bind:value={meaningTable1}
 					class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-sm mb-3"
 				>
-					{#each suggestedTables as table}
-						<option value={table}>{table}</option>
+					{#if suggestedTables.length > 0}
+						<optgroup label="✨ Suggested">
+							{#each suggestedTables as table}
+								<option value={table}>{table}</option>
+							{/each}
+						</optgroup>
+					{/if}
+					{#each Object.entries(tableCategories) as [category, tables]}
+						<optgroup label={category}>
+							{#each tables as table}
+								<option value={table}>{table}</option>
+							{/each}
+						</optgroup>
 					{/each}
-					<option value="Actions Table 1">Actions Table 1</option>
-					<option value="Actions Table 2">Actions Table 2</option>
-					<option value="Descriptions Table 1">Descriptions Table 1</option>
-					<option value="Descriptions Table 2">Descriptions Table 2</option>
 				</select>
 
 				{#if !meaningRoll1}
@@ -418,12 +439,20 @@
 					bind:value={meaningTable2}
 					class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-sm mb-3"
 				>
-					{#each suggestedTables as table}
-						<option value={table}>{table}</option>
+					{#if suggestedTables.length > 0}
+						<optgroup label="✨ Suggested">
+							{#each suggestedTables as table}
+								<option value={table}>{table}</option>
+							{/each}
+						</optgroup>
+					{/if}
+					{#each Object.entries(tableCategories) as [category, tables]}
+						<optgroup label={category}>
+							{#each tables as table}
+								<option value={table}>{table}</option>
+							{/each}
+						</optgroup>
 					{/each}
-					<option value="Descriptions Table 1">Descriptions Table 1</option>
-					<option value="Descriptions Table 2">Descriptions Table 2</option>
-					<option value="Actions Table 2">Actions Table 2</option>
 				</select>
 
 				{#if !meaningRoll2}

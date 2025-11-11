@@ -529,6 +529,36 @@ export const boardMode = derived(
 
 ---
 
+## 📊 Current Progress
+
+### Completed Phases ✅
+- **Phase 1: Core Canvas (MVP)** - Functional canvas with pan/zoom, undo/redo, keyboard shortcuts
+- **Phase 2: Drawing Layer & Visual Polish** - Freehand drawing, color tools, search functionality
+- **Phase 3: Entity Integration & Connections** - Entity sidebar, visual arrows, copy/paste, tooltips
+- **Phase 4: Story Engine Generation** - Random table integration with generator modal and promote-to-entity
+
+### What's Working Now 🎯
+- Infinite canvas with pan (middle-click or space+drag) and zoom (ctrl+scroll)
+- Drag cards to position, inline editing with click
+- Full undo/redo with keyboard shortcuts (Ctrl+Z/Y)
+- Multi-select with box selection and Shift+Click
+- Keyboard shortcuts: Delete, Arrow keys (nudge), Ctrl+A (select all), Escape
+- Freehand drawing with 8 colors and 5 stroke widths (press D to toggle)
+- Ctrl+F search to find and zoom to cards
+- Entity selector sidebar with type filters and search
+- Alt+Click to create curved arrow connections between cards
+- Entity sync: cards auto-update when entity name changes
+- Hover tooltips showing full entity details
+- GOTO button to navigate from card to entity workspace
+- Copy/paste (Ctrl+C/V) and duplicate (Ctrl+D)
+- localStorage persistence of all boards
+- **Generate button** in toolbar opens modal with 10 table categories
+- Roll on 100+ random tables (adventure, character, monster, location, etc.)
+- Generated cards have **yellow theme** with ⚡ badge and special styling
+- Right-click generated cards to **promote to entities** (character, location, scene, adventure)
+
+---
+
 ## 🎬 Implementation Phases
 
 ### Phase 1: Core Canvas (MVP) ✅ COMPLETE
@@ -625,9 +655,11 @@ export const boardMode = derived(
 
 ---
 
-### Phase 3: Entity Integration & Connections 🟡
+### Phase 3: Entity Integration & Connections ✅ COMPLETED
 
 **Goal:** Add existing entities and create visual connections
+
+**Status:** ✅ Completed
 
 **Tasks:**
 1. **Entity Selector** - Build StoryBoardSidebar.svelte:
@@ -663,9 +695,11 @@ export const boardMode = derived(
 
 ---
 
-### Phase 4: Story Engine Generation 🟢
+### Phase 4: Story Engine Generation 🔜 NEXT
 
 **Goal:** AI-assisted brainstorming with random tables
+
+**Status:** 🔜 Planned - Ready to implement next
 
 **Tasks:**
 1. **Generation Modal** - Build StoryBoardGenerator.svelte:

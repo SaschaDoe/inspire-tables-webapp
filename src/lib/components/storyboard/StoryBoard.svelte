@@ -1,16 +1,20 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { storyboardStore, activeBoard, selectedNodes, boardMode } from '$lib/stores/storyboardStore';
+	import { storyboardStore, activeBoard, selectedNodes, boardMode, connectingFromNodeId } from '$lib/stores/storyboardStore';
 	import StoryBoardToolbar from './StoryBoardToolbar.svelte';
 	import StoryBoardCanvas from './StoryBoardCanvas.svelte';
 	import StoryBoardDrawingTools from './StoryBoardDrawingTools.svelte';
 	import StoryBoardSearch from './StoryBoardSearch.svelte';
+	import StoryBoardSidebar from './StoryBoardSidebar.svelte';
 
 	interface Props {
 		adventureId: string;
 	}
 
 	let { adventureId }: Props = $props();
+
+	// Clipboard for copy/paste
+	let clipboard = $state<typeof $selectedNodes>([]);
 
 	onMount(() => {
 		// Load or create board for this adventure
@@ -51,10 +55,14 @@
 			storyboardStore.redo($activeBoard.id);
 		}
 
-		// Escape - Deselect all
+		// Escape - Cancel connection or deselect all
 		if (e.key === 'Escape') {
 			e.preventDefault();
-			storyboardStore.deselectAll($activeBoard.id);
+			if ($connectingFromNodeId) {
+				storyboardStore.cancelConnection();
+			} else {
+				storyboardStore.deselectAll($activeBoard.id);
+			}
 		}
 
 		// Ctrl+A - Select all
@@ -85,6 +93,62 @@
 			const newMode = $boardMode === 'draw' ? 'select' : 'draw';
 			storyboardStore.setMode($activeBoard.id, newMode);
 		}
+
+		// Ctrl+C - Copy selected nodes
+		if (e.ctrlKey && e.key === 'c' && $selectedNodes.length > 0) {
+			e.preventDefault();
+			clipboard = JSON.parse(JSON.stringify($selectedNodes)); // Deep clone
+		}
+
+		// Ctrl+V - Paste nodes
+		if (e.ctrlKey && e.key === 'v' && clipboard.length > 0) {
+			e.preventDefault();
+			// Paste nodes with offset
+			clipboard.forEach((copiedNode) => {
+				storyboardStore.addNode(
+					$activeBoard.id,
+					{
+						entityId: copiedNode.entityId,
+						entityType: copiedNode.entityType,
+						x: copiedNode.x + 20,
+						y: copiedNode.y + 20,
+						width: copiedNode.width,
+						height: copiedNode.height,
+						color: copiedNode.color,
+						icon: copiedNode.icon,
+						label: copiedNode.label,
+						notes: copiedNode.notes,
+						layer: copiedNode.layer
+					},
+					`Paste ${clipboard.length} ${clipboard.length === 1 ? 'card' : 'cards'}`
+				);
+			});
+		}
+
+		// Ctrl+D - Duplicate selected nodes
+		if (e.ctrlKey && e.key === 'd' && $selectedNodes.length > 0) {
+			e.preventDefault();
+			// Duplicate nodes with offset
+			$selectedNodes.forEach((node) => {
+				storyboardStore.addNode(
+					$activeBoard.id,
+					{
+						entityId: node.entityId,
+						entityType: node.entityType,
+						x: node.x + 20,
+						y: node.y + 20,
+						width: node.width,
+						height: node.height,
+						color: node.color,
+						icon: node.icon,
+						label: node.label,
+						notes: node.notes,
+						layer: node.layer
+					},
+					`Duplicate ${$selectedNodes.length} ${$selectedNodes.length === 1 ? 'card' : 'cards'}`
+				);
+			});
+		}
 	}
 </script>
 
@@ -96,6 +160,7 @@
 		<StoryBoardDrawingTools />
 		<StoryBoardCanvas />
 		<StoryBoardSearch />
+		<StoryBoardSidebar {adventureId} />
 	{:else}
 		<div class="loading">
 			<p>Loading story board...</p>

@@ -4,14 +4,19 @@
 	import type { Table } from '$lib/tables/table';
 	import { Dice } from '$lib/utils/dice';
 	import { onMount } from 'svelte';
+	import FateChartViewer from '$lib/components/FateChartViewer.svelte';
 
 	let table = $state<Table | null>(null);
 	let rollResults = $state<string[]>([]);
 	let isRolling = $state(false);
 	let isLoading = $state(true);
+	let isFateChart = $state(false);
 
 	onMount(async () => {
 		const tableTitle = decodeURIComponent($page.params.tableTitle);
+		// Check if this is the Fate Chart (special 2D table)
+		isFateChart = tableTitle === 'Fate Chart';
+
 		// Find the table metadata across all categories
 		for (const category of tableMetadata) {
 			const foundMeta = category.tables.find((t) => t.title === tableTitle);
@@ -82,113 +87,121 @@
 		</div>
 
 		<div class="container mx-auto px-4 py-8 max-w-7xl">
-			<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-				<!-- Left: Table Entries -->
-				<div class="lg:col-span-2">
-					<div class="bg-slate-800/50 backdrop-blur rounded-lg p-6 border border-purple-500/20">
-						<h2 class="text-xl font-bold text-white mb-4">Table Entries</h2>
-						<div class="space-y-2 max-h-[600px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-purple-600 scrollbar-track-slate-800">
-							{#each table.entries as entry, index}
-								<div
-									class="flex gap-4 p-3 rounded-lg bg-slate-900/30 border border-purple-500/10 hover:border-purple-500/30 transition-colors"
-								>
-									<div
-										class="flex-shrink-0 w-20 text-center py-1 px-2 bg-purple-900/30 rounded text-purple-300 font-mono text-sm"
-									>
-										{entry.toString()}
-									</div>
-									<div class="flex-1">
-										<p class="text-white">{entry.textWithCascades || entry.text}</p>
-									</div>
-								</div>
-							{/each}
-						</div>
-					</div>
+			{#if isFateChart}
+				<!-- Fate Chart: Full-width specialized viewer -->
+				<div class="bg-slate-800/50 backdrop-blur rounded-lg p-6 border border-purple-500/20">
+					<FateChartViewer />
 				</div>
-
-				<!-- Right: Roll Section -->
-				<div class="space-y-6">
-					<!-- Info (moved to top) -->
-					<div class="bg-slate-800/50 backdrop-blur rounded-lg p-6 border border-purple-500/20">
-						<h3 class="text-lg font-semibold text-white mb-3">About This Table</h3>
-						<div class="space-y-2 text-sm">
-							<div class="flex justify-between">
-								<span class="text-purple-300">Type:</span>
-								<span class="text-white font-medium">{table.tableType}</span>
-							</div>
-							<div class="flex justify-between">
-								<span class="text-purple-300">Entries:</span>
-								<span class="text-white font-medium">{table.entries.length}</span>
-							</div>
-							<div class="flex justify-between">
-								<span class="text-purple-300">Dice:</span>
-								<span class="text-white font-medium">{table.diceRole.toString()}</span>
+			{:else}
+				<!-- Standard Table: Two-column layout -->
+				<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+					<!-- Left: Table Entries -->
+					<div class="lg:col-span-2">
+						<div class="bg-slate-800/50 backdrop-blur rounded-lg p-6 border border-purple-500/20">
+							<h2 class="text-xl font-bold text-white mb-4">Table Entries</h2>
+							<div class="space-y-2 max-h-[600px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-purple-600 scrollbar-track-slate-800">
+								{#each table.entries as entry, index}
+									<div
+										class="flex gap-4 p-3 rounded-lg bg-slate-900/30 border border-purple-500/10 hover:border-purple-500/30 transition-colors"
+									>
+										<div
+											class="flex-shrink-0 w-20 text-center py-1 px-2 bg-purple-900/30 rounded text-purple-300 font-mono text-sm"
+										>
+											{entry.toString()}
+										</div>
+										<div class="flex-1">
+											<p class="text-white">{entry.textWithCascades || entry.text}</p>
+										</div>
+									</div>
+								{/each}
 							</div>
 						</div>
-						{#if table.entries.some((e) => e.cascadingRoles.length > 0)}
-							<div class="mt-4 p-3 bg-purple-900/20 rounded border border-purple-500/20">
-								<p class="text-purple-200 text-xs">
-									<span class="font-semibold">Note:</span> This table contains cascading entries
-									that may trigger rolls on other tables.
-								</p>
-							</div>
-						{/if}
 					</div>
 
-					<!-- Roll Button -->
-					<div class="bg-slate-800/50 backdrop-blur rounded-lg p-6 border border-purple-500/20">
-						<h2 class="text-xl font-bold text-white mb-4">Roll the Dice</h2>
-						<button
-							onclick={rollTable}
-							disabled={isRolling}
-							class="w-full px-6 py-4 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-800 disabled:cursor-not-allowed text-white font-bold text-lg rounded-lg shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 {isRolling
-								? 'animate-pulse'
-								: ''}"
-						>
-							{isRolling ? 'Rolling...' : `Roll ${table.diceRole.toString()}`}
-						</button>
-
-						{#if rollResults.length > 0}
-							<div class="mt-6">
-								<div class="flex items-center justify-between mb-3">
-									<h3 class="text-lg font-semibold text-white">Latest Result</h3>
-									<button
-										onclick={clearHistory}
-										class="text-xs text-purple-300 hover:text-purple-100 transition-colors"
-									>
-										Clear History
-									</button>
+					<!-- Right: Roll Section -->
+					<div class="space-y-6">
+						<!-- Info (moved to top) -->
+						<div class="bg-slate-800/50 backdrop-blur rounded-lg p-6 border border-purple-500/20">
+							<h3 class="text-lg font-semibold text-white mb-3">About This Table</h3>
+							<div class="space-y-2 text-sm">
+								<div class="flex justify-between">
+									<span class="text-purple-300">Type:</span>
+									<span class="text-white font-medium">{table.tableType}</span>
 								</div>
-								<div
-									class="p-4 bg-gradient-to-br from-purple-900/50 to-pink-900/50 rounded-lg border border-purple-400/30 shadow-lg"
-								>
-									<p class="text-white text-lg font-medium">{rollResults[0]}</p>
+								<div class="flex justify-between">
+									<span class="text-purple-300">Entries:</span>
+									<span class="text-white font-medium">{table.entries.length}</span>
+								</div>
+								<div class="flex justify-between">
+									<span class="text-purple-300">Dice:</span>
+									<span class="text-white font-medium">{table.diceRole.toString()}</span>
 								</div>
 							</div>
-						{/if}
-					</div>
-
-					<!-- Roll History (always visible with fixed height) -->
-					<div class="bg-slate-800/50 backdrop-blur rounded-lg p-6 border border-purple-500/20">
-						<h3 class="text-lg font-semibold text-white mb-4">Previous Rolls</h3>
-						<div class="h-80 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-purple-600 scrollbar-track-slate-800">
-							{#if rollResults.length > 1}
-								<div class="space-y-2">
-									{#each rollResults.slice(1) as result, index}
-										<div class="p-3 bg-slate-900/30 rounded border border-purple-500/10">
-											<p class="text-purple-100 text-sm">{result}</p>
-										</div>
-									{/each}
-								</div>
-							{:else}
-								<div class="h-full flex items-center justify-center">
-									<p class="text-purple-300/50 text-sm italic">No previous rolls yet</p>
+							{#if table.entries.some((e) => e.cascadingRoles.length > 0)}
+								<div class="mt-4 p-3 bg-purple-900/20 rounded border border-purple-500/20">
+									<p class="text-purple-200 text-xs">
+										<span class="font-semibold">Note:</span> This table contains cascading entries
+										that may trigger rolls on other tables.
+									</p>
 								</div>
 							{/if}
 						</div>
+
+						<!-- Roll Button -->
+						<div class="bg-slate-800/50 backdrop-blur rounded-lg p-6 border border-purple-500/20">
+							<h2 class="text-xl font-bold text-white mb-4">Roll the Dice</h2>
+							<button
+								onclick={rollTable}
+								disabled={isRolling}
+								class="w-full px-6 py-4 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-800 disabled:cursor-not-allowed text-white font-bold text-lg rounded-lg shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 {isRolling
+									? 'animate-pulse'
+									: ''}"
+							>
+								{isRolling ? 'Rolling...' : `Roll ${table.diceRole.toString()}`}
+							</button>
+
+							{#if rollResults.length > 0}
+								<div class="mt-6">
+									<div class="flex items-center justify-between mb-3">
+										<h3 class="text-lg font-semibold text-white">Latest Result</h3>
+										<button
+											onclick={clearHistory}
+											class="text-xs text-purple-300 hover:text-purple-100 transition-colors"
+										>
+											Clear History
+										</button>
+									</div>
+									<div
+										class="p-4 bg-gradient-to-br from-purple-900/50 to-pink-900/50 rounded-lg border border-purple-400/30 shadow-lg"
+									>
+										<p class="text-white text-lg font-medium">{rollResults[0]}</p>
+									</div>
+								</div>
+							{/if}
+						</div>
+
+						<!-- Roll History (always visible with fixed height) -->
+						<div class="bg-slate-800/50 backdrop-blur rounded-lg p-6 border border-purple-500/20">
+							<h3 class="text-lg font-semibold text-white mb-4">Previous Rolls</h3>
+							<div class="h-80 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-purple-600 scrollbar-track-slate-800">
+								{#if rollResults.length > 1}
+									<div class="space-y-2">
+										{#each rollResults.slice(1) as result, index}
+											<div class="p-3 bg-slate-900/30 rounded border border-purple-500/10">
+												<p class="text-purple-100 text-sm">{result}</p>
+											</div>
+										{/each}
+									</div>
+								{:else}
+									<div class="h-full flex items-center justify-center">
+										<p class="text-purple-300/50 text-sm italic">No previous rolls yet</p>
+									</div>
+								{/if}
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
+			{/if}
 		</div>
 	</div>
 {:else}

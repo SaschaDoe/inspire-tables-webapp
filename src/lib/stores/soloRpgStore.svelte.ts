@@ -86,6 +86,19 @@ export interface RandomEvent {
 	timestamp: Date;
 }
 
+export interface MeaningRoll {
+	id: string;
+	sceneNumber: number;
+	context: string; // What player was trying to learn about
+	tableName: string; // Table used for rolling
+	roll1: number;
+	result1: string;
+	roll2: number;
+	result2: string;
+	playerInterpretation?: string;
+	timestamp: Date;
+}
+
 export interface SoloRpgSession {
 	id: string;
 	adventureName: string;
@@ -103,6 +116,7 @@ export interface SoloRpgSession {
 	// History
 	fateQuestionHistory: FateQuestion[];
 	randomEventHistory: RandomEvent[];
+	meaningRollHistory: MeaningRoll[];
 
 	// Settings
 	useFateCheck: boolean; // Use 2d10 instead of d100
@@ -148,6 +162,7 @@ class SoloRpgStore {
 			currentSceneNumber: 0,
 			fateQuestionHistory: [],
 			randomEventHistory: [],
+			meaningRollHistory: [],
 			useFateCheck: false,
 			chaosFlavor: 'standard',
 			createdAt: new Date(),
@@ -384,6 +399,15 @@ class SoloRpgStore {
 		this.autoSave();
 	}
 
+	// ===== MEANING ROLLS =====
+
+	logMeaningRoll(roll: MeaningRoll): void {
+		if (!this.currentSession) return;
+
+		this.currentSession.meaningRollHistory.push(roll);
+		this.autoSave();
+	}
+
 	// ===== SCENES =====
 
 	addScene(scene: Scene): void {
@@ -539,6 +563,10 @@ class SoloRpgStore {
 
 	get recentRandomEvents(): RandomEvent[] {
 		return this.currentSession?.randomEventHistory.slice(-5) || [];
+	}
+
+	get recentMeaningRolls(): MeaningRoll[] {
+		return this.currentSession?.meaningRollHistory.slice(-5) || [];
 	}
 }
 

@@ -9,10 +9,18 @@
 	import RandomEventGenerator from '$lib/components/solorpg/RandomEventGenerator.svelte';
 	import SceneManager from '$lib/components/solorpg/SceneManager.svelte';
 	import SessionManager from '$lib/components/solorpg/SessionManager.svelte';
+	import MeaningDiscovery from '$lib/components/solorpg/MeaningDiscovery.svelte';
+	import SessionHistory from '$lib/components/solorpg/SessionHistory.svelte';
+	import FirstSceneHelp from '$lib/components/solorpg/FirstSceneHelp.svelte';
+	import FourWGenerator from '$lib/components/solorpg/FourWGenerator.svelte';
 
 	let activeTab = $state<'play' | 'tables' | 'reference'>('play');
 	let showSessionManager = $state(false);
 	let showRandomEventModal = $state(false);
+	let showMeaningDiscovery = $state(false);
+	let showSessionHistory = $state(false);
+	let showFirstSceneHelp = $state(false);
+	let showFourWGenerator = $state(false);
 
 	// Derived state
 	let hasSession = $derived(soloRpgStore.currentSession !== null);
@@ -48,14 +56,40 @@
 				</div>
 
 				<!-- Quick Actions -->
-				<div class="flex gap-2">
+				<div class="flex gap-2 flex-wrap">
 					<button
 						onclick={() => showSessionManager = true}
 						class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors"
 					>
 						💾 Manage Sessions
 					</button>
+					<button
+						onclick={() => showFirstSceneHelp = true}
+						class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+						title="Learn how to start your adventure"
+					>
+						📖 First Scene Help
+					</button>
 					{#if hasSession}
+						<button
+							onclick={() => showSessionHistory = true}
+							class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors font-medium"
+						>
+							📜 History
+						</button>
+						<button
+							onclick={() => showFourWGenerator = true}
+							class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors font-medium"
+							title="Generate First Scene using 4W method"
+						>
+							🗺️ 4W Generator
+						</button>
+						<button
+							onclick={() => showMeaningDiscovery = true}
+							class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors font-medium"
+						>
+							🎲 Discover Meaning
+						</button>
 						<a
 							href="/tables"
 							class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
@@ -307,3 +341,27 @@
 {#if showSessionManager}
 	<SessionManager onClose={() => showSessionManager = false} />
 {/if}
+
+<!-- Meaning Discovery Modal -->
+<MeaningDiscovery
+	isOpen={showMeaningDiscovery}
+	onClose={() => showMeaningDiscovery = false}
+/>
+
+<!-- Session History Modal -->
+<SessionHistory
+	isOpen={showSessionHistory}
+	onClose={() => showSessionHistory = false}
+/>
+
+<!-- First Scene Help Modal -->
+<FirstSceneHelp
+	isOpen={showFirstSceneHelp}
+	onClose={() => showFirstSceneHelp = false}
+/>
+
+<!-- 4W Generator Modal -->
+<FourWGenerator
+	isOpen={showFourWGenerator}
+	onClose={() => showFourWGenerator = false}
+/>

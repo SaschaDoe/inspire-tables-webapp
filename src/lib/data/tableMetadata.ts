@@ -104,6 +104,66 @@ export const tableMetadata: TableCategory[] = [
 		tables: [
 			{ title: TableTitles.CampaignStatement, type: TableType.Campaign, importPath: 'campaignTables/campaignStatementTable', className: 'CampaignStatementTable' },
 		]
+	},
+	{
+		type: TableType.SoloRPG,
+		tables: [
+			// Core Mechanics
+			{ title: TableTitles.MythicFateChart, type: TableType.SoloRPG, importPath: 'mythicTables/fateChartTable', className: 'FateChartTable' },
+			{ title: TableTitles.MythicEventFocus, type: TableType.SoloRPG, importPath: 'mythicTables/eventFocusTable', className: 'EventFocusTable' },
+			{ title: TableTitles.MythicSceneAdjustment, type: TableType.SoloRPG, importPath: 'mythicTables/sceneAdjustmentTable', className: 'SceneAdjustmentTable' },
+
+			// Actions & Descriptions
+			{ title: TableTitles.MythicActionsTable1, type: TableType.SoloRPG, importPath: 'mythicTables/actionsTable1', className: 'ActionsTable1' },
+			{ title: TableTitles.MythicActionsTable2, type: TableType.SoloRPG, importPath: 'mythicTables/actionsTable2', className: 'ActionsTable2' },
+			{ title: TableTitles.MythicDescriptionsTable1, type: TableType.SoloRPG, importPath: 'mythicTables/descriptionsTable1', className: 'DescriptionsTable1' },
+			{ title: TableTitles.MythicDescriptionsTable2, type: TableType.SoloRPG, importPath: 'mythicTables/descriptionsTable2', className: 'DescriptionsTable2' },
+
+			// Core Elements
+			{ title: TableTitles.MythicLocationsElements, type: TableType.SoloRPG, importPath: 'mythicTables/locationsElementsTable', className: 'LocationsElementsTable' },
+			{ title: TableTitles.MythicCharactersElements, type: TableType.SoloRPG, importPath: 'mythicTables/charactersElementsTable', className: 'CharactersElementsTable' },
+			{ title: TableTitles.MythicObjectsElements, type: TableType.SoloRPG, importPath: 'mythicTables/objectsElementsTable', className: 'ObjectsElementsTable' },
+
+			// Character Specialized
+			{ title: TableTitles.MythicCharacterAppearance, type: TableType.SoloRPG, importPath: 'mythicTables/characterAppearanceTable', className: 'CharacterAppearanceTable' },
+			{ title: TableTitles.MythicCharacterBackground, type: TableType.SoloRPG, importPath: 'mythicTables/characterBackgroundTable', className: 'CharacterBackgroundTable' },
+			{ title: TableTitles.MythicCharacterConversations, type: TableType.SoloRPG, importPath: 'mythicTables/characterConversationsTable', className: 'CharacterConversationsTable' },
+			{ title: TableTitles.MythicCharacterDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/characterDescriptorsTable', className: 'CharacterDescriptorsTable' },
+			{ title: TableTitles.MythicCharacterIdentity, type: TableType.SoloRPG, importPath: 'mythicTables/characterIdentityTable', className: 'CharacterIdentityTable' },
+			{ title: TableTitles.MythicCharacterMotivations, type: TableType.SoloRPG, importPath: 'mythicTables/characterMotivationsTable', className: 'CharacterMotivationsTable' },
+			{ title: TableTitles.MythicCharacterPersonality, type: TableType.SoloRPG, importPath: 'mythicTables/characterPersonalityTable', className: 'CharacterPersonalityTable' },
+			{ title: TableTitles.MythicCharacterSkills, type: TableType.SoloRPG, importPath: 'mythicTables/characterSkillsTable', className: 'CharacterSkillsTable' },
+			{ title: TableTitles.MythicCharacterTraitsFlaws, type: TableType.SoloRPG, importPath: 'mythicTables/characterTraitsFlawsTable', className: 'CharacterTraitsFlawsTable' },
+			{ title: TableTitles.MythicCharacterActionsCombat, type: TableType.SoloRPG, importPath: 'mythicTables/characterActionsCombatTable', className: 'CharacterActionsCombatTable' },
+			{ title: TableTitles.MythicCharacterActionsGeneral, type: TableType.SoloRPG, importPath: 'mythicTables/characterActionsGeneralTable', className: 'CharacterActionsGeneralTable' },
+
+			// Location Specialized
+			{ title: TableTitles.MythicCavernDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/cavernDescriptorsTable', className: 'CavernDescriptorsTable' },
+			{ title: TableTitles.MythicCityDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/cityDescriptorsTable', className: 'CityDescriptorsTable' },
+			{ title: TableTitles.MythicCivilizationDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/civilizationDescriptorsTable', className: 'CivilizationDescriptorsTable' },
+			{ title: TableTitles.MythicDomicileDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/domicileDescriptorsTable', className: 'DomicileDescriptorsTable' },
+			{ title: TableTitles.MythicDungeonDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/dungeonDescriptorsTable', className: 'DungeonDescriptorsTable' },
+			{ title: TableTitles.MythicForestDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/forestDescriptorsTable', className: 'ForestDescriptorsTable' },
+			{ title: TableTitles.MythicTerrainDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/terrainDescriptorsTable', className: 'TerrainDescriptorsTable' },
+			{ title: TableTitles.MythicWastelandDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/wastelandDescriptorsTable', className: 'WastelandDescriptorsTable' },
+			{ title: TableTitles.MythicStarshipDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/starshipDescriptorsTable', className: 'StarshipDescriptorsTable' },
+			{ title: TableTitles.MythicUrbanDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/urbanDescriptorsTable', className: 'UrbanDescriptorsTable' },
+
+			// Creature Specialized
+			{ title: TableTitles.MythicAnimalActions, type: TableType.SoloRPG, importPath: 'mythicTables/animalActionsTable', className: 'AnimalActionsTable' },
+			{ title: TableTitles.MythicCreatureDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/creatureDescriptorsTable', className: 'CreatureDescriptorsTable' },
+			{ title: TableTitles.MythicUndeadDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/undeadDescriptorsTable', className: 'UndeadDescriptorsTable' },
+			{ title: TableTitles.MythicAlienSpeciesDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/alienSpeciesDescriptorsTable', className: 'AlienSpeciesDescriptorsTable' },
+
+			// Military & Objects
+			{ title: TableTitles.MythicArmyDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/armyDescriptorsTable', className: 'ArmyDescriptorsTable' },
+			{ title: TableTitles.MythicMagicItemDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/magicItemDescriptorsTable', className: 'MagicItemDescriptorsTable' },
+			{ title: TableTitles.MythicMutationDescriptors, type: TableType.SoloRPG, importPath: 'mythicTables/mutationDescriptorsTable', className: 'MutationDescriptorsTable' },
+
+			// Meta/Narrative
+			{ title: TableTitles.MythicAdventureTone, type: TableType.SoloRPG, importPath: 'mythicTables/adventureToneTable', className: 'AdventureToneTable' },
+			{ title: TableTitles.MythicPlotTwists, type: TableType.SoloRPG, importPath: 'mythicTables/plotTwistsTable', className: 'PlotTwistsTable' },
+		]
 	}
 ];
 
