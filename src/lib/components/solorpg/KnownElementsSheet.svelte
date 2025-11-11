@@ -101,10 +101,16 @@
 
 	<!-- Explanation -->
 	<div class="p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
-		<p class="text-xs text-slate-300">
-			Known Elements are pre-defined locations, encounters, or objects that can appear when
-			rolling "Known" on the Area Elements Table. Each element has a position (1-10) determined
-			by rolling 1d10. Cross out elements that have been exhausted.
+		<p class="text-xs text-slate-300 mb-2">
+			Known Elements are pre-defined locations, encounters, or objects that you KNOW are in this region before exploring. When "Known" is rolled during area generation, the system will:
+		</p>
+		<ul class="text-xs text-slate-300 list-disc list-inside space-y-1">
+			<li>Roll 1d10 to select an element by position</li>
+			<li>Only select from elements that haven't been used yet</li>
+			<li>Automatically cross out the element when the area is created</li>
+		</ul>
+		<p class="text-xs text-slate-400 mt-2 italic">
+			Add elements you know are present (e.g., "Vampire Lord" in a vampire's castle), not generic possibilities.
 		</p>
 	</div>
 

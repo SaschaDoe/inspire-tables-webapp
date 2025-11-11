@@ -31,6 +31,7 @@
 		ppModifier?: number; // For Special elements
 		alternate?: AreaElement; // For Special elements (second roll)
 		alternateDescription?: string;
+		knownElementId?: string; // For Known elements (to auto-cross out)
 	}
 
 	// State
@@ -87,7 +88,7 @@
 	function generateDescription(
 		element: AreaElement,
 		category: CategoryType
-	): { description: string; roll?: number } {
+	): { description: string; roll?: number; knownElementId?: string } {
 		switch (element) {
 			case 'Expected':
 				return { description: '(Describe what you expect to find)' };
@@ -110,11 +111,25 @@
 				if (!region || region.knownElements.length === 0) {
 					return { description: '(No Known Elements defined - treat as Random or Expected)' };
 				} else {
+					// Filter out crossed (used) elements
+					const availableElements = region.knownElements.filter((ke) => !ke.crossed);
+
+					if (availableElements.length === 0) {
+						return { description: '(All Known Elements used - treat as Random or Expected)' };
+					}
+
 					const roll = rollD10();
-					const element = region.knownElements.find((ke) => ke.position === roll);
+					let element = availableElements.find((ke) => ke.position === roll);
+
+					// If roll hits empty position, choose first available
+					if (!element && availableElements.length > 0) {
+						element = availableElements[0];
+					}
+
 					return {
-						description: element ? element.name : '(No element at position ' + roll + ')',
-						roll
+						description: element ? `📋 KNOWN: ${element.name}` : '(No element at position ' + roll + ')',
+						roll,
+						knownElementId: element?.id // Store ID for auto-crossing out
 					};
 				}
 			case 'Special':
@@ -130,12 +145,13 @@
 
 	function rollElement(category: CategoryType): ElementResult {
 		const result = rollAreaElement(currentPP, category);
-		const { description, roll } = generateDescription(result.element, category);
+		const descResult = generateDescription(result.element, category);
 
 		const elementResult: ElementResult = {
 			element: result.element,
-			description,
-			roll: result.roll
+			description: descResult.description,
+			roll: result.roll,
+			knownElementId: descResult.knownElementId // Pass through Known Element ID
 		};
 
 		// Handle Special elements
@@ -208,6 +224,17 @@
 			});
 		}
 
+		// Auto-cross out Known Elements that were used
+		if (largeLoc.knownElementId) {
+			soloRpgStore.toggleKnownElementCrossed(regionId, largeLoc.knownElementId);
+		}
+		if (smallLoc.knownElementId) {
+			soloRpgStore.toggleKnownElementCrossed(regionId, smallLoc.knownElementId);
+		}
+		if (encounterObj.knownElementId) {
+			soloRpgStore.toggleKnownElementCrossed(regionId, encounterObj.knownElementId);
+		}
+
 		// Apply PP modifiers from Special elements
 		if (largeLoc.ppModifier) {
 			soloRpgStore.updateRegion(regionId, {
@@ -239,7 +266,7 @@
 	const elementGuidance = {
 		Expected: 'Something you expect to find based on the region. Describe it yourself.',
 		Random: 'Randomly generated element. Interpret the two words for this area.',
-		Known: 'Element from your Known Elements list. Check if it has been crossed out.',
+		Known: 'Element from your Known Elements list. This element will be automatically marked as used when you create the area.',
 		Special:
 			'Special element! Roll again for an additional element AND modify Progress Points.',
 		Complete: 'This region is complete! No more areas to explore here.',
@@ -337,11 +364,14 @@
 								{#if largeLoc.roll}
 									<span class="text-xs ml-2">(Roll: {largeLoc.roll})</span>
 								{/if}
+								{#if largeLoc.element === 'Known'}
+									<span class="text-xs ml-2 px-2 py-0.5 bg-blue-600/40 text-blue-200 rounded font-medium">📋 From Your List</span>
+								{/if}
 							</div>
 							<textarea
 								bind:value={largeLoc.description}
 								placeholder="Describe the large location..."
-								class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-sm placeholder-slate-500 focus:outline-none focus:border-purple-500 resize-none"
+								class="w-full px-3 py-2 rounded text-white text-sm placeholder-slate-500 resize-none {largeLoc.element === 'Known' ? 'bg-blue-900/30 border-2 border-blue-500 focus:outline-none focus:border-blue-400' : 'bg-slate-700 border border-slate-600 focus:outline-none focus:border-purple-500'}"
 								rows="2"
 							></textarea>
 						</div>
@@ -385,11 +415,14 @@
 								{#if smallLoc.roll}
 									<span class="text-xs ml-2">(Roll: {smallLoc.roll})</span>
 								{/if}
+								{#if smallLoc.element === 'Known'}
+									<span class="text-xs ml-2 px-2 py-0.5 bg-blue-600/40 text-blue-200 rounded font-medium">📋 From Your List</span>
+								{/if}
 							</div>
 							<textarea
 								bind:value={smallLoc.description}
 								placeholder="Describe the small location..."
-								class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-sm placeholder-slate-500 focus:outline-none focus:border-teal-500 resize-none"
+								class="w-full px-3 py-2 rounded text-white text-sm placeholder-slate-500 resize-none {smallLoc.element === 'Known' ? 'bg-blue-900/30 border-2 border-blue-500 focus:outline-none focus:border-blue-400' : 'bg-slate-700 border border-slate-600 focus:outline-none focus:border-teal-500'}"
 								rows="2"
 							></textarea>
 						</div>
@@ -433,11 +466,14 @@
 								{#if encounterObj.roll}
 									<span class="text-xs ml-2">(Roll: {encounterObj.roll})</span>
 								{/if}
+								{#if encounterObj.element === 'Known'}
+									<span class="text-xs ml-2 px-2 py-0.5 bg-blue-600/40 text-blue-200 rounded font-medium">📋 From Your List</span>
+								{/if}
 							</div>
 							<textarea
 								bind:value={encounterObj.description}
 								placeholder="Describe the encounter or object..."
-								class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-sm placeholder-slate-500 focus:outline-none focus:border-amber-500 resize-none"
+								class="w-full px-3 py-2 rounded text-white text-sm placeholder-slate-500 resize-none {encounterObj.element === 'Known' ? 'bg-blue-900/30 border-2 border-blue-500 focus:outline-none focus:border-blue-400' : 'bg-slate-700 border border-slate-600 focus:outline-none focus:border-amber-500'}"
 								rows="2"
 							></textarea>
 						</div>
