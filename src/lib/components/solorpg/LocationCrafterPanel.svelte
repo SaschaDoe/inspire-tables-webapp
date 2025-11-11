@@ -72,7 +72,10 @@
 	const typeIcons = {
 		Wilderness: '🌲',
 		City: '🏙️',
-		Structure: '🏰'
+		Structure: '🏛️',
+		'Cavern Dungeon': '⛰️',
+		'Ancient Dungeon': '🏚️',
+		'Palatial Dungeon': '🏰'
 	};
 </script>
 
@@ -201,6 +204,21 @@
 							{/if}
 						</div>
 
+						<!-- Dungeon Story Descriptors (if present) -->
+						{#if selectedRegion.storyDescriptor1 || selectedRegion.storyDescriptor2 || selectedRegion.storyDescription}
+							<div class="p-3 bg-purple-900/20 border border-purple-500/30 rounded mt-3">
+								<div class="text-xs text-purple-400 mb-1">Dungeon Story:</div>
+								{#if selectedRegion.storyDescriptor1 && selectedRegion.storyDescriptor2}
+									<div class="text-sm text-white font-medium mb-1">
+										{selectedRegion.storyDescriptor1} / {selectedRegion.storyDescriptor2}
+									</div>
+								{/if}
+								{#if selectedRegion.storyDescription}
+									<p class="text-sm text-slate-300 mt-2">{selectedRegion.storyDescription}</p>
+								{/if}
+							</div>
+						{/if}
+
 						<!-- Region Stats -->
 						<div class="grid grid-cols-3 gap-3 mt-3">
 							<div class="p-2 bg-blue-900/20 border border-blue-500/30 rounded text-center">
@@ -258,11 +276,29 @@
 									{#each [...selectedRegion.areas].sort((a, b) => b.number - a.number) as area (area.id)}
 										<div class="p-4 bg-slate-800/50 rounded-lg border border-slate-600">
 											<div class="flex items-center justify-between mb-3">
-												<h4 class="text-lg font-bold text-white">Area #{area.number}</h4>
+												<h4 class="text-lg font-bold text-white">
+													Area #{area.number}
+													{#if area.isSecretArea}
+														<span class="text-xs ml-2 px-2 py-0.5 bg-orange-600/30 text-orange-300 rounded" title="Found via secret door">
+															🔍 Secret
+														</span>
+													{/if}
+												</h4>
 												<div class="text-xs text-slate-400">
 													{formatDate(area.timestamp)}
 												</div>
 											</div>
+
+											<!-- Dungeon Connector (if present) -->
+											{#if area.connectorFromPrevious}
+												<div class="mb-3 p-3 bg-purple-900/20 border border-purple-500/30 rounded">
+													<div class="text-xs text-purple-400 mb-1">🚪 Connector:</div>
+													<div class="text-sm text-white font-medium">{area.connectorFromPrevious}</div>
+													{#if area.connectorDescription}
+														<p class="text-sm text-slate-300 mt-1">{area.connectorDescription}</p>
+													{/if}
+												</div>
+											{/if}
 
 											<div class="grid gap-3">
 												<!-- Large Location -->
