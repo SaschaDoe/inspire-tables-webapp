@@ -192,6 +192,33 @@ export interface MeaningRoll {
 	timestamp: Date;
 }
 
+// Phase 4: Mystery Matrix (Mythic Magazine Vol 6)
+export interface MysteryClue {
+	id: string;
+	position: number; // 1-100 for d100 rolls
+	description: string;
+	discoveredInScene: number;
+	intensified: number; // Multiplier (default 1, can be 2, 3, etc.)
+	isClincherClue: boolean; // The clue that solved the mystery
+}
+
+export interface MysterySuspect {
+	id: string;
+	position: number; // 1-10 for d10 rolls
+	name: string;
+	characterListId?: string; // Link to Character if applicable
+	discoveredInScene: number;
+	cluePoints: number; // Calculated from links
+}
+
+export interface MysteryLink {
+	id: string;
+	clueId: string;
+	suspectId: string;
+	strength: number; // How many times this link has been strengthened
+	createdInScene: number;
+}
+
 export interface SoloRpgSession {
 	id: string;
 	adventureName: string;
@@ -204,6 +231,17 @@ export interface SoloRpgSession {
 	characters: CharacterListEntry[];
 	alternateScenes: AlternateScene[]; // Phase 2A: Pre-planned scenes (Mythic Magazine Vol 2)
 	regions: Region[]; // Phase 3: Location Crafter regions (Mythic Magazine Vol 2)
+
+	// Mystery Matrix (Phase 4: Mythic Magazine Vol 6)
+	mysteryThread?: string; // The Thread designated as "The Mystery"
+	mysteryClues: MysteryClue[];
+	mysterySuspects: MysterySuspect[];
+	mysteryLinks: MysteryLink[];
+	mysteryClueProgressPoints: number;
+	mysterySuspectProgressPoints: number;
+	mysterySolved: boolean; // Has the mystery been solved?
+	mysterySolvedInScene?: number;
+	mysterySolution?: string; // Description of how it was solved
 
 	// Scenes
 	scenes: Scene[];
@@ -257,6 +295,13 @@ class SoloRpgStore {
 			characters: [],
 			alternateScenes: [], // Phase 2A: Pre-planned scenes (Mythic Magazine Vol 2)
 			regions: [], // Phase 3: Location Crafter (Mythic Magazine Vol 2)
+			// Phase 4: Mystery Matrix (Mythic Magazine Vol 6)
+			mysteryClues: [],
+			mysterySuspects: [],
+			mysteryLinks: [],
+			mysteryClueProgressPoints: 0,
+			mysterySuspectProgressPoints: 0,
+			mysterySolved: false,
 			scenes: [],
 			currentSceneNumber: 0,
 			fateQuestionHistory: [],
@@ -1001,6 +1046,360 @@ class SoloRpgStore {
 
 	get completedThreads(): Thread[] {
 		return this.currentSession?.threads.filter((t) => t.completed) || [];
+	}
+
+	// ===== MYSTERY MATRIX METHODS (Phase 4: Mythic Magazine Vol 6) =====
+
+	activateMystery(threadText: string): void {
+		if (!this.currentSession) return;
+
+		// Remove thread from threads list and set as mystery
+		const threadIndex = this.currentSession.threads.findIndex((t) => t.text === threadText);
+		if (threadIndex === -1) return;
+
+		this.currentSession.mysteryThread = threadText;
+		this.currentSession.threads.splice(threadIndex, 1);
+		this.currentSession.mysteryClues = [];
+		this.currentSession.mysterySuspects = [];
+		this.currentSession.mysteryLinks = [];
+		this.currentSession.mysteryClueProgressPoints = 0;
+		this.currentSession.mysterySuspectProgressPoints = 0;
+		this.currentSession.mysterySolved = false;
+		this.currentSession.updatedAt = new Date();
+		this.saveToLocalStorage();
+	}
+
+	deactivateMystery(restoreToThread: boolean = true): void {
+		if (!this.currentSession || !this.currentSession.mysteryThread) return;
+
+		// Optionally restore to threads list
+		if (restoreToThread) {
+			const position = this.getNextAvailableThreadPosition();
+			this.addThread(this.currentSession.mysteryThread, position);
+		}
+
+		// Clear mystery data
+		this.currentSession.mysteryThread = undefined;
+		this.currentSession.mysteryClues = [];
+		this.currentSession.mysterySuspects = [];
+		this.currentSession.mysteryLinks = [];
+		this.currentSession.mysteryClueProgressPoints = 0;
+		this.currentSession.mysterySuspectProgressPoints = 0;
+		this.currentSession.mysterySolved = false;
+		this.currentSession.mysterySolvedInScene = undefined;
+		this.currentSession.mysterySolution = undefined;
+		this.currentSession.updatedAt = new Date();
+		this.saveToLocalStorage();
+	}
+
+	addMysteryClue(description: string, position?: number): MysteryClue | null {
+		if (!this.currentSession) return null;
+
+		// Auto-assign position if not provided
+		if (!position) {
+			const usedPositions = this.currentSession.mysteryClues.map((c) => c.position);
+			for (let i = 1; i <= 100; i++) {
+				if (!usedPositions.includes(i)) {
+					position = i;
+					break;
+				}
+			}
+		}
+
+		if (!position) return null; // All positions used
+
+		const clue: MysteryClue = {
+			id: crypto.randomUUID(),
+			position,
+			description,
+			discoveredInScene: this.currentSession.currentSceneNumber,
+			intensified: 1,
+			isClincherClue: false
+		};
+
+		this.currentSession.mysteryClues.push(clue);
+		this.currentSession.updatedAt = new Date();
+		this.saveToLocalStorage();
+		return clue;
+	}
+
+	addMysterySuspect(name: string, position?: number, characterListId?: string): MysterySuspect | null {
+		if (!this.currentSession) return null;
+
+		// Auto-assign position if not provided
+		if (!position) {
+			const usedPositions = this.currentSession.mysterySuspects.map((s) => s.position);
+			for (let i = 1; i <= 10; i++) {
+				if (!usedPositions.includes(i)) {
+					position = i;
+					break;
+				}
+			}
+		}
+
+		if (!position) return null; // All positions used
+
+		const suspect: MysterySuspect = {
+			id: crypto.randomUUID(),
+			position,
+			name,
+			characterListId,
+			discoveredInScene: this.currentSession.currentSceneNumber,
+			cluePoints: 0 // Will be calculated from links
+		};
+
+		this.currentSession.mysterySuspects.push(suspect);
+		this.currentSession.updatedAt = new Date();
+		this.saveToLocalStorage();
+		return suspect;
+	}
+
+	linkClueToSuspect(clueId: string, suspectId: string): MysteryLink | null {
+		if (!this.currentSession) return null;
+
+		// Check if link already exists
+		const existingLink = this.currentSession.mysteryLinks.find(
+			(l) => l.clueId === clueId && l.suspectId === suspectId
+		);
+
+		if (existingLink) {
+			// Strengthen existing link
+			existingLink.strength++;
+			this.recalculateCluePoints(suspectId);
+			this.currentSession.updatedAt = new Date();
+			this.saveToLocalStorage();
+			return existingLink;
+		}
+
+		// Create new link
+		const link: MysteryLink = {
+			id: crypto.randomUUID(),
+			clueId,
+			suspectId,
+			strength: 1,
+			createdInScene: this.currentSession.currentSceneNumber
+		};
+
+		this.currentSession.mysteryLinks.push(link);
+		this.recalculateCluePoints(suspectId);
+		this.currentSession.updatedAt = new Date();
+		this.saveToLocalStorage();
+		return link;
+	}
+
+	removeMysteryLink(linkId: string): void {
+		if (!this.currentSession) return;
+
+		const link = this.currentSession.mysteryLinks.find((l) => l.id === linkId);
+		if (!link) return;
+
+		this.currentSession.mysteryLinks = this.currentSession.mysteryLinks.filter(
+			(l) => l.id !== linkId
+		);
+		this.recalculateCluePoints(link.suspectId);
+		this.currentSession.updatedAt = new Date();
+		this.saveToLocalStorage();
+	}
+
+	removeMysteryClue(clueId: string): void {
+		if (!this.currentSession) return;
+
+		// Remove clue and all its links
+		this.currentSession.mysteryClues = this.currentSession.mysteryClues.filter(
+			(c) => c.id !== clueId
+		);
+		const linksToRemove = this.currentSession.mysteryLinks.filter((l) => l.clueId === clueId);
+		this.currentSession.mysteryLinks = this.currentSession.mysteryLinks.filter(
+			(l) => l.clueId !== clueId
+		);
+
+		// Recalculate clue points for affected suspects
+		linksToRemove.forEach((link) => this.recalculateCluePoints(link.suspectId));
+
+		this.currentSession.updatedAt = new Date();
+		this.saveToLocalStorage();
+	}
+
+	removeMysterySuspect(suspectId: string): void {
+		if (!this.currentSession) return;
+
+		// Remove suspect and all its links
+		this.currentSession.mysterySuspects = this.currentSession.mysterySuspects.filter(
+			(s) => s.id !== suspectId
+		);
+		this.currentSession.mysteryLinks = this.currentSession.mysteryLinks.filter(
+			(l) => l.suspectId !== suspectId
+		);
+
+		this.currentSession.updatedAt = new Date();
+		this.saveToLocalStorage();
+	}
+
+	intensifyClue(clueId: string): void {
+		if (!this.currentSession) return;
+
+		const clue = this.currentSession.mysteryClues.find((c) => c.id === clueId);
+		if (!clue) return;
+
+		clue.intensified++;
+
+		// Recalculate clue points for all suspects linked to this clue
+		const linksForClue = this.currentSession.mysteryLinks.filter((l) => l.clueId === clueId);
+		linksForClue.forEach((link) => this.recalculateCluePoints(link.suspectId));
+
+		this.currentSession.updatedAt = new Date();
+		this.saveToLocalStorage();
+	}
+
+	markClincherClue(clueId: string, suspectId: string): void {
+		if (!this.currentSession) return;
+
+		const clue = this.currentSession.mysteryClues.find((c) => c.id === clueId);
+		if (!clue) return;
+
+		clue.isClincherClue = true;
+
+		// Make sure this clue is linked to the suspect
+		const existingLink = this.currentSession.mysteryLinks.find(
+			(l) => l.clueId === clueId && l.suspectId === suspectId
+		);
+		if (!existingLink) {
+			this.linkClueToSuspect(clueId, suspectId);
+		}
+
+		this.currentSession.updatedAt = new Date();
+		this.saveToLocalStorage();
+	}
+
+	solveMystery(suspectId: string, solution: string): void {
+		if (!this.currentSession) return;
+
+		this.currentSession.mysterySolved = true;
+		this.currentSession.mysterySolvedInScene = this.currentSession.currentSceneNumber;
+		this.currentSession.mysterySolution = solution;
+		this.currentSession.updatedAt = new Date();
+		this.saveToLocalStorage();
+	}
+
+	incrementMysteryProgressPoints(type: 'clues' | 'suspects'): void {
+		if (!this.currentSession) return;
+
+		if (type === 'clues') {
+			this.currentSession.mysteryClueProgressPoints++;
+		} else {
+			this.currentSession.mysterySuspectProgressPoints++;
+		}
+
+		this.currentSession.updatedAt = new Date();
+		this.saveToLocalStorage();
+	}
+
+	adjustMysteryProgressPoints(type: 'clues' | 'suspects', adjustment: number): void {
+		if (!this.currentSession) return;
+
+		if (type === 'clues') {
+			this.currentSession.mysteryClueProgressPoints = Math.max(
+				0,
+				this.currentSession.mysteryClueProgressPoints + adjustment
+			);
+		} else {
+			this.currentSession.mysterySuspectProgressPoints = Math.max(
+				0,
+				this.currentSession.mysterySuspectProgressPoints + adjustment
+			);
+		}
+
+		this.currentSession.updatedAt = new Date();
+		this.saveToLocalStorage();
+	}
+
+	updateMysteryClue(clueId: string, updates: Partial<MysteryClue>): void {
+		if (!this.currentSession) return;
+
+		const clue = this.currentSession.mysteryClues.find((c) => c.id === clueId);
+		if (!clue) return;
+
+		Object.assign(clue, updates);
+		this.currentSession.updatedAt = new Date();
+		this.saveToLocalStorage();
+	}
+
+	updateMysterySuspect(suspectId: string, updates: Partial<MysterySuspect>): void {
+		if (!this.currentSession) return;
+
+		const suspect = this.currentSession.mysterySuspects.find((s) => s.id === suspectId);
+		if (!suspect) return;
+
+		Object.assign(suspect, updates);
+		this.currentSession.updatedAt = new Date();
+		this.saveToLocalStorage();
+	}
+
+	private recalculateCluePoints(suspectId: string): void {
+		if (!this.currentSession) return;
+
+		const suspect = this.currentSession.mysterySuspects.find((s) => s.id === suspectId);
+		if (!suspect) return;
+
+		// Get all links for this suspect
+		const links = this.currentSession.mysteryLinks.filter((l) => l.suspectId === suspectId);
+
+		// Calculate total clue points
+		let totalPoints = 0;
+		links.forEach((link) => {
+			const clue = this.currentSession!.mysteryClues.find((c) => c.id === link.clueId);
+			if (clue) {
+				// Points = link strength * clue intensified value
+				totalPoints += link.strength * clue.intensified;
+			}
+		});
+
+		suspect.cluePoints = totalPoints;
+
+		// Check if suspect reached 6 clue points (auto-clincher)
+		if (suspect.cluePoints >= 6 && !this.currentSession.mysterySolved) {
+			// Find the last clue that was linked to trigger the clincher
+			const lastLink = links[links.length - 1];
+			if (lastLink) {
+				this.markClincherClue(lastLink.clueId, suspectId);
+			}
+		}
+	}
+
+	// ===== GETTERS =====
+
+	get isMysteryActive(): boolean {
+		return !!this.currentSession?.mysteryThread && !this.currentSession?.mysterySolved;
+	}
+
+	get mysterySuspectWithMostCluePoints(): MysterySuspect | null {
+		if (!this.currentSession || this.currentSession.mysterySuspects.length === 0) return null;
+
+		return this.currentSession.mysterySuspects.reduce((max, suspect) =>
+			suspect.cluePoints > max.cluePoints ? suspect : max
+		);
+	}
+
+	get mysteryCluesLinkedToSuspect() {
+		return (suspectId: string): MysteryClue[] => {
+			if (!this.currentSession) return [];
+
+			const links = this.currentSession.mysteryLinks.filter((l) => l.suspectId === suspectId);
+			return links
+				.map((link) => this.currentSession!.mysteryClues.find((c) => c.id === link.clueId))
+				.filter((clue): clue is MysteryClue => clue !== undefined);
+		};
+	}
+
+	get mysterySuspectsLinkedToClue() {
+		return (clueId: string): MysterySuspect[] => {
+			if (!this.currentSession) return [];
+
+			const links = this.currentSession.mysteryLinks.filter((l) => l.clueId === clueId);
+			return links
+				.map((link) => this.currentSession!.mysterySuspects.find((s) => s.id === link.suspectId))
+				.filter((suspect): suspect is MysterySuspect => suspect !== undefined);
+		};
 	}
 
 	get activeCharacters(): CharacterListEntry[] {
