@@ -447,6 +447,7 @@
 								<EntityViewer
 									entity={currentGenericEntity.customFields.generatedEntity}
 									entityType={currentGenericEntity.type as string}
+									parentEntity={currentGenericEntity}
 									on:openEntity={handleNestedEntityOpen}
 								/>
 							{:else}

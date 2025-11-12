@@ -47,9 +47,10 @@
 	interface Props {
 		entity: any;
 		entityType: string;
+		parentEntity?: Entity;
 	}
 
-	let { entity, entityType }: Props = $props();
+	let { entity, entityType, parentEntity }: Props = $props();
 
 	const dispatch = createEventDispatcher<{
 		openEntity: { entity: Entity };
@@ -471,22 +472,16 @@
 			</div>
 		{/if}
 	{:else if entityType === 'dungeon'}
-		{@const generatedDungeon = entity.customFields?.generatedEntity as Dungeon}
-		{#if generatedDungeon}
-			<DungeonViewer dungeon={generatedDungeon} on:openEntity={handleOpenEntity} />
-		{/if}
+		{@const dungeon = entity as Dungeon}
+		<DungeonViewer dungeon={dungeon} on:openEntity={handleOpenEntity} />
 	{:else if entityType === 'room'}
-		{@const generatedRoom = entity.customFields?.generatedEntity as Room}
-		{#if generatedRoom}
-			<RoomViewer room={generatedRoom} parentEntity={entity} on:openEntity={handleOpenEntity} />
-		{/if}
+		{@const room = entity as Room}
+		<RoomViewer room={room} parentEntity={parentEntity} on:openEntity={handleOpenEntity} />
 	{:else if entityType === 'entrance'}
-		{@const generatedEntrance = entity.customFields?.generatedEntity as Entrance}
-		{#if generatedEntrance}
-			<EntranceViewer entrance={generatedEntrance} />
-		{/if}
+		{@const entrance = entity as Entrance}
+		<EntranceViewer entrance={entrance} />
 	{:else if entityType === 'scene'}
-		{@const scene = entity.customFields?.generatedEntity as Scene}
+		{@const scene = entity as Scene}
 		<div class="section">
 			<h3 class="section-title">Scene Overview</h3>
 			<div class="info-grid">
