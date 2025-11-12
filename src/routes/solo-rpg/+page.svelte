@@ -243,36 +243,36 @@
 				<p class="text-orange-200 mb-6">Fast access to the most commonly used Mythic tables</p>
 
 				<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-					<div class="bg-slate-800/50 p-4 rounded-lg border border-orange-500/10 hover:border-orange-500/30 transition-colors cursor-pointer">
+					<a href="/tables/Fate%20Chart" class="bg-slate-800/50 p-4 rounded-lg border border-orange-500/10 hover:border-orange-500/30 transition-colors cursor-pointer">
 						<div class="text-3xl mb-2">🎯</div>
 						<h3 class="font-bold text-white mb-1">Fate Chart</h3>
 						<p class="text-sm text-slate-400">Ask yes/no questions</p>
-					</div>
-					<div class="bg-slate-800/50 p-4 rounded-lg border border-orange-500/10 hover:border-orange-500/30 transition-colors cursor-pointer">
+					</a>
+					<a href="/tables/Event%20Focus" class="bg-slate-800/50 p-4 rounded-lg border border-orange-500/10 hover:border-orange-500/30 transition-colors cursor-pointer">
 						<div class="text-3xl mb-2">⚡</div>
 						<h3 class="font-bold text-white mb-1">Event Focus</h3>
 						<p class="text-sm text-slate-400">Determine event type</p>
-					</div>
-					<div class="bg-slate-800/50 p-4 rounded-lg border border-orange-500/10 hover:border-orange-500/30 transition-colors cursor-pointer">
+					</a>
+					<a href="/tables/Scene%20Adjustment" class="bg-slate-800/50 p-4 rounded-lg border border-orange-500/10 hover:border-orange-500/30 transition-colors cursor-pointer">
 						<div class="text-3xl mb-2">🎬</div>
 						<h3 class="font-bold text-white mb-1">Scene Adjustment</h3>
 						<p class="text-sm text-slate-400">Modify expected scenes</p>
-					</div>
-					<div class="bg-slate-800/50 p-4 rounded-lg border border-orange-500/10 hover:border-orange-500/30 transition-colors cursor-pointer">
+					</a>
+					<a href="/tables/Actions" class="bg-slate-800/50 p-4 rounded-lg border border-orange-500/10 hover:border-orange-500/30 transition-colors cursor-pointer">
 						<div class="text-3xl mb-2">🎭</div>
 						<h3 class="font-bold text-white mb-1">Actions</h3>
 						<p class="text-sm text-slate-400">Action meaning tables</p>
-					</div>
-					<div class="bg-slate-800/50 p-4 rounded-lg border border-orange-500/10 hover:border-orange-500/30 transition-colors cursor-pointer">
+					</a>
+					<a href="/tables/Descriptions" class="bg-slate-800/50 p-4 rounded-lg border border-orange-500/10 hover:border-orange-500/30 transition-colors cursor-pointer">
 						<div class="text-3xl mb-2">✨</div>
 						<h3 class="font-bold text-white mb-1">Descriptions</h3>
 						<p class="text-sm text-slate-400">Descriptive meaning tables</p>
-					</div>
-					<div class="bg-slate-800/50 p-4 rounded-lg border border-orange-500/10 hover:border-orange-500/30 transition-colors cursor-pointer">
+					</a>
+					<a href="/tables/Character%20Descriptors" class="bg-slate-800/50 p-4 rounded-lg border border-orange-500/10 hover:border-orange-500/30 transition-colors cursor-pointer">
 						<div class="text-3xl mb-2">👤</div>
 						<h3 class="font-bold text-white mb-1">Characters</h3>
 						<p class="text-sm text-slate-400">Character elements</p>
-					</div>
+					</a>
 				</div>
 
 				<div class="mt-6 text-center">

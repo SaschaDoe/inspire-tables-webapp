@@ -17,21 +17,6 @@
 	let entityTypes = $state<EntityTypeInfo[]>(getEntityTypesList());
 	let entityName = $state<string>('');
 
-	// Wrap generatedEntity in an Entity-like structure for EntityViewer
-	const wrappedEntity = $derived({
-		id: generatedEntity?.id || '',
-		type: selectedEntityType || '',
-		name: entityName,
-		description: generatedEntity?.description || '',
-		tags: [],
-		metadata: {
-			createdAt: new Date(),
-			updatedAt: new Date()
-		},
-		relationships: [],
-		customFields: { generatedEntity }
-	});
-
 	function selectEntityType(type: string) {
 		selectedEntityType = type;
 	}
@@ -123,7 +108,7 @@
 							class="name-input"
 						/>
 					</div>
-					<EntityViewer entity={wrappedEntity} entityType={selectedEntityType || ''} />
+					<EntityViewer entity={generatedEntity} entityType={selectedEntityType || ''} />
 				</div>
 
 				<div class="modal-footer">

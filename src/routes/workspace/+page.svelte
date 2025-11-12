@@ -445,7 +445,7 @@
 						<div class="entity-viewer-container">
 							{#if currentGenericEntity.customFields?.generatedEntity}
 								<EntityViewer
-									entity={currentGenericEntity}
+									entity={currentGenericEntity.customFields.generatedEntity}
 									entityType={currentGenericEntity.type as string}
 									on:openEntity={handleNestedEntityOpen}
 								/>
