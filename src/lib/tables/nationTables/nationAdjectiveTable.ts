@@ -17,7 +17,7 @@ export class NationAdjectiveTable extends Table{
         entries.push(new TableEntry("mystic"))
         entries.push(new TableEntry("old"))
         entries.push(new TableEntry("ancient"))
-        entries.push(new TableEntry("foreign ruled").withFunctionString(chooseNationReturnUniqueName))
+        entries.push(new TableEntry("foreign ruled")) // TODO: .withFunctionString(chooseNationReturnUniqueName) when nation entities are implemented
         super(entries, TableTitles.NationAdjective);
         this.tableType = TableType.Nation;
     }

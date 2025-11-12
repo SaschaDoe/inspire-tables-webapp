@@ -1,0 +1,63 @@
+import { Table } from '../table';
+import { TableEntry } from '../tableEntry';
+import { TableTitles } from '../tableTitles';
+import { TableType } from '../tableType';
+
+export class TempleTypeTable extends Table {
+	constructor() {
+		let entries = [] as TableEntry[];
+		entries.push(new TableEntry('temple'));
+		entries.push(new TableEntry('shrine'));
+		entries.push(new TableEntry('church'));
+		entries.push(new TableEntry('monastery'));
+		entries.push(new TableEntry('cathedral'));
+		entries.push(new TableEntry('chapel'));
+		entries.push(new TableEntry('altar'));
+		entries.push(new TableEntry('sanctuary'));
+		entries.push(new TableEntry('basilica'));
+		entries.push(new TableEntry('abbey'));
+		entries.push(new TableEntry('pagoda'));
+		entries.push(new TableEntry('mosque'));
+		entries.push(new TableEntry('synagogue'));
+		entries.push(new TableEntry('grotto'));
+		entries.push(new TableEntry('hermitage'));
+		entries.push(new TableEntry('convent'));
+		entries.push(new TableEntry('priory'));
+		entries.push(new TableEntry('pantheon'));
+		entries.push(new TableEntry('sacred grove'));
+		entries.push(new TableEntry('stone circle'));
+		entries.push(new TableEntry('burial mound'));
+		entries.push(new TableEntry('oracle'));
+		entries.push(new TableEntry('cave temple'));
+		entries.push(new TableEntry('ziggurat'));
+		entries.push(new TableEntry('stupa'));
+		entries.push(new TableEntry('ashram'));
+		entries.push(new TableEntry('fire temple'));
+		entries.push(new TableEntry('sun temple'));
+		entries.push(new TableEntry('moon temple'));
+		entries.push(new TableEntry('mountain shrine'));
+		entries.push(new TableEntry('water temple'));
+		entries.push(new TableEntry('forest chapel'));
+		entries.push(new TableEntry('tower of silence'));
+		entries.push(new TableEntry('henge'));
+		entries.push(new TableEntry('labyrinth'));
+		entries.push(new TableEntry('dolmen'));
+		entries.push(new TableEntry('spirit house'));
+		entries.push(new TableEntry('totem pole'));
+		entries.push(new TableEntry('reliquary'));
+		entries.push(new TableEntry('pilgrimage site'));
+		entries.push(new TableEntry('mausoleum'));
+		entries.push(new TableEntry('catholicon'));
+		entries.push(new TableEntry('prayer hall'));
+		entries.push(new TableEntry('meditation chamber'));
+		entries.push(new TableEntry('sacred spring'));
+		entries.push(new TableEntry('ritual circle'));
+		entries.push(new TableEntry('ancestral hall'));
+		entries.push(new TableEntry('divine monolith'));
+		entries.push(new TableEntry('hall of worship'));
+		entries.push(new TableEntry('sacred mesa'));
+		entries.push(new TableEntry('sky temple'));
+		super(entries, TableTitles.TempleType);
+		this.tableType = TableType.Location;
+	}
+}

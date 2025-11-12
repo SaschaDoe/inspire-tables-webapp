@@ -13,6 +13,10 @@ export class Dice {
 		return Math.random();
 	}
 
+	random(): number {
+		return Math.random();
+	}
+
 	rollInterval(min: number, max: number): number {
 		return this.randomInt(min, max);
 	}

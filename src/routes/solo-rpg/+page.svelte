@@ -15,6 +15,7 @@
 	import FourWGenerator from '$lib/components/solorpg/FourWGenerator.svelte';
 	import LocationCrafterPanel from '$lib/components/solorpg/LocationCrafterPanel.svelte';
 	import MysteryMatrixPanel from '$lib/components/solorpg/MysteryMatrixPanel.svelte';
+	import KeyedScenesPanel from '$lib/components/solorpg/KeyedScenesPanel.svelte';
 
 	let activeTab = $state<'play' | 'tables' | 'location' | 'mystery' | 'reference'>('play');
 	let showSessionManager = $state(false);
@@ -223,6 +224,9 @@
 					<div class="space-y-6">
 						<!-- Scene Manager -->
 						<SceneManager onRandomEventNeeded={() => showRandomEventModal = true} />
+
+						<!-- Keyed Scenes Panel -->
+						<KeyedScenesPanel />
 
 						<!-- Fate Question -->
 						<FateQuestion onRandomEventTriggered={() => showRandomEventModal = true} />

@@ -1,0 +1,62 @@
+import { Table } from '../table';
+import { TableEntry } from '../tableEntry';
+import { TableTitles } from '../tableTitles';
+import { TableType } from '../tableType';
+
+export class SpellPreparationTable extends Table {
+	constructor() {
+		let entries = [] as TableEntry[];
+		entries.push(new TableEntry('drawing a magic circle'));
+		entries.push(new TableEntry('chanting incantations'));
+		entries.push(new TableEntry('performing ritual gestures'));
+		entries.push(new TableEntry('meditating'));
+		entries.push(new TableEntry('conducting energy through crystals'));
+		entries.push(new TableEntry('mixing potions'));
+		entries.push(new TableEntry('reading ancient texts'));
+		entries.push(new TableEntry('aligning with celestial bodies'));
+		entries.push(new TableEntry('cleansing the area with sacred smoke'));
+		entries.push(new TableEntry('fasting or abstaining from certain foods'));
+		entries.push(new TableEntry('anointing oneself with oils'));
+		entries.push(new TableEntry('carving runes'));
+		entries.push(new TableEntry('casting protective wards'));
+		entries.push(new TableEntry('summoning spirit guides or familiars'));
+		entries.push(new TableEntry('grounding and centering'));
+		entries.push(new TableEntry('creating talismans or amulets'));
+		entries.push(new TableEntry('sacrificing offerings'));
+		entries.push(new TableEntry('connecting with natural elements'));
+		entries.push(new TableEntry('visualizing the desired outcome'));
+		entries.push(new TableEntry('weaving magical sigils'));
+		entries.push(new TableEntry('humming or toning to raise energy'));
+		entries.push(new TableEntry('blessing or consecrating the space'));
+		entries.push(new TableEntry('charging items with magical intent'));
+		entries.push(new TableEntry('reciting prayers or blessings'));
+		entries.push(new TableEntry('using divination tools for guidance'));
+		entries.push(new TableEntry('dancing to raise energy'));
+		entries.push(new TableEntry('collecting dew or rainwater'));
+		entries.push(new TableEntry('tying knots in cords or ribbons'));
+		entries.push(new TableEntry('constructing a complex astrological chart'));
+		entries.push(new TableEntry('engraving symbols on a sacred ground'));
+		entries.push(new TableEntry('brewing a rare and intricate elixir'));
+		entries.push(new TableEntry('conducting a multi-day fasting and purification ritual'));
+		entries.push(new TableEntry('embarking on a vision quest'));
+		entries.push(new TableEntry('performing a series of challenging magical trials'));
+		entries.push(new TableEntry('completing a pilgrimage to a sacred site'));
+		entries.push(new TableEntry('undertaking a night-long vigil under the stars'));
+		entries.push(new TableEntry('crafting a unique magical instrument or tool'));
+		entries.push(new TableEntry('deciphering cryptic prophetic dreams'));
+		entries.push(new TableEntry('harvesting magical components at specific astrological times'));
+		entries.push(new TableEntry('binding elemental spirits into service'));
+		entries.push(new TableEntry('engaging in deep trance work to communicate with otherworldly beings'));
+		entries.push(new TableEntry('creating a detailed and elaborate magical tapestry'));
+		entries.push(new TableEntry('performing a ritual dance during specific lunar phases'));
+		entries.push(new TableEntry('singing an ancient song that takes hours to complete'));
+		entries.push(new TableEntry('assembling a complex array of mirrors to reflect celestial light'));
+		entries.push(new TableEntry('growing a magical plant from seed to maturity'));
+		entries.push(new TableEntry('weaving a cloak imbued with magical threads'));
+		entries.push(new TableEntry('constructing a labyrinth for meditative walking'));
+		entries.push(new TableEntry('life long training in a specific magical tradition'));
+		entries.push(new TableEntry('life long dedication'));
+		super(entries, TableTitles.SpellPreparation);
+		this.tableType = TableType.Other;
+	}
+}

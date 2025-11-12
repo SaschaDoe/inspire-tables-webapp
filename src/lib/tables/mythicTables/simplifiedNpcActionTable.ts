@@ -4,7 +4,10 @@
  * Uses d20 roll to determine NPC actions
  */
 
-import { Table, TableEntry, DiceRoll } from './types';
+import { Table } from '../table';
+import { TableEntry } from '../tableEntry';
+import { TableTitles } from '../tableTitles';
+import { DiceRole } from '../diceRole';
 
 export type NpcActionContext = 'changes' | 'within' | 'self-interest';
 
@@ -16,9 +19,7 @@ export interface NpcActionResult {
 
 export class SimplifiedNpcActionTable extends Table {
 	constructor() {
-		super('Simplified NPC Action', 'NPC Behavior', DiceRoll.D20);
-
-		this.entries = [
+		const entries = [
 			new TableEntry(1, 4, 'Talks, Exposition'),
 			new TableEntry(5, 5, 'Performs an Ambiguous Action'),
 			new TableEntry(6, 7, 'Acts Out of PC Interest'),
@@ -32,6 +33,8 @@ export class SimplifiedNpcActionTable extends Table {
 			new TableEntry(17, 17, 'Takes Something'),
 			new TableEntry(18, 20, 'Causes Harm')
 		];
+
+		super(entries, TableTitles.Default);
 	}
 
 	/**

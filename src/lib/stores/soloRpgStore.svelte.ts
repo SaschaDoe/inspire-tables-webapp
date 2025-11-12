@@ -51,6 +51,16 @@ export interface AlternateScene {
 	position: number; // For rolling on list
 }
 
+// Phase 2B: Keyed Scenes (Mythic Magazine Vol 2)
+export interface KeyedScene {
+	id: string;
+	event: string; // What must happen in the scene
+	trigger: string; // Condition that activates the scene
+	used: boolean; // Has this keyed scene been activated?
+	usedInScene?: number;
+	createdInScene: number;
+}
+
 // Phase 3: Location Crafter (Mythic Magazine Vol 2)
 import type { RegionType, AreaElement } from '$lib/utils/locationCrafterTables';
 
@@ -230,6 +240,7 @@ export interface SoloRpgSession {
 	threads: Thread[];
 	characters: CharacterListEntry[];
 	alternateScenes: AlternateScene[]; // Phase 2A: Pre-planned scenes (Mythic Magazine Vol 2)
+	keyedScenes: KeyedScene[]; // Phase 2B: Keyed Scenes (Mythic Magazine Vol 2)
 	regions: Region[]; // Phase 3: Location Crafter regions (Mythic Magazine Vol 2)
 
 	// Mystery Matrix (Phase 4: Mythic Magazine Vol 6)
@@ -294,6 +305,7 @@ class SoloRpgStore {
 			threads: [],
 			characters: [],
 			alternateScenes: [], // Phase 2A: Pre-planned scenes (Mythic Magazine Vol 2)
+			keyedScenes: [], // Phase 2B: Keyed Scenes (Mythic Magazine Vol 2)
 			regions: [], // Phase 3: Location Crafter (Mythic Magazine Vol 2)
 			// Phase 4: Mystery Matrix (Mythic Magazine Vol 6)
 			mysteryClues: [],
@@ -546,6 +558,63 @@ class SoloRpgStore {
 		if (!this.currentSession) return;
 
 		const scene = this.currentSession.alternateScenes.find((s) => s.id === id);
+		if (scene) {
+			scene.used = true;
+			scene.usedInScene = this.currentSession.currentSceneNumber;
+			this.autoSave();
+		}
+	}
+
+	// ===== KEYED SCENES MANAGEMENT (Phase 2B) =====
+
+	addKeyedScene(event: string, trigger: string): KeyedScene {
+		if (!this.currentSession) throw new Error('No active session');
+
+		// Initialize keyedScenes array if it doesn't exist (for older sessions)
+		if (!this.currentSession.keyedScenes) {
+			this.currentSession.keyedScenes = [];
+		}
+
+		const scene: KeyedScene = {
+			id: crypto.randomUUID(),
+			event,
+			trigger,
+			used: false,
+			createdInScene: this.currentSession.currentSceneNumber
+		};
+
+		this.currentSession.keyedScenes.push(scene);
+		this.autoSave();
+
+		return scene;
+	}
+
+	removeKeyedScene(id: string): void {
+		if (!this.currentSession) return;
+		if (!this.currentSession.keyedScenes) return;
+
+		this.currentSession.keyedScenes = this.currentSession.keyedScenes.filter(
+			(s) => s.id !== id
+		);
+		this.autoSave();
+	}
+
+	updateKeyedScene(id: string, updates: Partial<KeyedScene>): void {
+		if (!this.currentSession) return;
+		if (!this.currentSession.keyedScenes) return;
+
+		const scene = this.currentSession.keyedScenes.find((s) => s.id === id);
+		if (scene) {
+			Object.assign(scene, updates);
+			this.autoSave();
+		}
+	}
+
+	markKeyedSceneUsed(id: string): void {
+		if (!this.currentSession) return;
+		if (!this.currentSession.keyedScenes) return;
+
+		const scene = this.currentSession.keyedScenes.find((s) => s.id === id);
 		if (scene) {
 			scene.used = true;
 			scene.usedInScene = this.currentSession.currentSceneNumber;

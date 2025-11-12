@@ -6,6 +6,7 @@
 	import CampaignCard from '$lib/components/entities/CampaignCard.svelte';
 	import AdventureCard from '$lib/components/entities/AdventureCard.svelte';
 	import StoryBoard from '$lib/components/storyboard/StoryBoard.svelte';
+	import EntityGeneratorModal from '$lib/components/entities/EntityGeneratorModal.svelte';
 	import type { Entity, AdventureEntity } from '$lib/types/entity';
 	import { EntityType } from '$lib/types/entity';
 	import type { Campaign } from '$lib/entities/campaign';
@@ -14,6 +15,7 @@
 	let searchQuery = $state('');
 	let campaigns = $state<Campaign[]>([]);
 	let adventures = $state(new Map<string, AdventureEntity>());
+	let isEntityModalOpen = $state(false);
 
 	onMount(() => {
 		// Load campaigns from entity store
@@ -220,6 +222,20 @@
 			if (adventure) openAdventure(adventure);
 		}
 	}
+
+	function openEntityModal() {
+		isEntityModalOpen = true;
+	}
+
+	function closeEntityModal() {
+		isEntityModalOpen = false;
+	}
+
+	function handleSaveEntity(entity: any, entityType: string) {
+		console.log('Saved entity:', entityType, entity);
+		// TODO: Implement entity storage
+		// For now, just log it
+	}
 </script>
 
 <div class="workspace">
@@ -261,6 +277,10 @@
 		</div>
 
 		<div class="nav-right">
+			<button onclick={openEntityModal} class="btn-new-entity">
+				<span class="btn-icon">✨</span>
+				<span>New Entity</span>
+			</button>
 			<a href="/tables" class="nav-link">Tables</a>
 			<a href="/campaigns" class="nav-link">Legacy Campaigns</a>
 		</div>
@@ -410,7 +430,38 @@
 	</div>
 </div>
 
+<EntityGeneratorModal
+	bind:isOpen={isEntityModalOpen}
+	onClose={closeEntityModal}
+	onSave={handleSaveEntity}
+/>
+
 <style>
+	.btn-new-entity {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: linear-gradient(135deg, rgb(168 85 247), rgb(192 132 252));
+		color: white;
+		border: none;
+		border-radius: 0.5rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s;
+		box-shadow: 0 4px 6px -1px rgba(168, 85, 247, 0.3);
+	}
+
+	.btn-new-entity:hover {
+		background: linear-gradient(135deg, rgb(192 132 252), rgb(216 180 254));
+		transform: translateY(-1px);
+		box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.4);
+	}
+
+	.btn-icon {
+		font-size: 1rem;
+	}
 	.workspace {
 		display: flex;
 		flex-direction: column;

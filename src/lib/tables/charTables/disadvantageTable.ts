@@ -10,7 +10,7 @@ export class DisadvantageTable extends Table{
     constructor(){
         let entries = [];
         entries.push(new TableEntry("unlucky"));
-        entries.push(new TableEntry("obedient to power").withFunction(AddCharForPower));
+        entries.push(new TableEntry("obedient to power")); // TODO: .withFunction(AddCharForPower) when entities are implemented
         entries.push(new TableEntry("fat"))
         entries.push(new TableEntry("rumors"))
         entries.push(new TableEntry("outcast"))
@@ -41,11 +41,12 @@ export class DisadvantageTable extends Table{
     }
 }
 
-export function AddCharForPower(char: Character){
-    let newChar = new CharacterFactory().create();
-    let relationship = new Relationship(char, newChar, RelationshipType.Obedient, RelationshipType.Acquaintanceship);
-    newChar.relationships.push(relationship);
-    char.relationships.push(relationship);
-    addNSCToCharacterStore(newChar);
-    return char;
-}
+// TODO: Re-enable this function once Character, CharacterFactory, Relationship entities are implemented
+// export function AddCharForPower(char: Character){
+//     let newChar = new CharacterFactory().create();
+//     let relationship = new Relationship(char, newChar, RelationshipType.Obedient, RelationshipType.Acquaintanceship);
+//     newChar.relationships.push(relationship);
+//     char.relationships.push(relationship);
+//     addNSCToCharacterStore(newChar);
+//     return char;
+// }

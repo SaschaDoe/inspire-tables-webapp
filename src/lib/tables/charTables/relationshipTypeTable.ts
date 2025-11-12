@@ -2,6 +2,7 @@ import {Table} from "../table";
 import {TableEntry} from "../tableEntry";
 import {TableTitles} from "../tableTitles";
 import {DiceRole} from "../diceRole";
+import {RelationshipType} from "../../entities/relationshipType";
 
 
 export class RelationshipTypeTable extends Table{
