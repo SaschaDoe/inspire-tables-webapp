@@ -32,6 +32,12 @@
 	import type { Organization } from '$lib/entities/faction/organization';
 	import type { Vehicle } from '$lib/entities/vehicle/vehicle';
 	import type { WeatherEvent } from '$lib/entities/event/weatherEvent';
+	import type { MagicSystem } from '$lib/entities/magic/magicSystem';
+	import type { Star } from '$lib/entities/celestial/star';
+	import type { Planet } from '$lib/entities/celestial/planet';
+	import type { SolarSystem } from '$lib/entities/celestial/solarSystem';
+	import type { Galaxy } from '$lib/entities/celestial/galaxy';
+	import type { Sphere } from '$lib/entities/celestial/sphere';
 
 	interface Props {
 		entity: any;
@@ -1730,6 +1736,514 @@
 			<h3 class="section-title">Full Description</h3>
 			<p class="description-text">{weather.description}</p>
 		</div>
+	{:else if entityType === 'magicSystem'}
+		{@const magic = entity as MagicSystem}
+		<div class="section">
+			<h3 class="section-title">Magic System Overview</h3>
+			<div class="info-grid">
+				<div class="info-item">
+					<span class="info-label">Name:</span>
+					<span class="info-value">{magic.name}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Level of Fantasy:</span>
+					<span class="info-value">{magic.levelOfFantasy}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Hardness:</span>
+					<span class="info-value">{magic.hardness}/100</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Tech Level:</span>
+					<span class="info-value">{magic.tech}/100</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Religion Value:</span>
+					<span class="info-value">{magic.religionValue}/100</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="section">
+			<h3 class="section-title">Core Properties</h3>
+			<div class="info-grid">
+				<div class="info-item">
+					<span class="info-label">Ability:</span>
+					<span class="info-value">{magic.ability}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Power:</span>
+					<span class="info-value">{magic.power}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Cost:</span>
+					<span class="info-value">{magic.cost}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Source:</span>
+					<span class="info-value">{magic.source}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Preparation:</span>
+					<span class="info-value">{magic.preparation}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Method:</span>
+					<span class="info-value">{magic.method}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Channel:</span>
+					<span class="info-value">{magic.channel}</span>
+				</div>
+			</div>
+		</div>
+
+		{#if magic.abilities && magic.abilities.length > 0}
+			<div class="section">
+				<h3 class="section-title">Abilities ({magic.abilities.length})</h3>
+				<ul class="talent-list">
+					{#each magic.abilities as ability}
+						<li class="talent-item">{ability}</li>
+					{/each}
+				</ul>
+			</div>
+		{/if}
+
+		{#if magic.spells && magic.spells.length > 0}
+			<div class="section">
+				<h3 class="section-title">Spells ({magic.spells.length})</h3>
+				<div class="spells-grid">
+					{#each magic.spells as spell}
+						<div class="spell-card">
+							<h4 class="spell-name">{spell.name || 'Unnamed Spell'}</h4>
+							<div class="spell-details">
+								<div class="spell-property">
+									<span class="info-label">Ability:</span>
+									<span class="spell-text">{spell.ability}</span>
+								</div>
+								<div class="spell-stats">
+									<span class="spell-stat">Power: {spell.power}</span>
+									<span class="spell-stat">Cost: {spell.cost}</span>
+									<span class="spell-stat">Complexity: {spell.complexity}</span>
+								</div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+		{/if}
+
+		{#if magic.rules && magic.rules.length > 0}
+			<div class="section">
+				<h3 class="section-title">Rules ({magic.rules.length})</h3>
+				<ul class="talent-list">
+					{#each magic.rules as rule}
+						<li class="talent-item">{rule}</li>
+					{/each}
+				</ul>
+			</div>
+		{/if}
+
+		{#if magic.limitations && magic.limitations.length > 0}
+			<div class="section">
+				<h3 class="section-title">Limitations ({magic.limitations.length})</h3>
+				<ul class="talent-list">
+					{#each magic.limitations as limitation}
+						<li class="talent-item negative">{limitation}</li>
+					{/each}
+				</ul>
+			</div>
+		{/if}
+
+		<div class="section">
+			<h3 class="section-title">Additional Properties</h3>
+			<div class="info-grid">
+				{#if magic.weakness}
+					<div class="info-item">
+						<span class="info-label">Weakness:</span>
+						<span class="info-value negative">{magic.weakness}</span>
+					</div>
+				{/if}
+				{#if magic.sideEffect}
+					<div class="info-item">
+						<span class="info-label">Side Effect:</span>
+						<span class="info-value negative">{magic.sideEffect}</span>
+					</div>
+				{/if}
+				{#if magic.balancing}
+					<div class="info-item">
+						<span class="info-label">Balancing:</span>
+						<span class="info-value">{magic.balancing}</span>
+					</div>
+				{/if}
+				{#if magic.naturalness}
+					<div class="info-item">
+						<span class="info-label">Naturalness:</span>
+						<span class="info-value">{magic.naturalness}</span>
+					</div>
+				{/if}
+				{#if magic.consistency}
+					<div class="info-item">
+						<span class="info-label">Consistency:</span>
+						<span class="info-value">{magic.consistency}</span>
+					</div>
+				{/if}
+				{#if magic.rationality}
+					<div class="info-item">
+						<span class="info-label">Rationality:</span>
+						<span class="info-value">{magic.rationality}</span>
+					</div>
+				{/if}
+				{#if magic.prevalence}
+					<div class="info-item">
+						<span class="info-label">Prevalence:</span>
+						<span class="info-value">{magic.prevalence}</span>
+					</div>
+				{/if}
+				{#if magic.easeOfUse}
+					<div class="info-item">
+						<span class="info-label">Ease of Use:</span>
+						<span class="info-value">{magic.easeOfUse}</span>
+					</div>
+				{/if}
+			</div>
+		</div>
+
+		{#if magic.improvementMethods && magic.improvementMethods.length > 0}
+			<div class="section">
+				<h3 class="section-title">Improvement Methods</h3>
+				<ul class="talent-list">
+					{#each magic.improvementMethods as method}
+						<li class="talent-item positive">{method}</li>
+					{/each}
+				</ul>
+			</div>
+		{/if}
+
+		{#if magic.senses && magic.senses.length > 0}
+			<div class="section">
+				<h3 class="section-title">Magical Senses</h3>
+				<div class="list-container">
+					{#each magic.senses as sense}
+						<span class="list-item">{sense}</span>
+					{/each}
+				</div>
+			</div>
+		{/if}
+
+		<div class="section">
+			<h3 class="section-title">Commonality</h3>
+			<div class="info-grid">
+				{#if magic.commonalityPast}
+					<div class="info-item">
+						<span class="info-label">Past:</span>
+						<span class="info-value">{magic.commonalityPast}</span>
+					</div>
+				{/if}
+				{#if magic.commonalityPresent}
+					<div class="info-item">
+						<span class="info-label">Present:</span>
+						<span class="info-value">{magic.commonalityPresent}</span>
+					</div>
+				{/if}
+				{#if magic.commonalityFuture}
+					<div class="info-item">
+						<span class="info-label">Future:</span>
+						<span class="info-value">{magic.commonalityFuture}</span>
+					</div>
+				{/if}
+			</div>
+		</div>
+
+		{#if magic.description}
+			<div class="section">
+				<h3 class="section-title">Full Description</h3>
+				<p class="description-text">{magic.description}</p>
+			</div>
+		{/if}
+	{:else if entityType === 'star'}
+		{@const star = entity as Star}
+		{@const sizeNames = ['Tiny', 'Small', 'Medium', 'Large', 'Huge']}
+		{@const tempNames = ['Cold', 'Medium', 'Hot']}
+		<div class="section">
+			<h3 class="section-title">Star Properties</h3>
+			<div class="info-grid">
+				<div class="info-item">
+					<span class="info-label">Color:</span>
+					<span class="info-value">{star.color}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Temperature:</span>
+					<span class="info-value">{tempNames[star.temperature]}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Size:</span>
+					<span class="info-value">{sizeNames[star.size]}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Mass:</span>
+					<span class="info-value">{sizeNames[star.mass]}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Luminosity:</span>
+					<span class="info-value">{sizeNames[star.luminosity]}</span>
+				</div>
+			</div>
+		</div>
+
+		{#if star.description}
+			<div class="section">
+				<h3 class="section-title">Description</h3>
+				<p class="description-text">{star.description}</p>
+			</div>
+		{/if}
+	{:else if entityType === 'planet'}
+		{@const planet = entity as Planet}
+		<div class="section">
+			<h3 class="section-title">Planet Overview</h3>
+			<div class="info-grid">
+				<div class="info-item">
+					<span class="info-label">Name:</span>
+					<span class="info-value">{planet.name}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Type:</span>
+					<span class="info-value">{planet.type}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Livable:</span>
+					<span class="info-value {planet.isLivable ? 'positive' : 'negative'}"
+						>{planet.isLivable ? 'Yes' : 'No'}</span
+					>
+				</div>
+			</div>
+		</div>
+
+		{#if planet.continents && planet.continents.length > 0}
+			<div class="section">
+				<h3 class="section-title">Continents ({planet.continents.length})</h3>
+				<div class="rooms-list">
+					{#each planet.continents as continent}
+						<div class="room-card">
+							<h4 class="room-title">{continent.name}</h4>
+							<div class="info-grid">
+								<div class="info-item">
+									<span class="info-label">Size:</span>
+									<span class="info-value">{continent.size}</span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">Climate:</span>
+									<span class="info-value">{continent.climate}</span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">Landscape:</span>
+									<span class="info-value">{continent.dominantLandscape}</span>
+								</div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+		{/if}
+
+		{#if planet.description}
+			<div class="section">
+				<h3 class="section-title">Description</h3>
+				<p class="description-text">{planet.description}</p>
+			</div>
+		{/if}
+	{:else if entityType === 'solarSystem'}
+		{@const system = entity as SolarSystem}
+		<div class="section">
+			<h3 class="section-title">Solar System Overview</h3>
+			<div class="info-grid">
+				<div class="info-item">
+					<span class="info-label">Name:</span>
+					<span class="info-value">{system.name}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Stars:</span>
+					<span class="info-value">{system.stars.length}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Planets:</span>
+					<span class="info-value">{system.planets.length}</span>
+				</div>
+			</div>
+		</div>
+
+		{#if system.stars && system.stars.length > 0}
+			{@const sizeNames = ['Tiny', 'Small', 'Medium', 'Large', 'Huge']}
+			{@const tempNames = ['Cold', 'Medium', 'Hot']}
+			<div class="section">
+				<h3 class="section-title">Stars ({system.stars.length})</h3>
+				<div class="rooms-list">
+					{#each system.stars as star, index}
+						<div class="room-card">
+							<h4 class="room-title">Star {index + 1}</h4>
+							<div class="info-grid">
+								<div class="info-item">
+									<span class="info-label">Color:</span>
+									<span class="info-value">{star.color}</span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">Temperature:</span>
+									<span class="info-value">{tempNames[star.temperature]}</span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">Size:</span>
+									<span class="info-value">{sizeNames[star.size]}</span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">Luminosity:</span>
+									<span class="info-value">{sizeNames[star.luminosity]}</span>
+								</div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+		{/if}
+
+		{#if system.planets && system.planets.length > 0}
+			<div class="section">
+				<h3 class="section-title">Planets ({system.planets.length})</h3>
+				<div class="rooms-list">
+					{#each system.planets as planet}
+						<div class="room-card">
+							<h4 class="room-title">{planet.name}</h4>
+							<div class="info-grid">
+								<div class="info-item">
+									<span class="info-label">Type:</span>
+									<span class="info-value">{planet.type}</span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">Livable:</span>
+									<span class="info-value {planet.isLivable ? 'positive' : 'negative'}"
+										>{planet.isLivable ? 'Yes' : 'No'}</span
+									>
+								</div>
+								{#if planet.continents.length > 0}
+									<div class="info-item">
+										<span class="info-label">Continents:</span>
+										<span class="info-value">{planet.continents.length}</span>
+									</div>
+								{/if}
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+		{/if}
+
+		{#if system.description}
+			<div class="section">
+				<h3 class="section-title">Description</h3>
+				<p class="description-text">{system.description}</p>
+			</div>
+		{/if}
+	{:else if entityType === 'galaxy'}
+		{@const galaxy = entity as Galaxy}
+		<div class="section">
+			<h3 class="section-title">Galaxy Overview</h3>
+			<div class="info-grid">
+				<div class="info-item">
+					<span class="info-label">Name:</span>
+					<span class="info-value">{galaxy.name}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Size:</span>
+					<span class="info-value">{galaxy.size}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Solar Systems:</span>
+					<span class="info-value">{galaxy.solarSystems.length}</span>
+				</div>
+			</div>
+		</div>
+
+		{#if galaxy.solarSystems && galaxy.solarSystems.length > 0}
+			<div class="section">
+				<h3 class="section-title">Solar Systems ({galaxy.solarSystems.length})</h3>
+				<div class="rooms-list">
+					{#each galaxy.solarSystems as system}
+						<div class="room-card">
+							<h4 class="room-title">{system.name}</h4>
+							<div class="info-grid">
+								<div class="info-item">
+									<span class="info-label">Stars:</span>
+									<span class="info-value">{system.stars.length}</span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">Planets:</span>
+									<span class="info-value">{system.planets.length}</span>
+								</div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+		{/if}
+
+		{#if galaxy.description}
+			<div class="section">
+				<h3 class="section-title">Description</h3>
+				<p class="description-text">{galaxy.description}</p>
+			</div>
+		{/if}
+	{:else if entityType === 'sphere'}
+		{@const sphere = entity as Sphere}
+		<div class="section">
+			<h3 class="section-title">Cosmic Sphere Overview</h3>
+			<div class="info-grid">
+				<div class="info-item">
+					<span class="info-label">Name:</span>
+					<span class="info-value">{sphere.name}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Rule:</span>
+					<span class="info-value">{sphere.rule}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Birth Method:</span>
+					<span class="info-value">{sphere.birth}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-label">Galaxies:</span>
+					<span class="info-value">{sphere.galaxies.length}</span>
+				</div>
+			</div>
+		</div>
+
+		{#if sphere.galaxies && sphere.galaxies.length > 0}
+			<div class="section">
+				<h3 class="section-title">Galaxies ({sphere.galaxies.length})</h3>
+				<div class="rooms-list">
+					{#each sphere.galaxies as galaxy}
+						<div class="room-card">
+							<h4 class="room-title">{galaxy.name}</h4>
+							<div class="info-grid">
+								<div class="info-item">
+									<span class="info-label">Size:</span>
+									<span class="info-value">{galaxy.size}</span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">Solar Systems:</span>
+									<span class="info-value">{galaxy.solarSystems.length}</span>
+								</div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+		{/if}
+
+		{#if sphere.description}
+			<div class="section">
+				<h3 class="section-title">Description</h3>
+				<p class="description-text">{sphere.description}</p>
+			</div>
+		{/if}
 	{/if}
 </div>
 
@@ -1993,5 +2507,105 @@
 		background: rgb(30 27 75 / 0.3);
 		border-radius: 0.375rem;
 		border-left: 3px solid rgb(168 85 247);
+	}
+
+	.spells-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 1rem;
+	}
+
+	.spell-card {
+		background: rgb(30 27 75 / 0.5);
+		border: 1px solid rgb(168 85 247 / 0.3);
+		border-radius: 0.5rem;
+		padding: 1rem;
+	}
+
+	.spell-name {
+		font-size: 1rem;
+		font-weight: 600;
+		color: rgb(216 180 254);
+		margin: 0 0 0.75rem 0;
+	}
+
+	.spell-details {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.spell-property {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.spell-text {
+		font-size: 0.875rem;
+		color: rgb(216 180 254);
+		line-height: 1.5;
+	}
+
+	.spell-stats {
+		display: flex;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+	}
+
+	.spell-stat {
+		font-size: 0.75rem;
+		color: rgb(216 180 254 / 0.8);
+		padding: 0.25rem 0.5rem;
+		background: rgb(30 27 75 / 0.5);
+		border-radius: 0.25rem;
+		border: 1px solid rgb(168 85 247 / 0.2);
+	}
+
+	.list-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.list-item {
+		font-size: 0.875rem;
+		color: rgb(216 180 254);
+		padding: 0.5rem 0.75rem;
+		background: rgb(30 27 75 / 0.5);
+		border: 1px solid rgb(168 85 247 / 0.2);
+		border-radius: 0.375rem;
+	}
+
+	.features-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.feature-item {
+		padding: 0.75rem;
+		background: rgb(30 27 75 / 0.5);
+		border: 1px solid rgb(168 85 247 / 0.2);
+		border-radius: 0.375rem;
+		color: rgb(216 180 254);
+		font-size: 0.875rem;
+	}
+
+	.subsection {
+		margin-bottom: 1rem;
+		padding: 1rem;
+		background: rgb(30 27 75 / 0.3);
+		border-radius: 0.5rem;
+	}
+
+	.subsection-title {
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: rgb(216 180 254);
+		margin: 0 0 0.5rem 0;
 	}
 </style>

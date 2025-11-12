@@ -2,6 +2,8 @@ let currentId = 0;
 
 export class Entity {
 	id: string;
+	name: string = '';
+	description: string = '';
 
 	constructor() {
 		this.id = crypto.randomUUID();

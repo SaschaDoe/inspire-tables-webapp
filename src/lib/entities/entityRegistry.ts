@@ -32,6 +32,12 @@ import { ContinentCreator } from './location/continentCreator';
 import { OrganizationCreator } from './faction/organizationCreator';
 import { VehicleCreator } from './vehicle/vehicleCreator';
 import { WeatherEventCreator } from './event/weatherEventCreator';
+import { MagicSystemCreator } from './magic/magicSystemCreator';
+import { SphereCreator } from './celestial/sphereCreator';
+import { GalaxyCreator } from './celestial/galaxyCreator';
+import { SolarSystemCreator } from './celestial/solarSystemCreator';
+import { PlanetCreator } from './celestial/planetCreator';
+import { StarCreator } from './celestial/starCreator';
 
 export interface EntityTypeInfo {
 	name: string;
@@ -272,6 +278,48 @@ export const entityRegistry: Record<string, EntityTypeInfo> = {
 		icon: '🌪️',
 		description: 'Generate a weather event with type, severity, and effects',
 		creator: () => new WeatherEventCreator()
+	},
+	magicSystem: {
+		name: 'magicSystem',
+		displayName: 'Magic System',
+		icon: '🔮',
+		description: 'Generate a complete magic system with rules, costs, sources, and spells',
+		creator: () => new MagicSystemCreator()
+	},
+	sphere: {
+		name: 'sphere',
+		displayName: 'Sphere',
+		icon: '🌌',
+		description: 'Generate a cosmic sphere with galaxies, rules, and creation method',
+		creator: () => new SphereCreator()
+	},
+	galaxy: {
+		name: 'galaxy',
+		displayName: 'Galaxy',
+		icon: '🌀',
+		description: 'Generate a galaxy with solar systems and size',
+		creator: () => new GalaxyCreator()
+	},
+	solarSystem: {
+		name: 'solarSystem',
+		displayName: 'Solar System',
+		icon: '☀️',
+		description: 'Generate a solar system with stars and planets',
+		creator: () => new SolarSystemCreator()
+	},
+	planet: {
+		name: 'planet',
+		displayName: 'Planet',
+		icon: '🌍',
+		description: 'Generate a planet with type, livability, and continents',
+		creator: () => new PlanetCreator()
+	},
+	star: {
+		name: 'star',
+		displayName: 'Star',
+		icon: '⭐',
+		description: 'Generate a star with temperature, size, mass, and color',
+		creator: () => new StarCreator()
 	}
 };
 

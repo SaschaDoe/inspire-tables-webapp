@@ -10,6 +10,7 @@ import { MotivationTable } from '$lib/tables/charTables/motivationTable';
 import { NobilityTable } from '$lib/tables/charTables/nobilityTable';
 import { ProfessionTable } from '$lib/tables/charTables/professionTable';
 import { CharacterAsDeviceTable } from '$lib/tables/charTables/characterAsDeviceTable';
+import { TalentCreator } from '../talent/talentCreator';
 
 export class CharacterCreator extends Creator<Character> {
 	create(): Character {
@@ -39,6 +40,14 @@ export class CharacterCreator extends Creator<Character> {
 		}
 
 		character.profession = new ProfessionTable().roleWithCascade(this.dice).text;
+
+		// Generate talents (1-3 talents)
+		const numberOfTalents = this.dice.rollInterval(1, 3);
+		for (let i = 0; i < numberOfTalents; i++) {
+			const talentCreator = new TalentCreator();
+			talentCreator.dice = this.dice;
+			character.talents.push(talentCreator.create());
+		}
 
 		// Generate basic attributes (1-6 range for simplicity)
 		character.attributes.willpower = this.dice.rollInterval(1, 6);

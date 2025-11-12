@@ -7,6 +7,7 @@
 	import AdventureCard from '$lib/components/entities/AdventureCard.svelte';
 	import StoryBoard from '$lib/components/storyboard/StoryBoard.svelte';
 	import EntityGeneratorModal from '$lib/components/entities/EntityGeneratorModal.svelte';
+	import EntityViewer from '$lib/components/entities/EntityViewer.svelte';
 	import type { Entity, AdventureEntity } from '$lib/types/entity';
 	import { EntityType } from '$lib/types/entity';
 	import type { Campaign } from '$lib/entities/campaign';
@@ -15,28 +16,45 @@
 	let searchQuery = $state('');
 	let campaigns = $state<Campaign[]>([]);
 	let adventures = $state(new Map<string, AdventureEntity>());
+	let allOtherEntities = $state<Map<string, Entity[]>>(new Map());
 	let isEntityModalOpen = $state(false);
 
 	onMount(() => {
 		// Load campaigns from entity store
 		campaigns = entityStore.getCampaigns();
-		loadAdventures();
+		loadAllEntities();
 	});
 
-	// Reload adventures when entity store changes
+	// Reload entities when entity store changes
 	$effect(() => {
 		// This will re-run when campaigns change (e.g., after adding adventure)
 		campaigns.length;
-		loadAdventures();
+		loadAllEntities();
 	});
 
-	function loadAdventures() {
+	function loadAllEntities() {
 		const allEntities = entityStore.searchEntities('');
+
+		// Load adventures
 		adventures = new Map(
 			allEntities
 				.filter(e => e.type === 'adventure')
 				.map(e => [e.id, e as AdventureEntity])
 		);
+
+		// Group other entities by type
+		const groupedEntities = new Map<string, Entity[]>();
+		allEntities
+			.filter(e => e.type !== 'adventure' && e.type !== 'campaign')
+			.forEach(entity => {
+				const type = entity.type as string;
+				if (!groupedEntities.has(type)) {
+					groupedEntities.set(type, []);
+				}
+				groupedEntities.get(type)!.push(entity);
+			});
+
+		allOtherEntities = groupedEntities;
 	}
 
 	function toggleSidebar() {
@@ -63,6 +81,16 @@
 
 	function openAdventure(adventure: AdventureEntity) {
 		tabStore.openTab(adventure);
+	}
+
+	function openGenericEntity(entity: Entity) {
+		tabStore.openTab(entity);
+	}
+
+	function deleteGenericEntity(id: string) {
+		entityStore.deleteEntity(id);
+		loadAllEntities();
+		tabStore.closeTab(id);
 	}
 
 	function openStoryBoard(adventureId: string) {
@@ -161,14 +189,14 @@
 	}
 
 	// Use $derived for computed values instead of $effect to avoid infinite loops
-	let currentEntity = $derived.by(() => {
+	let currentGenericEntity = $derived.by(() => {
 		const tab = $activeTab;
 		if (!tab) return null;
 
-		if (tab.entityType === 'campaign') {
-			return null;
-		} else if (tab.entityType === 'adventure') {
-			return null;
+		// Check if this is a generic generated entity (not campaign, adventure, or storyboard)
+		if (tab.entityType !== 'campaign' && tab.entityType !== 'adventure' && tab.entityType !== 'storyboard') {
+			const entity = entityStore.getEntity(tab.entityId);
+			return entity;
 		}
 		return null;
 	});
@@ -233,8 +261,25 @@
 
 	function handleSaveEntity(entity: any, entityType: string) {
 		console.log('Saved entity:', entityType, entity);
-		// TODO: Implement entity storage
-		// For now, just log it
+
+		// Create a workspace entity from the generated entity
+		const workspaceEntity: Entity = {
+			id: entity.id,
+			type: entityType as any,
+			name: entity.name || `${entityType} ${entity.id.slice(0, 8)}`,
+			description: entity.description || '',
+			tags: [],
+			metadata: {
+				createdAt: new Date(),
+				updatedAt: new Date()
+			},
+			relationships: [],
+			customFields: { generatedEntity: entity }
+		};
+
+		entityStore.createEntity(workspaceEntity);
+		// Open the entity in a tab
+		tabStore.openTab(workspaceEntity);
 	}
 </script>
 
@@ -373,6 +418,27 @@
 						{/if}
 					</div>
 
+					<!-- All Other Entity Types -->
+					{#each Array.from(allOtherEntities.entries()) as [entityType, entities]}
+						<div class="sidebar-section">
+							<h3 class="section-title">📦 {entityType.charAt(0).toUpperCase() + entityType.slice(1)}s</h3>
+							{#if entities.length > 0}
+								<ul class="entity-list">
+									{#each entities as entity}
+										<li class="entity-item">
+											<button onclick={() => openGenericEntity(entity)} class="entity-button">
+												<span class="entity-icon">📄</span>
+												<span class="entity-name">{entity.name || `${entityType} ${entity.id.slice(0, 8)}`}</span>
+											</button>
+										</li>
+									{/each}
+								</ul>
+							{:else}
+								<p class="empty-message">No {entityType}s yet</p>
+							{/if}
+						</div>
+					{/each}
+
 					<!-- Recent Section -->
 					<div class="sidebar-section">
 						<h3 class="section-title">⏱️ Recent</h3>
@@ -410,6 +476,39 @@
 					/>
 				{:else if currentStoryBoardAdventureId}
 					<StoryBoard adventureId={currentStoryBoardAdventureId} />
+				{:else if currentGenericEntity}
+					<div class="entity-content">
+						<div class="entity-header">
+							<div>
+								<h1 class="entity-title">{currentGenericEntity.name}</h1>
+								<p class="entity-type-badge">{currentGenericEntity.type}</p>
+							</div>
+							<div class="entity-actions">
+								<button
+									onclick={() => deleteGenericEntity(currentGenericEntity.id)}
+									class="btn-delete"
+									title="Delete entity"
+								>
+									🗑️ Delete
+								</button>
+							</div>
+						</div>
+						{#if currentGenericEntity.description}
+							<div class="entity-description">
+								<p>{currentGenericEntity.description}</p>
+							</div>
+						{/if}
+						<div class="entity-viewer-container">
+							{#if currentGenericEntity.customFields?.generatedEntity}
+								<EntityViewer
+									entity={currentGenericEntity.customFields.generatedEntity}
+									entityType={currentGenericEntity.type as string}
+								/>
+							{:else}
+								<p class="text-purple-200">No entity data available</p>
+							{/if}
+						</div>
+					</div>
 				{:else if $activeTab}
 					<div class="entity-content">
 						<h1 class="entity-title">{$activeTab.title}</h1>
@@ -819,5 +918,58 @@
 	.empty-description {
 		color: rgb(216 180 254);
 		font-size: 0.875rem;
+	}
+
+	.entity-header {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		margin-bottom: 2rem;
+		gap: 2rem;
+	}
+
+	.entity-actions {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	.btn-delete {
+		padding: 0.5rem 1rem;
+		background: rgb(220 38 38 / 0.2);
+		color: rgb(252 165 165);
+		border: 1px solid rgb(220 38 38 / 0.3);
+		border-radius: 0.5rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.btn-delete:hover {
+		background: rgb(220 38 38 / 0.3);
+		color: white;
+		border-color: rgb(220 38 38 / 0.5);
+	}
+
+	.entity-description {
+		padding: 1rem;
+		background: rgb(30 27 75 / 0.3);
+		border-left: 4px solid rgb(168 85 247);
+		border-radius: 0.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.entity-description p {
+		color: rgb(216 180 254);
+		font-size: 0.875rem;
+		line-height: 1.6;
+		margin: 0;
+	}
+
+	.entity-viewer-container {
+		background: rgb(30 27 75 / 0.2);
+		border: 1px solid rgb(168 85 247 / 0.2);
+		border-radius: 0.75rem;
+		overflow: hidden;
 	}
 </style>

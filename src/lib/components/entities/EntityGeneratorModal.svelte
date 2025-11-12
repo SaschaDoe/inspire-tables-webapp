@@ -15,6 +15,7 @@
 	let selectedEntityType = $state<string | null>(null);
 	let generatedEntity = $state<any>(null);
 	let entityTypes = $state<EntityTypeInfo[]>(getEntityTypesList());
+	let entityName = $state<string>('');
 
 	function selectEntityType(type: string) {
 		selectedEntityType = type;
@@ -26,12 +27,16 @@
 		const creator = getEntityCreator(selectedEntityType);
 		if (creator) {
 			generatedEntity = creator.create();
+			// Set default name from entity if it has one, or use type + id
+			entityName = generatedEntity.name || `${selectedEntityType} ${generatedEntity.id.slice(0, 8)}`;
 			currentStep = 'view';
 		}
 	}
 
 	function handleSave() {
 		if (generatedEntity && selectedEntityType && onSave) {
+			// Update entity with the user-provided name
+			generatedEntity.name = entityName;
 			onSave(generatedEntity, selectedEntityType);
 		}
 		closeModal();
@@ -93,6 +98,16 @@
 				</div>
 
 				<div class="modal-content entity-view-content">
+					<div class="name-input-section">
+						<label for="entity-name" class="name-label">Entity Name:</label>
+						<input
+							id="entity-name"
+							type="text"
+							bind:value={entityName}
+							placeholder="Enter a name for this entity"
+							class="name-input"
+						/>
+					</div>
 					<EntityViewer entity={generatedEntity} entityType={selectedEntityType || ''} />
 				</div>
 
@@ -265,5 +280,41 @@
 	.btn-secondary:hover {
 		background: rgb(168 85 247 / 0.2);
 		color: white;
+	}
+
+	.name-input-section {
+		padding: 1.5rem;
+		background: rgb(30 27 75 / 0.3);
+		border-bottom: 1px solid rgb(168 85 247 / 0.2);
+		margin-bottom: 0;
+	}
+
+	.name-label {
+		display: block;
+		color: rgb(216 180 254);
+		font-size: 0.875rem;
+		font-weight: 600;
+		margin-bottom: 0.5rem;
+	}
+
+	.name-input {
+		width: 100%;
+		padding: 0.75rem;
+		background: rgb(30 27 75 / 0.5);
+		border: 1px solid rgb(168 85 247 / 0.3);
+		border-radius: 0.5rem;
+		color: white;
+		font-size: 1rem;
+		outline: none;
+		transition: all 0.2s;
+	}
+
+	.name-input:focus {
+		border-color: rgb(168 85 247);
+		background: rgb(30 27 75 / 0.7);
+	}
+
+	.name-input::placeholder {
+		color: rgb(216 180 254 / 0.5);
 	}
 </style>

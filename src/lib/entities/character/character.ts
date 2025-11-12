@@ -3,6 +3,7 @@ import { Attributes } from './attributes';
 import { BigFive } from './bigFive';
 import { Voice } from './voice';
 import { Culture } from './culture';
+import type { Talent } from '../talent/talent';
 
 export class Character extends Entity {
 	name = '';
@@ -11,7 +12,7 @@ export class Character extends Entity {
 	gender = '';
 	byname = '';
 	attributes: Attributes = new Attributes();
-	talents: string[] = []; // Simplified for now
+	talents: Talent[] = [];
 	age = '';
 	alignment = '';
 	advantage = '';
