@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { tableMetadata, loadTable } from '$lib/data/tableMetadata';
+	import { tableMetadata, loadTable } from '$lib/data/tableMetadata.generated';
 	import type { Table } from '$lib/tables/table';
 	import { Dice } from '$lib/utils/dice';
 	import { onMount } from 'svelte';

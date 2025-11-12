@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tableMetadata } from '$lib/data/tableMetadata';
+	import { tableMetadata } from '$lib/data/tableMetadata.generated';
 	import type { TableType } from '$lib/tables/tableType';
 	import { onMount } from 'svelte';
 

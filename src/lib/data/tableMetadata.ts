@@ -1,3 +1,13 @@
+/**
+ * @deprecated This file is deprecated and replaced by tableMetadata.generated.ts
+ *
+ * The table metadata is now AUTO-GENERATED from the actual table files.
+ * To update the metadata, run: npm run generate:metadata
+ *
+ * This file is kept for reference only and should not be used.
+ * All imports should use '$lib/data/tableMetadata.generated' instead.
+ */
+
 import { TableType } from '$lib/tables/tableType';
 import { TableTitles } from '$lib/tables/tableTitles';
 
