@@ -1,9 +1,10 @@
 import { Entity } from '../base/entity';
 import { Attributes } from '../character/attributes';
+import { Talent } from '../talent/talent';
 
 export class Monster extends Entity {
 	races: string[] = [];
-	talents: string[] = []; // Later: Talent[]
+	talents: Talent[] = [];
 	attributes: Attributes = new Attributes();
 	name = '';
 	gender = '';

@@ -11,6 +11,7 @@ import { TracksTable } from '$lib/tables/monsterTables/tracksTable';
 import { EnemyTable } from '$lib/tables/monsterTables/enemyTable';
 import { CurseTable } from '$lib/tables/charTables/curseTable';
 import { MythicalCreatureTable } from '$lib/tables/monsterTables/mythicalCreatureTable';
+import { TalentCreator } from '../talent/talentCreator';
 
 export class MonsterCreator extends Creator<Monster> {
 	create(): Monster {
@@ -45,10 +46,12 @@ export class MonsterCreator extends Creator<Monster> {
 			}
 		}
 
-		// Generate 1-3 talents (placeholder for now)
+		// Generate 1-3 talents
 		const numberOfTalents = this.dice.rollInterval(1, 3);
+		const talentCreator = new TalentCreator();
+		talentCreator.dice = this.dice;
 		for (let i = 0; i < numberOfTalents; i++) {
-			monster.talents.push(`Talent ${i + 1}`); // TODO: Use TalentCreator
+			monster.talents.push(talentCreator.create());
 		}
 
 		// Generate attributes (3d6 for each - stronger than regular characters)
