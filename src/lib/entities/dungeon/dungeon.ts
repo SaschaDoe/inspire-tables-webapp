@@ -1,6 +1,7 @@
 import { Entity } from '../base/entity';
 import type { Entrance } from './entrance';
 import type { Monster } from '../monster/monster';
+import type { RoomConnector } from './roomConnector';
 
 export class Dungeon extends Entity {
 	name = '';
@@ -12,20 +13,18 @@ export class Dungeon extends Entity {
 	purposes: string[] = [];
 	arrangements: string[] = [];
 	rooms: Room[] = [];
+	roomConnectors: RoomConnector[] = [];
 	monsters: Monster[] = [];
 	locationChangeEvents: string[] = [];
 	realWorldEnemies: string[] = [];
 }
 
-export class Room {
-	id: string;
-	name = '';
+export class Room extends Entity {
+	type = 'room' as const;
 	furnishing = '';
 	obstacle = '';
 	treasure = '';
 	trap = '';
-
-	constructor() {
-		this.id = crypto.randomUUID();
-	}
+	/** IDs of other rooms this room connects to */
+	connectedRoomIds: string[] = [];
 }

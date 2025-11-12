@@ -76,6 +76,6 @@ export class RussianMaleNameTable extends Table{
         entries.push(new TableEntry("Wassjew"))
         entries.push(new TableEntry("Xebbert"))
         super(entries, TableTitles.RussianMaleName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

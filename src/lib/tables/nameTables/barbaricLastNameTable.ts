@@ -11,6 +11,6 @@ export class BarbaricLastNameTable extends Table{
         entries.push(new TableEntry("").withCascadingRole(new BarbaricNicknameTable()))
         entries.push(new TableEntry("bren").withCascadingRole(new BarbaricFemaleNameTable()))
         super(entries, TableTitles.BarbaricLastName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

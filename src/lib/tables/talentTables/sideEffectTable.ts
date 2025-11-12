@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -62,6 +63,6 @@ const spellSideEffects: string[] = [
 export class SideEffectTable extends Table {
 	constructor() {
 		const entries = spellSideEffects.map((effect) => new TableEntry(effect));
-		super(entries, TableTitles.SideEffect);
+		super(entries, TableTitles.SideEffect, TableType.Talent);
 	}
 }

@@ -29,6 +29,6 @@ export class TrapFunctionTable extends Table{
         entries.push(new TableEntry("rope around").withCascadingRole(new BodyPartsTable()))
         entries.push(new TableEntry("cage"))
         super(entries, TableTitles.TrapFunction);
-        this.tableType = TableType.Location;
+        this.tableType = TableType.Dungeon;
     }
 }

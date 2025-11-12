@@ -13,6 +13,7 @@ import { SettlementCreator } from './location/settlementCreator';
 import { HexTileCreator } from './location/hexTileCreator';
 import { TalentCreator } from './talent/talentCreator';
 import { TrapCreator } from './dungeon/trapCreator';
+import { RoomCreator } from './dungeon/roomCreator';
 import { StoryBeatCreator } from './adventure/storyBeatCreator';
 import { FactionCreator } from './faction/factionCreator';
 import { QuestCreator } from './quest/questCreator';
@@ -145,6 +146,13 @@ export const entityRegistry: Record<string, EntityTypeInfo> = {
 		icon: '🪤',
 		description: 'Generate a dungeon trap with trigger and function',
 		creator: () => new TrapCreator()
+	},
+	room: {
+		name: 'room',
+		displayName: 'Room',
+		icon: '🚪',
+		description: 'Generate a dungeon room with furnishings, obstacles, and treasures',
+		creator: () => new RoomCreator()
 	},
 	storyBeat: {
 		name: 'storyBeat',

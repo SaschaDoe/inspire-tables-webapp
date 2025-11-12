@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -28,6 +29,6 @@ const sciFiFirstPartNames: string[] = [
 export class MagicSystemSciFiNameFirstTable extends Table {
 	constructor() {
 		const entries = sciFiFirstPartNames.map((name) => new TableEntry(name));
-		super(entries, TableTitles.MagicSystemSciFiNameFirst);
+		super(entries, TableTitles.MagicSystemSciFiNameFirst, TableType.Name);
 	}
 }

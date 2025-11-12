@@ -21,16 +21,70 @@
 
 	function getEntityIcon(entityType: string): string {
 		const icons: Record<string, string> = {
+			// Campaign & Story
 			campaign: '🎭',
 			adventure: '🗺️',
+			quest: '🎯',
+			storyBeat: '📖',
+			initialMeeting: '🤝',
+			scene: '🎬',
+
+			// Characters & NPCs
 			character: '👤',
+			villain: '🦹',
+			monster: '👹',
+
+			// Locations - Celestial
+			sphere: '🌌',
+			galaxy: '🌠',
+			solarSystem: '☀️',
+			planet: '🪐',
+			star: '⭐',
+
+			// Locations - Terrestrial
+			continent: '🗾',
+			nation: '🏛️',
+			region: '🏞️',
+			settlement: '🏘️',
+			building: '🏢',
+			hexTile: '⬢',
 			location: '📍',
-			artifact: '⚔️',
-			plot: '📖',
+
+			// Dungeons
+			dungeon: '⚔️',
+			entrance: '🚪',
+			room: '🏠',
+			trap: '🪤',
+
+			// Factions & Organizations
 			faction: '⚔️',
-			session: '📅',
+			organization: '🏢',
+
+			// Magic & Religion
+			magicSystem: '✨',
+			spell: '🔮',
+			ritual: '🕯️',
+			god: '👁️',
+
+			// Items & Objects
+			artifact: '💎',
+			treasure: '💰',
+			vehicle: '🚗',
+			talent: '🌟',
+
+			// Events & World Elements
 			event: '⚡',
-			monster: '👹'
+			rumor: '💬',
+			prophecy: '📜',
+			illness: '🦠',
+			clue: '🔍',
+			weatherEvent: '🌤️',
+
+			// Misc
+			plot: '📖',
+			session: '📅',
+			sign: '🛡️',
+			relationshipType: '💞'
 		};
 		return icons[entityType] || '📄';
 	}

@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -18,6 +19,6 @@ export class CastingMethodTable extends Table {
 			new TableEntry('cursing'),
 			new TableEntry('profane talent method')
 		];
-		super(entries, TableTitles.CastingMethod);
+		super(entries, TableTitles.CastingMethod, TableType.Other);
 	}
 }

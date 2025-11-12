@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -37,6 +38,6 @@ const religiousMagicSecondPartNames: string[] = [
 export class MagicSystemReligionNameSecondTable extends Table {
 	constructor() {
 		const entries = religiousMagicSecondPartNames.map((name) => new TableEntry(name));
-		super(entries, TableTitles.MagicSystemReligionNameSecond);
+		super(entries, TableTitles.MagicSystemReligionNameSecond, TableType.Name);
 	}
 }

@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -50,6 +51,6 @@ const magicSystemRules: string[] = [
 export class MagicRuleTable extends Table {
 	constructor() {
 		const entries = magicSystemRules.map((rule) => new TableEntry(rule));
-		super(entries, TableTitles.MagicRule);
+		super(entries, TableTitles.MagicRule, TableType.Other);
 	}
 }

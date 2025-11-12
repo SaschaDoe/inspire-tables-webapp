@@ -35,6 +35,6 @@ export class SolarSystemNameTable extends Table {
 				.withCascadingRole(new SectorSynonymsTable(), 100, ' ')
 		];
 		super(entries, TableTitles.SolarSystemName);
-		this.tableType = TableType.Other;
+		this.tableType = TableType.Name;
 	}
 }

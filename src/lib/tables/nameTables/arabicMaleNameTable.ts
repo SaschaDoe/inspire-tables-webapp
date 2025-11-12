@@ -210,6 +210,6 @@ export class ArabicMaleNameTable extends Table{
         entries.push(new TableEntry("Zuhal"))
         entries.push(new TableEntry("Zulhamid"))
         super(entries, TableTitles.ArabicMaleName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

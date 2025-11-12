@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -74,6 +75,6 @@ const magicAbilitySources: string[] = [
 export class MagicSourceTable extends Table {
 	constructor() {
 		const entries = magicAbilitySources.map((source) => new TableEntry(source));
-		super(entries, TableTitles.MagicSource);
+		super(entries, TableTitles.MagicSource, TableType.Other);
 	}
 }

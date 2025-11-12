@@ -203,12 +203,40 @@ function generateTableMetadata(): void {
  * Generate the TypeScript file content
  */
 function generateTypeScriptFile(categories: TableCategory[]): string {
+	// Import TableTitles to get actual enum values
+	const tableTitlesPath = path.join(process.cwd(), 'src', 'lib', 'tables', 'tableTitles.ts');
+	const tableTitlesContent = fs.readFileSync(tableTitlesPath, 'utf-8');
+
+	// Extract enum values from TableTitles
+	const titleMap = new Map<string, string>();
+	const enumMatch = tableTitlesContent.match(/export\s+enum\s+TableTitles\s*\{([^}]+)\}/s);
+	if (enumMatch) {
+		const enumContent = enumMatch[1];
+		const entries = enumContent.match(/(\w+)\s*=\s*'([^']+)'/g);
+		if (entries) {
+			entries.forEach((entry) => {
+				const match = entry.match(/(\w+)\s*=\s*'([^']+)'/);
+				if (match) {
+					titleMap.set(match[1], match[2]);
+				}
+			});
+		}
+	}
+
+	// Replace title enum keys with actual string values
+	const categoriesWithStrings = categories.map((cat) => ({
+		type: cat.type,
+		tables: cat.tables.map((table) => ({
+			...table,
+			title: titleMap.get(table.title) || table.title
+		}))
+	}));
+
 	return `// THIS FILE IS AUTO-GENERATED - DO NOT EDIT MANUALLY
 // Run 'npm run generate:metadata' to regenerate this file
 // Generated on: ${new Date().toISOString()}
 
 import { TableType } from '$lib/tables/tableType';
-import { TableTitles } from '$lib/tables/tableTitles';
 
 export interface TableMetadata {
 	title: string;
@@ -223,9 +251,8 @@ export interface TableCategory {
 }
 
 // Lightweight metadata - no actual table imports
-export const tableMetadata: TableCategory[] = ${JSON.stringify(categories, null, '\t')
-	.replace(/"type":\s*"([^"]+)"/g, 'type: TableType.$1')
-	.replace(/"title":\s*"([^"]+)"/g, 'title: TableTitles.$1 as any as string')};
+export const tableMetadata: TableCategory[] = ${JSON.stringify(categoriesWithStrings, null, '\t')
+	.replace(/"type":\s*"([^"]+)"/g, 'type: TableType.$1')};
 
 // Use Vite's glob import to create a map of all table modules
 // This allows Vite to know all possible imports at build time

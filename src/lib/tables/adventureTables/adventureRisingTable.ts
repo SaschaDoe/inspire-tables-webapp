@@ -25,6 +25,6 @@ export class AdventureRisingTable extends Table{
         entries.push(new TableEntry("real information"));
         entries.push(new TableEntry("random encounter information"));
         super(entries, TableTitles.AdventureRising);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Adventure;
     }
 }

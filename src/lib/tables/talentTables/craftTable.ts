@@ -38,6 +38,6 @@ export class CraftTable extends Table{
             .with(")"))
         entries.push(new TableEntry("laundry making"))
         super(entries, TableTitles.CraftTalent);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Talent;
     }
 }

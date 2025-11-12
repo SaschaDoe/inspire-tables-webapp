@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -13,6 +14,6 @@ export const balancingWays = [
 export class BalancingForTalentTable extends Table {
 	constructor() {
 		const entries = balancingWays.map((way) => new TableEntry(way));
-		super(entries, TableTitles.BalancingForTalent);
+		super(entries, TableTitles.BalancingForTalent, TableType.Talent);
 	}
 }

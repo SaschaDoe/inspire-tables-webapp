@@ -121,6 +121,6 @@ export class PlotTropeTable extends Table{
         entries.push(new TableEntry("exploration plot for dungeon: ").withFunctionString(addDungeonToStoreReturnUniqueName));
         entries.push(new TableEntry("exploration plot for monster: ").withFunctionString(addNewMonsterToStoreReturnUniqueName));
         super(entries, TableTitles.PlotTrope);
-        this.tableType = TableType.Artefact;
+        this.tableType = TableType.Adventure;
     }
 }

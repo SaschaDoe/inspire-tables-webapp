@@ -18,6 +18,6 @@ export class ObstacleTable extends Table{
         entries.push(new TableEntry("stream of").withCascadingRole(new ElementTable()))
         entries.push(new TableEntry("cadaver of").withFunctionString(addNewMonsterToStoreReturnUniqueName))
         super(entries, TableTitles.Obstacle);
-        this.tableType = TableType.Location;
+        this.tableType = TableType.Dungeon;
     }
 }

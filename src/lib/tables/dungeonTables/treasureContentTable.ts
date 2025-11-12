@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -36,6 +37,6 @@ export class TreasureContentTable extends Table {
 		entries.push(new TableEntry('arcane components'));
 		entries.push(new TableEntry('alchemical reagents'));
 
-		super(entries, TableTitles.TreasureContent);
+		super(entries, TableTitles.TreasureContent, TableType.Dungeon);
 	}
 }

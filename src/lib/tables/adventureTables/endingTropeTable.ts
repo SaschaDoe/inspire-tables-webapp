@@ -58,6 +58,6 @@ export class EndingTropeTable extends Table{
         entries.push(new TableEntry("villain is arrested"))
         entries.push(new TableEntry("villain is dead"))
         super(entries, TableTitles.EndingTropes);
-        this.tableType = TableType.Artefact;
+        this.tableType = TableType.Adventure;
     }
 }

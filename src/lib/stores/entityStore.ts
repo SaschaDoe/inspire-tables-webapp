@@ -5,12 +5,16 @@ import type { Campaign } from '$lib/entities/campaign';
 interface EntityState {
 	entities: Map<string, Entity>;
 	campaigns: Campaign[]; // Legacy campaign objects
+	recentlyUsed: string[]; // Entity IDs in order of recent access (most recent first)
+	favorites: Set<string>; // Entity IDs marked as favorites
 }
 
 function createEntityStore() {
 	const { subscribe, set, update } = writable<EntityState>({
 		entities: new Map(),
-		campaigns: []
+		campaigns: [],
+		recentlyUsed: [],
+		favorites: new Set()
 	});
 
 	// Load from localStorage on init
@@ -30,6 +34,21 @@ function createEntityStore() {
 				const entitiesMap = new Map(entitiesArray.map((e: Entity) => [e.id, e]));
 				update(state => ({ ...state, entities: entitiesMap }));
 			}
+
+			// Load recently used
+			const recentlyUsedStored = localStorage.getItem('recentlyUsed');
+			if (recentlyUsedStored) {
+				const recentlyUsed = JSON.parse(recentlyUsedStored);
+				update(state => ({ ...state, recentlyUsed }));
+			}
+
+			// Load favorites
+			const favoritesStored = localStorage.getItem('favorites');
+			if (favoritesStored) {
+				const favoritesArray = JSON.parse(favoritesStored);
+				const favorites = new Set(favoritesArray);
+				update(state => ({ ...state, favorites }));
+			}
 		} catch (error) {
 			console.error('Error loading from storage:', error);
 		}
@@ -43,6 +62,13 @@ function createEntityStore() {
 			// Save new entities
 			const entitiesArray = Array.from(state.entities.values());
 			localStorage.setItem('entities', JSON.stringify(entitiesArray));
+
+			// Save recently used
+			localStorage.setItem('recentlyUsed', JSON.stringify(state.recentlyUsed));
+
+			// Save favorites
+			const favoritesArray = Array.from(state.favorites);
+			localStorage.setItem('favorites', JSON.stringify(favoritesArray));
 		} catch (error) {
 			console.error('Error saving to storage:', error);
 		}
@@ -189,11 +215,77 @@ function createEntityStore() {
 			});
 		},
 
+		// Recently Used operations
+		markAsRecentlyUsed(entityId: string) {
+			update(state => {
+				const newRecentlyUsed = [
+					entityId,
+					...state.recentlyUsed.filter(id => id !== entityId)
+				].slice(0, 20); // Keep only the 20 most recent
+
+				const newState = { ...state, recentlyUsed: newRecentlyUsed };
+				saveToStorage(newState);
+				return newState;
+			});
+		},
+
+		getRecentlyUsedEntities(limit: number = 10): Entity[] {
+			let entities: Entity[] = [];
+			subscribe(state => {
+				entities = state.recentlyUsed
+					.slice(0, limit)
+					.map(id => state.entities.get(id))
+					.filter((e): e is Entity => e !== undefined);
+			})();
+			return entities;
+		},
+
+		// Favorites operations
+		toggleFavorite(entityId: string) {
+			update(state => {
+				const newFavorites = new Set(state.favorites);
+				if (newFavorites.has(entityId)) {
+					newFavorites.delete(entityId);
+				} else {
+					newFavorites.add(entityId);
+				}
+
+				const newState = { ...state, favorites: newFavorites };
+				saveToStorage(newState);
+				return newState;
+			});
+		},
+
+		isFavorite(entityId: string): boolean {
+			let result = false;
+			subscribe(state => {
+				result = state.favorites.has(entityId);
+			})();
+			return result;
+		},
+
+		getFavoriteEntities(): Entity[] {
+			let entities: Entity[] = [];
+			subscribe(state => {
+				entities = Array.from(state.favorites)
+					.map(id => state.entities.get(id))
+					.filter((e): e is Entity => e !== undefined);
+			})();
+			return entities;
+		},
+
 		// Clear all data
 		clearAll() {
-			set({ entities: new Map(), campaigns: [] });
+			set({
+				entities: new Map(),
+				campaigns: [],
+				recentlyUsed: [],
+				favorites: new Set()
+			});
 			localStorage.removeItem('entities');
 			localStorage.removeItem('campaigns');
+			localStorage.removeItem('recentlyUsed');
+			localStorage.removeItem('favorites');
 		}
 	};
 }
@@ -219,4 +311,73 @@ export const adventureEntities = derived(
 export const characterEntities = derived(
 	entityStore,
 	$entityStore => Array.from($entityStore.entities.values()).filter(e => e.type === 'character')
+);
+
+// Recently Used and Favorites derived stores
+export const recentlyUsedEntities = derived(
+	entityStore,
+	$entityStore => $entityStore.recentlyUsed
+		.map(id => $entityStore.entities.get(id))
+		.filter((e): e is Entity => e !== undefined)
+		.slice(0, 10)
+);
+
+export const favoriteEntities = derived(
+	entityStore,
+	$entityStore => Array.from($entityStore.favorites)
+		.map(id => $entityStore.entities.get(id))
+		.filter((e): e is Entity => e !== undefined)
+);
+
+// Entity type derived stores for navigation
+export const sphereEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'sphere')
+);
+
+export const galaxyEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'galaxy')
+);
+
+export const solarSystemEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'solarSystem')
+);
+
+export const planetEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'planet')
+);
+
+export const continentEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'continent')
+);
+
+export const nationEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'nation')
+);
+
+export const regionEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'region')
+);
+
+export const settlementEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'settlement')
+);
+
+export const dungeonEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'dungeon')
+);
+
+export const factionEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'faction')
+);
+
+export const questEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'quest')
+);
+
+export const roomEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'room')
+);
+
+export const entranceEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'entrance')
 );

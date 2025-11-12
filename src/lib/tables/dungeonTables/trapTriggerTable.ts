@@ -17,6 +17,6 @@ export class TrapTriggerTable extends Table{
         entries.push(new TableEntry("robe on sleeping ").withFunctionString(addNewMonsterToStoreReturnUniqueName))
         entries.push(new TableEntry("needs no trigger"))
         super(entries, TableTitles.TrapTrigger);
-        this.tableType = TableType.Location;
+        this.tableType = TableType.Dungeon;
     }
 }

@@ -106,6 +106,6 @@ export class SouthAmericanMaleNameTable extends Table{
         entries.push(new TableEntry("Yuan"))
         entries.push(new TableEntry("Zurbaran"))
         super(entries, TableTitles.SouthAmericanMaleName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

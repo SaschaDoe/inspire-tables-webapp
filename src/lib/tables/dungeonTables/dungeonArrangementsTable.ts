@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -31,6 +32,6 @@ export class DungeonRoomArrangementsTable extends Table {
 		for (let arrangement of dungeonRoomArrangements) {
 			entries.push(new TableEntry(arrangement));
 		}
-		super(entries, TableTitles.DungeonRoomArrangement);
+		super(entries, TableTitles.DungeonRoomArrangement, TableType.Dungeon);
 	}
 }

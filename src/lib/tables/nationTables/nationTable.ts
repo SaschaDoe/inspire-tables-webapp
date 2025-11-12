@@ -16,6 +16,6 @@ export class NationTable extends Table{
         entries.push(new TableEntry("federation"))
         entries.push(new TableEntry("united nations of"))
         super(entries, TableTitles.Nation);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Nation;
     }
 }

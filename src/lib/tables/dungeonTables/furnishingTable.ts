@@ -19,6 +19,6 @@ export class FurnishingTable extends Table{
         entries.push(new TableEntry("storage"))
         entries.push(new TableEntry("laboratory"))
         super(entries, TableTitles.Furnishing);
-        this.tableType = TableType.Location;
+        this.tableType = TableType.Dungeon;
     }
 }

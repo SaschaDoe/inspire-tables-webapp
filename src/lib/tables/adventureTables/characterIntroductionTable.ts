@@ -44,6 +44,6 @@ export class CharacterIntroductionTable extends Table{
         entries.push(new TableEntry("into the cell"))
         entries.push(new TableEntry("meet at the local inn"))
         super(entries, TableTitles.CharacterIntroduction);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Adventure;
     }
 }

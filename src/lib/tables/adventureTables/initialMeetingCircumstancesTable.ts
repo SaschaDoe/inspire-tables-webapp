@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -36,6 +37,6 @@ export class InitialMeetingCircumstancesTable extends Table {
 		entries.push(new TableEntry('through curiosity'));
 		entries.push(new TableEntry('through duty'));
 
-		super(entries, TableTitles.InitialMeetingCircumstances);
+		super(entries, TableTitles.InitialMeetingCircumstances, TableType.Adventure);
 	}
 }

@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -38,6 +39,6 @@ export class MagicChannelTable extends Table {
 			new TableEntry('voice'),
 			new TableEntry('mind')
 		];
-		super(entries, TableTitles.MagicChannel);
+		super(entries, TableTitles.MagicChannel, TableType.Other);
 	}
 }

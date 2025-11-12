@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -22,6 +23,6 @@ export class MagicCostTable extends Table {
 			new TableEntry('ingredients from flora'),
 			new TableEntry('ingredients from animals')
 		];
-		super(entries, TableTitles.MagicCost);
+		super(entries, TableTitles.MagicCost, TableType.Other);
 	}
 }

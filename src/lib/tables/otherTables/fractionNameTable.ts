@@ -17,6 +17,6 @@ export class FractionNameTable extends Table{
         entries.push(new TableEntry("unit"))
         entries.push(new TableEntry("loge"))
         super(entries, TableTitles.FractionName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

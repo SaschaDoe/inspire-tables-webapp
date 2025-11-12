@@ -13,6 +13,6 @@ export class AdventureFinalTable extends Table{
         entries.push(new TableEntry("")
             .withCascadingRole(new EndingTropeTable()));
         super(entries, TableTitles.AdventureFinal);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Adventure;
     }
 }

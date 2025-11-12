@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -45,6 +46,6 @@ export class DungeonPurposeTable extends Table {
 		for (let purpose of dungeonCreationEvents) {
 			entries.push(new TableEntry(purpose));
 		}
-		super(entries, TableTitles.DungeonPurpose);
+		super(entries, TableTitles.DungeonPurpose, TableType.Dungeon);
 	}
 }

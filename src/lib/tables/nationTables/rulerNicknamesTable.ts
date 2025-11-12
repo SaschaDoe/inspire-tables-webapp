@@ -165,6 +165,6 @@ export class RulerNicknamesTable extends Table{
         entries.push(new TableEntry("the Young"))
         entries.push(new TableEntry("the Younger"))
         super(entries, TableTitles.RulerNicknames);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Nation;
     }
 }

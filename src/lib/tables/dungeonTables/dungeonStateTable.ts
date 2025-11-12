@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -102,6 +103,6 @@ export class DungeonStateTable extends Table {
 		for (let condition of dungeonConditions) {
 			entries.push(new TableEntry(condition));
 		}
-		super(entries, TableTitles.DungeonState);
+		super(entries, TableTitles.DungeonState, TableType.Dungeon);
 	}
 }

@@ -10,6 +10,6 @@ export class AdventureClimaxTable extends Table{
         entries.push(new TableEntry("")
             .withCascadingRole(new ClimacticTropeTable()));
         super(entries, TableTitles.AdventureClimax);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Adventure;
     }
 }

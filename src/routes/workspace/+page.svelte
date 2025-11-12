@@ -8,9 +8,13 @@
 	import StoryBoard from '$lib/components/storyboard/StoryBoard.svelte';
 	import EntityGeneratorModal from '$lib/components/entities/EntityGeneratorModal.svelte';
 	import EntityViewer from '$lib/components/entities/EntityViewer.svelte';
+	import EntityNavigator from '$lib/components/entities/EntityNavigator.svelte';
+	import NestedEntitiesSection from '$lib/components/entities/NestedEntitiesSection.svelte';
 	import type { Entity, AdventureEntity } from '$lib/types/entity';
 	import { EntityType } from '$lib/types/entity';
 	import type { Campaign } from '$lib/entities/campaign';
+	import { autoGenerateChildEntities } from '$lib/utils/entityAutoGenerator';
+	import { extractAndSaveNestedEntities } from '$lib/utils/nestedEntityExtractor';
 
 	let sidebarCollapsed = $state(false);
 	let searchQuery = $state('');
@@ -90,7 +94,9 @@
 	function deleteGenericEntity(id: string) {
 		entityStore.deleteEntity(id);
 		loadAllEntities();
-		tabStore.closeTab(id);
+
+		// Close the tab associated with this entity
+		tabStore.closeTabByEntityId(id);
 	}
 
 	function openStoryBoard(adventureId: string) {
@@ -155,7 +161,7 @@
 		const updated = campaigns.filter(c => c.id !== id);
 		entityStore.updateCampaigns(updated);
 		campaigns = updated;
-		tabStore.closeTab(id);
+		tabStore.closeTabByEntityId(id);
 	}
 
 	function updateCampaignName(id: string, name: string) {
@@ -171,7 +177,7 @@
 	function deleteAdventure(id: string) {
 		entityStore.deleteEntity(id);
 		loadAdventures();
-		tabStore.closeTab(id);
+		tabStore.closeTabByEntityId(id);
 	}
 
 	function updateAdventureName(id: string, name: string) {
@@ -278,8 +284,45 @@
 		};
 
 		entityStore.createEntity(workspaceEntity);
+
+		// Extract and save nested entities (rooms, entrances, etc.)
+		const extractedEntities = extractAndSaveNestedEntities(workspaceEntity);
+		console.log(`Extracted ${extractedEntities.length} nested entities from ${entityType}`);
+
+		// Auto-generate child entities if configured
+		autoGenerateChildEntities(workspaceEntity);
+
+		// Reload entities to show the newly created children
+		loadAllEntities();
+
 		// Open the entity in a tab
 		tabStore.openTab(workspaceEntity);
+	}
+
+	// Handle EntityNavigator events
+	function handleNavigatorSelectEntity(event: CustomEvent<{ entity: Entity }>) {
+		const { entity } = event.detail;
+		// Check if it's a legacy campaign
+		if (entity.type === EntityType.Campaign && entity.customFields?.campaign) {
+			openCampaign(entity.customFields.campaign as Campaign);
+		} else if (entity.type === EntityType.Adventure) {
+			openAdventure(entity as AdventureEntity);
+		} else {
+			openGenericEntity(entity);
+		}
+	}
+
+	function handleNavigatorCreateEntity(event: CustomEvent<{ type: EntityType }>) {
+		// Open the entity generator modal
+		openEntityModal();
+	}
+
+	function handleNestedEntityOpen(event: CustomEvent<{ entity: Entity }>) {
+		openGenericEntity(event.detail.entity);
+	}
+
+	function handleNestedRefresh() {
+		loadAllEntities();
 	}
 </script>
 
@@ -335,115 +378,16 @@
 	<div class="main-container">
 		<!-- Left Sidebar -->
 		<aside class="sidebar {sidebarCollapsed ? 'collapsed' : ''}">
-			<div class="sidebar-header">
-				<h2 class="sidebar-title">Navigator</h2>
-				<button onclick={toggleSidebar} class="collapse-btn">
-					{sidebarCollapsed ? '→' : '←'}
-				</button>
-			</div>
-
 			{#if !sidebarCollapsed}
-				<div class="sidebar-content">
-					<!-- Favorites Section -->
-					<div class="sidebar-section">
-						<h3 class="section-title">⭐ Favorites</h3>
-						<p class="empty-message">No favorites yet</p>
-					</div>
-
-					<!-- Open Tabs Section -->
-					<div class="sidebar-section">
-						<h3 class="section-title">📑 Open Tabs</h3>
-						{#if $tabStore.tabs.length > 0}
-							<ul class="entity-list">
-								{#each $tabStore.tabs as tab}
-									<li class="entity-item {$tabStore.activeTabId === tab.id ? 'active' : ''}">
-										<button onclick={() => tabStore.setActiveTab(tab.id)} class="entity-button">
-											<span class="entity-icon">{tab.entityType === 'campaign' ? '🎭' : '📄'}</span>
-											<span class="entity-name">{tab.title}</span>
-											{#if tab.isPinned}
-												<span class="pin-icon">📌</span>
-											{/if}
-										</button>
-									</li>
-								{/each}
-							</ul>
-						{:else}
-							<p class="empty-message">No open tabs</p>
-						{/if}
-					</div>
-
-					<!-- Campaigns Tree -->
-					<div class="sidebar-section">
-						<h3 class="section-title">🎭 Campaigns</h3>
-						{#if campaigns.length > 0}
-							<ul class="entity-list">
-								{#each campaigns as campaign}
-									<li class="entity-item">
-										<button onclick={() => openCampaign(campaign)} class="entity-button">
-											<span class="entity-icon">🎭</span>
-											<span class="entity-name">{campaign.name}</span>
-										</button>
-									</li>
-								{/each}
-							</ul>
-						{:else}
-							<p class="empty-message">No campaigns yet</p>
-							<a href="/campaigns" class="create-link">Create your first campaign →</a>
-						{/if}
-					</div>
-
-					<!-- Adventures List -->
-					<div class="sidebar-section">
-						<h3 class="section-title">🗺️ Adventures</h3>
-						{#if adventures.size > 0}
-							<ul class="entity-list">
-								{#each Array.from(adventures.values()) as adventure}
-									<li class="entity-item">
-										<button onclick={() => openAdventure(adventure)} class="entity-button">
-											<span class="entity-icon">🗺️</span>
-											<span class="entity-name">{adventure.name}</span>
-											{#if adventure.campaignId}
-												{#each campaigns as campaign}
-													{#if campaign.id === adventure.campaignId}
-														<span class="entity-tag">{campaign.name}</span>
-													{/if}
-												{/each}
-											{/if}
-										</button>
-									</li>
-								{/each}
-							</ul>
-						{:else}
-							<p class="empty-message">No adventures yet</p>
-						{/if}
-					</div>
-
-					<!-- All Other Entity Types -->
-					{#each Array.from(allOtherEntities.entries()) as [entityType, entities]}
-						<div class="sidebar-section">
-							<h3 class="section-title">📦 {entityType.charAt(0).toUpperCase() + entityType.slice(1)}s</h3>
-							{#if entities.length > 0}
-								<ul class="entity-list">
-									{#each entities as entity}
-										<li class="entity-item">
-											<button onclick={() => openGenericEntity(entity)} class="entity-button">
-												<span class="entity-icon">📄</span>
-												<span class="entity-name">{entity.name || `${entityType} ${entity.id.slice(0, 8)}`}</span>
-											</button>
-										</li>
-									{/each}
-								</ul>
-							{:else}
-								<p class="empty-message">No {entityType}s yet</p>
-							{/if}
-						</div>
-					{/each}
-
-					<!-- Recent Section -->
-					<div class="sidebar-section">
-						<h3 class="section-title">⏱️ Recent</h3>
-						<p class="empty-message">No recent items</p>
-					</div>
+				<EntityNavigator
+					onselectEntity={handleNavigatorSelectEntity}
+					oncreateEntity={handleNavigatorCreateEntity}
+				/>
+			{:else}
+				<div class="sidebar-header">
+					<button onclick={toggleSidebar} class="collapse-btn" title="Expand Navigator">
+						→
+					</button>
 				</div>
 			{/if}
 		</aside>
@@ -501,13 +445,21 @@
 						<div class="entity-viewer-container">
 							{#if currentGenericEntity.customFields?.generatedEntity}
 								<EntityViewer
-									entity={currentGenericEntity.customFields.generatedEntity}
+									entity={currentGenericEntity}
 									entityType={currentGenericEntity.type as string}
+									on:openEntity={handleNestedEntityOpen}
 								/>
 							{:else}
 								<p class="text-purple-200">No entity data available</p>
 							{/if}
 						</div>
+
+						<!-- Nested Entities Section -->
+						<NestedEntitiesSection
+							parentEntity={currentGenericEntity}
+							on:openEntity={handleNestedEntityOpen}
+							on:refresh={handleNestedRefresh}
+						/>
 					</div>
 				{:else if $activeTab}
 					<div class="entity-content">

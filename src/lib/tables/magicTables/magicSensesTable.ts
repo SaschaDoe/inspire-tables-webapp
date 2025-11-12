@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -19,6 +20,6 @@ export const magicSenses = [
 export class MagicSensesTable extends Table {
 	constructor() {
 		const entries = magicSenses.map((sense) => new TableEntry(sense));
-		super(entries, TableTitles.Senses);
+		super(entries, TableTitles.Senses, TableType.Other);
 	}
 }

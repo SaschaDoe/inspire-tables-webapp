@@ -65,6 +65,6 @@ export class BeginningTropeTable extends Table{
         entries.push(new TableEntry("death bed scene"))
         entries.push(new TableEntry("eldar history lesson").withFunctionString(chooseHigherPowerReturnDescription))
         super(entries, TableTitles.BeginningTrope);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Adventure;
     }
 }

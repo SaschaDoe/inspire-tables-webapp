@@ -81,6 +81,6 @@ export class ConflictTropeTable extends Table{
         entries.push(new TableEntry("resist inner evilness"))
         entries.push(new TableEntry("what you are in the dark"))
         super(entries, TableTitles.ConflictTrope);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Adventure;
     }
 }

@@ -28,6 +28,6 @@ export class IndianMaleNameTable extends Table{
         entries.push(new TableEntry("Scharesch"))
         entries.push(new TableEntry("Pasch Pasch"))
         super(entries, TableTitles.IndianMaleName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

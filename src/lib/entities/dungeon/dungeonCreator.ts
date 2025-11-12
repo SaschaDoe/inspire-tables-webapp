@@ -12,9 +12,8 @@ import { RealWorldEnemyTable } from '$lib/tables/dungeonTables/realWorldEnemyTab
 import { DungeonNameTable } from '$lib/tables/nameTables/dungeonNameTable';
 import { EntranceCreator } from './entranceCreator';
 import { MonsterCreator } from '../monster/monsterCreator';
-import { FurnishingTable } from '$lib/tables/dungeonTables/furnishingTable';
-import { ObstacleTable } from '$lib/tables/dungeonTables/obstacleTable';
-import { TreasureTable } from '$lib/tables/artefactTables/treasureTable';
+import { RoomConnectorCreator } from './roomConnectorCreator';
+import { RoomCreator } from './roomCreator';
 
 export class DungeonCreator extends Creator<Dungeon> {
 	private isRealWorld = false;
@@ -29,6 +28,7 @@ export class DungeonCreator extends Creator<Dungeon> {
 		}
 
 		this.createRestOfDungeon(dungeon);
+		this.generateRoomConnectors(dungeon);
 		this.generateDescription(dungeon);
 		return dungeon;
 	}
@@ -100,31 +100,89 @@ export class DungeonCreator extends Creator<Dungeon> {
 			);
 		}
 
-		// Generate rooms
+		// Create rooms using RoomCreator for proper generation
+		const roomCreator = new RoomCreator();
+		roomCreator.dice = this.dice;
 		const numberOfRooms = this.dice.rollInterval(3, 12);
 		for (let i = 0; i < numberOfRooms; i++) {
-			dungeon.rooms.push(this.createRoom(i + 1));
+			dungeon.rooms.push(roomCreator.create());
 		}
 	}
 
-	private createRoom(number: number): Room {
-		const room = new Room();
-		room.name = `Room ${number}`;
+	private generateRoomConnectors(dungeon: Dungeon): void {
+		if (dungeon.rooms.length === 0) return;
 
-		// Each room has a chance for different features
-		if (this.dice.random() > 0.3) {
-			room.furnishing = new FurnishingTable().roleWithCascade(this.dice).text;
+		const connectorCreator = new RoomConnectorCreator(this.dice);
+
+		// Connect each entrance to 1-2 random rooms
+		for (const entrance of dungeon.entrances) {
+			const roomsToConnect = this.dice.rollInterval(1, Math.min(2, dungeon.rooms.length));
+			const connectedRoomIndices = new Set<number>();
+
+			for (let i = 0; i < roomsToConnect; i++) {
+				let randomIndex = Math.floor(this.dice.random() * dungeon.rooms.length);
+				// Ensure we don't connect to the same room twice
+				while (connectedRoomIndices.has(randomIndex)) {
+					randomIndex = Math.floor(this.dice.random() * dungeon.rooms.length);
+				}
+				connectedRoomIndices.add(randomIndex);
+
+				const room = dungeon.rooms[randomIndex];
+				const connector = connectorCreator.create();
+				connector.fromRoomId = entrance.id;
+				connector.toRoomId = room.id;
+				dungeon.roomConnectors.push(connector);
+
+				// Track the connection on the entrance
+				entrance.connectedRoomIds.push(room.id);
+			}
 		}
 
-		if (this.dice.random() > 0.7) {
-			room.obstacle = new ObstacleTable().roleWithCascade(this.dice).text;
+		// Create a connected graph of rooms
+		// Ensure all rooms are reachable by creating a spanning tree first
+		const visited = new Set<number>();
+		visited.add(0); // Start with the first room
+
+		// Connect rooms in a spanning tree pattern (ensures all rooms are reachable)
+		for (let i = 1; i < dungeon.rooms.length; i++) {
+			const fromIndex = Math.floor(this.dice.random() * i); // Pick a random already-visited room
+			const fromRoom = dungeon.rooms[fromIndex];
+			const toRoom = dungeon.rooms[i];
+
+			const connector = connectorCreator.create();
+			connector.fromRoomId = fromRoom.id;
+			connector.toRoomId = toRoom.id;
+			dungeon.roomConnectors.push(connector);
+
+			fromRoom.connectedRoomIds.push(toRoom.id);
+			toRoom.connectedRoomIds.push(fromRoom.id);
 		}
 
-		if (this.dice.random() > 0.6) {
-			room.treasure = new TreasureTable().roleWithCascade(this.dice).text;
-		}
+		// Add additional random connections for more interesting layouts (30-50% more connections)
+		const additionalConnections = Math.floor(dungeon.rooms.length * (0.3 + this.dice.random() * 0.2));
+		for (let i = 0; i < additionalConnections; i++) {
+			const fromIndex = Math.floor(this.dice.random() * dungeon.rooms.length);
+			let toIndex = Math.floor(this.dice.random() * dungeon.rooms.length);
 
-		return room;
+			// Don't connect a room to itself
+			while (toIndex === fromIndex) {
+				toIndex = Math.floor(this.dice.random() * dungeon.rooms.length);
+			}
+
+			const fromRoom = dungeon.rooms[fromIndex];
+			const toRoom = dungeon.rooms[toIndex];
+
+			// Check if connection already exists
+			if (!fromRoom.connectedRoomIds.includes(toRoom.id)) {
+				const connector = connectorCreator.create();
+				connector.fromRoomId = fromRoom.id;
+				connector.toRoomId = toRoom.id;
+				dungeon.roomConnectors.push(connector);
+
+				fromRoom.connectedRoomIds.push(toRoom.id);
+				toRoom.connectedRoomIds.push(fromRoom.id);
+			}
+		}
 	}
 
 	private generateDescription(dungeon: Dungeon): void {

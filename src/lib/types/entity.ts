@@ -1,14 +1,68 @@
 export enum EntityType {
+	// Campaign & Story
 	Campaign = 'campaign',
 	Adventure = 'adventure',
+	Quest = 'quest',
+	StoryBeat = 'storyBeat',
+	InitialMeeting = 'initialMeeting',
+	Scene = 'scene',
+
+	// Characters & NPCs
 	Character = 'character',
-	Location = 'location',
-	Artifact = 'artifact',
-	Plot = 'plot',
+	Villain = 'villain',
+	Monster = 'monster',
+
+	// Locations - Celestial
+	Sphere = 'sphere',
+	Galaxy = 'galaxy',
+	SolarSystem = 'solarSystem',
+	Planet = 'planet',
+	Star = 'star',
+
+	// Locations - Terrestrial
+	Continent = 'continent',
+	Nation = 'nation',
+	Region = 'region',
+	Settlement = 'settlement',
+	Building = 'building',
+	HexTile = 'hexTile',
+	Location = 'location', // Generic location
+
+	// Dungeons
+	Dungeon = 'dungeon',
+	Entrance = 'entrance',
+	Room = 'room',
+	Trap = 'trap',
+
+	// Factions & Organizations
 	Faction = 'faction',
-	Session = 'session',
+	Organization = 'organization',
+
+	// Magic & Religion
+	MagicSystem = 'magicSystem',
+	Spell = 'spell',
+	Ritual = 'ritual',
+	God = 'god',
+
+	// Items & Objects
+	Artifact = 'artifact',
+	Treasure = 'treasure',
+	Vehicle = 'vehicle',
+	Talent = 'talent',
+
+	// Events & World Elements
 	Event = 'event',
-	Monster = 'monster'
+	Rumor = 'rumor',
+	Prophecy = 'prophecy',
+	Illness = 'illness',
+	Clue = 'clue',
+	WeatherEvent = 'weatherEvent',
+
+	// Misc
+	Plot = 'plot',
+	Session = 'session',
+	Sign = 'sign',
+	RelationshipType = 'relationshipType'
 }
 
 export interface EntityMetadata {

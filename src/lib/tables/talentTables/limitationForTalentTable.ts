@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -40,6 +41,6 @@ const limitations: string[] = [
 export class LimitationForTalentTable extends Table {
 	constructor() {
 		const entries = limitations.map((limitation) => new TableEntry(limitation));
-		super(entries, TableTitles.Limitation);
+		super(entries, TableTitles.Limitation, TableType.Talent);
 	}
 }

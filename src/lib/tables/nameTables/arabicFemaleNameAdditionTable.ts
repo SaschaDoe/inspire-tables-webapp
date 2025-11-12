@@ -11,6 +11,6 @@ export class ArabicFemaleNameAdditionTable extends Table{
         entries.push(new TableEntry("umm"))
         entries.push(new TableEntry("sala"))
         super(entries, TableTitles.ArabicFemaleNameAddition);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

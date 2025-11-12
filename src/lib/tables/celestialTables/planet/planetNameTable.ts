@@ -32,6 +32,6 @@ export class PlanetNameTable extends Table {
 			})
 		];
 		super(entries, TableTitles.PlanetName);
-		this.tableType = TableType.Other;
+		this.tableType = TableType.Name;
 	}
 }

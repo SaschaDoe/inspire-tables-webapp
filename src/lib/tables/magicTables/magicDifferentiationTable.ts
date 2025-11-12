@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -21,6 +22,6 @@ const magicSystemEntityDifferences: string[] = [
 export class MagicDifferentiationTable extends Table {
 	constructor() {
 		const entries = magicSystemEntityDifferences.map((diff) => new TableEntry(diff));
-		super(entries, TableTitles.MagicDifferentiation);
+		super(entries, TableTitles.MagicDifferentiation, TableType.Other);
 	}
 }

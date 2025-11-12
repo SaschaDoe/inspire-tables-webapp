@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -12,6 +13,6 @@ export class ImprovementTable extends Table {
 			new TableEntry('experience points per meta gaming'),
 			new TableEntry('given from external source')
 		];
-		super(entries, TableTitles.Improvement);
+		super(entries, TableTitles.Improvement, TableType.Talent);
 	}
 }

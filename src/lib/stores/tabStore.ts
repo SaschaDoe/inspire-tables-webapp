@@ -1,5 +1,6 @@
 import { writable, derived } from 'svelte/store';
 import type { Entity } from '$lib/types/entity';
+import { entityStore } from './entityStore';
 
 export interface Tab {
 	id: string;
@@ -22,18 +23,51 @@ function createTabStore() {
 		activeTabId: null
 	});
 
+	// Load from localStorage on init
+	function loadFromStorage() {
+		try {
+			const stored = localStorage.getItem('tabs');
+			if (stored) {
+				const state = JSON.parse(stored);
+				set(state);
+			}
+		} catch (error) {
+			console.error('Error loading tabs from storage:', error);
+		}
+	}
+
+	function saveToStorage(state: TabState) {
+		try {
+			localStorage.setItem('tabs', JSON.stringify(state));
+		} catch (error) {
+			console.error('Error saving tabs to storage:', error);
+		}
+	}
+
+	// Initialize
+	loadFromStorage();
+
 	return {
 		subscribe,
 
 		// Open a new tab or switch to existing one
 		openTab(entity: Entity) {
+			console.log('[tabStore] Opening tab for entity:', {
+				id: entity.id,
+				type: entity.type,
+				name: entity.name
+			});
 			update(state => {
 				// Check if tab already exists
 				const existingTab = state.tabs.find(t => t.entityId === entity.id);
 
 				if (existingTab) {
-					// Switch to existing tab
-					return { ...state, activeTabId: existingTab.id };
+					// Switch to existing tab and mark as recently used
+					console.log('[tabStore] Tab already exists, switching to it');
+					entityStore.markAsRecentlyUsed(entity.id);
+					const newState = { ...state, activeTabId: existingTab.id };
+					saveToStorage(newState);
+					return newState;
 				}
 
 				// Create new tab
@@ -47,10 +81,22 @@ function createTabStore() {
 					customFields: entity.customFields
 				};
 
-				return {
+				console.log('[tabStore] Created new tab:', {
+					id: newTab.id,
+					entityId: newTab.entityId,
+					entityType: newTab.entityType,
+					title: newTab.title
+				});
+
+				// Mark as recently used
+				entityStore.markAsRecentlyUsed(entity.id);
+
+				const newState = {
 					tabs: [...state.tabs, newTab],
 					activeTabId: newTab.id
 				};
+				saveToStorage(newState);
+				return newState;
 			});
 		},
 
@@ -79,16 +125,63 @@ function createTabStore() {
 					}
 				}
 
-				return {
+				const newState = {
 					tabs: newTabs,
 					activeTabId: newActiveTabId
 				};
+				saveToStorage(newState);
+				return newState;
+			});
+		},
+
+		// Close tab by entity ID (useful when deleting entities)
+		closeTabByEntityId(entityId: string) {
+			update(state => {
+				const tab = state.tabs.find(t => t.entityId === entityId);
+				if (!tab) return state;
+
+				// Use the existing closeTab logic
+				const index = state.tabs.findIndex(t => t.id === tab.id);
+				if (index === -1) return state;
+
+				// Don't close pinned tabs
+				if (tab.isPinned) return state;
+
+				const newTabs = state.tabs.filter(t => t.id !== tab.id);
+
+				// Determine new active tab if we closed the active one
+				let newActiveTabId = state.activeTabId;
+				if (state.activeTabId === tab.id) {
+					if (newTabs.length > 0) {
+						// Activate the tab to the right, or the last tab if we closed the last one
+						const nextIndex = index < newTabs.length ? index : newTabs.length - 1;
+						newActiveTabId = newTabs[nextIndex]?.id || null;
+					} else {
+						newActiveTabId = null;
+					}
+				}
+
+				const newState = {
+					tabs: newTabs,
+					activeTabId: newActiveTabId
+				};
+				saveToStorage(newState);
+				return newState;
 			});
 		},
 
 		// Switch active tab
 		setActiveTab(tabId: string) {
-			update(state => ({ ...state, activeTabId: tabId }));
+			update(state => {
+				const newState = { ...state, activeTabId: tabId };
+				saveToStorage(newState);
+				// Mark as recently used
+				const tab = state.tabs.find(t => t.id === tabId);
+				if (tab) {
+					entityStore.markAsRecentlyUsed(tab.entityId);
+				}
+				return newState;
+			});
 		},
 
 		// Pin/unpin tab

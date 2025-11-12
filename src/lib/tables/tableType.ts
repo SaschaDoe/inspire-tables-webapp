@@ -12,5 +12,6 @@ export enum TableType {
 	Culture = 'Culture',
 	Dungeon = 'Dungeon',
 	Campaign = 'Campaign',
-	SoloRPG = 'Solo RPG'
+	SoloRPG = 'Solo RPG',
+	Name = 'Name'
 }

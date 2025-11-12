@@ -93,6 +93,6 @@ export class SouthAmericanFemaleNameTable extends Table{
         entries.push(new TableEntry("Zephirina"))
         entries.push(new TableEntry("Zeradia"))
         super(entries, TableTitles.SouthAmericanFemaleName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

@@ -60,6 +60,6 @@ export class RussianLastNameTable extends Table{
         entries.push(new TableEntry("Wolpjes"))
         entries.push(new TableEntry("Wulfski"))
         super(entries, TableTitles.RussianLastName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

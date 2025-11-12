@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -29,6 +30,6 @@ export class RealWorldEnemyTable extends Table {
 		for (let enemy of enemies) {
 			entries.push(new TableEntry(enemy));
 		}
-		super(entries, TableTitles.RealWorldEnemy);
+		super(entries, TableTitles.RealWorldEnemy, TableType.Dungeon);
 	}
 }

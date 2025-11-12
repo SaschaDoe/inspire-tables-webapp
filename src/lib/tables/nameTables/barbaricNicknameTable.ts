@@ -78,6 +78,6 @@ export class BarbaricNicknameTable extends Table{
         entries.push(new TableEntry("the Who-Fights-Alone"))
         entries.push(new TableEntry("the Wicked"))
         super(entries, TableTitles.BarbaricNickName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

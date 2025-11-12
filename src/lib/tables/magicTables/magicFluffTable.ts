@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -28,6 +29,6 @@ const magicSystemFluff: string[] = [
 export class MagicFluffTable extends Table {
 	constructor() {
 		const entries = magicSystemFluff.map((fluff) => new TableEntry(fluff));
-		super(entries, TableTitles.MagicFluff);
+		super(entries, TableTitles.MagicFluff, TableType.Other);
 	}
 }

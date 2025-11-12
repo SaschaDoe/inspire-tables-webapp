@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -39,6 +40,6 @@ const divineSpellFailureOutcomes: string[] = [
 export class MagicFailConsequenceTable extends Table {
 	constructor() {
 		const entries = divineSpellFailureOutcomes.map((outcome) => new TableEntry(outcome));
-		super(entries, TableTitles.MagicFailConsequence);
+		super(entries, TableTitles.MagicFailConsequence, TableType.Other);
 	}
 }

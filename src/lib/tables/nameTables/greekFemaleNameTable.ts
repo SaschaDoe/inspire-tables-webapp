@@ -59,6 +59,6 @@ export class GreekFemaleNameTable extends Table{
         entries.push(new TableEntry("Perinope"))
         entries.push(new TableEntry("Dolopia"))
         super(entries, TableTitles.GreekFemaleName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

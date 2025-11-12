@@ -13,6 +13,6 @@ export class SphereNameTable extends Table {
 				.withCascadingRole(new SphereNameSuffixesTable())
 		];
 		super(entries, TableTitles.SphereName);
-		this.tableType = TableType.Other;
+		this.tableType = TableType.Name;
 	}
 }

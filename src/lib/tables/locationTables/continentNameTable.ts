@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -26,6 +27,6 @@ export class ContinentNameTable extends Table {
 		entries.push(new TableEntry('Nuna'));
 		entries.push(new TableEntry('Rodinia'));
 
-		super(entries, TableTitles.ContinentName);
+		super(entries, TableTitles.ContinentName, TableType.Location);
 	}
 }

@@ -33,6 +33,6 @@ export class SphereNameSuffixesTable extends Table {
 	constructor() {
 		const entries = sphereSuffixes.map((suffix) => new TableEntry(suffix));
 		super(entries, TableTitles.SphereNameSuffixes);
-		this.tableType = TableType.Other;
+		this.tableType = TableType.Name;
 	}
 }

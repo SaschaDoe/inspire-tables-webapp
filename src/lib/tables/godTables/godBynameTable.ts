@@ -47,6 +47,6 @@ export class GodBynameTable extends Table {
 		entries.push(new TableEntry('Gilded Sovereign'));
 		entries.push(new TableEntry('Stone Protector'));
 		super(entries, TableTitles.GodByname);
-		this.tableType = TableType.Other;
+		this.tableType = TableType.Name;
 	}
 }

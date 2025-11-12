@@ -1,9 +1,8 @@
 // THIS FILE IS AUTO-GENERATED - DO NOT EDIT MANUALLY
 // Run 'npm run generate:metadata' to regenerate this file
-// Generated on: 2025-11-12T05:50:07.250Z
+// Generated on: 2025-11-12T07:56:56.745Z
 
 import { TableType } from '$lib/tables/tableType';
-import { TableTitles } from '$lib/tables/tableTitles';
 
 export interface TableMetadata {
 	title: string;
@@ -23,559 +22,247 @@ export const tableMetadata: TableCategory[] = [
 		type: TableType.Character,
 		"tables": [
 			{
-				title: TableTitles.Advantages as any as string,
+				"title": "Advantages",
 				type: TableType.Character,
 				"importPath": "charTables/advantageTable",
 				"className": "AdvantageTable"
 			},
 			{
-				title: TableTitles.Alignment as any as string,
+				"title": "Alignment",
 				type: TableType.Character,
 				"importPath": "charTables/alignmentTable",
 				"className": "AlignmentTable"
 			},
 			{
-				title: TableTitles.Animal as any as string,
+				"title": "Animal",
 				type: TableType.Character,
 				"importPath": "charTables/animalTable",
 				"className": "AnimalTable"
 			},
 			{
-				title: TableTitles.Attitude as any as string,
+				"title": "Attitude",
 				type: TableType.Character,
 				"importPath": "charTables/attitudeTable",
 				"className": "AttitudeTable"
 			},
 			{
-				title: TableTitles.Attributes as any as string,
+				"title": "Attributes",
 				type: TableType.Character,
 				"importPath": "charTables/attributeTable",
 				"className": "AttributeTable"
 			},
 			{
-				title: TableTitles.BalancingForTalent as any as string,
-				type: TableType.Character,
-				"importPath": "talentTables/balancingForTalentTable",
-				"className": "BalancingForTalentTable"
-			},
-			{
-				title: TableTitles.CastingMethod as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/castingMethodTable",
-				"className": "CastingMethodTable"
-			},
-			{
-				title: TableTitles.CharacterAsDevice as any as string,
+				"title": "Character as Device",
 				type: TableType.Character,
 				"importPath": "charTables/characterAsDeviceTable",
 				"className": "CharacterAsDeviceTable"
 			},
 			{
-				title: TableTitles.CharacterShadowArchetype as any as string,
+				"title": "Character Shadow Archetype",
 				type: TableType.Character,
 				"importPath": "charTables/characterShadowArchetypeTable",
 				"className": "CharacterShadowArchetypeTable"
 			},
 			{
-				title: TableTitles.ContinentName as any as string,
-				type: TableType.Character,
-				"importPath": "locationTables/continentNameTable",
-				"className": "ContinentNameTable"
-			},
-			{
-				title: TableTitles.Curse as any as string,
+				"title": "Curse",
 				type: TableType.Character,
 				"importPath": "charTables/curseTable",
 				"className": "CurseTable"
 			},
 			{
-				title: TableTitles.Disadvantages as any as string,
+				"title": "Disadvantages",
 				type: TableType.Character,
 				"importPath": "charTables/disadvantageTable",
 				"className": "DisadvantageTable"
 			},
 			{
-				title: TableTitles.DungeonAdjective as any as string,
-				type: TableType.Character,
-				"importPath": "dungeonTables/dungeonAdjectiveTable",
-				"className": "DungeonAdjectiveTable"
-			},
-			{
-				title: TableTitles.DungeonName as any as string,
+				"title": "Dungeon Name",
 				type: TableType.Character,
 				"importPath": "nameTables/dungeonNameTable",
 				"className": "DungeonNameTable"
 			},
 			{
-				title: TableTitles.DungeonPurpose as any as string,
-				type: TableType.Character,
-				"importPath": "dungeonTables/dungeonPurposeTable",
-				"className": "DungeonPurposeTable"
-			},
-			{
-				title: TableTitles.DungeonRoomArrangement as any as string,
-				type: TableType.Character,
-				"importPath": "dungeonTables/dungeonArrangementsTable",
-				"className": "DungeonRoomArrangementsTable"
-			},
-			{
-				title: TableTitles.DungeonState as any as string,
-				type: TableType.Character,
-				"importPath": "dungeonTables/dungeonStateTable",
-				"className": "DungeonStateTable"
-			},
-			{
-				title: TableTitles.DungeonType as any as string,
-				type: TableType.Character,
-				"importPath": "dungeonTables/dungeonTypeTable",
-				"className": "DungeonTypeTable"
-			},
-			{
-				title: TableTitles.ElfenFemaleName as any as string,
+				"title": "Elfen Female Name",
 				type: TableType.Character,
 				"importPath": "nameTables/elfenFemaleNameTable",
 				"className": "ElfenFemaleNameTable"
 			},
 			{
-				title: TableTitles.ElfenMaleName as any as string,
+				"title": "Elfen Male Name",
 				type: TableType.Character,
 				"importPath": "nameTables/elfenMaleNameTable",
 				"className": "ElfenMaleNameTable"
 			},
 			{
-				title: TableTitles.EntranceAdjective as any as string,
-				type: TableType.Character,
-				"importPath": "dungeonTables/entranceAdjectiveTable",
-				"className": "EntranceAdjectiveTable"
-			},
-			{
-				title: TableTitles.EntranceType as any as string,
-				type: TableType.Character,
-				"importPath": "dungeonTables/entranceTypeTable",
-				"className": "EntranceTypeTable"
-			},
-			{
-				title: TableTitles.EpicSubstantive as any as string,
+				"title": "Epic Substantive",
 				type: TableType.Character,
 				"importPath": "nameTables/epicSubstantiveTable",
 				"className": "EpicSubstantiveTable"
 			},
 			{
-				title: TableTitles.FantasyCreatures as any as string,
+				"title": "Fantasy Creatures",
 				type: TableType.Character,
 				"importPath": "charTables/fantasyCreatureTable",
 				"className": "FantasyCreatureTable"
 			},
 			{
-				title: TableTitles.FractionName as any as string,
-				type: TableType.Character,
-				"importPath": "factionTables/factionSecondNameTable",
-				"className": "FactionSecondNameTable"
-			},
-			{
-				title: TableTitles.FractionName as any as string,
-				type: TableType.Character,
-				"importPath": "factionTables/factionQuoteTable",
-				"className": "FactionQuoteTable"
-			},
-			{
-				title: TableTitles.FractionName as any as string,
-				type: TableType.Character,
-				"importPath": "factionTables/factionFirstNameTable",
-				"className": "FactionFirstNameTable"
-			},
-			{
-				title: TableTitles.FractionName as any as string,
-				type: TableType.Character,
-				"importPath": "factionTables/factionBeginningMotivationTable",
-				"className": "FactionBeginningMotivationTable"
-			},
-			{
-				title: TableTitles.FrenchFemaleName as any as string,
+				"title": "French Female Name",
 				type: TableType.Character,
 				"importPath": "nameTables/frenchFemaleNameTable",
 				"className": "FrenchFemaleNameTable"
 			},
 			{
-				title: TableTitles.FrenchLastName as any as string,
+				"title": "French Last Name",
 				type: TableType.Character,
 				"importPath": "nameTables/frenchLastNameTable",
 				"className": "FrenchLastNameTable"
 			},
 			{
-				title: TableTitles.FrenchMaleName as any as string,
+				"title": "French Male Name",
 				type: TableType.Character,
 				"importPath": "nameTables/frenchMaleNameTable",
 				"className": "FrenchMaleNameTable"
 			},
 			{
-				title: TableTitles.FrenchPlaceNameTable as any as string,
+				"title": "French Place Name Table",
 				type: TableType.Character,
 				"importPath": "nameTables/frenchPlaceNameTable",
 				"className": "FrenchPlaceNameTable"
 			},
 			{
-				title: TableTitles.Gender as any as string,
+				"title": "Gender",
 				type: TableType.Character,
 				"importPath": "charTables/genderTable",
 				"className": "GenderTable"
 			},
 			{
-				title: TableTitles.GermanFemaleNames as any as string,
+				"title": "German Female Names",
 				type: TableType.Character,
 				"importPath": "nameTables/germanFemaleNameTable",
 				"className": "GermanFemaleNameTable"
 			},
 			{
-				title: TableTitles.GermanMaleName as any as string,
+				"title": "German Male Names",
 				type: TableType.Character,
 				"importPath": "nameTables/germanMaleNameTable",
 				"className": "GermanMaleNameTable"
 			},
 			{
-				title: TableTitles.HiddenDescription as any as string,
-				type: TableType.Character,
-				"importPath": "dungeonTables/hiddenDescriptionTable",
-				"className": "HiddenDescriptionTable"
-			},
-			{
-				title: TableTitles.Improvement as any as string,
-				type: TableType.Character,
-				"importPath": "talentTables/improvementTable",
-				"className": "ImprovementTable"
-			},
-			{
-				title: TableTitles.InitialMeetingCircumstances as any as string,
-				type: TableType.Character,
-				"importPath": "adventureTables/initialMeetingCircumstancesTable",
-				"className": "InitialMeetingCircumstancesTable"
-			},
-			{
-				title: TableTitles.InitialMeetingTone as any as string,
-				type: TableType.Character,
-				"importPath": "adventureTables/initialMeetingToneTable",
-				"className": "InitialMeetingToneTable"
-			},
-			{
-				title: TableTitles.InitialMeetingType as any as string,
-				type: TableType.Character,
-				"importPath": "adventureTables/initialMeetingTypeTable",
-				"className": "InitialMeetingTypeTable"
-			},
-			{
-				title: TableTitles.Knowledge as any as string,
+				"title": "Knowledge",
 				type: TableType.Character,
 				"importPath": "otherTables/knowledgeTable",
 				"className": "KnowledgeTable"
 			},
 			{
-				title: TableTitles.Limitation as any as string,
-				type: TableType.Character,
-				"importPath": "talentTables/limitationForTalentTable",
-				"className": "LimitationForTalentTable"
-			},
-			{
-				title: TableTitles.LocationChangeEvent as any as string,
-				type: TableType.Character,
-				"importPath": "dungeonTables/locationChangeEventTable",
-				"className": "LocationChangeEventTable"
-			},
-			{
-				title: TableTitles.MagicAbility as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicAbilityTable",
-				"className": "MagicAbilityTable"
-			},
-			{
-				title: TableTitles.MagicAttribute as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicAttributeTable",
-				"className": "MagicAttributeTable"
-			},
-			{
-				title: TableTitles.MagicChannel as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicChannelTable",
-				"className": "MagicChannelTable"
-			},
-			{
-				title: TableTitles.MagicCost as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicCostTable",
-				"className": "MagicCostTable"
-			},
-			{
-				title: TableTitles.MagicDifferentiation as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicDifferentiationTable",
-				"className": "MagicDifferentiationTable"
-			},
-			{
-				title: TableTitles.MagicEvent as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicEventTable",
-				"className": "MagicEventTable"
-			},
-			{
-				title: TableTitles.MagicFailConsequence as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicFailConsequenceTable",
-				"className": "MagicFailConsequenceTable"
-			},
-			{
-				title: TableTitles.MagicFluff as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicFluffTable",
-				"className": "MagicFluffTable"
-			},
-			{
-				title: TableTitles.MagicOrigin as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicOriginTable",
-				"className": "MagicOriginTable"
-			},
-			{
-				title: TableTitles.MagicRule as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicRuleTable",
-				"className": "MagicRuleTable"
-			},
-			{
-				title: TableTitles.MagicSecondLevelUse as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSecondLevelUseTable",
-				"className": "MagicSecondLevelUseTable"
-			},
-			{
-				title: TableTitles.MagicSource as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSourceTable",
-				"className": "MagicSourceTable"
-			},
-			{
-				title: TableTitles.MagicSpellModifier as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSpellModifierTable",
-				"className": "MagicSpellModifierTable"
-			},
-			{
-				title: TableTitles.MagicSystemFantasyNameFirst as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSystemFantasyNameFirstTable",
-				"className": "MagicSystemFantasyNameFirstTable"
-			},
-			{
-				title: TableTitles.MagicSystemFantasyNameSecond as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSystemFantasyNameSecondTable",
-				"className": "MagicSystemFantasyNameSecondTable"
-			},
-			{
-				title: TableTitles.MagicSystemReligionNameFirst as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSystemReligionNameFirstTable",
-				"className": "MagicSystemReligionNameFirstTable"
-			},
-			{
-				title: TableTitles.MagicSystemReligionNameSecond as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSystemReligionNameSecondTable",
-				"className": "MagicSystemReligionNameSecondTable"
-			},
-			{
-				title: TableTitles.MagicSystemSciFiNameFirst as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSystemSciFiNameFirstTable",
-				"className": "MagicSystemSciFiNameFirstTable"
-			},
-			{
-				title: TableTitles.MagicSystemSciFiNameSecond as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSystemSciFiNameSecondTable",
-				"className": "MagicSystemSciFiNameSecondTable"
-			},
-			{
-				title: TableTitles.MagicSystemWording as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSystemWordingTable",
-				"className": "MagicSystemWordingTable"
-			},
-			{
-				title: TableTitles.MagicVisual as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicVisualTable",
-				"className": "MagicVisualTable"
-			},
-			{
-				title: TableTitles.MagicWeakness as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicWeaknessTable",
-				"className": "MagicWeaknessTable"
-			},
-			{
-				title: TableTitles.MonsterAdjective as any as string,
+				"title": "Monster Adjective",
 				type: TableType.Character,
 				"importPath": "monsterTables/monsterAdjectiveTable",
 				"className": "MonsterAdjectiveTable"
 			},
 			{
-				title: TableTitles.MonsterEncounterType as any as string,
+				"title": "Monster Encounter Type",
 				type: TableType.Character,
 				"importPath": "monsterTables/monsterEncounterTypeTable",
 				"className": "MonsterEncounterTypeTable"
 			},
 			{
-				title: TableTitles.MonsterMeal as any as string,
+				"title": "Monster Meal",
 				type: TableType.Character,
 				"importPath": "monsterTables/monsterMealTable",
 				"className": "MonsterMealTable"
 			},
 			{
-				title: TableTitles.MonsterNumber as any as string,
+				"title": "Monster Number",
 				type: TableType.Character,
 				"importPath": "monsterTables/monsterNumberTable",
 				"className": "MonsterNumberTable"
 			},
 			{
-				title: TableTitles.MonsterReproduction as any as string,
+				"title": "Monster Reproduction",
 				type: TableType.Character,
 				"importPath": "monsterTables/monsterReproductionTable",
 				"className": "MonsterReproductionTable"
 			},
 			{
-				title: TableTitles.Motivation as any as string,
+				"title": "Motivation",
 				type: TableType.Character,
 				"importPath": "charTables/motivationTable",
 				"className": "MotivationTable"
 			},
 			{
-				title: TableTitles.NationAdjective as any as string,
-				type: TableType.Character,
-				"importPath": "locationTables/nationAdjectiveTable",
-				"className": "NationAdjectiveTable"
-			},
-			{
-				title: TableTitles.NationName as any as string,
-				type: TableType.Character,
-				"importPath": "locationTables/nationNameTable",
-				"className": "NationNameTable"
-			},
-			{
-				title: TableTitles.Nobility as any as string,
+				"title": "Nobility",
 				type: TableType.Character,
 				"importPath": "charTables/nobilityTable",
 				"className": "NobilityTable"
 			},
 			{
-				title: TableTitles.PowerArc as any as string,
+				"title": "Power Arc",
 				type: TableType.Character,
 				"importPath": "otherTables/powerArcTable",
 				"className": "PowerArcTable"
 			},
 			{
-				title: TableTitles.Prevalence as any as string,
+				"title": "Prevalence",
 				type: TableType.Character,
 				"importPath": "otherTables/prevalenceTable",
 				"className": "PrevalenceTable"
 			},
 			{
-				title: TableTitles.Profession as any as string,
+				"title": "Profession",
 				type: TableType.Character,
 				"importPath": "charTables/professionTable",
 				"className": "ProfessionTable"
 			},
 			{
-				title: TableTitles.Quantity as any as string,
+				"title": "Quantity",
 				type: TableType.Character,
 				"importPath": "otherTables/quantityTable",
 				"className": "QuantityTable"
 			},
 			{
-				title: TableTitles.Race as any as string,
+				"title": "Race",
 				type: TableType.Character,
 				"importPath": "charTables/raceTable",
 				"className": "RaceTable"
 			},
 			{
-				title: TableTitles.RealWorldDungeonName as any as string,
-				type: TableType.Character,
-				"importPath": "dungeonTables/realWorldDungeonNameTable",
-				"className": "RealWorldDungeonNameTable"
-			},
-			{
-				title: TableTitles.RealWorldEnemy as any as string,
-				type: TableType.Character,
-				"importPath": "dungeonTables/realWorldEnemyTable",
-				"className": "RealWorldEnemyTable"
-			},
-			{
-				title: TableTitles.RelationshipType as any as string,
+				"title": "Relationship Type",
 				type: TableType.Character,
 				"importPath": "charTables/relationshipTypeTable",
 				"className": "RelationshipTypeTable"
 			},
 			{
-				title: TableTitles.Senses as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSensesTable",
-				"className": "MagicSensesTable"
-			},
-			{
-				title: TableTitles.SideEffect as any as string,
-				type: TableType.Character,
-				"importPath": "talentTables/sideEffectTable",
-				"className": "SideEffectTable"
-			},
-			{
-				title: TableTitles.SignForm as any as string,
+				"title": "Sign Form",
 				type: TableType.Character,
 				"importPath": "otherTables/signFormTable",
 				"className": "SignFormTable"
 			},
 			{
-				title: TableTitles.SignMeaning as any as string,
+				"title": "Sign Meaning",
 				type: TableType.Character,
 				"importPath": "otherTables/signMeaningTable",
 				"className": "SignMeaningTable"
 			},
 			{
-				title: TableTitles.SignSymbol as any as string,
+				"title": "Sign Symbol",
 				type: TableType.Character,
 				"importPath": "otherTables/signSymbolTable",
 				"className": "SignSymbolTable"
 			},
 			{
-				title: TableTitles.SimplifiedNpcAction as any as string,
-				type: TableType.Character,
-				"importPath": "mythicTables/simplifiedNpcActionTable",
-				"className": "SimplifiedNpcActionTable"
-			},
-			{
-				title: TableTitles.SpecialFeatures as any as string,
+				"title": "Special Features",
 				type: TableType.Character,
 				"importPath": "charTables/specialFeaturesTable",
 				"className": "SpecialFeaturesTable"
 			},
 			{
-				title: TableTitles.SpellPreparation as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicPreparationTable",
-				"className": "MagicPreparationTable"
-			},
-			{
-				title: TableTitles.Transferability as any as string,
+				"title": "Transferability",
 				type: TableType.Character,
 				"importPath": "otherTables/transferabilityTable",
 				"className": "TransferabilityTable"
 			},
 			{
-				title: TableTitles.TreasureContent as any as string,
-				type: TableType.Character,
-				"importPath": "dungeonTables/treasureContentTable",
-				"className": "TreasureContentTable"
-			},
-			{
-				title: TableTitles.Verb as any as string,
+				"title": "Verb",
 				type: TableType.Character,
 				"importPath": "nameTables/verbTable",
 				"className": "VerbTable"
@@ -586,130 +273,219 @@ export const tableMetadata: TableCategory[] = [
 		type: TableType.Location,
 		"tables": [
 			{
-				title: TableTitles.Building as any as string,
+				"title": "Building",
 				type: TableType.Location,
 				"importPath": "locationTables/buildingTable",
 				"className": "BuildingTable"
 			},
 			{
-				title: TableTitles.BuildingAdjective as any as string,
+				"title": "Building Adjectives",
 				type: TableType.Location,
 				"importPath": "locationTables/buildingAdjectiveTable",
 				"className": "BuildingAdjectiveTable"
 			},
 			{
-				title: TableTitles.Continent as any as string,
+				"title": "Continent",
 				type: TableType.Location,
 				"importPath": "locationTables/continentTable",
 				"className": "ContinentTable"
 			},
 			{
-				title: TableTitles.DungeonEntry as any as string,
+				"title": "Continent Name",
+				type: TableType.Location,
+				"importPath": "locationTables/continentNameTable",
+				"className": "ContinentNameTable"
+			},
+			{
+				"title": "Dungeon Entry",
 				type: TableType.Location,
 				"importPath": "dungeonTables/dungeonEntriesTable",
 				"className": "DungeonEntriesTable"
 			},
 			{
-				title: TableTitles.Furnishing as any as string,
-				type: TableType.Location,
-				"importPath": "dungeonTables/furnishingTable",
-				"className": "FurnishingTable"
-			},
-			{
-				title: TableTitles.HexFeature as any as string,
+				"title": "Hex Feature",
 				type: TableType.Location,
 				"importPath": "locationTables/hexFeatureTable",
 				"className": "HexFeatureTable"
 			},
 			{
-				title: TableTitles.HexTileHazard as any as string,
+				"title": "Hex Tile Hazards",
 				type: TableType.Location,
 				"importPath": "locationTables/hexTileHazardTable",
 				"className": "HexTileHazardTable"
 			},
 			{
-				title: TableTitles.HexType as any as string,
+				"title": "Hex Type",
 				type: TableType.Location,
 				"importPath": "locationTables/hexTypeTable",
 				"className": "HexTypeTable"
 			},
 			{
-				title: TableTitles.Landscape as any as string,
+				"title": "Landscape",
 				type: TableType.Location,
 				"importPath": "locationTables/landscapeTable",
 				"className": "LandscapeTable"
 			},
 			{
-				title: TableTitles.NaturalObstacle as any as string,
+				"title": "Nation Adjective",
 				type: TableType.Location,
-				"importPath": "dungeonTables/naturalObstacleTable",
-				"className": "NaturalObstacleTable"
+				"importPath": "locationTables/nationAdjectiveTable",
+				"className": "NationAdjectiveTable"
 			},
 			{
-				title: TableTitles.Obstacle as any as string,
+				"title": "Nation Name",
 				type: TableType.Location,
-				"importPath": "dungeonTables/obstacleTable",
-				"className": "ObstacleTable"
+				"importPath": "locationTables/nationNameTable",
+				"className": "NationNameTable"
 			},
 			{
-				title: TableTitles.RitualLocation as any as string,
+				"title": "Ritual Location",
 				type: TableType.Location,
 				"importPath": "ritualTables/ritualLocationTable",
 				"className": "RitualLocationTable"
 			},
 			{
-				title: TableTitles.Sphere as any as string,
+				"title": "Sphere",
 				type: TableType.Location,
 				"importPath": "locationTables/sphereTable",
 				"className": "SphereTable"
 			},
 			{
-				title: TableTitles.Structure as any as string,
+				"title": "Structure",
 				type: TableType.Location,
 				"importPath": "dungeonTables/structureTable",
 				"className": "StructureTable"
 			},
 			{
-				title: TableTitles.TempleType as any as string,
+				"title": "Temple Type",
 				type: TableType.Location,
 				"importPath": "locationTables/templeTypeTable",
 				"className": "TempleTypeTable"
 			},
 			{
-				title: TableTitles.TerrainFeature as any as string,
+				"title": "Terrain Feature",
 				type: TableType.Location,
 				"importPath": "locationTables/terrainFeatureTable",
 				"className": "TerrainFeatureTable"
 			},
 			{
-				title: TableTitles.Transition as any as string,
+				"title": "Transition",
 				type: TableType.Location,
 				"importPath": "dungeonTables/transitionTable",
 				"className": "TransitionTable"
+			}
+		]
+	},
+	{
+		type: TableType.Dungeon,
+		"tables": [
+			{
+				"title": "Dungeon Adjective",
+				type: TableType.Dungeon,
+				"importPath": "dungeonTables/dungeonAdjectiveTable",
+				"className": "DungeonAdjectiveTable"
 			},
 			{
-				title: TableTitles.TransitionAdjective as any as string,
-				type: TableType.Location,
+				"title": "Dungeon Purpose",
+				type: TableType.Dungeon,
+				"importPath": "dungeonTables/dungeonPurposeTable",
+				"className": "DungeonPurposeTable"
+			},
+			{
+				"title": "Dungeon Room Arrangement",
+				type: TableType.Dungeon,
+				"importPath": "dungeonTables/dungeonArrangementsTable",
+				"className": "DungeonRoomArrangementsTable"
+			},
+			{
+				"title": "Dungeon State",
+				type: TableType.Dungeon,
+				"importPath": "dungeonTables/dungeonStateTable",
+				"className": "DungeonStateTable"
+			},
+			{
+				"title": "Dungeon Type",
+				type: TableType.Dungeon,
+				"importPath": "dungeonTables/dungeonTypeTable",
+				"className": "DungeonTypeTable"
+			},
+			{
+				"title": "Entrance Adjective",
+				type: TableType.Dungeon,
+				"importPath": "dungeonTables/entranceAdjectiveTable",
+				"className": "EntranceAdjectiveTable"
+			},
+			{
+				"title": "Entrance Type",
+				type: TableType.Dungeon,
+				"importPath": "dungeonTables/entranceTypeTable",
+				"className": "EntranceTypeTable"
+			},
+			{
+				"title": "Furnishing",
+				type: TableType.Dungeon,
+				"importPath": "dungeonTables/furnishingTable",
+				"className": "FurnishingTable"
+			},
+			{
+				"title": "Hidden Description",
+				type: TableType.Dungeon,
+				"importPath": "dungeonTables/hiddenDescriptionTable",
+				"className": "HiddenDescriptionTable"
+			},
+			{
+				"title": "Location Change Event",
+				type: TableType.Dungeon,
+				"importPath": "dungeonTables/locationChangeEventTable",
+				"className": "LocationChangeEventTable"
+			},
+			{
+				"title": "Natural Obstacle",
+				type: TableType.Dungeon,
+				"importPath": "dungeonTables/naturalObstacleTable",
+				"className": "NaturalObstacleTable"
+			},
+			{
+				"title": "Obstacle",
+				type: TableType.Dungeon,
+				"importPath": "dungeonTables/obstacleTable",
+				"className": "ObstacleTable"
+			},
+			{
+				"title": "Real World Enemy",
+				type: TableType.Dungeon,
+				"importPath": "dungeonTables/realWorldEnemyTable",
+				"className": "RealWorldEnemyTable"
+			},
+			{
+				"title": "Transition Adjective",
+				type: TableType.Dungeon,
 				"importPath": "dungeonTables/transitionAdjectiveTable",
 				"className": "TransitionAdjectiveTable"
 			},
 			{
-				title: TableTitles.Trap as any as string,
-				type: TableType.Location,
+				"title": "Trap",
+				type: TableType.Dungeon,
 				"importPath": "dungeonTables/trapTable",
 				"className": "TrapTable"
 			},
 			{
-				title: TableTitles.TrapFunction as any as string,
-				type: TableType.Location,
+				"title": "Trap Function",
+				type: TableType.Dungeon,
 				"importPath": "dungeonTables/trapFunctionTable",
 				"className": "TrapFunctionTable"
 			},
 			{
-				title: TableTitles.TrapTrigger as any as string,
-				type: TableType.Location,
+				"title": "Trap Trigger",
+				type: TableType.Dungeon,
 				"importPath": "dungeonTables/trapTriggerTable",
 				"className": "TrapTriggerTable"
+			},
+			{
+				"title": "Treasure Content",
+				type: TableType.Dungeon,
+				"importPath": "dungeonTables/treasureContentTable",
+				"className": "TreasureContentTable"
 			}
 		]
 	},
@@ -717,85 +493,67 @@ export const tableMetadata: TableCategory[] = [
 		type: TableType.Artefact,
 		"tables": [
 			{
-				title: TableTitles.Armor as any as string,
+				"title": "Armor",
 				type: TableType.Artefact,
 				"importPath": "artefactTables/armorTable",
 				"className": "ArmorTable"
 			},
 			{
-				title: TableTitles.Artefact as any as string,
+				"title": "Artefact",
 				type: TableType.Artefact,
 				"importPath": "artefactTables/artefactTable",
 				"className": "ArtefactTable"
 			},
 			{
-				title: TableTitles.ArtefactAdjective as any as string,
+				"title": "Artefact Adjective",
 				type: TableType.Artefact,
 				"importPath": "artefactTables/artefactAdjectiveTable",
 				"className": "ArtefactAdjectiveTable"
 			},
 			{
-				title: TableTitles.Artwork as any as string,
+				"title": "Artwork",
 				type: TableType.Artefact,
 				"importPath": "artefactTables/artworkTable",
 				"className": "ArtworkTable"
 			},
 			{
-				title: TableTitles.EndingTropes as any as string,
-				type: TableType.Artefact,
-				"importPath": "adventureTables/endingTropeTable",
-				"className": "EndingTropeTable"
-			},
-			{
-				title: TableTitles.Gemstone as any as string,
+				"title": "Gemstone",
 				type: TableType.Artefact,
 				"importPath": "artefactTables/gemstoneTable",
 				"className": "GemstoneTable"
 			},
 			{
-				title: TableTitles.Jewelry as any as string,
+				"title": "Jewelry",
 				type: TableType.Artefact,
 				"importPath": "artefactTables/jewelryTable",
 				"className": "JewelryTable"
 			},
 			{
-				title: TableTitles.MagicalArtefact as any as string,
+				"title": "Magical Artefact",
 				type: TableType.Artefact,
 				"importPath": "artefactTables/magicalArtefactTable",
 				"className": "MagicalArtefactTable"
 			},
 			{
-				title: TableTitles.Materials as any as string,
+				"title": "Materials",
 				type: TableType.Artefact,
 				"importPath": "artefactTables/materialsTable",
 				"className": "MaterialsTable"
 			},
 			{
-				title: TableTitles.Narration as any as string,
-				type: TableType.Artefact,
-				"importPath": "adventureTables/narrationTable",
-				"className": "NarrationTable"
-			},
-			{
-				title: TableTitles.PlotTrope as any as string,
-				type: TableType.Artefact,
-				"importPath": "adventureTables/plotTropeTable",
-				"className": "PlotTropeTable"
-			},
-			{
-				title: TableTitles.ProfaneArtefact as any as string,
+				"title": "Profane Artefact",
 				type: TableType.Artefact,
 				"importPath": "artefactTables/profaneArtefactTable",
 				"className": "ProfaneArtefactTable"
 			},
 			{
-				title: TableTitles.Treasure as any as string,
+				"title": "Treasure",
 				type: TableType.Artefact,
 				"importPath": "artefactTables/treasureTable",
 				"className": "TreasureTable"
 			},
 			{
-				title: TableTitles.Weapon as any as string,
+				"title": "Weapon",
 				type: TableType.Artefact,
 				"importPath": "artefactTables/weaponTable",
 				"className": "WeaponTable"
@@ -806,97 +564,139 @@ export const tableMetadata: TableCategory[] = [
 		type: TableType.Talent,
 		"tables": [
 			{
-				title: TableTitles.ChangeTalent as any as string,
+				"title": "Artistic Talent",
+				type: TableType.Talent,
+				"importPath": "talentTables/artistTalentTable",
+				"className": "ArtistTalentTable"
+			},
+			{
+				"title": "Athletics Talent",
+				type: TableType.Talent,
+				"importPath": "talentTables/athleticsTalentTable",
+				"className": "AthleticsTalentTable"
+			},
+			{
+				"title": "Balancing For Talent",
+				type: TableType.Talent,
+				"importPath": "talentTables/balancingForTalentTable",
+				"className": "BalancingForTalentTable"
+			},
+			{
+				"title": "Change Talent",
 				type: TableType.Talent,
 				"importPath": "talentTables/changeTalentTable",
 				"className": "ChangeTalentTable"
 			},
 			{
-				title: TableTitles.ElementalTalent as any as string,
+				"title": "Craft Talent",
+				type: TableType.Talent,
+				"importPath": "talentTables/craftTable",
+				"className": "CraftTable"
+			},
+			{
+				"title": "Elemental Talent",
 				type: TableType.Talent,
 				"importPath": "talentTables/elementalTalentTable",
 				"className": "ElementalTalentTable"
 			},
 			{
-				title: TableTitles.HealingTalent as any as string,
+				"title": "Healing Talent",
 				type: TableType.Talent,
 				"importPath": "talentTables/healingTalentTable",
 				"className": "HealingTalentTable"
 			},
 			{
-				title: TableTitles.Limitation as any as string,
+				"title": "Improvement",
+				type: TableType.Talent,
+				"importPath": "talentTables/improvementTable",
+				"className": "ImprovementTable"
+			},
+			{
+				"title": "Limitation",
 				type: TableType.Talent,
 				"importPath": "talentTables/limitationTable",
 				"className": "LimitationTable"
 			},
 			{
-				title: TableTitles.MagicalTalent as any as string,
+				"title": "Limitation",
+				type: TableType.Talent,
+				"importPath": "talentTables/limitationForTalentTable",
+				"className": "LimitationForTalentTable"
+			},
+			{
+				"title": "Magical Talent",
 				type: TableType.Talent,
 				"importPath": "talentTables/magicalTalentTable",
 				"className": "MagicalTalentTable"
 			},
 			{
-				title: TableTitles.MetaMagicTalent as any as string,
+				"title": "Meta Magic Talent",
 				type: TableType.Talent,
 				"importPath": "talentTables/metaMagicTalentTable",
 				"className": "MetaMagicTalentTable"
 			},
 			{
-				title: TableTitles.ObjectEnchantment as any as string,
+				"title": "Object Enchantment",
 				type: TableType.Talent,
 				"importPath": "talentTables/objectEnchantmentTable",
 				"className": "ObjectEnchantmentTable"
 			},
 			{
-				title: TableTitles.ProfaneTalent as any as string,
+				"title": "Profane Talent",
 				type: TableType.Talent,
 				"importPath": "talentTables/profaneTalentTable",
 				"className": "ProfaneTalentTable"
 			},
 			{
-				title: TableTitles.ProphecyTalent as any as string,
+				"title": "Prophecy Talent",
 				type: TableType.Talent,
 				"importPath": "talentTables/prophecyTalentTable",
 				"className": "ProphecyTalentTable"
 			},
 			{
-				title: TableTitles.PsyTalent as any as string,
+				"title": "Psy Talent",
 				type: TableType.Talent,
 				"importPath": "talentTables/psyTalentTable",
 				"className": "PsyTalentTable"
 			},
 			{
-				title: TableTitles.SummonTalent as any as string,
+				"title": "Side Effect",
+				type: TableType.Talent,
+				"importPath": "talentTables/sideEffectTable",
+				"className": "SideEffectTable"
+			},
+			{
+				"title": "Summon Talent",
 				type: TableType.Talent,
 				"importPath": "talentTables/summonTalentTable",
 				"className": "SummonTalentTable"
 			},
 			{
-				title: TableTitles.Talent as any as string,
+				"title": "Talent",
 				type: TableType.Talent,
 				"importPath": "talentTables/talentTable",
 				"className": "TalentTable"
 			},
 			{
-				title: TableTitles.TalentCategory as any as string,
+				"title": "Talent Category",
 				type: TableType.Talent,
 				"importPath": "talentTables/talentCategoryTable",
 				"className": "TalentCategoryTable"
 			},
 			{
-				title: TableTitles.TargetTalent as any as string,
+				"title": "Which Target of Talent",
 				type: TableType.Talent,
 				"importPath": "talentTables/targetTalentTable",
 				"className": "TargetTalentTable"
 			},
 			{
-				title: TableTitles.TimeTalent as any as string,
+				"title": "Time Talent",
 				type: TableType.Talent,
 				"importPath": "talentTables/timeTalentTable",
 				"className": "TimeTalentTable"
 			},
 			{
-				title: TableTitles.TravelTalent as any as string,
+				"title": "Travel Talent",
 				type: TableType.Talent,
 				"importPath": "talentTables/travelTalentTable",
 				"className": "TravelTalentTable"
@@ -907,31 +707,31 @@ export const tableMetadata: TableCategory[] = [
 		type: TableType.Monster,
 		"tables": [
 			{
-				title: TableTitles.Enemy as any as string,
+				"title": "Enemy",
 				type: TableType.Monster,
 				"importPath": "monsterTables/enemyTable",
 				"className": "EnemyTable"
 			},
 			{
-				title: TableTitles.Monster as any as string,
+				"title": "Monster",
 				type: TableType.Monster,
 				"importPath": "monsterTables/monsterTable",
 				"className": "MonsterTable"
 			},
 			{
-				title: TableTitles.MovementType as any as string,
+				"title": "Movement Type",
 				type: TableType.Monster,
 				"importPath": "monsterTables/movementTypeTable",
 				"className": "MovementTypeTable"
 			},
 			{
-				title: TableTitles.MythicalCreature as any as string,
+				"title": "Mythical Creature",
 				type: TableType.Monster,
 				"importPath": "monsterTables/mythicalCreatureTable",
 				"className": "MythicalCreatureTable"
 			},
 			{
-				title: TableTitles.Tracks as any as string,
+				"title": "Tracks",
 				type: TableType.Monster,
 				"importPath": "monsterTables/tracksTable",
 				"className": "TracksTable"
@@ -939,22 +739,111 @@ export const tableMetadata: TableCategory[] = [
 		]
 	},
 	{
+		type: TableType.Adventure,
+		"tables": [
+			{
+				"title": "Adventure Climax",
+				type: TableType.Adventure,
+				"importPath": "adventureTables/adventureClimaxTable",
+				"className": "AdventureClimaxTable"
+			},
+			{
+				"title": "Adventure Final",
+				type: TableType.Adventure,
+				"importPath": "adventureTables/adventureFinalTable",
+				"className": "AdventureFinalTable"
+			},
+			{
+				"title": "Adventure Rising",
+				type: TableType.Adventure,
+				"importPath": "adventureTables/adventureRisingTable",
+				"className": "AdventureRisingTable"
+			},
+			{
+				"title": "Beginning Trope",
+				type: TableType.Adventure,
+				"importPath": "adventureTables/beginningTropeTable",
+				"className": "BeginningTropeTable"
+			},
+			{
+				"title": "Character Introduction",
+				type: TableType.Adventure,
+				"importPath": "adventureTables/characterIntroductionTable",
+				"className": "CharacterIntroductionTable"
+			},
+			{
+				"title": "Conflict Trope",
+				type: TableType.Adventure,
+				"importPath": "adventureTables/conflictTropeTable",
+				"className": "ConflictTropeTable"
+			},
+			{
+				"title": "Ending Trope",
+				type: TableType.Adventure,
+				"importPath": "adventureTables/endingTropeTable",
+				"className": "EndingTropeTable"
+			},
+			{
+				"title": "Initial Meeting Circumstances",
+				type: TableType.Adventure,
+				"importPath": "adventureTables/initialMeetingCircumstancesTable",
+				"className": "InitialMeetingCircumstancesTable"
+			},
+			{
+				"title": "Initial Meeting Tone",
+				type: TableType.Adventure,
+				"importPath": "adventureTables/initialMeetingToneTable",
+				"className": "InitialMeetingToneTable"
+			},
+			{
+				"title": "Initial Meeting Type",
+				type: TableType.Adventure,
+				"importPath": "adventureTables/initialMeetingTypeTable",
+				"className": "InitialMeetingTypeTable"
+			},
+			{
+				"title": "Narration",
+				type: TableType.Adventure,
+				"importPath": "adventureTables/narrationTable",
+				"className": "NarrationTable"
+			},
+			{
+				"title": "Plan",
+				type: TableType.Adventure,
+				"importPath": "adventureTables/planTable",
+				"className": "PlanTable"
+			},
+			{
+				"title": "Plot Trope",
+				type: TableType.Adventure,
+				"importPath": "adventureTables/plotTropeTable",
+				"className": "PlotTropeTable"
+			},
+			{
+				"title": "Villain Adjective",
+				type: TableType.Adventure,
+				"importPath": "adventureTables/villainAdjectiveTable",
+				"className": "VillainAdjectiveTable"
+			}
+		]
+	},
+	{
 		type: TableType.Town,
 		"tables": [
 			{
-				title: TableTitles.TownEvent as any as string,
+				"title": "Town Event",
 				type: TableType.Town,
 				"importPath": "townTables/townEventTable",
 				"className": "TownEventTable"
 			},
 			{
-				title: TableTitles.TownFame as any as string,
+				"title": "Town Fame",
 				type: TableType.Town,
 				"importPath": "townTables/townFameTable",
 				"className": "TownFameTable"
 			},
 			{
-				title: TableTitles.TownSize as any as string,
+				"title": "Town Size",
 				type: TableType.Town,
 				"importPath": "townTables/townSizeTable",
 				"className": "TownSizeTable"
@@ -965,7 +854,7 @@ export const tableMetadata: TableCategory[] = [
 		type: TableType.Campaign,
 		"tables": [
 			{
-				title: TableTitles.CampaignStatement as any as string,
+				"title": "Campaign Statement",
 				type: TableType.Campaign,
 				"importPath": "campaignTables/campaignStatementTable",
 				"className": "CampaignStatementTable"
@@ -976,757 +865,583 @@ export const tableMetadata: TableCategory[] = [
 		type: TableType.Other,
 		"tables": [
 			{
-				title: TableTitles.AdventureBeginning as any as string,
+				"title": "Adventure Beginning",
 				type: TableType.Other,
 				"importPath": "adventureTables/adventureBeginningTable",
 				"className": "AdventureBeginningTable"
 			},
 			{
-				title: TableTitles.AdventureClimax as any as string,
-				type: TableType.Other,
-				"importPath": "adventureTables/adventureClimaxTable",
-				"className": "AdventureClimaxTable"
-			},
-			{
-				title: TableTitles.AdventureEvent as any as string,
+				"title": "Adventure Event",
 				type: TableType.Other,
 				"importPath": "adventureTables/adventureEventTable",
 				"className": "AdventureEventTable"
 			},
 			{
-				title: TableTitles.AdventureFinal as any as string,
-				type: TableType.Other,
-				"importPath": "adventureTables/adventureFinalTable",
-				"className": "AdventureFinalTable"
-			},
-			{
-				title: TableTitles.AdventureRising as any as string,
-				type: TableType.Other,
-				"importPath": "adventureTables/adventureRisingTable",
-				"className": "AdventureRisingTable"
-			},
-			{
-				title: TableTitles.AfricanName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/africanNameTable",
-				"className": "AfricanNameTable"
-			},
-			{
-				title: TableTitles.Age as any as string,
+				"title": "Age",
 				type: TableType.Other,
 				"importPath": "otherTables/ageTable",
 				"className": "AgeTable"
 			},
 			{
-				title: TableTitles.Amount as any as string,
+				"title": "Amount",
 				type: TableType.Other,
 				"importPath": "otherTables/amountTable",
 				"className": "AmountTable"
 			},
 			{
-				title: TableTitles.ArabicFemaleLastName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/arabicFemaleLastNameTable",
-				"className": "ArabicFemaleLastNameTable"
-			},
-			{
-				title: TableTitles.ArabicFemaleName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/arabicFemaleNameTable",
-				"className": "ArabicFemaleNameTable"
-			},
-			{
-				title: TableTitles.ArabicFemaleNameAddition as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/arabicFemaleNameAdditionTable",
-				"className": "ArabicFemaleNameAdditionTable"
-			},
-			{
-				title: TableTitles.ArabicMaleLastName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/arabicMaleLastNameTable",
-				"className": "ArabicMaleLastNameTable"
-			},
-			{
-				title: TableTitles.ArabicMaleName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/arabicMaleNameTable",
-				"className": "ArabicMaleNameTable"
-			},
-			{
-				title: TableTitles.ArabicMaleNameAddition as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/arabicMaleNameAdditionTable",
-				"className": "ArabicMaleNameAdditionTable"
-			},
-			{
-				title: TableTitles.ArtistTalent as any as string,
-				type: TableType.Other,
-				"importPath": "talentTables/artistTalentTable",
-				"className": "ArtistTalentTable"
-			},
-			{
-				title: TableTitles.AthleticsTalent as any as string,
-				type: TableType.Other,
-				"importPath": "talentTables/athleticsTalentTable",
-				"className": "AthleticsTalentTable"
-			},
-			{
-				title: TableTitles.BarbaricFemaleName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/barbaricFemaleNameTable",
-				"className": "BarbaricFemaleNameTable"
-			},
-			{
-				title: TableTitles.BarbaricLastName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/barbaricLastNameTable",
-				"className": "BarbaricLastNameTable"
-			},
-			{
-				title: TableTitles.BarbaricMaleName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/barbaricMaleNameTable",
-				"className": "BarbaricMaleNameTable"
-			},
-			{
-				title: TableTitles.BarbaricNickName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/barbaricNicknameTable",
-				"className": "BarbaricNicknameTable"
-			},
-			{
-				title: TableTitles.BasicResource as any as string,
+				"title": "Basic Resource",
 				type: TableType.Other,
 				"importPath": "otherTables/basicResourceTable",
 				"className": "BasicResourceTable"
 			},
 			{
-				title: TableTitles.BeginningTrope as any as string,
-				type: TableType.Other,
-				"importPath": "adventureTables/beginningTropeTable",
-				"className": "BeginningTropeTable"
-			},
-			{
-				title: TableTitles.BlackBodyColor as any as string,
+				"title": "Black Body Color",
 				type: TableType.Other,
 				"importPath": "otherTables/blackBodyColorTable",
 				"className": "BlackBodyColorTable"
 			},
 			{
-				title: TableTitles.Blank as any as string,
+				"title": "Blank",
 				type: TableType.Other,
 				"importPath": "otherTables/blankTable",
 				"className": "BlankTable"
 			},
 			{
-				title: TableTitles.BodyParts as any as string,
+				"title": "Body Parts",
 				type: TableType.Other,
 				"importPath": "otherTables/bodyPartsTable",
 				"className": "BodyPartsTable"
 			},
 			{
-				title: TableTitles.CharacterIntroduction as any as string,
+				"title": "Casting Method",
 				type: TableType.Other,
-				"importPath": "adventureTables/characterIntroductionTable",
-				"className": "CharacterIntroductionTable"
+				"importPath": "magicTables/castingMethodTable",
+				"className": "CastingMethodTable"
 			},
 			{
-				title: TableTitles.ClueConclusion as any as string,
+				"title": "Clue Conclusion",
 				type: TableType.Other,
 				"importPath": "otherTables/clueConclusionTable",
 				"className": "ClueConclusionTable"
 			},
 			{
-				title: TableTitles.ClueObject as any as string,
+				"title": "Clue Object",
 				type: TableType.Other,
 				"importPath": "otherTables/clueObjectTable",
 				"className": "ClueObjectTable"
 			},
 			{
-				title: TableTitles.ClueSource as any as string,
+				"title": "Clue Source",
 				type: TableType.Other,
 				"importPath": "otherTables/clueSourceTable",
 				"className": "ClueSourceTable"
 			},
 			{
-				title: TableTitles.Colour as any as string,
+				"title": "Colour",
 				type: TableType.Other,
 				"importPath": "otherTables/colourTable",
 				"className": "ColourTable"
 			},
 			{
-				title: TableTitles.ConflictTrope as any as string,
-				type: TableType.Other,
-				"importPath": "adventureTables/conflictTropeTable",
-				"className": "ConflictTropeTable"
-			},
-			{
-				title: TableTitles.Consonant as any as string,
+				"title": "Consonant",
 				type: TableType.Other,
 				"importPath": "otherTables/consonantTable",
 				"className": "ConsonantTable"
 			},
 			{
-				title: TableTitles.CraftTalent as any as string,
-				type: TableType.Other,
-				"importPath": "talentTables/craftTable",
-				"className": "CraftTable"
-			},
-			{
-				title: TableTitles.Difficulty as any as string,
+				"title": "Difficulty",
 				type: TableType.Other,
 				"importPath": "otherTables/difficultyTable",
 				"className": "DifficultyTable"
 			},
 			{
-				title: TableTitles.Distance as any as string,
+				"title": "Distance",
 				type: TableType.Other,
 				"importPath": "otherTables/distanceTable",
 				"className": "DistanceTable"
 			},
 			{
-				title: TableTitles.Element as any as string,
+				"title": "Element",
 				type: TableType.Other,
 				"importPath": "otherTables/elementTable",
 				"className": "ElementTable"
 			},
 			{
-				title: TableTitles.Emotion as any as string,
+				"title": "Emotion",
 				type: TableType.Other,
 				"importPath": "otherTables/emotionTable",
 				"className": "EmotionTable"
 			},
 			{
-				title: TableTitles.EnumSize as any as string,
+				"title": "Enum Size",
 				type: TableType.Other,
 				"importPath": "otherTables/enumSizeTable",
 				"className": "EnumSizeTable"
 			},
 			{
-				title: TableTitles.EventType as any as string,
+				"title": "Event Type",
 				type: TableType.Other,
 				"importPath": "otherTables/eventTypeTable",
 				"className": "EventTypeTable"
 			},
 			{
-				title: TableTitles.FantasySubGenre as any as string,
+				"title": "Fantasy Sub-Genre",
 				type: TableType.Other,
 				"importPath": "genreTables/fantasySubGenreTable",
 				"className": "FantasySubGenreTable"
 			},
 			{
-				title: TableTitles.FractionName as any as string,
-				type: TableType.Other,
-				"importPath": "otherTables/fractionNameTable",
-				"className": "FractionNameTable"
-			},
-			{
-				title: TableTitles.FractionQuest as any as string,
+				"title": "Fraction Quest",
 				type: TableType.Other,
 				"importPath": "otherTables/fractionQuestTable",
 				"className": "FractionQuestTable"
 			},
 			{
-				title: TableTitles.GalaxyName as any as string,
-				type: TableType.Other,
-				"importPath": "celestialTables/galaxyNameTable",
-				"className": "GalaxyNameTable"
-			},
-			{
-				title: TableTitles.GodByname as any as string,
-				type: TableType.Other,
-				"importPath": "godTables/godBynameTable",
-				"className": "GodBynameTable"
-			},
-			{
-				title: TableTitles.GodDomain as any as string,
+				"title": "God Domain",
 				type: TableType.Other,
 				"importPath": "godTables/godDomainTable",
 				"className": "GodDomainTable"
 			},
 			{
-				title: TableTitles.GodStatus as any as string,
+				"title": "God Status",
 				type: TableType.Other,
 				"importPath": "godTables/godStatusTable",
 				"className": "GodStatusTable"
 			},
 			{
-				title: TableTitles.GreekFemaleName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/greekFemaleNameTable",
-				"className": "GreekFemaleNameTable"
-			},
-			{
-				title: TableTitles.GreekLastName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/greekLastNameTable",
-				"className": "GreekLastNameTable"
-			},
-			{
-				title: TableTitles.GreekLetter as any as string,
+				"title": "Greek Letters",
 				type: TableType.Other,
 				"importPath": "otherTables/greekLetterTable",
 				"className": "GreekLetterTable"
 			},
 			{
-				title: TableTitles.GreekMaleName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/greekMaleNameTable",
-				"className": "GreekMaleNameTable"
-			},
-			{
-				title: TableTitles.HistoricalEvent as any as string,
+				"title": "Historical Event",
 				type: TableType.Other,
 				"importPath": "otherTables/historicalEventTable",
 				"className": "HistoricalEventTable"
 			},
 			{
-				title: TableTitles.IllnessAdjective as any as string,
+				"title": "Illness Adjective",
 				type: TableType.Other,
 				"importPath": "illnessTables/illnessAdjectiveTable",
 				"className": "IllnessAdjectiveTable"
 			},
 			{
-				title: TableTitles.IllnessCure as any as string,
+				"title": "Illness Cure",
 				type: TableType.Other,
 				"importPath": "illnessTables/illnessCureTable",
 				"className": "IllnessCureTable"
 			},
 			{
-				title: TableTitles.IllnessLore as any as string,
+				"title": "Illness Lore",
 				type: TableType.Other,
 				"importPath": "illnessTables/illnessLoreTable",
 				"className": "IllnessLoreTable"
 			},
 			{
-				title: TableTitles.IllnessOrigin as any as string,
+				"title": "Illness Origin",
 				type: TableType.Other,
 				"importPath": "illnessTables/illnessOriginTable",
 				"className": "IllnessOriginTable"
 			},
 			{
-				title: TableTitles.IllnessSymptom as any as string,
+				"title": "Illness Symptom",
 				type: TableType.Other,
 				"importPath": "illnessTables/illnessSymptomTable",
 				"className": "IllnessSymptomTable"
 			},
 			{
-				title: TableTitles.IllnessTransmission as any as string,
+				"title": "Illness Transmission",
 				type: TableType.Other,
 				"importPath": "illnessTables/illnessTransmissionTable",
 				"className": "IllnessTransmissionTable"
 			},
 			{
-				title: TableTitles.IllnessType as any as string,
+				"title": "Illness Type",
 				type: TableType.Other,
 				"importPath": "illnessTables/illnessTypeTable",
 				"className": "IllnessTypeTable"
 			},
 			{
-				title: TableTitles.IllnessWorldEffect as any as string,
+				"title": "Illness World Effect",
 				type: TableType.Other,
 				"importPath": "illnessTables/illnessWorldEffectTable",
 				"className": "IllnessWorldEffectTable"
 			},
 			{
-				title: TableTitles.IndianFemaleName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/indianFemaleNameTable",
-				"className": "IndianFemaleNameTable"
-			},
-			{
-				title: TableTitles.IndianMaleName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/indianMaleNameTable",
-				"className": "IndianMaleNameTable"
-			},
-			{
-				title: TableTitles.LivablePlanetType as any as string,
+				"title": "Livable Planet Type",
 				type: TableType.Other,
 				"importPath": "celestialTables/planet/planetTypeTable",
 				"className": "LivablePlanetTypeTable"
 			},
 			{
-				title: TableTitles.Location as any as string,
+				"title": "Location",
 				type: TableType.Other,
 				"importPath": "otherTables/locationTable",
 				"className": "LocationTable"
 			},
 			{
-				title: TableTitles.MainGenre as any as string,
+				"title": "Magic Ability",
+				type: TableType.Other,
+				"importPath": "magicTables/magicAbilityTable",
+				"className": "MagicAbilityTable"
+			},
+			{
+				"title": "Magic Attribute",
+				type: TableType.Other,
+				"importPath": "magicTables/magicAttributeTable",
+				"className": "MagicAttributeTable"
+			},
+			{
+				"title": "Magic Channel",
+				type: TableType.Other,
+				"importPath": "magicTables/magicChannelTable",
+				"className": "MagicChannelTable"
+			},
+			{
+				"title": "Magic Cost",
+				type: TableType.Other,
+				"importPath": "magicTables/magicCostTable",
+				"className": "MagicCostTable"
+			},
+			{
+				"title": "Magic Differentiation",
+				type: TableType.Other,
+				"importPath": "magicTables/magicDifferentiationTable",
+				"className": "MagicDifferentiationTable"
+			},
+			{
+				"title": "Magic Event",
+				type: TableType.Other,
+				"importPath": "magicTables/magicEventTable",
+				"className": "MagicEventTable"
+			},
+			{
+				"title": "Magic Fail Consequence",
+				type: TableType.Other,
+				"importPath": "magicTables/magicFailConsequenceTable",
+				"className": "MagicFailConsequenceTable"
+			},
+			{
+				"title": "Magic Fluff",
+				type: TableType.Other,
+				"importPath": "magicTables/magicFluffTable",
+				"className": "MagicFluffTable"
+			},
+			{
+				"title": "Magic Origin",
+				type: TableType.Other,
+				"importPath": "magicTables/magicOriginTable",
+				"className": "MagicOriginTable"
+			},
+			{
+				"title": "Magic Rule",
+				type: TableType.Other,
+				"importPath": "magicTables/magicRuleTable",
+				"className": "MagicRuleTable"
+			},
+			{
+				"title": "Magic Second Level Use",
+				type: TableType.Other,
+				"importPath": "magicTables/magicSecondLevelUseTable",
+				"className": "MagicSecondLevelUseTable"
+			},
+			{
+				"title": "Magic Source",
+				type: TableType.Other,
+				"importPath": "magicTables/magicSourceTable",
+				"className": "MagicSourceTable"
+			},
+			{
+				"title": "Magic Spell Modifier",
+				type: TableType.Other,
+				"importPath": "magicTables/magicSpellModifierTable",
+				"className": "MagicSpellModifierTable"
+			},
+			{
+				"title": "Magic System Wording",
+				type: TableType.Other,
+				"importPath": "magicTables/magicSystemWordingTable",
+				"className": "MagicSystemWordingTable"
+			},
+			{
+				"title": "Magic Visual",
+				type: TableType.Other,
+				"importPath": "magicTables/magicVisualTable",
+				"className": "MagicVisualTable"
+			},
+			{
+				"title": "Magic Weakness",
+				type: TableType.Other,
+				"importPath": "magicTables/magicWeaknessTable",
+				"className": "MagicWeaknessTable"
+			},
+			{
+				"title": "Main Genre",
 				type: TableType.Other,
 				"importPath": "genreTables/mainGenreTable",
 				"className": "MainGenreTable"
 			},
 			{
-				title: TableTitles.Mood as any as string,
+				"title": "Mood",
 				type: TableType.Other,
 				"importPath": "otherTables/moodTable",
 				"className": "MoodTable"
 			},
 			{
-				title: TableTitles.MoonPhases as any as string,
+				"title": "Moon Phases",
 				type: TableType.Other,
 				"importPath": "otherTables/moonPhasesTable",
 				"className": "MoonPhasesTable"
 			},
 			{
-				title: TableTitles.Nation as any as string,
-				type: TableType.Other,
-				"importPath": "nationTables/nationTable",
-				"className": "NationTable"
-			},
-			{
-				title: TableTitles.NationRelationship as any as string,
-				type: TableType.Other,
-				"importPath": "nationTables/nationRelationshipTable",
-				"className": "NationRelationshipTable"
-			},
-			{
-				title: TableTitles.NordicFemaleLastName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/nordicFemaleLastNameTable",
-				"className": "NordicFemaleLastNameTable"
-			},
-			{
-				title: TableTitles.NordicFemaleName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/nordicFemaleNameTable",
-				"className": "NordicFemaleNameTable"
-			},
-			{
-				title: TableTitles.NordicMaleLastName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/nordicMaleLastNameTable",
-				"className": "NordicMaleLastNameTable"
-			},
-			{
-				title: TableTitles.NordicMaleName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/nordicMaleNameTable",
-				"className": "NordicMaleNameTable"
-			},
-			{
-				title: TableTitles.NumberOfSuns as any as string,
+				"title": "Number of Suns",
 				type: TableType.Other,
 				"importPath": "celestialTables/solarSystem/numberOfSunsTable",
 				"className": "NumberOfSunsTable"
 			},
 			{
-				title: TableTitles.Plan as any as string,
-				type: TableType.Other,
-				"importPath": "adventureTables/planTable",
-				"className": "PlanTable"
-			},
-			{
-				title: TableTitles.PlanetName as any as string,
-				type: TableType.Other,
-				"importPath": "celestialTables/planet/planetNameTable",
-				"className": "PlanetNameTable"
-			},
-			{
-				title: TableTitles.PowerLevel as any as string,
+				"title": "Power Level",
 				type: TableType.Other,
 				"importPath": "otherTables/powerLevelTable",
 				"className": "PowerLevelTable"
 			},
 			{
-				title: TableTitles.ProphecyText as any as string,
+				"title": "Prophecy Text",
 				type: TableType.Other,
 				"importPath": "otherTables/prophecyTextTable",
 				"className": "ProphecyTextTable"
 			},
 			{
-				title: TableTitles.Quality as any as string,
+				"title": "Quality",
 				type: TableType.Other,
 				"importPath": "otherTables/qualityTable",
 				"className": "QualityTable"
 			},
 			{
-				title: TableTitles.Quality as any as string,
+				"title": "Quality",
 				type: TableType.Other,
 				"importPath": "otherTables/positionTable",
 				"className": "PositionTable"
 			},
 			{
-				title: TableTitles.QuestDifficulty as any as string,
+				"title": "Quest Difficulty",
 				type: TableType.Other,
 				"importPath": "questTables/questDifficultyTable",
 				"className": "QuestDifficultyTable"
 			},
 			{
-				title: TableTitles.QuestReward as any as string,
+				"title": "Quest Reward",
 				type: TableType.Other,
 				"importPath": "questTables/questRewardTable",
 				"className": "QuestRewardTable"
 			},
 			{
-				title: TableTitles.QuestType as any as string,
+				"title": "Quest Type",
 				type: TableType.Other,
 				"importPath": "questTables/questTypeTable",
 				"className": "QuestTypeTable"
 			},
 			{
-				title: TableTitles.QuoteCautionary as any as string,
+				"title": "Cautionary Quote",
 				type: TableType.Other,
 				"importPath": "godTables/quoteCautionaryTable",
 				"className": "QuoteCautionaryTable"
 			},
 			{
-				title: TableTitles.QuoteDisciple as any as string,
+				"title": "Disciple Quote",
 				type: TableType.Other,
 				"importPath": "godTables/quoteDiscipleTable",
 				"className": "QuoteDiscipleTable"
 			},
 			{
-				title: TableTitles.Rarity as any as string,
+				"title": "Rarity",
 				type: TableType.Other,
 				"importPath": "otherTables/rarityTable",
 				"className": "RarityTable"
 			},
 			{
-				title: TableTitles.RealCulture as any as string,
+				"title": "Real Culture",
 				type: TableType.Other,
 				"importPath": "cultureTables/realCultureTable",
 				"className": "RealCultureTable"
 			},
 			{
-				title: TableTitles.RitualAction as any as string,
+				"title": "Ritual Action",
 				type: TableType.Other,
 				"importPath": "ritualTables/ritualActionTable",
 				"className": "RitualActionTable"
 			},
 			{
-				title: TableTitles.RitualCulmination as any as string,
+				"title": "Ritual Culmination",
 				type: TableType.Other,
 				"importPath": "ritualTables/ritualCulminationTable",
 				"className": "RitualCulminationTable"
 			},
 			{
-				title: TableTitles.RitualExclusiveness as any as string,
+				"title": "Ritual Exclusiveness",
 				type: TableType.Other,
 				"importPath": "ritualTables/ritualExclusivenessTable",
 				"className": "RitualExclusivenessTable"
 			},
 			{
-				title: TableTitles.RitualFeast as any as string,
+				"title": "Ritual Feast",
 				type: TableType.Other,
 				"importPath": "ritualTables/ritualFeastTable",
 				"className": "RitualFeastTable"
 			},
 			{
-				title: TableTitles.RitualInvocation as any as string,
+				"title": "Ritual Invocation",
 				type: TableType.Other,
 				"importPath": "ritualTables/ritualInvocationTable",
 				"className": "RitualInvocationTable"
 			},
 			{
-				title: TableTitles.RitualOffering as any as string,
+				"title": "Ritual Offering",
 				type: TableType.Other,
 				"importPath": "ritualTables/ritualOfferingTable",
 				"className": "RitualOfferingTable"
 			},
 			{
-				title: TableTitles.RitualPreparation as any as string,
+				"title": "Ritual Preparation",
 				type: TableType.Other,
 				"importPath": "ritualTables/ritualPreparationTable",
 				"className": "RitualPreparationTable"
 			},
 			{
-				title: TableTitles.RitualTime as any as string,
+				"title": "Ritual Time",
 				type: TableType.Other,
 				"importPath": "ritualTables/ritualTimeTable",
 				"className": "RitualTimeTable"
 			},
 			{
-				title: TableTitles.RulerNicknames as any as string,
-				type: TableType.Other,
-				"importPath": "nationTables/rulerNicknamesTable",
-				"className": "RulerNicknamesTable"
-			},
-			{
-				title: TableTitles.RumorContent as any as string,
+				"title": "Rumor Content",
 				type: TableType.Other,
 				"importPath": "otherTables/rumorContentTable",
 				"className": "RumorContentTable"
 			},
 			{
-				title: TableTitles.RussianFemaleName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/russianFemaleNameTable",
-				"className": "RussianFemaleNameTable"
-			},
-			{
-				title: TableTitles.RussianLastName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/russianLastNameTable",
-				"className": "RussianLastNameTable"
-			},
-			{
-				title: TableTitles.RussianMaleName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/russianMaleNameTable",
-				"className": "RussianMaleNameTable"
-			},
-			{
-				title: TableTitles.SciFiSubGenre as any as string,
+				"title": "Sci-Fi Sub-Genre",
 				type: TableType.Other,
 				"importPath": "genreTables/sciFiSubGenreTable",
 				"className": "SciFiSubGenreTable"
 			},
 			{
-				title: TableTitles.Season as any as string,
+				"title": "Season",
 				type: TableType.Other,
 				"importPath": "otherTables/seasonTable",
 				"className": "SeasonTable"
 			},
 			{
-				title: TableTitles.SectorSynonyms as any as string,
+				"title": "Sector Synonyms",
 				type: TableType.Other,
 				"importPath": "celestialTables/sectorSynonymsTable",
 				"className": "SectorSynonymsTable"
 			},
 			{
-				title: TableTitles.Senses as any as string,
+				"title": "Senses",
 				type: TableType.Other,
 				"importPath": "otherTables/senseTable",
 				"className": "SenseTable"
 			},
 			{
-				title: TableTitles.SensoryDetail as any as string,
+				"title": "Senses",
+				type: TableType.Other,
+				"importPath": "magicTables/magicSensesTable",
+				"className": "MagicSensesTable"
+			},
+			{
+				"title": "Sensory Detail",
 				type: TableType.Other,
 				"importPath": "otherTables/sensoryDetailTable",
 				"className": "SensoryDetailTable"
 			},
 			{
-				title: TableTitles.Size as any as string,
+				"title": "Size",
 				type: TableType.Other,
 				"importPath": "otherTables/sizeTable",
 				"className": "SizeTable"
 			},
 			{
-				title: TableTitles.SolarSystemName as any as string,
-				type: TableType.Other,
-				"importPath": "celestialTables/solarSystem/solarSystemNameTable",
-				"className": "SolarSystemNameTable"
-			},
-			{
-				title: TableTitles.SouthAmericanFemaleName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/southAmericanFemaleNameTable",
-				"className": "SouthAmericanFemaleNameTable"
-			},
-			{
-				title: TableTitles.SouthAmericanLastName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/southAmericanLastNameTable",
-				"className": "SouthAmericanLastNameTable"
-			},
-			{
-				title: TableTitles.SouthAmericanMaleName as any as string,
-				type: TableType.Other,
-				"importPath": "nameTables/southAmericanMaleNameTable",
-				"className": "SouthAmericanMaleNameTable"
-			},
-			{
-				title: TableTitles.SpellAreaOfEffect as any as string,
+				"title": "Spell Area of Effect",
 				type: TableType.Other,
 				"importPath": "spellTables/spellAreaOfEffectTable",
 				"className": "SpellAreaOfEffectTable"
 			},
 			{
-				title: TableTitles.SpellCooldown as any as string,
+				"title": "Spell Cooldown",
 				type: TableType.Other,
 				"importPath": "spellTables/spellCooldownTable",
 				"className": "SpellCooldownTable"
 			},
 			{
-				title: TableTitles.SpellCounter as any as string,
+				"title": "Spell Counter",
 				type: TableType.Other,
 				"importPath": "spellTables/spellCounterTable",
 				"className": "SpellCounterTable"
 			},
 			{
-				title: TableTitles.SpellLore as any as string,
+				"title": "Spell Lore",
 				type: TableType.Other,
 				"importPath": "spellTables/spellLoreTable",
 				"className": "SpellLoreTable"
 			},
 			{
-				title: TableTitles.SpellPreparation as any as string,
+				"title": "Spell Preparation",
 				type: TableType.Other,
 				"importPath": "spellTables/spellPreparationTable",
 				"className": "SpellPreparationTable"
 			},
 			{
-				title: TableTitles.SphereName as any as string,
+				"title": "Spell Preparation",
 				type: TableType.Other,
-				"importPath": "celestialTables/sphere/sphereNameTable",
-				"className": "SphereNameTable"
+				"importPath": "magicTables/magicPreparationTable",
+				"className": "MagicPreparationTable"
 			},
 			{
-				title: TableTitles.SphereNamePrefixes as any as string,
-				type: TableType.Other,
-				"importPath": "celestialTables/sphere/sphereNamePrefixesTable",
-				"className": "SphereNamePrefixesTable"
-			},
-			{
-				title: TableTitles.SphereNameSuffixes as any as string,
-				type: TableType.Other,
-				"importPath": "celestialTables/sphere/sphereNameSuffixesTable",
-				"className": "SphereNameSuffixesTable"
-			},
-			{
-				title: TableTitles.SphereRules as any as string,
+				"title": "Sphere Rules",
 				type: TableType.Other,
 				"importPath": "celestialTables/sphere/sphereRuleTable",
 				"className": "SphereRuleTable"
 			},
 			{
-				title: TableTitles.Technology as any as string,
+				"title": "Technology",
 				type: TableType.Other,
 				"importPath": "otherTables/technologyTable",
 				"className": "TechnologyTable"
 			},
 			{
-				title: TableTitles.Time as any as string,
+				"title": "Time",
 				type: TableType.Other,
 				"importPath": "otherTables/timeTable",
 				"className": "TimeTable"
 			},
 			{
-				title: TableTitles.TruthLevel as any as string,
+				"title": "Truth Level",
 				type: TableType.Other,
 				"importPath": "otherTables/truthLevelTable",
 				"className": "TruthLevelTable"
 			},
 			{
-				title: TableTitles.VillainAdjective as any as string,
-				type: TableType.Other,
-				"importPath": "adventureTables/villainAdjectiveTable",
-				"className": "VillainAdjectiveTable"
-			},
-			{
-				title: TableTitles.Vocal as any as string,
+				"title": "Vocal",
 				type: TableType.Other,
 				"importPath": "otherTables/vocalTable",
 				"className": "VocalTable"
 			},
 			{
-				title: TableTitles.Weather as any as string,
+				"title": "Weather",
 				type: TableType.Other,
 				"importPath": "otherTables/weatherTable",
 				"className": "WeatherTable"
 			},
 			{
-				title: TableTitles.WeatherAdjective as any as string,
+				"title": "Weather Adjective",
 				type: TableType.Other,
 				"importPath": "otherTables/weatherAdjectiveTable",
 				"className": "WeatherAdjectiveTable"
 			},
 			{
-				title: TableTitles.WorldCreationMethod as any as string,
+				"title": "World Creation Method",
 				type: TableType.Other,
 				"importPath": "celestialTables/cosmicBirthTable",
 				"className": "WorldCreationMethodTable"
@@ -1737,7 +1452,19 @@ export const tableMetadata: TableCategory[] = [
 		type: TableType.Fraction,
 		"tables": [
 			{
-				title: TableTitles.FractionWealth as any as string,
+				"title": "Faction Beginning Motivation",
+				type: TableType.Fraction,
+				"importPath": "factionTables/factionBeginningMotivationTable",
+				"className": "FactionBeginningMotivationTable"
+			},
+			{
+				"title": "Faction Quote",
+				type: TableType.Fraction,
+				"importPath": "factionTables/factionQuoteTable",
+				"className": "FactionQuoteTable"
+			},
+			{
+				"title": "Fraction Wealth",
 				type: TableType.Fraction,
 				"importPath": "otherTables/fractionWealthTable",
 				"className": "FractionWealthTable"
@@ -1745,13 +1472,294 @@ export const tableMetadata: TableCategory[] = [
 		]
 	},
 	{
+		type: TableType.Name,
+		"tables": [
+			{
+				"title": "African Name",
+				type: TableType.Name,
+				"importPath": "nameTables/africanNameTable",
+				"className": "AfricanNameTable"
+			},
+			{
+				"title": "Arabic Female Last Name",
+				type: TableType.Name,
+				"importPath": "nameTables/arabicFemaleLastNameTable",
+				"className": "ArabicFemaleLastNameTable"
+			},
+			{
+				"title": "Arabic Female Name",
+				type: TableType.Name,
+				"importPath": "nameTables/arabicFemaleNameTable",
+				"className": "ArabicFemaleNameTable"
+			},
+			{
+				"title": "Arabic Female Name Addition",
+				type: TableType.Name,
+				"importPath": "nameTables/arabicFemaleNameAdditionTable",
+				"className": "ArabicFemaleNameAdditionTable"
+			},
+			{
+				"title": "Arabic Male Last Name",
+				type: TableType.Name,
+				"importPath": "nameTables/arabicMaleLastNameTable",
+				"className": "ArabicMaleLastNameTable"
+			},
+			{
+				"title": "Arabic Male Name",
+				type: TableType.Name,
+				"importPath": "nameTables/arabicMaleNameTable",
+				"className": "ArabicMaleNameTable"
+			},
+			{
+				"title": "Arabic Male Name Addition",
+				type: TableType.Name,
+				"importPath": "nameTables/arabicMaleNameAdditionTable",
+				"className": "ArabicMaleNameAdditionTable"
+			},
+			{
+				"title": "Barbaric Female Name",
+				type: TableType.Name,
+				"importPath": "nameTables/barbaricFemaleNameTable",
+				"className": "BarbaricFemaleNameTable"
+			},
+			{
+				"title": "Barbaric Last Name",
+				type: TableType.Name,
+				"importPath": "nameTables/barbaricLastNameTable",
+				"className": "BarbaricLastNameTable"
+			},
+			{
+				"title": "Barbaric Male Name",
+				type: TableType.Name,
+				"importPath": "nameTables/barbaricMaleNameTable",
+				"className": "BarbaricMaleNameTable"
+			},
+			{
+				"title": "Barbaric Nick Name",
+				type: TableType.Name,
+				"importPath": "nameTables/barbaricNicknameTable",
+				"className": "BarbaricNicknameTable"
+			},
+			{
+				"title": "Faction First Name",
+				type: TableType.Name,
+				"importPath": "factionTables/factionFirstNameTable",
+				"className": "FactionFirstNameTable"
+			},
+			{
+				"title": "Faction Second Name",
+				type: TableType.Name,
+				"importPath": "factionTables/factionSecondNameTable",
+				"className": "FactionSecondNameTable"
+			},
+			{
+				"title": "Fraction Name",
+				type: TableType.Name,
+				"importPath": "otherTables/fractionNameTable",
+				"className": "FractionNameTable"
+			},
+			{
+				"title": "Galaxy Name",
+				type: TableType.Name,
+				"importPath": "celestialTables/galaxyNameTable",
+				"className": "GalaxyNameTable"
+			},
+			{
+				"title": "God Byname",
+				type: TableType.Name,
+				"importPath": "godTables/godBynameTable",
+				"className": "GodBynameTable"
+			},
+			{
+				"title": "Greek Female Name",
+				type: TableType.Name,
+				"importPath": "nameTables/greekFemaleNameTable",
+				"className": "GreekFemaleNameTable"
+			},
+			{
+				"title": "Greek Last Name",
+				type: TableType.Name,
+				"importPath": "nameTables/greekLastNameTable",
+				"className": "GreekLastNameTable"
+			},
+			{
+				"title": "Greek Male Name",
+				type: TableType.Name,
+				"importPath": "nameTables/greekMaleNameTable",
+				"className": "GreekMaleNameTable"
+			},
+			{
+				"title": "Indian Female Name",
+				type: TableType.Name,
+				"importPath": "nameTables/indianFemaleNameTable",
+				"className": "IndianFemaleNameTable"
+			},
+			{
+				"title": "Indian Male Name",
+				type: TableType.Name,
+				"importPath": "nameTables/indianMaleNameTable",
+				"className": "IndianMaleNameTable"
+			},
+			{
+				"title": "Magic System Fantasy Name First",
+				type: TableType.Name,
+				"importPath": "magicTables/magicSystemFantasyNameFirstTable",
+				"className": "MagicSystemFantasyNameFirstTable"
+			},
+			{
+				"title": "Magic System Fantasy Name Second",
+				type: TableType.Name,
+				"importPath": "magicTables/magicSystemFantasyNameSecondTable",
+				"className": "MagicSystemFantasyNameSecondTable"
+			},
+			{
+				"title": "Magic System Religion Name First",
+				type: TableType.Name,
+				"importPath": "magicTables/magicSystemReligionNameFirstTable",
+				"className": "MagicSystemReligionNameFirstTable"
+			},
+			{
+				"title": "Magic System Religion Name Second",
+				type: TableType.Name,
+				"importPath": "magicTables/magicSystemReligionNameSecondTable",
+				"className": "MagicSystemReligionNameSecondTable"
+			},
+			{
+				"title": "Magic System Sci Fi Name First",
+				type: TableType.Name,
+				"importPath": "magicTables/magicSystemSciFiNameFirstTable",
+				"className": "MagicSystemSciFiNameFirstTable"
+			},
+			{
+				"title": "Magic System Sci Fi Name Second",
+				type: TableType.Name,
+				"importPath": "magicTables/magicSystemSciFiNameSecondTable",
+				"className": "MagicSystemSciFiNameSecondTable"
+			},
+			{
+				"title": "Nordic Female Last Name",
+				type: TableType.Name,
+				"importPath": "nameTables/nordicFemaleLastNameTable",
+				"className": "NordicFemaleLastNameTable"
+			},
+			{
+				"title": "Nordic Female Name",
+				type: TableType.Name,
+				"importPath": "nameTables/nordicFemaleNameTable",
+				"className": "NordicFemaleNameTable"
+			},
+			{
+				"title": "Nordic Male Last Name",
+				type: TableType.Name,
+				"importPath": "nameTables/nordicMaleLastNameTable",
+				"className": "NordicMaleLastNameTable"
+			},
+			{
+				"title": "Nordic Male Name",
+				type: TableType.Name,
+				"importPath": "nameTables/nordicMaleNameTable",
+				"className": "NordicMaleNameTable"
+			},
+			{
+				"title": "Planet Name",
+				type: TableType.Name,
+				"importPath": "celestialTables/planet/planetNameTable",
+				"className": "PlanetNameTable"
+			},
+			{
+				"title": "Real World Dungeon Name",
+				type: TableType.Name,
+				"importPath": "dungeonTables/realWorldDungeonNameTable",
+				"className": "RealWorldDungeonNameTable"
+			},
+			{
+				"title": "Russian Female Name",
+				type: TableType.Name,
+				"importPath": "nameTables/russianFemaleNameTable",
+				"className": "RussianFemaleNameTable"
+			},
+			{
+				"title": "Russian Last Name",
+				type: TableType.Name,
+				"importPath": "nameTables/russianLastNameTable",
+				"className": "RussianLastNameTable"
+			},
+			{
+				"title": "Russian Male Name",
+				type: TableType.Name,
+				"importPath": "nameTables/russianMaleNameTable",
+				"className": "RussianMaleNameTable"
+			},
+			{
+				"title": "Solar System Name",
+				type: TableType.Name,
+				"importPath": "celestialTables/solarSystem/solarSystemNameTable",
+				"className": "SolarSystemNameTable"
+			},
+			{
+				"title": "South American Female Name",
+				type: TableType.Name,
+				"importPath": "nameTables/southAmericanFemaleNameTable",
+				"className": "SouthAmericanFemaleNameTable"
+			},
+			{
+				"title": "South American Last Name",
+				type: TableType.Name,
+				"importPath": "nameTables/southAmericanLastNameTable",
+				"className": "SouthAmericanLastNameTable"
+			},
+			{
+				"title": "South American Male Name",
+				type: TableType.Name,
+				"importPath": "nameTables/southAmericanMaleNameTable",
+				"className": "SouthAmericanMaleNameTable"
+			},
+			{
+				"title": "Sphere Name",
+				type: TableType.Name,
+				"importPath": "celestialTables/sphere/sphereNameTable",
+				"className": "SphereNameTable"
+			},
+			{
+				"title": "Sphere Name Prefixes",
+				type: TableType.Name,
+				"importPath": "celestialTables/sphere/sphereNamePrefixesTable",
+				"className": "SphereNamePrefixesTable"
+			},
+			{
+				"title": "Sphere Name Suffixes",
+				type: TableType.Name,
+				"importPath": "celestialTables/sphere/sphereNameSuffixesTable",
+				"className": "SphereNameSuffixesTable"
+			}
+		]
+	},
+	{
 		type: TableType.Nation,
 		"tables": [
 			{
-				title: TableTitles.NationAdjective as any as string,
+				"title": "Nation",
+				type: TableType.Nation,
+				"importPath": "nationTables/nationTable",
+				"className": "NationTable"
+			},
+			{
+				"title": "Nation Adjective",
 				type: TableType.Nation,
 				"importPath": "nationTables/nationAdjectiveTable",
 				"className": "NationAdjectiveTable"
+			},
+			{
+				"title": "Nation Relationship",
+				type: TableType.Nation,
+				"importPath": "nationTables/nationRelationshipTable",
+				"className": "NationRelationshipTable"
+			},
+			{
+				"title": "Ruler Nicknames",
+				type: TableType.Nation,
+				"importPath": "nationTables/rulerNicknamesTable",
+				"className": "RulerNicknamesTable"
 			}
 		]
 	},
@@ -1759,220 +1767,226 @@ export const tableMetadata: TableCategory[] = [
 		type: TableType.SoloRPG,
 		"tables": [
 			{
-				title: TableTitles.MythicAdventureTone as any as string,
+				"title": "Adventure Tone",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/adventureToneTable",
 				"className": "AdventureToneTable"
 			},
 			{
-				title: TableTitles.MythicAlienSpeciesDescriptors as any as string,
+				"title": "Alien Species Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/alienSpeciesDescriptorsTable",
 				"className": "AlienSpeciesDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicAnimalActions as any as string,
+				"title": "Animal Actions",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/animalActionsTable",
 				"className": "AnimalActionsTable"
 			},
 			{
-				title: TableTitles.MythicArmyDescriptors as any as string,
+				"title": "Army Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/armyDescriptorsTable",
 				"className": "ArmyDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicCavernDescriptors as any as string,
+				"title": "Cavern Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/cavernDescriptorsTable",
 				"className": "CavernDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicCharacterActionsCombat as any as string,
+				"title": "Character Actions (Combat)",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/characterActionsCombatTable",
 				"className": "CharacterActionsCombatTable"
 			},
 			{
-				title: TableTitles.MythicCharacterActionsGeneral as any as string,
+				"title": "Character Actions (General)",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/characterActionsGeneralTable",
 				"className": "CharacterActionsGeneralTable"
 			},
 			{
-				title: TableTitles.MythicCharacterAppearance as any as string,
+				"title": "Character Appearance",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/characterAppearanceTable",
 				"className": "CharacterAppearanceTable"
 			},
 			{
-				title: TableTitles.MythicCharacterBackground as any as string,
+				"title": "Character Background",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/characterBackgroundTable",
 				"className": "CharacterBackgroundTable"
 			},
 			{
-				title: TableTitles.MythicCharacterConversations as any as string,
+				"title": "Character Conversations",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/characterConversationsTable",
 				"className": "CharacterConversationsTable"
 			},
 			{
-				title: TableTitles.MythicCharacterDescriptors as any as string,
+				"title": "Character Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/characterDescriptorsTable",
 				"className": "CharacterDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicCharacterIdentity as any as string,
+				"title": "Character Identity",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/characterIdentityTable",
 				"className": "CharacterIdentityTable"
 			},
 			{
-				title: TableTitles.MythicCharacterMotivations as any as string,
+				"title": "Character Motivations",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/characterMotivationsTable",
 				"className": "CharacterMotivationsTable"
 			},
 			{
-				title: TableTitles.MythicCharacterPersonality as any as string,
+				"title": "Character Personality",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/characterPersonalityTable",
 				"className": "CharacterPersonalityTable"
 			},
 			{
-				title: TableTitles.MythicCharactersElements as any as string,
+				"title": "Characters Elements",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/charactersElementsTable",
 				"className": "CharactersElementsTable"
 			},
 			{
-				title: TableTitles.MythicCharacterSkills as any as string,
+				"title": "Character Skills",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/characterSkillsTable",
 				"className": "CharacterSkillsTable"
 			},
 			{
-				title: TableTitles.MythicCharacterTraitsFlaws as any as string,
+				"title": "Character Traits & Flaws",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/characterTraitsFlawsTable",
 				"className": "CharacterTraitsFlawsTable"
 			},
 			{
-				title: TableTitles.MythicCityDescriptors as any as string,
+				"title": "City Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/cityDescriptorsTable",
 				"className": "CityDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicCivilizationDescriptors as any as string,
+				"title": "Civilization Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/civilizationDescriptorsTable",
 				"className": "CivilizationDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicCreatureDescriptors as any as string,
+				"title": "Creature Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/creatureDescriptorsTable",
 				"className": "CreatureDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicDomicileDescriptors as any as string,
+				"title": "Domicile Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/domicileDescriptorsTable",
 				"className": "DomicileDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicDungeonDescriptors as any as string,
+				"title": "Dungeon Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/dungeonDescriptorsTable",
 				"className": "DungeonDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicEventFocus as any as string,
+				"title": "Event Focus",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/eventFocusTable",
 				"className": "EventFocusTable"
 			},
 			{
-				title: TableTitles.MythicFateChart as any as string,
+				"title": "Fate Chart",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/fateChartTable",
 				"className": "FateChartTable"
 			},
 			{
-				title: TableTitles.MythicForestDescriptors as any as string,
+				"title": "Forest Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/forestDescriptorsTable",
 				"className": "ForestDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicLocationsElements as any as string,
+				"title": "Locations Elements",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/locationsElementsTable",
 				"className": "LocationsElementsTable"
 			},
 			{
-				title: TableTitles.MythicMagicItemDescriptors as any as string,
+				"title": "Magic Item Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/magicItemDescriptorsTable",
 				"className": "MagicItemDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicMutationDescriptors as any as string,
+				"title": "Mutation Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/mutationDescriptorsTable",
 				"className": "MutationDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicObjectsElements as any as string,
+				"title": "Objects Elements",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/objectsElementsTable",
 				"className": "ObjectsElementsTable"
 			},
 			{
-				title: TableTitles.MythicPlotTwists as any as string,
+				"title": "Plot Twists",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/plotTwistsTable",
 				"className": "PlotTwistsTable"
 			},
 			{
-				title: TableTitles.MythicSceneAdjustment as any as string,
+				"title": "Scene Adjustment",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/sceneAdjustmentTable",
 				"className": "SceneAdjustmentTable"
 			},
 			{
-				title: TableTitles.MythicStarshipDescriptors as any as string,
+				"title": "Starship Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/starshipDescriptorsTable",
 				"className": "StarshipDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicTerrainDescriptors as any as string,
+				"title": "Terrain Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/terrainDescriptorsTable",
 				"className": "TerrainDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicUndeadDescriptors as any as string,
+				"title": "Undead Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/undeadDescriptorsTable",
 				"className": "UndeadDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicUrbanDescriptors as any as string,
+				"title": "Urban Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/urbanDescriptorsTable",
 				"className": "UrbanDescriptorsTable"
 			},
 			{
-				title: TableTitles.MythicWastelandDescriptors as any as string,
+				"title": "Wasteland Descriptors",
 				type: TableType.SoloRPG,
 				"importPath": "mythicTables/wastelandDescriptorsTable",
 				"className": "WastelandDescriptorsTable"
+			},
+			{
+				"title": "Simplified Npc Action",
+				type: TableType.SoloRPG,
+				"importPath": "mythicTables/simplifiedNpcActionTable",
+				"className": "SimplifiedNpcActionTable"
 			}
 		]
 	}

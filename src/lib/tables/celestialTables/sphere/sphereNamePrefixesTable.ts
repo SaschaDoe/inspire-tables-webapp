@@ -30,6 +30,6 @@ export class SphereNamePrefixesTable extends Table {
 	constructor() {
 		const entries = spherePrefixes.map((prefix) => new TableEntry(prefix));
 		super(entries, TableTitles.SphereNamePrefixes);
-		this.tableType = TableType.Other;
+		this.tableType = TableType.Name;
 	}
 }

@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -61,6 +62,6 @@ export class RealWorldDungeonNameTable extends Table {
 		for (let name of realWorldDungeonNames) {
 			entries.push(new TableEntry(name));
 		}
-		super(entries, TableTitles.RealWorldDungeonName);
+		super(entries, TableTitles.RealWorldDungeonName, TableType.Name);
 	}
 }

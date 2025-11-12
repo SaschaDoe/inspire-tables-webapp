@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -70,6 +71,6 @@ export class HiddenDescriptionTable extends Table {
 		entries.push(new TableEntry('shown after praying or performing a ritual at an altar'));
 		entries.push(new TableEntry('unveiled by piecing together a torn map or document'));
 
-		super(entries, TableTitles.HiddenDescription);
+		super(entries, TableTitles.HiddenDescription, TableType.Dungeon);
 	}
 }

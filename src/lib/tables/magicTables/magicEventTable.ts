@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -28,6 +29,6 @@ const magicSystemChangingEvents: string[] = [
 export class MagicEventTable extends Table {
 	constructor() {
 		const entries = magicSystemChangingEvents.map((event) => new TableEntry(event));
-		super(entries, TableTitles.MagicEvent);
+		super(entries, TableTitles.MagicEvent, TableType.Other);
 	}
 }

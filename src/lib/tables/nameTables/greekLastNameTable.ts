@@ -9,6 +9,6 @@ export class GreekLastNameTable extends Table{
         let entries = [] as TableEntry[];
         entries.push(new TableEntry("from").withCascadingRole(new GreekPlaceName()))
         super(entries, TableTitles.GreekLastName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

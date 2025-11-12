@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -23,6 +24,6 @@ export const magicModifier = [
 export class MagicSpellModifierTable extends Table {
 	constructor() {
 		const entries = magicModifier.map((mod) => new TableEntry(mod));
-		super(entries, TableTitles.MagicSpellModifier);
+		super(entries, TableTitles.MagicSpellModifier, TableType.Other);
 	}
 }

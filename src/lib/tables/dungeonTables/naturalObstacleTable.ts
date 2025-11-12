@@ -15,6 +15,6 @@ export class NaturalObstacleTable extends Table{
         entries.push(new TableEntry("slippery underground"))
         entries.push(new TableEntry("high fall"))
         super(entries, TableTitles.NaturalObstacle);
-        this.tableType = TableType.Location;
+        this.tableType = TableType.Dungeon;
     }
 }

@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -30,6 +31,6 @@ const magicSystemWordings: string[] = [
 export class MagicSystemWordingTable extends Table {
 	constructor() {
 		const entries = magicSystemWordings.map((wording) => new TableEntry(wording));
-		super(entries, TableTitles.MagicSystemWording);
+		super(entries, TableTitles.MagicSystemWording, TableType.Other);
 	}
 }

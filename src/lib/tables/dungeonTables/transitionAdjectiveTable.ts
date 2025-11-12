@@ -19,6 +19,6 @@ export class TransitionAdjectiveTable extends Table{
         entries.push(new TableEntry("spilled"))
         entries.push(new TableEntry("walled up"))
         super(entries, TableTitles.TransitionAdjective);
-        this.tableType = TableType.Location;
+        this.tableType = TableType.Dungeon;
     }
 }

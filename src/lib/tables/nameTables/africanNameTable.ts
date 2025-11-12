@@ -90,6 +90,6 @@ export class AfricanNameTable extends Table{
         entries.push(new TableEntry("Yimari"))
         entries.push(new TableEntry("Yuta"))
         super(entries, TableTitles.AfricanName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

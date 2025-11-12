@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	import type { Entity } from '$lib/types/entity';
 	import type { Character } from '$lib/entities/character/character';
 	import type { Villain } from '$lib/entities/character/villain';
 	import type { Artefact } from '$lib/entities/artefact/artefact';
-	import type { Dungeon } from '$lib/entities/dungeon/dungeon';
+	import type { Dungeon, Room } from '$lib/entities/dungeon/dungeon';
 	import type { Monster } from '$lib/entities/monster/monster';
 	import type { Scene } from '$lib/entities/scene/scene';
 	import type { Clue } from '$lib/entities/clue/clue';
@@ -38,6 +40,9 @@
 	import type { SolarSystem } from '$lib/entities/celestial/solarSystem';
 	import type { Galaxy } from '$lib/entities/celestial/galaxy';
 	import type { Sphere } from '$lib/entities/celestial/sphere';
+	import DungeonViewer from './DungeonViewer.svelte';
+	import RoomViewer from './RoomViewer.svelte';
+	import EntranceViewer from './EntranceViewer.svelte';
 
 	interface Props {
 		entity: any;
@@ -45,6 +50,14 @@
 	}
 
 	let { entity, entityType }: Props = $props();
+
+	const dispatch = createEventDispatcher<{
+		openEntity: { entity: Entity };
+	}>();
+
+	function handleOpenEntity(event: CustomEvent<{ entity: Entity }>) {
+		dispatch('openEntity', event.detail);
+	}
 </script>
 
 <div class="entity-viewer">
@@ -450,67 +463,22 @@
 			</div>
 		{/if}
 	{:else if entityType === 'dungeon'}
-		{@const dun = entity as Dungeon}
-		<div class="section">
-			<h3 class="section-title">Dungeon Overview</h3>
-			<div class="info-grid">
-				<div class="info-item">
-					<span class="info-label">Name:</span>
-					<span class="info-value">{dun.name}</span>
-				</div>
-				<div class="info-item">
-					<span class="info-label">Structure:</span>
-					<span class="info-value">{dun.structure}</span>
-				</div>
-				<div class="info-item">
-					<span class="info-label">Entries:</span>
-					<span class="info-value">{dun.entries}</span>
-				</div>
-				<div class="info-item">
-					<span class="info-label">Number of Rooms:</span>
-					<span class="info-value">{dun.numberOfRooms}</span>
-				</div>
-			</div>
-		</div>
-
-		<div class="section">
-			<h3 class="section-title">Rooms</h3>
-			<div class="rooms-list">
-				{#each dun.rooms as room, index}
-					<div class="room-card">
-						<h4 class="room-title">{room.name}</h4>
-						<div class="room-details">
-							{#if room.furnishing}
-								<div class="room-feature">
-									<span class="feature-icon">🪑</span>
-									<span class="feature-text">{room.furnishing}</span>
-								</div>
-							{/if}
-							{#if room.obstacle}
-								<div class="room-feature">
-									<span class="feature-icon">⚠️</span>
-									<span class="feature-text">{room.obstacle}</span>
-								</div>
-							{/if}
-							{#if room.treasure}
-								<div class="room-feature">
-									<span class="feature-icon">💎</span>
-									<span class="feature-text">{room.treasure}</span>
-								</div>
-							{/if}
-							{#if room.trap}
-								<div class="room-feature">
-									<span class="feature-icon">🪤</span>
-									<span class="feature-text">{room.trap}</span>
-								</div>
-							{/if}
-						</div>
-					</div>
-				{/each}
-			</div>
-		</div>
+		{@const generatedDungeon = entity.customFields?.generatedEntity as Dungeon}
+		{#if generatedDungeon}
+			<DungeonViewer dungeon={generatedDungeon} on:openEntity={handleOpenEntity} />
+		{/if}
+	{:else if entityType === 'room'}
+		{@const generatedRoom = entity.customFields?.generatedEntity as Room}
+		{#if generatedRoom}
+			<RoomViewer room={generatedRoom} parentEntity={entity} on:openEntity={handleOpenEntity} />
+		{/if}
+	{:else if entityType === 'entrance'}
+		{@const generatedEntrance = entity.customFields?.generatedEntity as Entrance}
+		{#if generatedEntrance}
+			<EntranceViewer entrance={generatedEntrance} />
+		{/if}
 	{:else if entityType === 'scene'}
-		{@const scene = entity as Scene}
+		{@const scene = entity.customFields?.generatedEntity as Scene}
 		<div class="section">
 			<h3 class="section-title">Scene Overview</h3>
 			<div class="info-grid">
@@ -549,7 +517,7 @@
 			<p class="description-text">{scene.description}</p>
 		</div>
 	{:else if entityType === 'clue'}
-		{@const clue = entity as Clue}
+		{@const clue = entity.customFields?.generatedEntity as Clue}
 		<div class="section">
 			<h3 class="section-title">Clue Details</h3>
 			<div class="info-grid">

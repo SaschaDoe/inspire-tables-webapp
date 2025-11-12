@@ -34,6 +34,6 @@ export class IndianFemaleNameTable extends Table{
         entries.push(new TableEntry("Schweta"))
         entries.push(new TableEntry("Upanasana"))
         super(entries, TableTitles.IndianFemaleName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

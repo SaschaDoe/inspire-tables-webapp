@@ -17,6 +17,6 @@ export class NationRelationshipTable extends Table{
         entries.push(new TableEntry("admiring"))
         entries.push(new TableEntry("just met"))
         super(entries, TableTitles.NationRelationship);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Nation;
     }
 }

@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -41,6 +42,6 @@ export class LocationChangeEventTable extends Table {
 		for (let event of locationChangeEvents) {
 			entries.push(new TableEntry(event));
 		}
-		super(entries, TableTitles.LocationChangeEvent);
+		super(entries, TableTitles.LocationChangeEvent, TableType.Dungeon);
 	}
 }

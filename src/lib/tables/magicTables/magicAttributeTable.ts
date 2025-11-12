@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -24,6 +25,6 @@ export const magicAttributes = [
 export class MagicAttributeTable extends Table {
 	constructor() {
 		const entries = magicAttributes.map((attr) => new TableEntry(attr));
-		super(entries, TableTitles.MagicAttribute);
+		super(entries, TableTitles.MagicAttribute, TableType.Other);
 	}
 }

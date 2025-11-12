@@ -9,7 +9,7 @@ export class EntranceCreator extends Creator<Entrance> {
 		const entrance = new Entrance();
 
 		// Generate entrance details
-		entrance.type = new EntranceTypeTable().roleWithCascade(this.dice).text;
+		entrance.entranceType = new EntranceTypeTable().roleWithCascade(this.dice).text;
 		entrance.adjective = new EntranceAdjectiveTable().roleWithCascade(this.dice).text;
 
 		// Generate 0-2 traps (1d3 - 1)
@@ -31,11 +31,11 @@ export class EntranceCreator extends Creator<Entrance> {
 	}
 
 	private generateName(entrance: Entrance): string {
-		return `${this.capitalize(entrance.adjective)} ${this.capitalize(entrance.type)}`;
+		return `${this.capitalize(entrance.adjective)} ${this.capitalize(entrance.entranceType)}`;
 	}
 
 	private generateDescription(entrance: Entrance): string {
-		let desc = `A ${entrance.adjective} ${entrance.type} serves as an entrance to the dungeon. `;
+		let desc = `A ${entrance.adjective} ${entrance.entranceType} serves as an entrance to the dungeon. `;
 
 		if (entrance.traps.length > 0) {
 			desc += `The entrance is protected by ${entrance.traps.length} trap${entrance.traps.length > 1 ? 's' : ''}. `;

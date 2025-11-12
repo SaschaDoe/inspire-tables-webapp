@@ -4,7 +4,8 @@
  * Uses d20 roll to determine NPC actions
  */
 
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 import { DiceRole } from '../diceRole';
@@ -34,7 +35,7 @@ export class SimplifiedNpcActionTable extends Table {
 			new TableEntry(18, 20, 'Causes Harm')
 		];
 
-		super(entries, TableTitles.SimplifiedNpcAction);
+		super(entries, TableTitles.SimplifiedNpcAction, TableType.SoloRPG);
 	}
 
 	/**

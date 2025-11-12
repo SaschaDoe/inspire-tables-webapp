@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { OracleImage } from '$lib/data/oracleMetadata';
+	import OracleContent from './OracleContent.svelte';
+	import { parseOracleText, type ParsedOracle } from '$lib/utils/oracleTextParser';
 
 	interface Props {
 		isOpen: boolean;
@@ -13,6 +15,11 @@
 	let isLoading = $state(false);
 	let imageLoaded = $state(false);
 	let oracleImages: OracleImage[] = [];
+
+	// Parse the current oracle description
+	let parsedOracle = $derived(
+		currentOracle ? parseOracleText(currentOracle.description) : null
+	);
 
 	// Lazy load oracle metadata only when modal opens
 	async function loadOracleMetadata() {
@@ -77,32 +84,63 @@
 						<div class="spinner"></div>
 						<p>Rolling the oracle...</p>
 					</div>
-				{:else if currentOracle}
+				{:else if currentOracle && parsedOracle}
 					<div class="oracle-display">
-						<div class="image-container">
-							{#if !imageLoaded}
-								<div class="image-loading">
-									<div class="spinner-small"></div>
+						<!-- Title at top -->
+						<h2 class="oracle-main-title">{parsedOracle.title}</h2>
+
+						<!-- Image and General Info side by side -->
+						<div class="top-section">
+							<div class="image-container">
+								{#if !imageLoaded}
+									<div class="image-loading">
+										<div class="spinner-small"></div>
+									</div>
+								{/if}
+								<img
+									src={currentOracle.imagePath}
+									alt="Oracle {currentOracle.number}"
+									class="oracle-image"
+									class:loaded={imageLoaded}
+									onload={handleImageLoad}
+								/>
+							</div>
+
+							<!-- General Info -->
+							<div class="general-info">
+								<div class="word-grid">
+									<div class="word-item">
+										<span class="word-label">Noun</span>
+										<span class="word-value">{parsedOracle.general.noun}</span>
+									</div>
+									<div class="word-item">
+										<span class="word-label">Verb</span>
+										<span class="word-value">{parsedOracle.general.verb}</span>
+									</div>
+									<div class="word-item">
+										<span class="word-label">Adjective</span>
+										<span class="word-value">{parsedOracle.general.adjective}</span>
+									</div>
+									<div class="word-item">
+										<span class="word-label">Adverb</span>
+										<span class="word-value">{parsedOracle.general.adverb}</span>
+									</div>
 								</div>
-							{/if}
-							<img
-								src={currentOracle.imagePath}
-								alt="Oracle {currentOracle.number}"
-								class="oracle-image"
-								class:loaded={imageLoaded}
-								onload={handleImageLoad}
-							/>
+
+								<div class="detailed-answer">
+									<span class="answer-label">Detailed Answer</span>
+									<p class="answer-text">{parsedOracle.general.detailedAnswer}</p>
+								</div>
+							</div>
 						</div>
 
-						<div class="oracle-info">
-							<div class="oracle-meta">
-								<span class="oracle-id">Oracle {currentOracle.oracleSet}</span>
-								<span class="oracle-number">#{currentOracle.number}</span>
-							</div>
-
-							<div class="oracle-description">
-								<pre class="description-text">{currentOracle.description}</pre>
-							</div>
+						<!-- Detailed sections below -->
+						<div class="detailed-sections">
+							<OracleContent
+								description={currentOracle.description}
+								showTitle={false}
+								showGeneral={false}
+							/>
 						</div>
 					</div>
 				{/if}
@@ -247,11 +285,31 @@
 		gap: 1.5rem;
 	}
 
+	.oracle-main-title {
+		font-size: 1.75rem;
+		font-weight: bold;
+		color: white;
+		text-align: center;
+		margin: 0 0 1.5rem 0;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+	}
+
+	.top-section {
+		display: grid;
+		grid-template-columns: 300px 1fr;
+		gap: 1.5rem;
+		align-items: start;
+	}
+
+	@media (max-width: 768px) {
+		.top-section {
+			grid-template-columns: 1fr;
+		}
+	}
+
 	.image-container {
 		position: relative;
 		width: 100%;
-		max-width: 500px;
-		margin: 0 auto;
 		aspect-ratio: 1;
 		background: rgb(30 27 75 / 0.5);
 		border-radius: 0.75rem;
@@ -283,48 +341,76 @@
 		opacity: 1;
 	}
 
-	.oracle-info {
+	.general-info {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+		background: rgb(30 27 75 / 0.5);
+		border: 1px solid rgb(168 85 247 / 0.2);
+		border-radius: 0.75rem;
+		padding: 1.25rem;
 	}
 
-	.oracle-meta {
+	.word-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.75rem;
+	}
+
+	.word-item {
 		display: flex;
-		align-items: center;
-		gap: 1rem;
-		justify-content: center;
+		flex-direction: column;
+		gap: 0.25rem;
+		padding: 0.75rem;
+		background: rgb(30 27 75 / 0.6);
+		border: 1px solid rgb(59 130 246 / 0.3);
+		border-radius: 0.5rem;
 	}
 
-	.oracle-id,
-	.oracle-number {
-		padding: 0.25rem 0.75rem;
-		background: rgb(168 85 247 / 0.2);
-		color: rgb(216 180 254);
-		border-radius: 9999px;
-		font-size: 0.875rem;
+	.word-label {
+		font-size: 0.7rem;
+		color: rgb(147 197 253);
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 	}
 
-	.oracle-description {
-		background: rgb(30 27 75 / 0.5);
-		border: 1px solid rgb(168 85 247 / 0.2);
-		border-radius: 0.75rem;
-		padding: 1.5rem;
-		max-height: 400px;
-		overflow-y: auto;
+	.word-value {
+		font-size: 1rem;
+		color: white;
+		font-weight: 600;
 	}
 
-	.description-text {
+	.detailed-answer {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		padding: 1rem;
+		background: rgb(30 27 75 / 0.6);
+		border: 1px solid rgb(59 130 246 / 0.3);
+		border-radius: 0.5rem;
+		margin-top: 0.5rem;
+	}
+
+	.answer-label {
+		font-size: 0.7rem;
+		color: rgb(147 197 253);
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.answer-text {
 		color: rgb(216 180 254);
-		font-size: 0.875rem;
 		line-height: 1.6;
 		margin: 0;
-		white-space: pre-wrap;
-		word-wrap: break-word;
-		font-family: monospace;
+		font-size: 0.9rem;
+	}
+
+	.detailed-sections {
+		margin-top: 1rem;
+		padding-top: 1.5rem;
+		border-top: 2px solid rgb(168 85 247 / 0.2);
 	}
 
 	.modal-footer {

@@ -11,6 +11,6 @@ export class NordicMaleLastNameTable extends Table{
             .withCascadingRole(new NordicMaleNameTable())
             .with("son"))
         super(entries, TableTitles.NordicMaleLastName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

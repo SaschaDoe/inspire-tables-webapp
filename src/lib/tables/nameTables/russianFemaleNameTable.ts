@@ -81,6 +81,6 @@ export class RussianFemaleNameTable extends Table{
         entries.push(new TableEntry("Zidonje"))
 
         super(entries, TableTitles.RussianFemaleName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

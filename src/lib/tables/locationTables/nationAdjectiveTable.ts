@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -52,6 +53,6 @@ export class NationAdjectiveTable extends Table {
 		entries.push(new TableEntry('deserted'));
 		entries.push(new TableEntry('bountiful'));
 
-		super(entries, TableTitles.NationAdjective);
+		super(entries, TableTitles.NationAdjective, TableType.Location);
 	}
 }

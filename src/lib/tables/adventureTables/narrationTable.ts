@@ -12,6 +12,6 @@ export class NarrationTable extends Table{
         entries.push(new TableEntry("narrator tells the problem again"))
         entries.push(new TableEntry("narrator tells possible solution devices"))
         super(entries, TableTitles.Narration);
-        this.tableType = TableType.Artefact;
+        this.tableType = TableType.Adventure;
     }
 }

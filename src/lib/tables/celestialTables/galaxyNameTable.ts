@@ -36,6 +36,6 @@ export class GalaxyNameTable extends Table {
 				.withCascadingRole(new SectorSynonymsTable(), 100, ' ')
 		];
 		super(entries, TableTitles.GalaxyName);
-		this.tableType = TableType.Other;
+		this.tableType = TableType.Name;
 	}
 }

@@ -12,6 +12,6 @@ export class ArabicMaleLastNameTable extends Table{
             .withCascadingRole(new ArabicMaleNameAdditionTable())
             .withCascadingRole(new ArabicMaleNameTable()))
         super(entries, TableTitles.ArabicMaleLastName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

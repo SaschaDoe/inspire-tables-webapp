@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -33,6 +34,6 @@ const magicWeaknesses: string[] = [
 export class MagicWeaknessTable extends Table {
 	constructor() {
 		const entries = magicWeaknesses.map((weakness) => new TableEntry(weakness));
-		super(entries, TableTitles.MagicWeakness);
+		super(entries, TableTitles.MagicWeakness, TableType.Other);
 	}
 }

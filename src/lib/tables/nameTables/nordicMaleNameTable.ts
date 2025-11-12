@@ -114,6 +114,6 @@ export class NordicMaleNameTable extends Table{
         entries.push(new TableEntry("Wulfgrimm"))
         entries.push(new TableEntry("Yngvar"))
         super(entries, TableTitles.NordicMaleName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

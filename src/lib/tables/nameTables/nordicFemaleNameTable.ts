@@ -67,6 +67,6 @@ export class NordicFemaleNameTable extends Table{
         entries.push(new TableEntry("Torlind"))
         entries.push(new TableEntry("Gardlinda"))
         super(entries, TableTitles.NordicFemaleName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

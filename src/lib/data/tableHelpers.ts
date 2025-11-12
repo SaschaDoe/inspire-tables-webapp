@@ -34,7 +34,8 @@ const categoryConfig: Record<TableType, { icon: string; color: string }> = {
 	[TableType.Nation]: { icon: '🏛️', color: 'indigo' },
 	[TableType.Culture]: { icon: '🎭', color: 'pink' },
 	[TableType.Campaign]: { icon: '📖', color: 'amber' },
-	[TableType.SoloRPG]: { icon: '🎲', color: 'purple' }
+	[TableType.SoloRPG]: { icon: '🎲', color: 'purple' },
+	[TableType.Name]: { icon: '🏷️', color: 'teal' }
 };
 
 /**

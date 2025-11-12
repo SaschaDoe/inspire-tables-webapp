@@ -23,6 +23,6 @@ export class PlanTable extends Table{
         entries.push(new TableEntry("shape shifter gambit"))
         entries.push(new TableEntry("trojan prisoner"))
         super(entries, TableTitles.Plan);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Adventure;
     }
 }

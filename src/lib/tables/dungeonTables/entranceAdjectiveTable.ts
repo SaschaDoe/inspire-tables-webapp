@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -27,6 +28,6 @@ export class EntranceAdjectiveTable extends Table {
 		entries.push(new TableEntry('shrouded'));
 		entries.push(new TableEntry('concealed'));
 
-		super(entries, TableTitles.EntranceAdjective);
+		super(entries, TableTitles.EntranceAdjective, TableType.Dungeon);
 	}
 }

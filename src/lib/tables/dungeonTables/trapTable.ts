@@ -15,6 +15,6 @@ export class TrapTable extends Table{
             .with("triggered by")
             .withCascadingRole(new TrapTriggerTable()))
         super(entries, TableTitles.Trap);
-        this.tableType = TableType.Location;
+        this.tableType = TableType.Dungeon;
     }
 }

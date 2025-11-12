@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -19,6 +20,6 @@ export const secondLevelUses = [
 export class MagicSecondLevelUseTable extends Table {
 	constructor() {
 		const entries = secondLevelUses.map((use) => new TableEntry(use));
-		super(entries, TableTitles.MagicSecondLevelUse);
+		super(entries, TableTitles.MagicSecondLevelUse, TableType.Other);
 	}
 }

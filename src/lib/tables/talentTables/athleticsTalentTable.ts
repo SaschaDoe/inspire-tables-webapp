@@ -14,6 +14,6 @@ export class AthleticsTalentTable extends Table{
         entries.push(new TableEntry("drinking"));
         entries.push(new TableEntry("steer wagon"));
         super(entries, TableTitles.AthleticsTalent);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Talent;
     }
 }

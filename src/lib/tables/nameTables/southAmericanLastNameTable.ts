@@ -60,6 +60,6 @@ export class SouthAmericanLastNameTable extends Table{
         entries.push(new TableEntry("Uludaz"))
         entries.push(new TableEntry("Zaldahan"))
         super(entries, TableTitles.SouthAmericanLastName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }

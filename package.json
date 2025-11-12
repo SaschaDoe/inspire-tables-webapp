@@ -13,7 +13,12 @@
 		"generate:metadata": "tsx scripts/generateTableMetadata.ts",
 		"generate:oracle-metadata": "tsx scripts/generateOracleMetadata.ts",
 		"fix:show-defaults": "tsx scripts/fixDefaultTitles.ts",
-		"fix:update-titles": "tsx scripts/fixDefaultTitles.ts --update"
+		"fix:update-titles": "tsx scripts/fixDefaultTitles.ts --update",
+		"fix:check-types": "tsx scripts/fixTableTypes.ts",
+		"fix:table-types": "tsx scripts/fixTableTypes.ts --fix",
+		"fix:check-missing-titles": "tsx scripts/addMissingTitles.ts",
+		"fix:add-missing-titles": "tsx scripts/addMissingTitles.ts --add",
+		"recategorize": "tsx scripts/recategorizeTables.ts"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^7.0.0",
@@ -31,5 +36,8 @@
 		"tsx": "^4.19.2",
 		"typescript": "^5.9.3",
 		"vite": "^7.1.10"
+	},
+	"dependencies": {
+		"cytoscape": "^3.33.1"
 	}
 }

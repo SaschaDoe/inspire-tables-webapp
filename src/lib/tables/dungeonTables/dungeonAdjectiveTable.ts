@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -98,6 +99,6 @@ export class DungeonAdjectiveTable extends Table {
 		for (let adjective of dungeonAdjectives) {
 			entries.push(new TableEntry(adjective));
 		}
-		super(entries, TableTitles.DungeonAdjective);
+		super(entries, TableTitles.DungeonAdjective, TableType.Dungeon);
 	}
 }

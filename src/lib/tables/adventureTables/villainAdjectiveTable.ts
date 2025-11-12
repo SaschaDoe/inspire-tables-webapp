@@ -18,6 +18,6 @@ export class VillainAdjectiveTable extends Table{
         entries.push(new TableEntry("rich bastard"))
         entries.push(new TableEntry("bad but actually good"))
         super(entries, TableTitles.VillainAdjective);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Adventure;
     }
 }

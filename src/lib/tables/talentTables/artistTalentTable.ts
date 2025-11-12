@@ -14,6 +14,6 @@ export class ArtistTalentTable extends Table{
         entries.push(new TableEntry("sculpting"))
         entries.push(new TableEntry("poem composing"));
         super(entries, TableTitles.ArtistTalent);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Talent;
     }
 }

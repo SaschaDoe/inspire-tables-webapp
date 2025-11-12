@@ -1,4 +1,5 @@
-import { Table } from '../table';
+import { Table } from '../table'
+import { TableType } from '../tableType';;
 import { TableEntry } from '../tableEntry';
 import { TableTitles } from '../tableTitles';
 
@@ -41,7 +42,7 @@ export class FactionFirstNameTable extends Table {
 		for (let prefix of secretSocietyPrefixes) {
 			entries.push(new TableEntry(prefix));
 		}
-		super(entries, TableTitles.FractionName);
+		super(entries, TableTitles.FactionFirstName, TableType.Name);
 	}
 }
 

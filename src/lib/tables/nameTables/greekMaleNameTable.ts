@@ -55,6 +55,6 @@ export class GreekMaleNameTable extends Table{
         entries.push(new TableEntry("Prosperos"))
         entries.push(new TableEntry("Hadrokles"))
         super(entries, TableTitles.GreekMaleName);
-        this.tableType = TableType.Other;
+        this.tableType = TableType.Name;
     }
 }
