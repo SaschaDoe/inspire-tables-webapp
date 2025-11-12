@@ -37,6 +37,6 @@ const firstPartNames: string[] = [
 export class MagicSystemFantasyNameFirstTable extends Table {
 	constructor() {
 		const entries = firstPartNames.map((name) => new TableEntry(name));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicSystemFantasyNameFirst);
 	}
 }

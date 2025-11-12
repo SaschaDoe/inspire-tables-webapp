@@ -74,6 +74,6 @@ const magicAbilitySources: string[] = [
 export class MagicSourceTable extends Table {
 	constructor() {
 		const entries = magicAbilitySources.map((source) => new TableEntry(source));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicSource);
 	}
 }

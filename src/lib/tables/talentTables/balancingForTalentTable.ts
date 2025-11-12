@@ -13,6 +13,6 @@ export const balancingWays = [
 export class BalancingForTalentTable extends Table {
 	constructor() {
 		const entries = balancingWays.map((way) => new TableEntry(way));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.BalancingForTalent);
 	}
 }

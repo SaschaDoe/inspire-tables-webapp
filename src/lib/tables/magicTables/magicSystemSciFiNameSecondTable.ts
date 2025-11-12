@@ -28,6 +28,6 @@ const sciFiSecondPartNames: string[] = [
 export class MagicSystemSciFiNameSecondTable extends Table {
 	constructor() {
 		const entries = sciFiSecondPartNames.map((name) => new TableEntry(name));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicSystemSciFiNameSecond);
 	}
 }

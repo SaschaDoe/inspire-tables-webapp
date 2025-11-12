@@ -28,6 +28,6 @@ const magicSystemChangingEvents: string[] = [
 export class MagicEventTable extends Table {
 	constructor() {
 		const entries = magicSystemChangingEvents.map((event) => new TableEntry(event));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicEvent);
 	}
 }

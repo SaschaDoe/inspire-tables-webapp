@@ -34,7 +34,7 @@ export class SimplifiedNpcActionTable extends Table {
 			new TableEntry(18, 20, 'Causes Harm')
 		];
 
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.SimplifiedNpcAction);
 	}
 
 	/**

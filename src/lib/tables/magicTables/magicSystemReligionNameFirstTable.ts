@@ -33,6 +33,6 @@ const religiousMagicFirstPartNames: string[] = [
 export class MagicSystemReligionNameFirstTable extends Table {
 	constructor() {
 		const entries = religiousMagicFirstPartNames.map((name) => new TableEntry(name));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicSystemReligionNameFirst);
 	}
 }

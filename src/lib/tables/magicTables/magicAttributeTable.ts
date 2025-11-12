@@ -24,6 +24,6 @@ export const magicAttributes = [
 export class MagicAttributeTable extends Table {
 	constructor() {
 		const entries = magicAttributes.map((attr) => new TableEntry(attr));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicAttribute);
 	}
 }

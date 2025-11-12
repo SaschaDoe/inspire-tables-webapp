@@ -28,6 +28,6 @@ const sciFiFirstPartNames: string[] = [
 export class MagicSystemSciFiNameFirstTable extends Table {
 	constructor() {
 		const entries = sciFiFirstPartNames.map((name) => new TableEntry(name));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicSystemSciFiNameFirst);
 	}
 }

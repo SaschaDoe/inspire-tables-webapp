@@ -38,6 +38,6 @@ export class MagicChannelTable extends Table {
 			new TableEntry('voice'),
 			new TableEntry('mind')
 		];
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicChannel);
 	}
 }

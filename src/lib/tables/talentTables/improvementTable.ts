@@ -12,6 +12,6 @@ export class ImprovementTable extends Table {
 			new TableEntry('experience points per meta gaming'),
 			new TableEntry('given from external source')
 		];
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.Improvement);
 	}
 }

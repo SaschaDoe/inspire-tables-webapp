@@ -39,6 +39,6 @@ const divineSpellFailureOutcomes: string[] = [
 export class MagicFailConsequenceTable extends Table {
 	constructor() {
 		const entries = divineSpellFailureOutcomes.map((outcome) => new TableEntry(outcome));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicFailConsequence);
 	}
 }

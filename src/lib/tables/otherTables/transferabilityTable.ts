@@ -24,6 +24,6 @@ export const transferabilities = [
 export class TransferabilityTable extends Table {
 	constructor() {
 		const entries = transferabilities.map((t) => new TableEntry(t));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.Transferability);
 	}
 }

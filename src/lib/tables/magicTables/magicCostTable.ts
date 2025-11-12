@@ -22,6 +22,6 @@ export class MagicCostTable extends Table {
 			new TableEntry('ingredients from flora'),
 			new TableEntry('ingredients from animals')
 		];
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicCost);
 	}
 }

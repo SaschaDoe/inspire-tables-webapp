@@ -10,7 +10,10 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"generate:metadata": "tsx scripts/generateTableMetadata.ts"
+		"generate:metadata": "tsx scripts/generateTableMetadata.ts",
+		"generate:oracle-metadata": "tsx scripts/generateOracleMetadata.ts",
+		"fix:show-defaults": "tsx scripts/fixDefaultTitles.ts",
+		"fix:update-titles": "tsx scripts/fixDefaultTitles.ts --update"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^7.0.0",

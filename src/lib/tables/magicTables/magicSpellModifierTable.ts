@@ -23,6 +23,6 @@ export const magicModifier = [
 export class MagicSpellModifierTable extends Table {
 	constructor() {
 		const entries = magicModifier.map((mod) => new TableEntry(mod));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicSpellModifier);
 	}
 }

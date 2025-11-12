@@ -62,6 +62,6 @@ const spellSideEffects: string[] = [
 export class SideEffectTable extends Table {
 	constructor() {
 		const entries = spellSideEffects.map((effect) => new TableEntry(effect));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.SideEffect);
 	}
 }

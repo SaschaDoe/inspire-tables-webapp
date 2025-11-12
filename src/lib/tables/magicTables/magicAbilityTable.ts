@@ -52,6 +52,6 @@ export class MagicAbilityTable extends Table {
 			new TableEntry('any professions and profane talents'),
 			new TableEntry('certain professions and profane talents')
 		];
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicAbility);
 	}
 }

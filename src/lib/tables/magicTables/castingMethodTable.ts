@@ -18,6 +18,6 @@ export class CastingMethodTable extends Table {
 			new TableEntry('cursing'),
 			new TableEntry('profane talent method')
 		];
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.CastingMethod);
 	}
 }

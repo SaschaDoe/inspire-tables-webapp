@@ -7,6 +7,6 @@ export const quantities = ['none', 'few', 'some', 'many', 'all'];
 export class QuantityTable extends Table {
 	constructor() {
 		const entries = quantities.map((q) => new TableEntry(q));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.Quantity);
 	}
 }

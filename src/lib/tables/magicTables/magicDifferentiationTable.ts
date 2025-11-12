@@ -21,6 +21,6 @@ const magicSystemEntityDifferences: string[] = [
 export class MagicDifferentiationTable extends Table {
 	constructor() {
 		const entries = magicSystemEntityDifferences.map((diff) => new TableEntry(diff));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicDifferentiation);
 	}
 }

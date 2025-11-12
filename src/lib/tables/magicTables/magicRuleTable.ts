@@ -50,6 +50,6 @@ const magicSystemRules: string[] = [
 export class MagicRuleTable extends Table {
 	constructor() {
 		const entries = magicSystemRules.map((rule) => new TableEntry(rule));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicRule);
 	}
 }

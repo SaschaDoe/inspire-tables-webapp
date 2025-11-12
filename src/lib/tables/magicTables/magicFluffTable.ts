@@ -28,6 +28,6 @@ const magicSystemFluff: string[] = [
 export class MagicFluffTable extends Table {
 	constructor() {
 		const entries = magicSystemFluff.map((fluff) => new TableEntry(fluff));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicFluff);
 	}
 }

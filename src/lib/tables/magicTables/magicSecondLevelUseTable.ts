@@ -19,6 +19,6 @@ export const secondLevelUses = [
 export class MagicSecondLevelUseTable extends Table {
 	constructor() {
 		const entries = secondLevelUses.map((use) => new TableEntry(use));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicSecondLevelUse);
 	}
 }

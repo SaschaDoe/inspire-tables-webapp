@@ -16,6 +16,6 @@ export const magicVisuals = [
 export class MagicVisualTable extends Table {
 	constructor() {
 		const entries = magicVisuals.map((visual) => new TableEntry(visual));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicVisual);
 	}
 }

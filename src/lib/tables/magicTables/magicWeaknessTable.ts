@@ -33,6 +33,6 @@ const magicWeaknesses: string[] = [
 export class MagicWeaknessTable extends Table {
 	constructor() {
 		const entries = magicWeaknesses.map((weakness) => new TableEntry(weakness));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicWeakness);
 	}
 }

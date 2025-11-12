@@ -33,6 +33,6 @@ export const knowledge = [
 export class KnowledgeTable extends Table {
 	constructor() {
 		const entries = knowledge.map((k) => new TableEntry(k));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.Knowledge);
 	}
 }

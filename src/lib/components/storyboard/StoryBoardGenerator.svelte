@@ -1,19 +1,9 @@
 <script lang="ts">
 	import { storyboardStore, activeBoard } from '$lib/stores/storyboardStore';
 	import { Dice } from '$lib/utils/dice';
-	import {
-		adventureTables,
-		charTables,
-		monsterTables,
-		talentTables,
-		locationTables,
-		dungeonTables,
-		townTables,
-		artefactsTables,
-		nameTables,
-		otherTables
-	} from '$lib/tables/tableList';
+	import { getAllCategories, loadTablesForCategory, type CategoryInfo } from '$lib/data/tableHelpers';
 	import type { Table } from '$lib/tables/table';
+	import { onMount } from 'svelte';
 
 	interface Props {
 		show: boolean;
@@ -22,30 +12,45 @@
 
 	let { show, onClose }: Props = $props();
 
-	// Categories with their tables
-	const categories = [
-		{ name: 'Adventure', tables: adventureTables, icon: '🗺️', color: 'blue' },
-		{ name: 'Character', tables: charTables, icon: '👤', color: 'green' },
-		{ name: 'Monster', tables: monsterTables, icon: '👹', color: 'red' },
-		{ name: 'Talent', tables: talentTables, icon: '✨', color: 'purple' },
-		{ name: 'Location', tables: locationTables, icon: '📍', color: 'yellow' },
-		{ name: 'Dungeon', tables: dungeonTables, icon: '🏰', color: 'gray' },
-		{ name: 'Town', tables: townTables, icon: '🏘️', color: 'cyan' },
-		{ name: 'Artefact', tables: artefactsTables, icon: '⚔️', color: 'orange' },
-		{ name: 'Name', tables: nameTables, icon: '📜', color: 'pink' },
-		{ name: 'Other', tables: otherTables, icon: '🎲', color: 'slate' }
-	];
+	// Categories with their metadata (no tables loaded yet)
+	const categories = getAllCategories();
 
 	// State
-	let selectedCategory = $state(categories[0]);
+	let selectedCategory = $state<CategoryInfo>(categories[0]);
+	let categoryTables = $state<Table[]>([]);
+	let isLoadingTables = $state(false);
 	let selectedTable = $state<Table | null>(null);
 	let searchQuery = $state('');
 	let generatedText = $state('');
 	let isRolling = $state(false);
 
+	// Load tables when category changes
+	$effect(() => {
+		if (selectedCategory) {
+			loadCategoryTables(selectedCategory);
+		}
+	});
+
+	async function loadCategoryTables(category: CategoryInfo) {
+		isLoadingTables = true;
+		try {
+			categoryTables = await loadTablesForCategory(category.type);
+		} catch (error) {
+			console.error('Failed to load tables for category:', category.name, error);
+			categoryTables = [];
+		} finally {
+			isLoadingTables = false;
+		}
+	}
+
+	// Load initial category on mount
+	onMount(() => {
+		loadCategoryTables(selectedCategory);
+	});
+
 	// Filter tables by search
 	let filteredTables = $derived(
-		selectedCategory.tables.filter((table) =>
+		categoryTables.filter((table) =>
 			table.title.toLowerCase().includes(searchQuery.toLowerCase())
 		)
 	);

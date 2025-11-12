@@ -37,6 +37,6 @@ const religiousMagicSecondPartNames: string[] = [
 export class MagicSystemReligionNameSecondTable extends Table {
 	constructor() {
 		const entries = religiousMagicSecondPartNames.map((name) => new TableEntry(name));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicSystemReligionNameSecond);
 	}
 }

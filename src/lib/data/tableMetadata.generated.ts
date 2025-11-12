@@ -1,6 +1,6 @@
 // THIS FILE IS AUTO-GENERATED - DO NOT EDIT MANUALLY
 // Run 'npm run generate:metadata' to regenerate this file
-// Generated on: 2025-11-12T05:31:54.154Z
+// Generated on: 2025-11-12T05:50:07.250Z
 
 import { TableType } from '$lib/tables/tableType';
 import { TableTitles } from '$lib/tables/tableTitles';
@@ -53,6 +53,18 @@ export const tableMetadata: TableCategory[] = [
 				"className": "AttributeTable"
 			},
 			{
+				title: TableTitles.BalancingForTalent as any as string,
+				type: TableType.Character,
+				"importPath": "talentTables/balancingForTalentTable",
+				"className": "BalancingForTalentTable"
+			},
+			{
+				title: TableTitles.CastingMethod as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/castingMethodTable",
+				"className": "CastingMethodTable"
+			},
+			{
 				title: TableTitles.CharacterAsDevice as any as string,
 				type: TableType.Character,
 				"importPath": "charTables/characterAsDeviceTable",
@@ -75,198 +87,6 @@ export const tableMetadata: TableCategory[] = [
 				type: TableType.Character,
 				"importPath": "charTables/curseTable",
 				"className": "CurseTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "talentTables/sideEffectTable",
-				"className": "SideEffectTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "talentTables/improvementTable",
-				"className": "ImprovementTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "talentTables/balancingForTalentTable",
-				"className": "BalancingForTalentTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "otherTables/transferabilityTable",
-				"className": "TransferabilityTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "otherTables/quantityTable",
-				"className": "QuantityTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "otherTables/prevalenceTable",
-				"className": "PrevalenceTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "otherTables/powerArcTable",
-				"className": "PowerArcTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "otherTables/knowledgeTable",
-				"className": "KnowledgeTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "mythicTables/simplifiedNpcActionTable",
-				"className": "SimplifiedNpcActionTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicWeaknessTable",
-				"className": "MagicWeaknessTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicVisualTable",
-				"className": "MagicVisualTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSystemWordingTable",
-				"className": "MagicSystemWordingTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSystemSciFiNameSecondTable",
-				"className": "MagicSystemSciFiNameSecondTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSystemSciFiNameFirstTable",
-				"className": "MagicSystemSciFiNameFirstTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSystemReligionNameSecondTable",
-				"className": "MagicSystemReligionNameSecondTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSystemReligionNameFirstTable",
-				"className": "MagicSystemReligionNameFirstTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSystemFantasyNameSecondTable",
-				"className": "MagicSystemFantasyNameSecondTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSystemFantasyNameFirstTable",
-				"className": "MagicSystemFantasyNameFirstTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSpellModifierTable",
-				"className": "MagicSpellModifierTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSourceTable",
-				"className": "MagicSourceTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicSecondLevelUseTable",
-				"className": "MagicSecondLevelUseTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicRuleTable",
-				"className": "MagicRuleTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicOriginTable",
-				"className": "MagicOriginTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicFluffTable",
-				"className": "MagicFluffTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicFailConsequenceTable",
-				"className": "MagicFailConsequenceTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicEventTable",
-				"className": "MagicEventTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicDifferentiationTable",
-				"className": "MagicDifferentiationTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicCostTable",
-				"className": "MagicCostTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicChannelTable",
-				"className": "MagicChannelTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicAttributeTable",
-				"className": "MagicAttributeTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/magicAbilityTable",
-				"className": "MagicAbilityTable"
-			},
-			{
-				title: TableTitles.Default as any as string,
-				type: TableType.Character,
-				"importPath": "magicTables/castingMethodTable",
-				"className": "CastingMethodTable"
 			},
 			{
 				title: TableTitles.Disadvantages as any as string,
@@ -419,6 +239,12 @@ export const tableMetadata: TableCategory[] = [
 				"className": "HiddenDescriptionTable"
 			},
 			{
+				title: TableTitles.Improvement as any as string,
+				type: TableType.Character,
+				"importPath": "talentTables/improvementTable",
+				"className": "ImprovementTable"
+			},
+			{
 				title: TableTitles.InitialMeetingCircumstances as any as string,
 				type: TableType.Character,
 				"importPath": "adventureTables/initialMeetingCircumstancesTable",
@@ -437,6 +263,12 @@ export const tableMetadata: TableCategory[] = [
 				"className": "InitialMeetingTypeTable"
 			},
 			{
+				title: TableTitles.Knowledge as any as string,
+				type: TableType.Character,
+				"importPath": "otherTables/knowledgeTable",
+				"className": "KnowledgeTable"
+			},
+			{
 				title: TableTitles.Limitation as any as string,
 				type: TableType.Character,
 				"importPath": "talentTables/limitationForTalentTable",
@@ -447,6 +279,138 @@ export const tableMetadata: TableCategory[] = [
 				type: TableType.Character,
 				"importPath": "dungeonTables/locationChangeEventTable",
 				"className": "LocationChangeEventTable"
+			},
+			{
+				title: TableTitles.MagicAbility as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicAbilityTable",
+				"className": "MagicAbilityTable"
+			},
+			{
+				title: TableTitles.MagicAttribute as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicAttributeTable",
+				"className": "MagicAttributeTable"
+			},
+			{
+				title: TableTitles.MagicChannel as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicChannelTable",
+				"className": "MagicChannelTable"
+			},
+			{
+				title: TableTitles.MagicCost as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicCostTable",
+				"className": "MagicCostTable"
+			},
+			{
+				title: TableTitles.MagicDifferentiation as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicDifferentiationTable",
+				"className": "MagicDifferentiationTable"
+			},
+			{
+				title: TableTitles.MagicEvent as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicEventTable",
+				"className": "MagicEventTable"
+			},
+			{
+				title: TableTitles.MagicFailConsequence as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicFailConsequenceTable",
+				"className": "MagicFailConsequenceTable"
+			},
+			{
+				title: TableTitles.MagicFluff as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicFluffTable",
+				"className": "MagicFluffTable"
+			},
+			{
+				title: TableTitles.MagicOrigin as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicOriginTable",
+				"className": "MagicOriginTable"
+			},
+			{
+				title: TableTitles.MagicRule as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicRuleTable",
+				"className": "MagicRuleTable"
+			},
+			{
+				title: TableTitles.MagicSecondLevelUse as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicSecondLevelUseTable",
+				"className": "MagicSecondLevelUseTable"
+			},
+			{
+				title: TableTitles.MagicSource as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicSourceTable",
+				"className": "MagicSourceTable"
+			},
+			{
+				title: TableTitles.MagicSpellModifier as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicSpellModifierTable",
+				"className": "MagicSpellModifierTable"
+			},
+			{
+				title: TableTitles.MagicSystemFantasyNameFirst as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicSystemFantasyNameFirstTable",
+				"className": "MagicSystemFantasyNameFirstTable"
+			},
+			{
+				title: TableTitles.MagicSystemFantasyNameSecond as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicSystemFantasyNameSecondTable",
+				"className": "MagicSystemFantasyNameSecondTable"
+			},
+			{
+				title: TableTitles.MagicSystemReligionNameFirst as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicSystemReligionNameFirstTable",
+				"className": "MagicSystemReligionNameFirstTable"
+			},
+			{
+				title: TableTitles.MagicSystemReligionNameSecond as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicSystemReligionNameSecondTable",
+				"className": "MagicSystemReligionNameSecondTable"
+			},
+			{
+				title: TableTitles.MagicSystemSciFiNameFirst as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicSystemSciFiNameFirstTable",
+				"className": "MagicSystemSciFiNameFirstTable"
+			},
+			{
+				title: TableTitles.MagicSystemSciFiNameSecond as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicSystemSciFiNameSecondTable",
+				"className": "MagicSystemSciFiNameSecondTable"
+			},
+			{
+				title: TableTitles.MagicSystemWording as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicSystemWordingTable",
+				"className": "MagicSystemWordingTable"
+			},
+			{
+				title: TableTitles.MagicVisual as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicVisualTable",
+				"className": "MagicVisualTable"
+			},
+			{
+				title: TableTitles.MagicWeakness as any as string,
+				type: TableType.Character,
+				"importPath": "magicTables/magicWeaknessTable",
+				"className": "MagicWeaknessTable"
 			},
 			{
 				title: TableTitles.MonsterAdjective as any as string,
@@ -503,10 +467,28 @@ export const tableMetadata: TableCategory[] = [
 				"className": "NobilityTable"
 			},
 			{
+				title: TableTitles.PowerArc as any as string,
+				type: TableType.Character,
+				"importPath": "otherTables/powerArcTable",
+				"className": "PowerArcTable"
+			},
+			{
+				title: TableTitles.Prevalence as any as string,
+				type: TableType.Character,
+				"importPath": "otherTables/prevalenceTable",
+				"className": "PrevalenceTable"
+			},
+			{
 				title: TableTitles.Profession as any as string,
 				type: TableType.Character,
 				"importPath": "charTables/professionTable",
 				"className": "ProfessionTable"
+			},
+			{
+				title: TableTitles.Quantity as any as string,
+				type: TableType.Character,
+				"importPath": "otherTables/quantityTable",
+				"className": "QuantityTable"
 			},
 			{
 				title: TableTitles.Race as any as string,
@@ -539,6 +521,12 @@ export const tableMetadata: TableCategory[] = [
 				"className": "MagicSensesTable"
 			},
 			{
+				title: TableTitles.SideEffect as any as string,
+				type: TableType.Character,
+				"importPath": "talentTables/sideEffectTable",
+				"className": "SideEffectTable"
+			},
+			{
 				title: TableTitles.SignForm as any as string,
 				type: TableType.Character,
 				"importPath": "otherTables/signFormTable",
@@ -557,6 +545,12 @@ export const tableMetadata: TableCategory[] = [
 				"className": "SignSymbolTable"
 			},
 			{
+				title: TableTitles.SimplifiedNpcAction as any as string,
+				type: TableType.Character,
+				"importPath": "mythicTables/simplifiedNpcActionTable",
+				"className": "SimplifiedNpcActionTable"
+			},
+			{
 				title: TableTitles.SpecialFeatures as any as string,
 				type: TableType.Character,
 				"importPath": "charTables/specialFeaturesTable",
@@ -567,6 +561,12 @@ export const tableMetadata: TableCategory[] = [
 				type: TableType.Character,
 				"importPath": "magicTables/magicPreparationTable",
 				"className": "MagicPreparationTable"
+			},
+			{
+				title: TableTitles.Transferability as any as string,
+				type: TableType.Character,
+				"importPath": "otherTables/transferabilityTable",
+				"className": "TransferabilityTable"
 			},
 			{
 				title: TableTitles.TreasureContent as any as string,

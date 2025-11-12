@@ -30,6 +30,6 @@ const magicSystemWordings: string[] = [
 export class MagicSystemWordingTable extends Table {
 	constructor() {
 		const entries = magicSystemWordings.map((wording) => new TableEntry(wording));
-		super(entries, TableTitles.Default);
+		super(entries, TableTitles.MagicSystemWording);
 	}
 }
