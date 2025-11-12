@@ -6,6 +6,12 @@
 	import type { Monster } from '$lib/entities/monster/monster';
 	import type { Dungeon, Room } from '$lib/entities/dungeon/dungeon';
 	import type { Entrance } from '$lib/entities/dungeon/entrance';
+	import type { Scene } from '$lib/entities/scene/scene';
+	import type { Artefact } from '$lib/entities/artefact/artefact';
+	import type { Adventure } from '$lib/entities/adventure/adventure';
+	import type { Quest } from '$lib/entities/quest/quest';
+	import type { Faction } from '$lib/entities/faction/faction';
+	import type { Settlement } from '$lib/entities/location/settlement';
 
 	// Import specialized viewers
 	import CharacterViewer from './viewers/CharacterViewer.svelte';
@@ -14,6 +20,12 @@
 	import DungeonViewer from './DungeonViewer.svelte';
 	import RoomViewer from './RoomViewer.svelte';
 	import EntranceViewer from './EntranceViewer.svelte';
+	import SceneViewer from './viewers/SceneViewer.svelte';
+	import ArtefactViewer from './viewers/ArtefactViewer.svelte';
+	import AdventureViewer from './viewers/AdventureViewer.svelte';
+	import QuestViewer from './viewers/QuestViewer.svelte';
+	import FactionViewer from './viewers/FactionViewer.svelte';
+	import SettlementViewer from './viewers/SettlementViewer.svelte';
 
 	// Import generic fallback viewer for entity types without specialized viewers
 	import GenericEntityViewer from './viewers/GenericEntityViewer.svelte';
@@ -51,6 +63,18 @@
 				return RoomViewer;
 			case 'entrance':
 				return EntranceViewer;
+			case 'scene':
+				return SceneViewer;
+			case 'artefact':
+				return ArtefactViewer;
+			case 'adventure':
+				return AdventureViewer;
+			case 'quest':
+				return QuestViewer;
+			case 'faction':
+				return FactionViewer;
+			case 'settlement':
+				return SettlementViewer;
 			default:
 				return GenericEntityViewer;
 		}
@@ -76,6 +100,18 @@
 				return { room: entity as Room, parentEntity };
 			case 'entrance':
 				return { entrance: entity as Entrance };
+			case 'scene':
+				return { scene: entity as Scene };
+			case 'artefact':
+				return { artefact: entity as Artefact };
+			case 'adventure':
+				return { adventure: entity as Adventure };
+			case 'quest':
+				return { quest: entity as Quest };
+			case 'faction':
+				return { faction: entity as Faction };
+			case 'settlement':
+				return { settlement: entity as Settlement };
 			default:
 				return { entity, entityType };
 		}

@@ -12,6 +12,12 @@ import MonsterViewer from './viewers/MonsterViewer.svelte';
 import DungeonViewer from './DungeonViewer.svelte';
 import RoomViewer from './RoomViewer.svelte';
 import EntranceViewer from './EntranceViewer.svelte';
+import SceneViewer from './viewers/SceneViewer.svelte';
+import ArtefactViewer from './viewers/ArtefactViewer.svelte';
+import AdventureViewer from './viewers/AdventureViewer.svelte';
+import QuestViewer from './viewers/QuestViewer.svelte';
+import FactionViewer from './viewers/FactionViewer.svelte';
+import SettlementViewer from './viewers/SettlementViewer.svelte';
 
 export interface ViewerConfig {
 	component: ComponentType;
@@ -47,6 +53,30 @@ export const viewerRegistry: Record<string, ViewerConfig> = {
 	entrance: {
 		component: EntranceViewer,
 		propName: 'entrance'
+	},
+	scene: {
+		component: SceneViewer,
+		propName: 'scene'
+	},
+	artefact: {
+		component: ArtefactViewer,
+		propName: 'artefact'
+	},
+	adventure: {
+		component: AdventureViewer,
+		propName: 'adventure'
+	},
+	quest: {
+		component: QuestViewer,
+		propName: 'quest'
+	},
+	faction: {
+		component: FactionViewer,
+		propName: 'faction'
+	},
+	settlement: {
+		component: SettlementViewer,
+		propName: 'settlement'
 	}
 };
 
