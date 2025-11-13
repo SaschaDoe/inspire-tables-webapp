@@ -33,7 +33,13 @@ function createTabStore() {
 			const stored = localStorage.getItem('tabs');
 			if (stored) {
 				const state = JSON.parse(stored);
-				set(state);
+				// Ensure new properties exist (for backward compatibility)
+				set({
+					tabs: state.tabs || [],
+					activeTabId: state.activeTabId || null,
+					navigationHistory: state.navigationHistory || [],
+					currentHistoryIndex: state.currentHistoryIndex ?? -1
+				});
 			}
 		} catch (error) {
 			console.error('Error loading tabs from storage:', error);
@@ -53,13 +59,17 @@ function createTabStore() {
 
 	// Helper function to add to navigation history
 	function addToNavigationHistory(state: TabState, entityId: string): TabState {
+		// Ensure navigationHistory exists
+		const history = state.navigationHistory || [];
+		const currentIndex = state.currentHistoryIndex ?? -1;
+
 		// Don't add if it's the same as the current position
-		if (state.navigationHistory[state.currentHistoryIndex] === entityId) {
+		if (history[currentIndex] === entityId) {
 			return state;
 		}
 
 		// Remove any forward history if we're navigating to a new entity
-		const newHistory = state.navigationHistory.slice(0, state.currentHistoryIndex + 1);
+		const newHistory = history.slice(0, currentIndex + 1);
 		newHistory.push(entityId);
 
 		// Limit history to last 50 items
@@ -299,7 +309,7 @@ function createTabStore() {
 		// Navigate back in history
 		goBack() {
 			update(state => {
-				if (state.currentHistoryIndex <= 0) {
+				if (!state.navigationHistory || state.currentHistoryIndex <= 0) {
 					return state; // Can't go back further
 				}
 
@@ -329,7 +339,7 @@ function createTabStore() {
 		// Navigate forward in history
 		goForward() {
 			update(state => {
-				if (state.currentHistoryIndex >= state.navigationHistory.length - 1) {
+				if (!state.navigationHistory || state.currentHistoryIndex >= state.navigationHistory.length - 1) {
 					return state; // Can't go forward further
 				}
 
@@ -387,11 +397,11 @@ export const activeTab = derived(
 // Derived store for can go back
 export const canGoBack = derived(
 	tabStore,
-	$tabStore => $tabStore.currentHistoryIndex > 0
+	$tabStore => ($tabStore.currentHistoryIndex ?? -1) > 0
 );
 
 // Derived store for can go forward
 export const canGoForward = derived(
 	tabStore,
-	$tabStore => $tabStore.currentHistoryIndex < $tabStore.navigationHistory.length - 1
+	$tabStore => ($tabStore.currentHistoryIndex ?? -1) < ($tabStore.navigationHistory?.length ?? 0) - 1
 );
