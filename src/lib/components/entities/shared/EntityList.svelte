@@ -34,8 +34,7 @@
 
 	const currentCount = $derived(entities?.length || 0);
 	const needsMore = $derived(currentCount < minRequired);
-	const canAddMore = $derived(maxAllowed === undefined || currentCount < maxAllowed);
-	const shouldEnableButton = $derived(needsMore || canAddMore);
+	const shouldEnableButton = $derived(needsMore);
 
 	const title = $derived(
 		currentCount > 1 ? `${displayNamePlural} (${currentCount})` : displayNamePlural
@@ -82,9 +81,7 @@
 		onclick={openAddModal}
 		title={needsMore
 			? `Add a ${displayName.toLowerCase()} (minimum ${minRequired} required)`
-			: maxAllowed !== undefined && currentCount >= maxAllowed
-				? `Maximum ${displayNamePlural.toLowerCase()} limit reached`
-				: `Add a ${displayName.toLowerCase()}`}
+			: `Minimum ${displayNamePlural.toLowerCase()} requirement met`}
 	>
 		<span class="plus-icon">+</span>
 		Add {displayName}
