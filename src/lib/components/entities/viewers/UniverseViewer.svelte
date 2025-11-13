@@ -16,9 +16,7 @@
 	const basicInfo = $derived([
 		{ label: 'Name', value: universe.name },
 		{ label: 'Age', value: universe.age },
-		{ label: 'Dimensional Structure', value: universe.dimensionalStructure },
-		{ label: 'Fundamental Laws', value: universe.fundamentalLaws },
-		{ label: 'Number of Spheres', value: universe.spheres.length.toString() }
+		{ label: 'Dimensional Structure', value: universe.dimensionalStructure }
 	]);
 
 	function handleSphereClick(event: CustomEvent<{ entity: any }>) {

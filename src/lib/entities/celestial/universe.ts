@@ -5,6 +5,5 @@ export class Universe extends Entity {
 	name = '';
 	spheres: Sphere[] = [];
 	dimensionalStructure = '';
-	fundamentalLaws = '';
 	age = '';
 }
