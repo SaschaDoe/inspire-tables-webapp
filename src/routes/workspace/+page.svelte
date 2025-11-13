@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import TabBar from '$lib/components/TabBar.svelte';
-	import { tabStore, activeTab } from '$lib/stores/tabStore';
+	import { tabStore, activeTab, canGoBack, canGoForward } from '$lib/stores/tabStore';
 	import { entityStore } from '$lib/stores/entityStore';
 	import CampaignCard from '$lib/components/entities/CampaignCard.svelte';
 	import AdventureCard from '$lib/components/entities/AdventureCard.svelte';
@@ -403,6 +403,27 @@
 				<span class="text-3xl">🎲</span>
 				<span class="logo-text">Inspire Tables</span>
 			</a>
+
+			<!-- Navigation History Buttons -->
+			<div class="nav-history">
+				<button
+					class="nav-history-btn"
+					disabled={!$canGoBack}
+					onclick={() => tabStore.goBack()}
+					title="Go back"
+				>
+					←
+				</button>
+				<button
+					class="nav-history-btn"
+					disabled={!$canGoForward}
+					onclick={() => tabStore.goForward()}
+					title="Go forward"
+				>
+					→
+				</button>
+			</div>
+
 			<div class="breadcrumb">
 				{#if breadcrumbs.length > 0}
 					{#each breadcrumbs as crumb, index}
@@ -620,6 +641,39 @@
 		-webkit-background-clip: text;
 		background-clip: text;
 		color: transparent;
+	}
+
+	.nav-history {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		margin-left: 1rem;
+	}
+
+	.nav-history-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2rem;
+		height: 2rem;
+		background: rgb(30 27 75 / 0.5);
+		border: 1px solid rgb(168 85 247 / 0.3);
+		border-radius: 0.375rem;
+		color: rgb(216 180 254);
+		font-size: 1.25rem;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.nav-history-btn:hover:not(:disabled) {
+		background: rgb(168 85 247 / 0.2);
+		border-color: rgb(168 85 247 / 0.6);
+		color: white;
+	}
+
+	.nav-history-btn:disabled {
+		opacity: 0.3;
+		cursor: not-allowed;
 	}
 
 	.breadcrumb {

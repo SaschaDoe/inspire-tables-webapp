@@ -15,12 +15,16 @@ export interface Tab {
 interface TabState {
 	tabs: Tab[];
 	activeTabId: string | null;
+	navigationHistory: string[]; // Array of entityIds in order visited
+	currentHistoryIndex: number; // Current position in history
 }
 
 function createTabStore() {
 	const { subscribe, set, update } = writable<TabState>({
 		tabs: [],
-		activeTabId: null
+		activeTabId: null,
+		navigationHistory: [],
+		currentHistoryIndex: -1
 	});
 
 	// Load from localStorage on init
@@ -47,6 +51,34 @@ function createTabStore() {
 	// Initialize
 	loadFromStorage();
 
+	// Helper function to add to navigation history
+	function addToNavigationHistory(state: TabState, entityId: string): TabState {
+		// Don't add if it's the same as the current position
+		if (state.navigationHistory[state.currentHistoryIndex] === entityId) {
+			return state;
+		}
+
+		// Remove any forward history if we're navigating to a new entity
+		const newHistory = state.navigationHistory.slice(0, state.currentHistoryIndex + 1);
+		newHistory.push(entityId);
+
+		// Limit history to last 50 items
+		if (newHistory.length > 50) {
+			newHistory.shift();
+			return {
+				...state,
+				navigationHistory: newHistory,
+				currentHistoryIndex: newHistory.length - 1
+			};
+		}
+
+		return {
+			...state,
+			navigationHistory: newHistory,
+			currentHistoryIndex: newHistory.length - 1
+		};
+	}
+
 	return {
 		subscribe,
 
@@ -65,7 +97,8 @@ function createTabStore() {
 					// Switch to existing tab and mark as recently used
 					console.log('[tabStore] Tab already exists, switching to it');
 					entityStore.markAsRecentlyUsed(entity.id);
-					const newState = { ...state, activeTabId: existingTab.id };
+					let newState = { ...state, activeTabId: existingTab.id };
+					newState = addToNavigationHistory(newState, entity.id);
 					saveToStorage(newState);
 					return newState;
 				}
@@ -91,10 +124,13 @@ function createTabStore() {
 				// Mark as recently used
 				entityStore.markAsRecentlyUsed(entity.id);
 
-				const newState = {
+				let newState = {
 					tabs: [...state.tabs, newTab],
-					activeTabId: newTab.id
+					activeTabId: newTab.id,
+					navigationHistory: state.navigationHistory,
+					currentHistoryIndex: state.currentHistoryIndex
 				};
+				newState = addToNavigationHistory(newState, entity.id);
 				saveToStorage(newState);
 				return newState;
 			});
@@ -173,13 +209,14 @@ function createTabStore() {
 		// Switch active tab
 		setActiveTab(tabId: string) {
 			update(state => {
-				const newState = { ...state, activeTabId: tabId };
-				saveToStorage(newState);
+				let newState = { ...state, activeTabId: tabId };
 				// Mark as recently used
 				const tab = state.tabs.find(t => t.id === tabId);
 				if (tab) {
 					entityStore.markAsRecentlyUsed(tab.entityId);
+					newState = addToNavigationHistory(newState, tab.entityId);
 				}
+				saveToStorage(newState);
 				return newState;
 			});
 		},
@@ -257,6 +294,84 @@ function createTabStore() {
 				newTabs.splice(toIndex, 0, removed);
 				return { ...state, tabs: newTabs };
 			});
+		},
+
+		// Navigate back in history
+		goBack() {
+			update(state => {
+				if (state.currentHistoryIndex <= 0) {
+					return state; // Can't go back further
+				}
+
+				const newIndex = state.currentHistoryIndex - 1;
+				const entityId = state.navigationHistory[newIndex];
+
+				// Find the tab for this entity
+				const tab = state.tabs.find(t => t.entityId === entityId);
+				if (!tab) {
+					// Tab no longer exists, skip this entry
+					return {
+						...state,
+						currentHistoryIndex: newIndex
+					};
+				}
+
+				const newState = {
+					...state,
+					activeTabId: tab.id,
+					currentHistoryIndex: newIndex
+				};
+				saveToStorage(newState);
+				return newState;
+			});
+		},
+
+		// Navigate forward in history
+		goForward() {
+			update(state => {
+				if (state.currentHistoryIndex >= state.navigationHistory.length - 1) {
+					return state; // Can't go forward further
+				}
+
+				const newIndex = state.currentHistoryIndex + 1;
+				const entityId = state.navigationHistory[newIndex];
+
+				// Find the tab for this entity
+				const tab = state.tabs.find(t => t.entityId === entityId);
+				if (!tab) {
+					// Tab no longer exists, skip this entry
+					return {
+						...state,
+						currentHistoryIndex: newIndex
+					};
+				}
+
+				const newState = {
+					...state,
+					activeTabId: tab.id,
+					currentHistoryIndex: newIndex
+				};
+				saveToStorage(newState);
+				return newState;
+			});
+		},
+
+		// Check if can go back
+		canGoBack(): boolean {
+			let result = false;
+			subscribe(state => {
+				result = state.currentHistoryIndex > 0;
+			})();
+			return result;
+		},
+
+		// Check if can go forward
+		canGoForward(): boolean {
+			let result = false;
+			subscribe(state => {
+				result = state.currentHistoryIndex < state.navigationHistory.length - 1;
+			})();
+			return result;
 		}
 	};
 }
@@ -267,4 +382,16 @@ export const tabStore = createTabStore();
 export const activeTab = derived(
 	tabStore,
 	$tabStore => $tabStore.tabs.find(t => t.id === $tabStore.activeTabId) || null
+);
+
+// Derived store for can go back
+export const canGoBack = derived(
+	tabStore,
+	$tabStore => $tabStore.currentHistoryIndex > 0
+);
+
+// Derived store for can go forward
+export const canGoForward = derived(
+	tabStore,
+	$tabStore => $tabStore.currentHistoryIndex < $tabStore.navigationHistory.length - 1
 );
