@@ -202,8 +202,10 @@
 
 		// Check if this is a generic generated entity (not campaign, adventure, or storyboard)
 		if (tab.entityType !== 'campaign' && tab.entityType !== 'adventure' && tab.entityType !== 'storyboard') {
-			const entity = entityStore.getEntity(tab.entityId);
-			return entity;
+			// Look up entity from allOtherEntities (reactive) instead of entityStore.getEntity() (non-reactive)
+			const entitiesOfType = allOtherEntities.get(tab.entityType as EntityType);
+			const entity = entitiesOfType?.find(e => e.id === tab.entityId);
+			return entity || null;
 		}
 		return null;
 	});
