@@ -22,6 +22,8 @@
 
 		const props = Object.entries(entity)
 			.filter(([key, value]) => {
+				// Skip description (shown in separate section)
+				if (key === 'description') return false;
 				// Skip internal properties
 				if (key.startsWith('_')) return false;
 				// Skip functions
@@ -59,6 +61,10 @@
 	 */
 	function formatValue(value: any): string {
 		if (Array.isArray(value)) {
+			// If array contains entities (objects with name property), extract their names
+			if (value.length > 0 && typeof value[0] === 'object' && value[0] !== null) {
+				return value.map(item => item.name || String(item)).join(', ');
+			}
 			return value.join(', ');
 		}
 		if (typeof value === 'boolean') {

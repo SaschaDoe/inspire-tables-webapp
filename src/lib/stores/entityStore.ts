@@ -330,6 +330,10 @@ export const favoriteEntities = derived(
 );
 
 // Entity type derived stores for navigation
+export const universeEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'universe')
+);
+
 export const sphereEntities = derived(entityStore, $entityStore =>
 	Array.from($entityStore.entities.values()).filter(e => e.type === 'sphere')
 );

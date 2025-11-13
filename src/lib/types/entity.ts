@@ -13,6 +13,7 @@ export enum EntityType {
 	Monster = 'monster',
 
 	// Locations - Celestial
+	Universe = 'universe',
 	Sphere = 'sphere',
 	Galaxy = 'galaxy',
 	SolarSystem = 'solarSystem',

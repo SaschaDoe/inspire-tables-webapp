@@ -380,6 +380,7 @@
 		<aside class="sidebar {sidebarCollapsed ? 'collapsed' : ''}">
 			{#if !sidebarCollapsed}
 				<EntityNavigator
+					selectedEntityId={$activeTab?.entityId}
 					onselectEntity={handleNavigatorSelectEntity}
 					oncreateEntity={handleNavigatorCreateEntity}
 				/>

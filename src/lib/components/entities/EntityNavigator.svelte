@@ -6,6 +6,7 @@
 		campaignEntities,
 		adventureEntities,
 		questEntities,
+		universeEntities,
 		sphereEntities,
 		galaxyEntities,
 		solarSystemEntities,
@@ -24,11 +25,12 @@
 	import { SvelteSet } from 'svelte/reactivity';
 
 	interface Props {
+		selectedEntityId?: string;
 		onselectEntity?: (event: CustomEvent<{ entity: Entity }>) => void;
 		oncreateEntity?: (event: CustomEvent<{ type: EntityType }>) => void;
 	}
 
-	let { onselectEntity, oncreateEntity }: Props = $props();
+	let { selectedEntityId, onselectEntity, oncreateEntity }: Props = $props();
 
 	// Navigation categories organized by domain
 	const categories = [
@@ -53,7 +55,8 @@
 			name: 'Locations',
 			icon: '🌍',
 			sections: [
-				{ type: EntityType.Sphere, label: 'Worlds', icon: '🌌' },
+				{ type: EntityType.Universe, label: 'Universes', icon: '🌐' },
+				{ type: EntityType.Sphere, label: 'Spheres', icon: '🌌' },
 				{ type: EntityType.Galaxy, label: 'Galaxies', icon: '🌠' },
 				{ type: EntityType.SolarSystem, label: 'Solar Systems', icon: '☀️' },
 				{ type: EntityType.Planet, label: 'Planets', icon: '🪐' },
@@ -86,6 +89,28 @@
 	let expandedCategories = $state(new SvelteSet<string>(['Quick Access', 'Campaign']));
 	let expandedSections = $state(new SvelteSet<string>());
 
+	// Auto-expand section containing the selected entity
+	$effect(() => {
+		if (!selectedEntityId) return;
+
+		// Find which section contains this entity
+		for (const category of categories) {
+			for (const section of category.sections) {
+				if (section.type === 'recent' || section.type === 'favorites') continue;
+
+				const entities = getEntitiesForSection(section.type);
+				const hasEntity = entities.some(e => e.id === selectedEntityId);
+
+				if (hasEntity) {
+					// Expand both the category and the section
+					expandedCategories.add(category.name);
+					expandedSections.add(section.type);
+					break;
+				}
+			}
+		}
+	});
+
 	function toggleCategory(categoryName: string) {
 		if (expandedCategories.has(categoryName)) {
 			expandedCategories.delete(categoryName);
@@ -115,6 +140,8 @@
 				return $adventureEntities;
 			case EntityType.Quest:
 				return $questEntities;
+			case EntityType.Universe:
+				return $universeEntities;
 			case EntityType.Sphere:
 				return $sphereEntities;
 			case EntityType.Galaxy:
@@ -203,7 +230,11 @@
 											<div class="empty-message">No {section.label.toLowerCase()} yet</div>
 										{:else}
 											{#each entities as entity (entity.id)}
-												<button class="entity-item" onclick={() => handleEntityClick(entity)}>
+												<button
+													class="entity-item"
+													class:selected={entity.id === selectedEntityId}
+													onclick={() => handleEntityClick(entity)}
+												>
 													<span class="entity-name">{entity.name}</span>
 													{#if entityStore.isFavorite(entity.id)}
 														<span class="favorite-badge">⭐</span>
@@ -374,6 +405,14 @@
 
 	.entity-item:hover {
 		background: var(--accent-hover, #3a3a3a);
+	}
+
+	.entity-item.selected {
+		background: rgb(168 85 247 / 0.3);
+		border-left: 3px solid rgb(168 85 247);
+		padding-left: calc(0.75rem - 3px);
+		color: white;
+		font-weight: 600;
 	}
 
 	.entity-name {
