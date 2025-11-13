@@ -29,6 +29,10 @@
 	const currentGalaxyCount = $derived(sphere.galaxies?.length || 0);
 	const needsMoreGalaxies = $derived(currentGalaxyCount < galaxyRules.min);
 
+	const galaxiesTitle = $derived(
+		currentGalaxyCount > 1 ? `Galaxies (${currentGalaxyCount})` : 'Galaxies'
+	);
+
 	function handleGalaxyClick(event: CustomEvent<{ entity: any }>) {
 		// Bubble up the event to parent (EntityViewer)
 		dispatch('openEntity', { entity: event.detail.entity });
@@ -61,7 +65,7 @@
 		<InfoGrid items={basicInfo} />
 	</Section>
 
-	<Section title="Galaxies">
+	<Section title={galaxiesTitle}>
 		{#if sphere.galaxies && sphere.galaxies.length > 0}
 			<div class="galaxies-list">
 				{#each sphere.galaxies as galaxy}

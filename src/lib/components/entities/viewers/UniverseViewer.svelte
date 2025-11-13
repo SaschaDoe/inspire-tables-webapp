@@ -19,6 +19,10 @@
 		{ label: 'Dimensional Structure', value: universe.dimensionalStructure }
 	]);
 
+	const spheresTitle = $derived(
+		universe.spheres.length > 1 ? `Spheres (${universe.spheres.length})` : 'Spheres'
+	);
+
 	function handleSphereClick(event: CustomEvent<{ entity: any }>) {
 		// Bubble up the event to parent (EntityViewer)
 		dispatch('openEntity', { entity: event.detail.entity });
@@ -31,7 +35,7 @@
 	</Section>
 
 	{#if universe.spheres.length > 0}
-		<Section title="Spheres">
+		<Section title={spheresTitle}>
 			<div class="spheres-list">
 				{#each universe.spheres as sphere}
 					<EntityLink entity={sphere} icon="🌌" on:click={handleSphereClick} />
