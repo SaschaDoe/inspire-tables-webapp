@@ -22,7 +22,7 @@ export class UniverseCreator extends Creator<Universe> {
 		universe.spheres.push(materialSphere);
 
 		// Create 0-9 additional random spheres
-		const additionalSpheresCount = this.dice.roll(1, 10) - 1; // 0 to 9
+		const additionalSpheresCount = this.dice.rollInterval(0, 9); // 0 to 9
 		const sphereCreator = new SphereCreator();
 		sphereCreator.dice = this.dice;
 
