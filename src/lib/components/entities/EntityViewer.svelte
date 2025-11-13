@@ -13,6 +13,7 @@
 	import type { Faction } from '$lib/entities/faction/faction';
 	import type { Settlement } from '$lib/entities/location/settlement';
 	import type { Universe } from '$lib/entities/celestial/universe';
+	import type { Sphere } from '$lib/entities/celestial/sphere';
 
 	// Import specialized viewers
 	import CharacterViewer from './viewers/CharacterViewer.svelte';
@@ -28,6 +29,7 @@
 	import FactionViewer from './viewers/FactionViewer.svelte';
 	import SettlementViewer from './viewers/SettlementViewer.svelte';
 	import UniverseViewer from './viewers/UniverseViewer.svelte';
+	import SphereViewer from './viewers/SphereViewer.svelte';
 
 	// Import generic fallback viewer for entity types without specialized viewers
 	import GenericEntityViewer from './viewers/GenericEntityViewer.svelte';
@@ -42,10 +44,15 @@
 
 	const dispatch = createEventDispatcher<{
 		openEntity: { entity: Entity };
+		entityUpdated: { entity: Entity };
 	}>();
 
 	function handleOpenEntity(event: CustomEvent<{ entity: Entity }>) {
 		dispatch('openEntity', event.detail);
+	}
+
+	function handleEntityUpdated(event: CustomEvent<{ entity: Entity }>) {
+		dispatch('entityUpdated', event.detail);
 	}
 
 	/**
@@ -79,6 +86,8 @@
 				return SettlementViewer;
 			case 'universe':
 				return UniverseViewer;
+			case 'sphere':
+				return SphereViewer;
 			default:
 				return GenericEntityViewer;
 		}
@@ -118,6 +127,8 @@
 				return { settlement: entity as Settlement };
 			case 'universe':
 				return { universe: entity as Universe };
+			case 'sphere':
+				return { sphere: entity as Sphere, parentEntity };
 			default:
 				return { entity, entityType };
 		}
@@ -125,7 +136,12 @@
 </script>
 
 <div class="entity-viewer">
-	<svelte:component this={viewerComponent} {...viewerProps} on:openEntity={handleOpenEntity} />
+	<svelte:component
+		this={viewerComponent}
+		{...viewerProps}
+		on:openEntity={handleOpenEntity}
+		on:entityUpdated={handleEntityUpdated}
+	/>
 </div>
 
 <style>

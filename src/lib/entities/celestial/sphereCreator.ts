@@ -6,6 +6,16 @@ import { WorldCreationMethodTable } from '$lib/tables/celestialTables/cosmicBirt
 import { GalaxyCreator } from './galaxyCreator';
 
 export class SphereCreator extends Creator<Sphere> {
+	// Nested entity requirements
+	static readonly NESTED_ENTITY_RULES = {
+		galaxies: {
+			min: 1,
+			max: undefined, // No maximum
+			entityType: 'galaxy' as const,
+			displayName: 'Galaxy'
+		}
+	};
+
 	create(): Sphere {
 		const sphere = new Sphere();
 		sphere.name = new SphereNameTable().roleWithCascade(this.dice).text;

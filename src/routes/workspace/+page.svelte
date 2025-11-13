@@ -393,6 +393,16 @@
 	function handleNestedRefresh() {
 		loadAllEntities();
 	}
+
+	function handleEntityUpdated(event: CustomEvent<{ entity: Entity }>) {
+		const updatedEntity = event.detail.entity;
+		// Update the entity in the store
+		entityStore.updateEntity(updatedEntity.id, {
+			customFields: updatedEntity.customFields
+		});
+		// Reload to reflect changes
+		loadAllEntities();
+	}
 </script>
 
 <div class="workspace">
@@ -535,6 +545,7 @@
 									entityType={currentGenericEntity.type as string}
 									parentEntity={currentGenericEntity}
 									on:openEntity={handleNestedEntityOpen}
+									on:entityUpdated={handleEntityUpdated}
 								/>
 							{:else}
 								<p class="text-purple-200">No entity data available</p>
