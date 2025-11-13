@@ -12,6 +12,7 @@
 	import type { Quest } from '$lib/entities/quest/quest';
 	import type { Faction } from '$lib/entities/faction/faction';
 	import type { Settlement } from '$lib/entities/location/settlement';
+	import type { Universe } from '$lib/entities/celestial/universe';
 
 	// Import specialized viewers
 	import CharacterViewer from './viewers/CharacterViewer.svelte';
@@ -26,6 +27,7 @@
 	import QuestViewer from './viewers/QuestViewer.svelte';
 	import FactionViewer from './viewers/FactionViewer.svelte';
 	import SettlementViewer from './viewers/SettlementViewer.svelte';
+	import UniverseViewer from './viewers/UniverseViewer.svelte';
 
 	// Import generic fallback viewer for entity types without specialized viewers
 	import GenericEntityViewer from './viewers/GenericEntityViewer.svelte';
@@ -75,6 +77,8 @@
 				return FactionViewer;
 			case 'settlement':
 				return SettlementViewer;
+			case 'universe':
+				return UniverseViewer;
 			default:
 				return GenericEntityViewer;
 		}
@@ -112,6 +116,8 @@
 				return { faction: entity as Faction };
 			case 'settlement':
 				return { settlement: entity as Settlement };
+			case 'universe':
+				return { universe: entity as Universe };
 			default:
 				return { entity, entityType };
 		}

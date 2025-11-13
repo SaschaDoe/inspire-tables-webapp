@@ -335,8 +335,59 @@
 		handleSaveEntity(generatedEntity, type);
 	}
 
-	function handleNestedEntityOpen(event: CustomEvent<{ entity: Entity }>) {
-		openGenericEntity(event.detail.entity);
+	function handleNestedEntityOpen(event: CustomEvent<{ entity: any }>) {
+		const clickedEntity = event.detail.entity;
+
+		// Check if this is already a workspace Entity or just a nested object
+		if (clickedEntity.type && clickedEntity.metadata) {
+			// Already a workspace entity, just open it
+			openGenericEntity(clickedEntity as Entity);
+		} else {
+			// This is a nested entity object (like a Sphere from Universe)
+			// We need to create a workspace Entity wrapper and save it
+
+			// Determine the entity type from the object structure
+			let entityType = 'unknown';
+			if (clickedEntity.galaxies !== undefined) {
+				entityType = 'sphere';
+			} else if (clickedEntity.solarSystems !== undefined) {
+				entityType = 'galaxy';
+			} else if (clickedEntity.planets !== undefined || clickedEntity.stars !== undefined) {
+				entityType = 'solarSystem';
+			}
+
+			// Check if this entity already exists in the store by ID
+			const existingEntity = entityStore.getEntity(clickedEntity.id);
+			if (existingEntity) {
+				// Entity already exists, just open it
+				openGenericEntity(existingEntity);
+				return;
+			}
+
+			// Create workspace entity wrapper
+			const workspaceEntity: Entity = {
+				id: clickedEntity.id,
+				type: entityType as any,
+				name: clickedEntity.name || `${entityType} ${clickedEntity.id.slice(0, 8)}`,
+				description: clickedEntity.description || '',
+				tags: [],
+				metadata: {
+					createdAt: new Date(),
+					updatedAt: new Date()
+				},
+				relationships: [],
+				customFields: { generatedEntity: clickedEntity }
+			};
+
+			// Save to store
+			entityStore.createEntity(workspaceEntity);
+
+			// Reload entities
+			loadAllEntities();
+
+			// Open it
+			openGenericEntity(workspaceEntity);
+		}
 	}
 
 	function handleNestedRefresh() {
