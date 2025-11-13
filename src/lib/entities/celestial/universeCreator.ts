@@ -7,6 +7,16 @@ import { SphereCreator } from './sphereCreator';
 import { Sphere } from './sphere';
 
 export class UniverseCreator extends Creator<Universe> {
+	// Nested entity requirements
+	static readonly NESTED_ENTITY_RULES = {
+		spheres: {
+			min: 1,
+			max: undefined, // No maximum
+			entityType: 'sphere' as const,
+			displayName: 'Sphere'
+		}
+	};
+
 	create(): Universe {
 		const universe = new Universe();
 		universe.name = new UniverseNameTable().roleWithCascade(this.dice).text;

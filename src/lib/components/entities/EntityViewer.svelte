@@ -126,7 +126,7 @@
 			case 'settlement':
 				return { settlement: entity as Settlement };
 			case 'universe':
-				return { universe: entity as Universe };
+				return { universe: entity as Universe, parentEntity };
 			case 'sphere':
 				return { sphere: entity as Sphere, parentEntity };
 			default:

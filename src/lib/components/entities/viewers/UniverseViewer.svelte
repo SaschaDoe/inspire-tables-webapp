@@ -1,15 +1,17 @@
 <script lang="ts">
 	import type { Universe } from '$lib/entities/celestial/universe';
+	import { UniverseCreator } from '$lib/entities/celestial/universeCreator';
 	import Section from '../shared/Section.svelte';
 	import InfoGrid from '../shared/InfoGrid.svelte';
-	import EntityLink from '../shared/EntityLink.svelte';
+	import EntityList from '../shared/EntityList.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	interface Props {
 		universe: Universe;
+		parentEntity?: any; // The workspace entity wrapper
 	}
 
-	let { universe }: Props = $props();
+	let { universe, parentEntity }: Props = $props();
 
 	const dispatch = createEventDispatcher();
 
@@ -19,13 +21,15 @@
 		{ label: 'Dimensional Structure', value: universe.dimensionalStructure }
 	]);
 
-	const spheresTitle = $derived(
-		universe.spheres.length > 1 ? `Spheres (${universe.spheres.length})` : 'Spheres'
-	);
+	// Get the rules from UniverseCreator
+	const sphereRules = UniverseCreator.NESTED_ENTITY_RULES.spheres;
 
-	function handleSphereClick(event: CustomEvent<{ entity: any }>) {
-		// Bubble up the event to parent (EntityViewer)
+	function handleOpenEntity(event: CustomEvent<{ entity: any }>) {
 		dispatch('openEntity', { entity: event.detail.entity });
+	}
+
+	function handleEntityUpdated(event: CustomEvent<{ entity: any }>) {
+		dispatch('entityUpdated', { entity: event.detail.entity });
 	}
 </script>
 
@@ -34,15 +38,19 @@
 		<InfoGrid items={basicInfo} />
 	</Section>
 
-	{#if universe.spheres.length > 0}
-		<Section title={spheresTitle}>
-			<div class="spheres-list">
-				{#each universe.spheres as sphere}
-					<EntityLink entity={sphere} icon="🌌" on:click={handleSphereClick} />
-				{/each}
-			</div>
-		</Section>
-	{/if}
+	<EntityList
+		entities={universe.spheres}
+		entityType={sphereRules.entityType}
+		displayName={sphereRules.displayName}
+		displayNamePlural="Spheres"
+		icon="🌌"
+		minRequired={sphereRules.min}
+		maxAllowed={sphereRules.max}
+		{parentEntity}
+		bind:parentEntityArray={universe.spheres}
+		on:openEntity={handleOpenEntity}
+		on:entityUpdated={handleEntityUpdated}
+	/>
 
 	{#if universe.description}
 		<Section title="Description">
@@ -54,12 +62,6 @@
 <style>
 	.universe-viewer {
 		padding: 0;
-	}
-
-	.spheres-list {
-		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
 	}
 
 	.description-text {
