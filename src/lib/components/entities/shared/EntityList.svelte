@@ -62,7 +62,7 @@
 <Section {title}>
 	{#if entities && entities.length > 0}
 		<div class="entities-list">
-			{#each entities as entity}
+			{#each entities as entity (entity.id)}
 				<EntityLink {entity} {icon} on:click={handleEntityClick} />
 			{/each}
 		</div>

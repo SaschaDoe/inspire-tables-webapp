@@ -86,8 +86,8 @@
 </script>
 
 {#if isOpen}
-	<div class="modal-overlay" onclick={closeModal}>
-		<div class="modal" onclick={(e) => e.stopPropagation()}>
+	<div class="modal-overlay" onclick={closeModal} role="button" tabindex="0" onkeydown={(e) => e.key === 'Escape' && closeModal()}>
+		<div class="modal" onclick={(e) => e.stopPropagation()} role="dialog" tabindex="-1">
 			<div class="modal-header">
 				<h2 class="modal-title">Add {displayName}</h2>
 				<button class="close-btn" onclick={closeModal}>✕</button>
@@ -141,7 +141,7 @@
 						{#if existingEntities.length === 0}
 							<p class="empty-message">No existing {displayName.toLowerCase()}s found</p>
 						{:else}
-							{#each existingEntities as entity}
+							{#each existingEntities as entity (entity.id)}
 								<button
 									class="existing-item"
 									class:selected={selectedExistingEntity?.id === entity.id}
