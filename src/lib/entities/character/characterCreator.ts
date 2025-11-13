@@ -13,6 +13,16 @@ import { CharacterAsDeviceTable } from '$lib/tables/charTables/characterAsDevice
 import { TalentCreator } from '../talent/talentCreator';
 
 export class CharacterCreator extends Creator<Character> {
+	// Nested entity requirements
+	static readonly NESTED_ENTITY_RULES = {
+		talents: {
+			min: 1,
+			max: undefined, // No maximum
+			entityType: 'talent' as const,
+			displayName: 'Talent'
+		}
+	};
+
 	create(): Character {
 		const character = new Character();
 

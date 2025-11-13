@@ -1,31 +1,28 @@
 <script lang="ts">
-	import type { Faction } from '$lib/entities/faction/faction';
-	import { FactionCreator } from '$lib/entities/faction/factionCreator';
+	import type { Planet } from '$lib/entities/celestial/planet';
+	import { PlanetCreator } from '$lib/entities/celestial/planetCreator';
 	import Section from '../shared/Section.svelte';
 	import InfoGrid from '../shared/InfoGrid.svelte';
 	import EntityList from '../shared/EntityList.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	interface Props {
-		faction: Faction;
+		planet: Planet;
 		parentEntity?: any; // The workspace entity wrapper
 	}
 
-	let { faction, parentEntity }: Props = $props();
+	let { planet, parentEntity }: Props = $props();
 
 	const dispatch = createEventDispatcher();
 
 	const basicInfo = $derived([
-		{ label: 'Name', value: faction.name },
-		{ label: 'Alignment', value: faction.alignment },
-		{ label: 'Size', value: faction.size },
-		{ label: 'Influence', value: faction.influence },
-		{ label: 'Wealth', value: faction.wealth },
-		{ label: 'Motivation', value: faction.motivation }
+		{ label: 'Name', value: planet.name },
+		{ label: 'Type', value: planet.type },
+		{ label: 'Livable', value: planet.isLivable ? 'Yes' : 'No' }
 	]);
 
-	// Get the rules from FactionCreator
-	const ritualRules = FactionCreator.NESTED_ENTITY_RULES.rituals;
+	// Get the rules from PlanetCreator
+	const continentRules = PlanetCreator.NESTED_ENTITY_RULES.continents;
 
 	function handleOpenEntity(event: CustomEvent<{ entity: any }>) {
 		dispatch('openEntity', { entity: event.detail.entity });
@@ -36,32 +33,34 @@
 	}
 </script>
 
-<div class="faction-viewer">
-	<Section title="Faction Overview">
+<div class="planet-viewer">
+	<Section title="Planet Information">
 		<InfoGrid items={basicInfo} />
 	</Section>
 
 	<EntityList
-		entities={faction.rituals}
-		entityType={ritualRules.entityType}
-		displayName={ritualRules.displayName}
-		displayNamePlural="Rituals"
-		icon="🔮"
-		minRequired={ritualRules.min}
-		maxAllowed={ritualRules.max}
+		entities={planet.continents}
+		entityType={continentRules.entityType}
+		displayName={continentRules.displayName}
+		displayNamePlural="Continents"
+		icon="🗺️"
+		minRequired={continentRules.min}
+		maxAllowed={continentRules.max}
 		{parentEntity}
-		bind:parentEntityArray={faction.rituals}
+		bind:parentEntityArray={planet.continents}
 		on:openEntity={handleOpenEntity}
 		on:entityUpdated={handleEntityUpdated}
 	/>
 
-	<Section title="Description">
-		<p class="description-text">{faction.description}</p>
-	</Section>
+	{#if planet.description}
+		<Section title="Description">
+			<p class="description-text">{planet.description}</p>
+		</Section>
+	{/if}
 </div>
 
 <style>
-	.faction-viewer {
+	.planet-viewer {
 		padding: 0;
 	}
 

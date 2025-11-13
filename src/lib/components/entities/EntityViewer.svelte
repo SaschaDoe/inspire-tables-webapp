@@ -14,6 +14,9 @@
 	import type { Settlement } from '$lib/entities/location/settlement';
 	import type { Universe } from '$lib/entities/celestial/universe';
 	import type { Sphere } from '$lib/entities/celestial/sphere';
+	import type { Galaxy } from '$lib/entities/celestial/galaxy';
+	import type { SolarSystem } from '$lib/entities/celestial/solarSystem';
+	import type { Planet } from '$lib/entities/celestial/planet';
 
 	// Import specialized viewers
 	import CharacterViewer from './viewers/CharacterViewer.svelte';
@@ -30,6 +33,9 @@
 	import SettlementViewer from './viewers/SettlementViewer.svelte';
 	import UniverseViewer from './viewers/UniverseViewer.svelte';
 	import SphereViewer from './viewers/SphereViewer.svelte';
+	import GalaxyViewer from './viewers/GalaxyViewer.svelte';
+	import SolarSystemViewer from './viewers/SolarSystemViewer.svelte';
+	import PlanetViewer from './viewers/PlanetViewer.svelte';
 
 	// Import generic fallback viewer for entity types without specialized viewers
 	import GenericEntityViewer from './viewers/GenericEntityViewer.svelte';
@@ -88,6 +94,12 @@
 				return UniverseViewer;
 			case 'sphere':
 				return SphereViewer;
+			case 'galaxy':
+				return GalaxyViewer;
+			case 'solarSystem':
+				return SolarSystemViewer;
+			case 'planet':
+				return PlanetViewer;
 			default:
 				return GenericEntityViewer;
 		}
@@ -102,7 +114,7 @@
 		// Some viewers need special prop names or additional props
 		switch (entityType) {
 			case 'character':
-				return { character: entity as Character };
+				return { character: entity as Character, parentEntity };
 			case 'villain':
 				return { villain: entity as Villain };
 			case 'monster':
@@ -122,13 +134,19 @@
 			case 'quest':
 				return { quest: entity as Quest };
 			case 'faction':
-				return { faction: entity as Faction };
+				return { faction: entity as Faction, parentEntity };
 			case 'settlement':
 				return { settlement: entity as Settlement };
 			case 'universe':
 				return { universe: entity as Universe, parentEntity };
 			case 'sphere':
 				return { sphere: entity as Sphere, parentEntity };
+			case 'galaxy':
+				return { galaxy: entity as Galaxy, parentEntity };
+			case 'solarSystem':
+				return { solarSystem: entity as SolarSystem, parentEntity };
+			case 'planet':
+				return { planet: entity as Planet, parentEntity };
 			default:
 				return { entity, entityType };
 		}

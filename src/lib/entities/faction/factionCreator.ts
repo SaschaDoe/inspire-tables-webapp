@@ -13,6 +13,16 @@ import { CharacterCreator } from '../character/characterCreator';
 import { RitualCreator } from '../ritual/ritualCreator';
 
 export class FactionCreator extends Creator<Faction> {
+	// Nested entity requirements
+	static readonly NESTED_ENTITY_RULES = {
+		rituals: {
+			min: 1,
+			max: undefined, // No maximum
+			entityType: 'ritual' as const,
+			displayName: 'Ritual'
+		}
+	};
+
 	create(): Faction {
 		const faction = new Faction();
 

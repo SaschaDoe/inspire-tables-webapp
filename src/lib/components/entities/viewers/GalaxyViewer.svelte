@@ -1,31 +1,27 @@
 <script lang="ts">
-	import type { Faction } from '$lib/entities/faction/faction';
-	import { FactionCreator } from '$lib/entities/faction/factionCreator';
+	import type { Galaxy } from '$lib/entities/celestial/galaxy';
+	import { GalaxyCreator } from '$lib/entities/celestial/galaxyCreator';
 	import Section from '../shared/Section.svelte';
 	import InfoGrid from '../shared/InfoGrid.svelte';
 	import EntityList from '../shared/EntityList.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	interface Props {
-		faction: Faction;
+		galaxy: Galaxy;
 		parentEntity?: any; // The workspace entity wrapper
 	}
 
-	let { faction, parentEntity }: Props = $props();
+	let { galaxy, parentEntity }: Props = $props();
 
 	const dispatch = createEventDispatcher();
 
 	const basicInfo = $derived([
-		{ label: 'Name', value: faction.name },
-		{ label: 'Alignment', value: faction.alignment },
-		{ label: 'Size', value: faction.size },
-		{ label: 'Influence', value: faction.influence },
-		{ label: 'Wealth', value: faction.wealth },
-		{ label: 'Motivation', value: faction.motivation }
+		{ label: 'Name', value: galaxy.name },
+		{ label: 'Size', value: galaxy.size }
 	]);
 
-	// Get the rules from FactionCreator
-	const ritualRules = FactionCreator.NESTED_ENTITY_RULES.rituals;
+	// Get the rules from GalaxyCreator
+	const solarSystemRules = GalaxyCreator.NESTED_ENTITY_RULES.solarSystems;
 
 	function handleOpenEntity(event: CustomEvent<{ entity: any }>) {
 		dispatch('openEntity', { entity: event.detail.entity });
@@ -36,32 +32,34 @@
 	}
 </script>
 
-<div class="faction-viewer">
-	<Section title="Faction Overview">
+<div class="galaxy-viewer">
+	<Section title="Galaxy Information">
 		<InfoGrid items={basicInfo} />
 	</Section>
 
 	<EntityList
-		entities={faction.rituals}
-		entityType={ritualRules.entityType}
-		displayName={ritualRules.displayName}
-		displayNamePlural="Rituals"
-		icon="🔮"
-		minRequired={ritualRules.min}
-		maxAllowed={ritualRules.max}
+		entities={galaxy.solarSystems}
+		entityType={solarSystemRules.entityType}
+		displayName={solarSystemRules.displayName}
+		displayNamePlural="Solar Systems"
+		icon="☀️"
+		minRequired={solarSystemRules.min}
+		maxAllowed={solarSystemRules.max}
 		{parentEntity}
-		bind:parentEntityArray={faction.rituals}
+		bind:parentEntityArray={galaxy.solarSystems}
 		on:openEntity={handleOpenEntity}
 		on:entityUpdated={handleEntityUpdated}
 	/>
 
-	<Section title="Description">
-		<p class="description-text">{faction.description}</p>
-	</Section>
+	{#if galaxy.description}
+		<Section title="Description">
+			<p class="description-text">{galaxy.description}</p>
+		</Section>
+	{/if}
 </div>
 
 <style>
-	.faction-viewer {
+	.galaxy-viewer {
 		padding: 0;
 	}
 

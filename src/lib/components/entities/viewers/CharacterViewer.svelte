@@ -1,14 +1,20 @@
 <script lang="ts">
 	import type { Character } from '$lib/entities/character/character';
+	import { CharacterCreator } from '$lib/entities/character/characterCreator';
 	import Section from '../shared/Section.svelte';
 	import InfoGrid from '../shared/InfoGrid.svelte';
 	import AttributesGrid from '../shared/AttributesGrid.svelte';
+	import EntityList from '../shared/EntityList.svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	interface Props {
 		character: Character;
+		parentEntity?: any; // The workspace entity wrapper
 	}
 
-	let { character }: Props = $props();
+	let { character, parentEntity }: Props = $props();
+
+	const dispatch = createEventDispatcher();
 
 	const basicInfo = $derived([
 		{ label: 'Name', value: character.name || 'Unnamed' },
@@ -40,6 +46,17 @@
 			{ label: 'Device', value: character.device }
 		].filter(Boolean)
 	);
+
+	// Get the rules from CharacterCreator
+	const talentRules = CharacterCreator.NESTED_ENTITY_RULES.talents;
+
+	function handleOpenEntity(event: CustomEvent<{ entity: any }>) {
+		dispatch('openEntity', { entity: event.detail.entity });
+	}
+
+	function handleEntityUpdated(event: CustomEvent<{ entity: any }>) {
+		dispatch('entityUpdated', { entity: event.detail.entity });
+	}
 </script>
 
 <div class="character-viewer">
@@ -65,6 +82,20 @@
 	<Section title="Special Features">
 		<InfoGrid items={specialFeatures} />
 	</Section>
+
+	<EntityList
+		entities={character.talents}
+		entityType={talentRules.entityType}
+		displayName={talentRules.displayName}
+		displayNamePlural="Talents"
+		icon="✨"
+		minRequired={talentRules.min}
+		maxAllowed={talentRules.max}
+		{parentEntity}
+		bind:parentEntityArray={character.talents}
+		on:openEntity={handleOpenEntity}
+		on:entityUpdated={handleEntityUpdated}
+	/>
 </div>
 
 <style>

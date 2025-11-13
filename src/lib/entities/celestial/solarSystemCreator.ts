@@ -6,6 +6,22 @@ import { StarCreator } from './starCreator';
 import { PlanetCreator } from './planetCreator';
 
 export class SolarSystemCreator extends Creator<SolarSystem> {
+	// Nested entity requirements
+	static readonly NESTED_ENTITY_RULES = {
+		planets: {
+			min: 1,
+			max: undefined, // No maximum
+			entityType: 'planet' as const,
+			displayName: 'Planet'
+		},
+		stars: {
+			min: 1,
+			max: undefined, // No maximum
+			entityType: 'star' as const,
+			displayName: 'Star'
+		}
+	};
+
 	create(): SolarSystem {
 		const solarSystem = new SolarSystem();
 		solarSystem.name = new SolarSystemNameTable().roleWithCascade(this.dice).text;

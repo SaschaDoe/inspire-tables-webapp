@@ -5,6 +5,16 @@ import { SizeTable } from '$lib/tables/otherTables/sizeTable';
 import { SolarSystemCreator } from './solarSystemCreator';
 
 export class GalaxyCreator extends Creator<Galaxy> {
+	// Nested entity requirements
+	static readonly NESTED_ENTITY_RULES = {
+		solarSystems: {
+			min: 1,
+			max: undefined, // No maximum
+			entityType: 'solarSystem' as const,
+			displayName: 'Solar System'
+		}
+	};
+
 	create(): Galaxy {
 		const galaxy = new Galaxy();
 		galaxy.name = new GalaxyNameTable().roleWithCascade(this.dice).text;

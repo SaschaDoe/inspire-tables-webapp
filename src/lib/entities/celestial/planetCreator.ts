@@ -5,6 +5,16 @@ import { LivablePlanetTypeTable } from '$lib/tables/celestialTables/planet/plane
 import { ContinentCreator } from '../location/continentCreator';
 
 export class PlanetCreator extends Creator<Planet> {
+	// Nested entity requirements
+	static readonly NESTED_ENTITY_RULES = {
+		continents: {
+			min: 0,
+			max: undefined, // No maximum
+			entityType: 'continent' as const,
+			displayName: 'Continent'
+		}
+	};
+
 	private isLivable = false;
 
 	create(): Planet {
