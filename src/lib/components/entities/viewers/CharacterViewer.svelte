@@ -57,6 +57,13 @@
 	function handleEntityUpdated(event: CustomEvent<{ entity: any }>) {
 		dispatch('entityUpdated', { entity: event.detail.entity });
 	}
+
+	function handleAddTalent(talent: any) {
+		character.talents = [...character.talents, talent];
+		if (parentEntity) {
+			dispatch('entityUpdated', { entity: parentEntity });
+		}
+	}
 </script>
 
 <div class="character-viewer">
@@ -92,7 +99,7 @@
 		minRequired={talentRules.min}
 		maxAllowed={talentRules.max}
 		{parentEntity}
-		bind:parentEntityArray={character.talents}
+		onAddEntity={handleAddTalent}
 		on:openEntity={handleOpenEntity}
 		on:entityUpdated={handleEntityUpdated}
 	/>

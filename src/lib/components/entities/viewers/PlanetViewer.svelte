@@ -31,6 +31,13 @@
 	function handleEntityUpdated(event: CustomEvent<{ entity: any }>) {
 		dispatch('entityUpdated', { entity: event.detail.entity });
 	}
+
+	function handleAddContinent(continent: any) {
+		planet.continents = [...planet.continents, continent];
+		if (parentEntity) {
+			dispatch('entityUpdated', { entity: parentEntity });
+		}
+	}
 </script>
 
 <div class="planet-viewer">
@@ -47,7 +54,7 @@
 		minRequired={continentRules.min}
 		maxAllowed={continentRules.max}
 		{parentEntity}
-		bind:parentEntityArray={planet.continents}
+		onAddEntity={handleAddContinent}
 		on:openEntity={handleOpenEntity}
 		on:entityUpdated={handleEntityUpdated}
 	/>

@@ -34,6 +34,13 @@
 	function handleEntityUpdated(event: CustomEvent<{ entity: any }>) {
 		dispatch('entityUpdated', { entity: event.detail.entity });
 	}
+
+	function handleAddRitual(ritual: any) {
+		faction.rituals = [...faction.rituals, ritual];
+		if (parentEntity) {
+			dispatch('entityUpdated', { entity: parentEntity });
+		}
+	}
 </script>
 
 <div class="faction-viewer">
@@ -50,7 +57,7 @@
 		minRequired={ritualRules.min}
 		maxAllowed={ritualRules.max}
 		{parentEntity}
-		bind:parentEntityArray={faction.rituals}
+		onAddEntity={handleAddRitual}
 		on:openEntity={handleOpenEntity}
 		on:entityUpdated={handleEntityUpdated}
 	/>

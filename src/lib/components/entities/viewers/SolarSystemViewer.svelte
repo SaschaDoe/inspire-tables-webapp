@@ -28,6 +28,20 @@
 	function handleEntityUpdated(event: CustomEvent<{ entity: any }>) {
 		dispatch('entityUpdated', { entity: event.detail.entity });
 	}
+
+	function handleAddStar(star: any) {
+		solarSystem.stars = [...solarSystem.stars, star];
+		if (parentEntity) {
+			dispatch('entityUpdated', { entity: parentEntity });
+		}
+	}
+
+	function handleAddPlanet(planet: any) {
+		solarSystem.planets = [...solarSystem.planets, planet];
+		if (parentEntity) {
+			dispatch('entityUpdated', { entity: parentEntity });
+		}
+	}
 </script>
 
 <div class="solar-system-viewer">
@@ -44,7 +58,7 @@
 		minRequired={starRules.min}
 		maxAllowed={starRules.max}
 		{parentEntity}
-		bind:parentEntityArray={solarSystem.stars}
+		onAddEntity={handleAddStar}
 		on:openEntity={handleOpenEntity}
 		on:entityUpdated={handleEntityUpdated}
 	/>
@@ -58,7 +72,7 @@
 		minRequired={planetRules.min}
 		maxAllowed={planetRules.max}
 		{parentEntity}
-		bind:parentEntityArray={solarSystem.planets}
+		onAddEntity={handleAddPlanet}
 		on:openEntity={handleOpenEntity}
 		on:entityUpdated={handleEntityUpdated}
 	/>

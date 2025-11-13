@@ -13,7 +13,7 @@
 		minRequired: number;
 		maxAllowed?: number;
 		parentEntity?: any;
-		parentEntityArray: any[]; // The actual array reference to update (e.g., sphere.galaxies)
+		onAddEntity: (entity: any) => void; // Callback to add entity to parent array
 	}
 
 	let {
@@ -25,7 +25,7 @@
 		minRequired,
 		maxAllowed = undefined,
 		parentEntity = undefined,
-		parentEntityArray
+		onAddEntity
 	}: Props = $props();
 
 	const dispatch = createEventDispatcher();
@@ -54,13 +54,8 @@
 	}
 
 	function handleAddEntity(entity: any) {
-		// Add entity using reassignment for Svelte 5 reactivity
-		parentEntityArray = [...parentEntityArray, entity];
-
-		// Update the parent entity in the store if it exists
-		if (parentEntity) {
-			dispatch('entityUpdated', { entity: parentEntity });
-		}
+		// Call the parent's callback to add the entity
+		onAddEntity(entity);
 	}
 </script>
 

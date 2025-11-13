@@ -30,6 +30,13 @@
 	function handleEntityUpdated(event: CustomEvent<{ entity: any }>) {
 		dispatch('entityUpdated', { entity: event.detail.entity });
 	}
+
+	function handleAddSolarSystem(solarSystem: any) {
+		galaxy.solarSystems = [...galaxy.solarSystems, solarSystem];
+		if (parentEntity) {
+			dispatch('entityUpdated', { entity: parentEntity });
+		}
+	}
 </script>
 
 <div class="galaxy-viewer">
@@ -46,7 +53,7 @@
 		minRequired={solarSystemRules.min}
 		maxAllowed={solarSystemRules.max}
 		{parentEntity}
-		bind:parentEntityArray={galaxy.solarSystems}
+		onAddEntity={handleAddSolarSystem}
 		on:openEntity={handleOpenEntity}
 		on:entityUpdated={handleEntityUpdated}
 	/>

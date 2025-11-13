@@ -31,6 +31,13 @@
 	function handleEntityUpdated(event: CustomEvent<{ entity: any }>) {
 		dispatch('entityUpdated', { entity: event.detail.entity });
 	}
+
+	function handleAddGalaxy(galaxy: any) {
+		sphere.galaxies = [...sphere.galaxies, galaxy];
+		if (parentEntity) {
+			dispatch('entityUpdated', { entity: parentEntity });
+		}
+	}
 </script>
 
 <div class="sphere-viewer">
@@ -47,7 +54,7 @@
 		minRequired={galaxyRules.min}
 		maxAllowed={galaxyRules.max}
 		{parentEntity}
-		bind:parentEntityArray={sphere.galaxies}
+		onAddEntity={handleAddGalaxy}
 		on:openEntity={handleOpenEntity}
 		on:entityUpdated={handleEntityUpdated}
 	/>
