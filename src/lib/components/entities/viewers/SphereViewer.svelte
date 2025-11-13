@@ -47,11 +47,11 @@
 	}
 
 	function handleAddGalaxy(galaxy: any) {
-		// Add galaxy to the sphere's galaxies array
+		// Add galaxy to the sphere's galaxies array (use reassignment for Svelte 5 reactivity)
 		if (!sphere.galaxies) {
 			sphere.galaxies = [];
 		}
-		sphere.galaxies.push(galaxy);
+		sphere.galaxies = [...sphere.galaxies, galaxy];
 
 		// Update the parent entity in the store if it exists
 		if (parentEntity) {

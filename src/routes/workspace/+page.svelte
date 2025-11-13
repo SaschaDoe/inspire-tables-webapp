@@ -396,9 +396,12 @@
 
 	function handleEntityUpdated(event: CustomEvent<{ entity: Entity }>) {
 		const updatedEntity = event.detail.entity;
-		// Update the entity in the store
+		// Update the entire entity in the store, including the generatedEntity with all nested entities
 		entityStore.updateEntity(updatedEntity.id, {
-			customFields: updatedEntity.customFields
+			customFields: {
+				...updatedEntity.customFields,
+				generatedEntity: updatedEntity.customFields?.generatedEntity
+			}
 		});
 		// Reload to reflect changes
 		loadAllEntities();

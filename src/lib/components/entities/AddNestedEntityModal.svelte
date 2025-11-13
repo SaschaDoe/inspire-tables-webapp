@@ -50,6 +50,20 @@
 			// Update name with user input
 			generatedEntity.name = entityName;
 			entityToAdd = generatedEntity;
+
+			// Save newly generated entity to the store
+			const newEntity = {
+				id: generatedEntity.id,
+				type: entityType,
+				name: entityName,
+				created: Date.now(),
+				lastModified: Date.now(),
+				relationships: [],
+				customFields: {
+					generatedEntity: generatedEntity
+				}
+			};
+			entityStore.addEntity(newEntity);
 		} else if (currentTab === 'select' && selectedExistingEntity) {
 			entityToAdd = selectedExistingEntity;
 		}
