@@ -456,11 +456,6 @@
 								</button>
 							</div>
 						</div>
-						{#if currentGenericEntity.description}
-							<div class="entity-description">
-								<p>{currentGenericEntity.description}</p>
-							</div>
-						{/if}
 						<div class="entity-viewer-container">
 							{#if currentGenericEntity.customFields?.generatedEntity}
 								<EntityViewer
