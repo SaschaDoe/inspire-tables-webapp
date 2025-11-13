@@ -63,7 +63,7 @@
 					generatedEntity: generatedEntity
 				}
 			};
-			entityStore.addEntity(newEntity);
+			entityStore.createEntity(newEntity);
 		} else if (currentTab === 'select' && selectedExistingEntity) {
 			entityToAdd = selectedExistingEntity;
 		}
