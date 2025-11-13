@@ -37,9 +37,18 @@
 	}
 
 	function handleAddPlanet(planet: any) {
+		console.log('[SolarSystemViewer] handleAddPlanet called', {
+			planet,
+			planetsBeforeAdd: solarSystem.planets,
+			parentEntity
+		});
 		solarSystem.planets = [...solarSystem.planets, planet];
+		console.log('[SolarSystemViewer] planets after reassignment:', solarSystem.planets);
 		if (parentEntity) {
+			console.log('[SolarSystemViewer] dispatching entityUpdated with parentEntity:', parentEntity);
 			dispatch('entityUpdated', { entity: parentEntity });
+		} else {
+			console.warn('[SolarSystemViewer] No parentEntity - entityUpdated not dispatched!');
 		}
 	}
 </script>
