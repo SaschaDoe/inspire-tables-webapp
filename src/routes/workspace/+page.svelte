@@ -15,6 +15,7 @@
 	import type { Campaign } from '$lib/entities/campaign';
 	import { autoGenerateChildEntities } from '$lib/utils/entityAutoGenerator';
 	import { extractAndSaveNestedEntities } from '$lib/utils/nestedEntityExtractor';
+	import { getEntityCreator } from '$lib/entities/entityRegistry';
 
 	let sidebarCollapsed = $state(false);
 	let searchQuery = $state('');
@@ -313,8 +314,25 @@
 	}
 
 	function handleNavigatorCreateEntity(event: CustomEvent<{ type: EntityType }>) {
-		// Open the entity generator modal
-		openEntityModal();
+		const { type } = event.detail;
+
+		// Get the creator for this entity type
+		const creator = getEntityCreator(type);
+		if (!creator) {
+			console.error('No creator found for entity type:', type);
+			return;
+		}
+
+		// Generate the entity directly
+		const generatedEntity = creator.create();
+
+		// Set a default name if it doesn't have one
+		if (!generatedEntity.name) {
+			generatedEntity.name = `${type} ${generatedEntity.id.slice(0, 8)}`;
+		}
+
+		// Save it to the store (uses the existing handleSaveEntity logic)
+		handleSaveEntity(generatedEntity, type);
 	}
 
 	function handleNestedEntityOpen(event: CustomEvent<{ entity: Entity }>) {
