@@ -206,9 +206,22 @@
 		const tab = $activeTab;
 		if (!tab) return null;
 
-		// Check if this is a generic generated entity (not campaign, adventure, or storyboard)
-		if (tab.entityType !== 'campaign' && tab.entityType !== 'adventure' && tab.entityType !== 'storyboard') {
-			// Look up entity from allOtherEntities (reactive) instead of entityStore.getEntity() (non-reactive)
+		// Check if this is a generic generated entity (not old-style campaign/adventure, or storyboard)
+		if (tab.entityType !== 'adventure' && tab.entityType !== 'storyboard') {
+			// For campaigns, check if it's a generated entity (has customFields.generatedEntity)
+			if (tab.entityType === 'campaign') {
+				// Look in allOtherEntities for generated campaigns
+				const entitiesOfType = allOtherEntities.get(tab.entityType as EntityType);
+				const entity = entitiesOfType?.find(e => e.id === tab.entityId);
+				// Only return if it's a generated campaign (has generatedEntity in customFields)
+				if (entity?.customFields?.generatedEntity) {
+					return entity;
+				}
+				// Otherwise let it fall through to old-style campaign handling
+				return null;
+			}
+
+			// For other entity types, look up from allOtherEntities
 			const entitiesOfType = allOtherEntities.get(tab.entityType as EntityType);
 			const entity = entitiesOfType?.find(e => e.id === tab.entityId);
 			return entity || null;
@@ -219,6 +232,7 @@
 	let currentCampaign = $derived.by(() => {
 		const tab = $activeTab;
 		if (!tab || tab.entityType !== 'campaign') return null;
+		// Only look in campaigns array for old-style campaigns
 		return campaigns.find(c => c.id === tab.entityId) || null;
 	});
 
