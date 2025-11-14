@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getEntityTypesList, getEntityCreator } from '$lib/entities/entityRegistry';
+	import { getEntityConfigMetadata, getTableOptions } from '$lib/entities/entityConfigMetadata';
 	import type { EntityTypeInfo } from '$lib/entities/entityRegistry';
 	import EntityViewer from './EntityViewer.svelte';
 
@@ -15,7 +16,8 @@
 	let selectedEntityType = $state<string | null>(null);
 	let generatedEntity = $state<any>(null);
 	let entityTypes = $state<EntityTypeInfo[]>(getEntityTypesList());
-	let entityName = $state<string>('');
+	let editedProperties = $state<Record<string, any>>({}); // Track user edits
+	let lockedProperties = $state<Set<string>>(new Set()); // Track locked properties
 
 	function selectEntityType(type: string) {
 		selectedEntityType = type;
@@ -26,17 +28,54 @@
 
 		const creator = getEntityCreator(selectedEntityType);
 		if (creator) {
+			// Apply only locked properties as overrides
+			const overrides: Record<string, any> = {};
+			lockedProperties.forEach(propName => {
+				if (editedProperties[propName] !== undefined) {
+					overrides[propName] = editedProperties[propName];
+				}
+			});
+
+			if (Object.keys(overrides).length > 0) {
+				creator.withOverrides(overrides);
+			}
+
 			generatedEntity = creator.create();
-			// Set default name from entity if it has one, or use type + id
-			entityName = generatedEntity.name || `${selectedEntityType} ${generatedEntity.id.slice(0, 8)}`;
 			currentStep = 'view';
+
+			// Update editedProperties with current values so they show in the UI
+			const metadata = getEntityConfigMetadata(selectedEntityType);
+			if (metadata) {
+				metadata.properties.forEach(prop => {
+					if (generatedEntity[prop.propertyName] !== undefined) {
+						editedProperties[prop.propertyName] = generatedEntity[prop.propertyName];
+					}
+				});
+			}
 		}
+	}
+
+	function handlePropertyChange(propertyName: string, value: any) {
+		editedProperties[propertyName] = value;
+		// Also update the generated entity so it displays correctly
+		if (generatedEntity) {
+			generatedEntity[propertyName] = value;
+		}
+	}
+
+	function toggleLock(propertyName: string) {
+		if (lockedProperties.has(propertyName)) {
+			lockedProperties.delete(propertyName);
+		} else {
+			lockedProperties.add(propertyName);
+		}
+		// Trigger reactivity
+		lockedProperties = new Set(lockedProperties);
 	}
 
 	function handleSave() {
 		if (generatedEntity && selectedEntityType && onSave) {
-			// Update entity with the user-provided name
-			generatedEntity.name = entityName;
+			// Name is already updated in generatedEntity via handlePropertyChange
 			onSave(generatedEntity, selectedEntityType);
 		}
 		closeModal();
@@ -47,10 +86,13 @@
 		currentStep = 'select';
 		selectedEntityType = null;
 		generatedEntity = null;
+		editedProperties = {};
+		lockedProperties = new Set();
 		onClose();
 	}
 
 	function regenerate() {
+		// Keep edited properties and regenerate
 		generateEntity();
 	}
 </script>
@@ -92,27 +134,91 @@
 					</button>
 				</div>
 			{:else if currentStep === 'view'}
+				{@const metadata = selectedEntityType ? getEntityConfigMetadata(selectedEntityType) : null}
+
 				<div class="modal-header">
 					<h2 class="modal-title">Generated {selectedEntityType}</h2>
 					<button class="close-btn" onclick={closeModal}>✕</button>
 				</div>
 
 				<div class="modal-content entity-view-content">
-					<div class="name-input-section">
-						<label for="entity-name" class="name-label">Entity Name:</label>
-						<input
-							id="entity-name"
-							type="text"
-							bind:value={entityName}
-							placeholder="Enter a name for this entity"
-							class="name-input"
-						/>
+					<!-- Editable Properties Section -->
+					{#if metadata && metadata.properties.length > 0}
+						<div class="editable-properties-section">
+							<div class="properties-grid">
+								{#each metadata.properties as prop}
+									<div class="property-field">
+										<div class="property-header">
+											<label for="prop-{prop.propertyName}" class="property-label">
+												{prop.label}
+											</label>
+											<button
+												class="lock-btn {lockedProperties.has(prop.propertyName) ? 'locked' : ''}"
+												onclick={() => toggleLock(prop.propertyName)}
+												title={lockedProperties.has(prop.propertyName) ? 'Locked (will be kept on regenerate)' : 'Unlocked (will regenerate)'}
+											>
+												{lockedProperties.has(prop.propertyName) ? '🔒' : '🔓'}
+											</button>
+										</div>
+
+										{#if prop.inputType === 'table' && prop.table}
+											{@const options = getTableOptions(prop.table())}
+											<select
+												id="prop-{prop.propertyName}"
+												value={editedProperties[prop.propertyName] || ''}
+												onchange={(e) => handlePropertyChange(prop.propertyName, e.currentTarget.value)}
+												class="property-select"
+											>
+												{#each options as option}
+													<option value={option}>{option}</option>
+												{/each}
+											</select>
+										{:else if prop.inputType === 'select' && prop.options}
+											<select
+												id="prop-{prop.propertyName}"
+												value={editedProperties[prop.propertyName] || ''}
+												onchange={(e) => handlePropertyChange(prop.propertyName, e.currentTarget.value)}
+												class="property-select"
+											>
+												{#each prop.options as option}
+													<option value={option}>{option}</option>
+												{/each}
+											</select>
+										{:else if prop.inputType === 'number'}
+											<input
+												type="number"
+												id="prop-{prop.propertyName}"
+												value={editedProperties[prop.propertyName] || ''}
+												oninput={(e) => handlePropertyChange(prop.propertyName, parseFloat(e.currentTarget.value) || 0)}
+												placeholder={prop.placeholder || '0'}
+												class="property-input"
+												step="any"
+											/>
+										{:else if prop.inputType === 'text'}
+											<input
+												type="text"
+												id="prop-{prop.propertyName}"
+												value={editedProperties[prop.propertyName] || ''}
+												oninput={(e) => handlePropertyChange(prop.propertyName, e.currentTarget.value)}
+												placeholder={prop.placeholder || `Enter ${prop.label.toLowerCase()}`}
+												class="property-input"
+											/>
+										{/if}
+									</div>
+								{/each}
+							</div>
+						</div>
+					{/if}
+
+					<!-- Full Entity View (Read-only details) -->
+					<div class="entity-viewer-section">
+						<h3 class="section-title">📋 Full Details</h3>
+						<EntityViewer entity={generatedEntity} entityType={selectedEntityType || ''} />
 					</div>
-					<EntityViewer entity={generatedEntity} entityType={selectedEntityType || ''} />
 				</div>
 
 				<div class="modal-footer">
-					<button class="btn btn-secondary" onclick={regenerate}>Regenerate</button>
+					<button class="btn btn-secondary" onclick={regenerate}>🔄 Regenerate</button>
 					<button class="btn btn-secondary" onclick={closeModal}>Discard</button>
 					<button class="btn btn-primary" onclick={handleSave}>Save</button>
 				</div>
@@ -316,5 +422,98 @@
 
 	.name-input::placeholder {
 		color: rgb(216 180 254 / 0.5);
+	}
+
+	/* Editable Properties Section */
+	.editable-properties-section {
+		padding: 1.5rem;
+		background: rgb(30 27 75 / 0.3);
+		border-bottom: 1px solid rgb(168 85 247 / 0.2);
+	}
+
+	.entity-viewer-section {
+		padding: 1.5rem;
+	}
+
+	.section-title {
+		color: rgb(216 180 254);
+		font-size: 0.875rem;
+		font-weight: 600;
+		margin: 0 0 1rem 0;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.properties-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 1rem;
+	}
+
+	.property-field {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.property-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+	}
+
+	.property-label {
+		color: rgb(216 180 254);
+		font-size: 0.875rem;
+		font-weight: 500;
+		flex: 1;
+	}
+
+	.lock-btn {
+		background: transparent;
+		border: 1px solid rgb(168 85 247 / 0.3);
+		border-radius: 0.25rem;
+		padding: 0.25rem 0.5rem;
+		cursor: pointer;
+		font-size: 0.875rem;
+		transition: all 0.2s;
+		color: rgb(216 180 254);
+	}
+
+	.lock-btn:hover {
+		background: rgb(168 85 247 / 0.2);
+		border-color: rgb(168 85 247 / 0.5);
+	}
+
+	.lock-btn.locked {
+		background: rgb(168 85 247 / 0.3);
+		border-color: rgb(168 85 247);
+	}
+
+	.property-select,
+	.property-input {
+		padding: 0.625rem;
+		background: rgb(30 27 75 / 0.5);
+		border: 1px solid rgb(168 85 247 / 0.3);
+		border-radius: 0.5rem;
+		color: white;
+		font-size: 0.875rem;
+		outline: none;
+		transition: all 0.2s;
+	}
+
+	.property-select:focus,
+	.property-input:focus {
+		border-color: rgb(168 85 247);
+		background: rgb(30 27 75 / 0.7);
+	}
+
+	.property-input::placeholder {
+		color: rgb(216 180 254 / 0.5);
+	}
+
+	.property-select {
+		cursor: pointer;
 	}
 </style>
