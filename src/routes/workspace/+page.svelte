@@ -43,7 +43,14 @@
 		// Group other entities by type
 		const groupedEntities = new Map<string, Entity[]>();
 		allEntities
-			.filter(e => e.type !== 'adventure' && e.type !== 'campaign')
+			.filter(e => {
+				// Exclude adventures
+				if (e.type === 'adventure') return false;
+				// Exclude old-style campaigns (those without generatedEntity in customFields)
+				if (e.type === 'campaign' && !e.customFields?.generatedEntity) return false;
+				// Include everything else (including generated campaigns)
+				return true;
+			})
 			.forEach(entity => {
 				const type = entity.type as string;
 				if (!groupedEntities.has(type)) {
