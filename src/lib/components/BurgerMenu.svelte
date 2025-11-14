@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { entityStore } from '$lib/stores/entityStore';
+
 	interface Props {
 		onOracleImageClick: () => void;
 	}
@@ -14,6 +16,22 @@
 	function handleOracleClick() {
 		onOracleImageClick();
 		isOpen = false;
+	}
+
+	function handleRemoveAllEntities() {
+		const confirmed = confirm(
+			'⚠️ WARNING: This will permanently delete ALL entities, campaigns, and data!\n\n' +
+			'This action cannot be undone.\n\n' +
+			'Are you absolutely sure you want to continue?'
+		);
+
+		if (confirmed) {
+			entityStore.clearAll();
+			isOpen = false;
+
+			// Reload the page to reset UI state
+			window.location.reload();
+		}
 	}
 </script>
 
@@ -75,6 +93,15 @@
 					<button onclick={handleOracleClick} class="menu-item menu-button">
 						<span class="menu-icon">🔮</span>
 						<span class="menu-label">Oracle Image</span>
+					</button>
+				</li>
+				<li>
+					<hr class="menu-divider" />
+				</li>
+				<li>
+					<button onclick={handleRemoveAllEntities} class="menu-item menu-button danger">
+						<span class="menu-icon">🗑️</span>
+						<span class="menu-label">Remove All Entities</span>
 					</button>
 				</li>
 			</ul>
@@ -257,5 +284,20 @@
 
 	.menu-button {
 		font-family: inherit;
+	}
+
+	.menu-divider {
+		border: none;
+		border-top: 1px solid rgb(168 85 247 / 0.2);
+		margin: 0.5rem 1rem;
+	}
+
+	.menu-item.danger {
+		color: rgb(248 113 113);
+	}
+
+	.menu-item.danger:hover {
+		background: rgb(220 38 38 / 0.2);
+		color: rgb(252 165 165);
 	}
 </style>
