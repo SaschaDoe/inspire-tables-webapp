@@ -266,10 +266,14 @@ function createTabStore() {
 			update(state => {
 				const pinnedTabs = state.tabs.filter(t => t.isPinned);
 				const newActiveTabId = pinnedTabs.length > 0 ? pinnedTabs[0].id : null;
-				return {
+				const newState = {
 					tabs: pinnedTabs,
-					activeTabId: newActiveTabId
+					activeTabId: newActiveTabId,
+					navigationHistory: state.navigationHistory,
+					currentHistoryIndex: state.currentHistoryIndex
 				};
+				saveToStorage(newState);
+				return newState;
 			});
 		},
 

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { entityStore } from '$lib/stores/entityStore';
+	import { tabStore } from '$lib/stores/tabStore';
 
 	interface Props {
 		onOracleImageClick: () => void;
@@ -27,6 +28,7 @@
 
 		if (confirmed) {
 			entityStore.clearAll();
+			tabStore.closeAllTabs(); // Close all tabs before reload
 			isOpen = false;
 
 			// Reload the page to reset UI state

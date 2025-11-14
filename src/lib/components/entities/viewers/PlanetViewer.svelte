@@ -7,6 +7,10 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { autoSaveNestedEntities, createAddEntityHandler, createEventForwarders } from './viewerUtils';
 	import PlanetRenderer from '$lib/components/three/PlanetRenderer.svelte';
+	import HexMapCanvas from '$lib/components/worldmap/HexMapCanvas.svelte';
+	import { WorldMapCreator } from '$lib/entities/location/worldMapCreator';
+	import type { HexTile } from '$lib/entities/location/hexTile';
+	import { TerrainType } from '$lib/entities/location/terrainType';
 
 	interface Props {
 		planet: Planet;
@@ -16,6 +20,10 @@
 	let { planet, parentEntity }: Props = $props();
 
 	const dispatch = createEventDispatcher();
+
+	let selectedHex: HexTile | null = $state(null);
+	let showWorldMapError: string | null = $state(null);
+	let mapKey = $state(0); // Force re-render of map component
 
 	// Auto-save nested entities to navigator
 	onMount(() => {
@@ -65,6 +73,48 @@
 
 	const { handleOpenEntity, handleEntityUpdated } = createEventForwarders(dispatch);
 	const handleAddContinent = createAddEntityHandler(planet, 'continents', parentEntity, dispatch);
+
+	function generateWorldMap() {
+		showWorldMapError = null;
+		try {
+			planet.worldMap = WorldMapCreator.create(planet);
+			mapKey++; // Force re-render
+			dispatch('entityUpdated', { entity: parentEntity });
+		} catch (error) {
+			showWorldMapError = error instanceof Error ? error.message : 'Failed to generate world map';
+		}
+	}
+
+	function regenerateWorldMap() {
+		const confirmed = confirm(
+			'This will overwrite the existing world map. Are you sure you want to continue?'
+		);
+		if (confirmed) {
+			// Change the seed to generate a different map
+			planet.seed = Math.floor(Math.random() * 1000000);
+			generateWorldMap();
+		}
+	}
+
+	function handleHexSelected(event: CustomEvent<{ hex: HexTile }>) {
+		selectedHex = event.detail.hex;
+	}
+
+	const hexInfo = $derived(
+		selectedHex
+			? [
+					{ label: 'X', value: selectedHex.x.toString() },
+					{ label: 'Y', value: selectedHex.y.toString() },
+					{ label: 'Terrain', value: TerrainType[selectedHex.terrainType] },
+					{ label: 'Elevation', value: selectedHex.elevation.toString() },
+					{ label: 'Temperature', value: `${selectedHex.temperature.toFixed(0)}°` },
+					{
+						label: 'Dryness',
+						value: `${selectedHex.dryness.toFixed(0)}% (${selectedHex.dryness > 60 ? 'Dry' : selectedHex.dryness > 40 ? 'Moderate' : 'Wet'})`
+					}
+				]
+			: []
+	);
 </script>
 
 <div class="planet-viewer">
@@ -73,6 +123,34 @@
 			<PlanetRenderer {planet} containerWidth={400} containerHeight={400} />
 		</div>
 	</Section>
+
+	<!-- World Map Section -->
+	{#if planet.type !== 'gas giant'}
+		<Section title="World Map">
+			{#if planet.worldMap}
+				<div class="world-map-controls">
+					<button class="regenerate-btn" onclick={regenerateWorldMap}>Regenerate Map</button>
+				</div>
+				{#key mapKey}
+					<HexMapCanvas worldMap={planet.worldMap} on:hexSelected={handleHexSelected} />
+				{/key}
+				{#if selectedHex}
+					<div class="hex-info-panel">
+						<h4 class="hex-info-title">Selected Hex</h4>
+						<InfoGrid items={hexInfo} />
+					</div>
+				{/if}
+			{:else}
+				<div class="no-map-container">
+					{#if showWorldMapError}
+						<p class="error-message">{showWorldMapError}</p>
+					{/if}
+					<p class="no-map-text">No world map generated yet.</p>
+					<button class="generate-btn" onclick={generateWorldMap}>Generate World Map</button>
+				</div>
+			{/if}
+		</Section>
+	{/if}
 
 	<Section title="Basic Information">
 		<InfoGrid items={basicInfo} />
@@ -122,6 +200,73 @@
 		margin: 0 auto;
 		border-radius: 0.5rem;
 		overflow: hidden;
+	}
+
+	.world-map-controls {
+		display: flex;
+		justify-content: flex-end;
+		margin-bottom: 1rem;
+	}
+
+	.generate-btn,
+	.regenerate-btn {
+		padding: 0.75rem 1.5rem;
+		background: linear-gradient(135deg, rgb(147, 51, 234), rgb(126, 34, 206));
+		color: white;
+		border: none;
+		border-radius: 0.5rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		font-size: 0.875rem;
+	}
+
+	.generate-btn:hover,
+	.regenerate-btn:hover {
+		background: linear-gradient(135deg, rgb(126, 34, 206), rgb(107, 33, 168));
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(147, 51, 234, 0.4);
+	}
+
+	.no-map-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		padding: 2rem;
+		background: rgb(30 27 75 / 0.3);
+		border-radius: 0.5rem;
+	}
+
+	.no-map-text {
+		color: rgb(203 213 225);
+		font-size: 0.875rem;
+		margin: 0;
+	}
+
+	.error-message {
+		color: rgb(252 165 165);
+		background: rgb(127 29 29 / 0.3);
+		padding: 0.75rem 1rem;
+		border-left: 3px solid rgb(239 68 68);
+		border-radius: 0.375rem;
+		font-size: 0.875rem;
+		margin: 0;
+	}
+
+	.hex-info-panel {
+		margin-top: 1rem;
+		padding: 1rem;
+		background: rgb(30 27 75 / 0.4);
+		border-radius: 0.5rem;
+		border: 2px solid rgb(147 51 234 / 0.3);
+	}
+
+	.hex-info-title {
+		margin: 0 0 0.75rem 0;
+		color: rgb(192 132 252);
+		font-size: 1rem;
+		font-weight: 600;
 	}
 
 	.description-text {

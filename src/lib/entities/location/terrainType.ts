@@ -1,0 +1,41 @@
+export enum TerrainType {
+	Water = 'Water',
+	Grass = 'Grass',
+	Hills = 'Hills',
+	Mountain = 'Mountain',
+	Desert = 'Desert',
+	Snow = 'Snow',
+	Tundra = 'Tundra',
+	Jungle = 'Jungle',
+	Plains = 'Plains',
+	GrassHills = 'GrassHills',
+	SaltLake = 'SaltLake',
+	IceFloe = 'IceFloe',
+	JungleHills = 'JungleHills',
+	HighMountain = 'HighMountain',
+	SnowMountain = 'SnowMountain',
+	Lava = 'Lava',
+	AshPlains = 'AshPlains',
+	AshHills = 'AshHills'
+}
+
+export const TERRAIN_COLORS: Record<TerrainType, string> = {
+	[TerrainType.Water]: '#2563eb',
+	[TerrainType.Grass]: '#22c55e',
+	[TerrainType.Hills]: '#84cc16',
+	[TerrainType.Mountain]: '#6b7280',
+	[TerrainType.Desert]: '#d97706',
+	[TerrainType.Snow]: '#f3f4f6',
+	[TerrainType.Tundra]: '#cbd5e1',
+	[TerrainType.Jungle]: '#15803d',
+	[TerrainType.Plains]: '#bef264',
+	[TerrainType.GrassHills]: '#65a30d',
+	[TerrainType.SaltLake]: '#a5f3fc',
+	[TerrainType.IceFloe]: '#e0f2fe',
+	[TerrainType.JungleHills]: '#166534',
+	[TerrainType.HighMountain]: '#374151',
+	[TerrainType.SnowMountain]: '#f9fafb',
+	[TerrainType.Lava]: '#dc2626',
+	[TerrainType.AshPlains]: '#52525b',
+	[TerrainType.AshHills]: '#3f3f46'
+};

@@ -19,6 +19,13 @@
 		tabStore.togglePin(tabId);
 	}
 
+	function handleCloseAllTabs() {
+		const confirmed = confirm('Close all tabs except pinned ones?');
+		if (confirmed) {
+			tabStore.closeAllTabs();
+		}
+	}
+
 	function getEntityIcon(entityType: string): string {
 		const icons: Record<string, string> = {
 			// Campaign & Story
@@ -128,6 +135,10 @@
 		{/each}
 	</div>
 
+	<button class="close-all-btn" onclick={handleCloseAllTabs} title="Close all tabs (except pinned)">
+		<span>⊗</span>
+	</button>
+
 	<button class="new-tab-btn" title="Open entity...">
 		<span>+</span>
 	</button>
@@ -233,6 +244,22 @@
 	.close-btn {
 		font-size: 1rem;
 		line-height: 1;
+	}
+
+	.close-all-btn {
+		padding: 0.75rem 1rem;
+		background: transparent;
+		border: none;
+		color: rgb(248 113 113);
+		font-size: 1.25rem;
+		cursor: pointer;
+		transition: all 0.2s;
+		border-left: 1px solid rgb(168 85 247 / 0.1);
+	}
+
+	.close-all-btn:hover {
+		background: rgb(220 38 38 / 0.1);
+		color: rgb(252 165 165);
 	}
 
 	.new-tab-btn {

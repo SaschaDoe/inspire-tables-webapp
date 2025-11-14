@@ -1,6 +1,7 @@
 import { Entity } from '../base/entity';
 import type { Continent } from '../location/continent';
 import type { Ring, Color } from './ring';
+import type { WorldMap } from '../location/worldMap';
 
 export class Planet extends Entity {
 	name = '';
@@ -10,6 +11,7 @@ export class Planet extends Entity {
 	continents: Continent[] = [];
 	type = 'earth-like';
 	parentId = ''; // Reference to parent SolarSystem
+	worldMap: WorldMap | null = null; // Hex map for planet surface
 
 	// Visual rendering properties
 	color: Color = { r: 100, g: 100, b: 150 }; // Base surface color (0-255 RGB)
