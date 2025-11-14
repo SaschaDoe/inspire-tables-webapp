@@ -108,24 +108,24 @@ export class WorldMapCreator {
 				variationRange = 0.1; // Can vary from 85-95% water
 				break;
 			case 'ice':
-				baseThreshold = 0.5; // Base ~50% water (frozen)
-				variationRange = 0.2; // Can vary from 30-70% water
+				baseThreshold = 0.45; // Base ~55% frozen water
+				variationRange = 0.15; // Can vary from 40-60% water (rest is ice/tundra)
 				break;
 			case 'earth-like':
 				baseThreshold = 0.35; // Base ~70% water
 				variationRange = 0.25; // Can vary from 45-95% water (oceanic to continental)
 				break;
 			case 'jungle':
-				baseThreshold = 0.4; // Base ~60% land (lots of forests)
-				variationRange = 0.2; // Can vary from 50-70% land
+				baseThreshold = 0.42; // Base ~60% land (rivers/lakes but mostly land)
+				variationRange = 0.18; // Can vary from 50-70% land
 				break;
 			case 'desert':
-				baseThreshold = 0.15; // Base ~15% water
-				variationRange = 0.15; // Can vary from 0-30% water
+				baseThreshold = 0.08; // Base ~5% water (very dry)
+				variationRange = 0.08; // Can vary from 0-15% water
 				break;
 			case 'volcanic':
-				baseThreshold = 0.1; // Base ~10% water
-				variationRange = 0.1; // Can vary from 0-20% water
+				baseThreshold = 0.12; // Base ~10% lava/water
+				variationRange = 0.12; // Can vary from 0-25% liquid
 				break;
 			default:
 				baseThreshold = 0.35;
@@ -199,15 +199,55 @@ export class WorldMapCreator {
 				const tempVariation = tempNoise * 20; // ±20 variation
 				const baseTemp = tempRange.min + (tempRange.max - tempRange.min) / 2;
 
-				// Apply latitude effect (colder at poles)
+				// Apply latitude effect (colder at poles) - varies by planet type
 				const latitudeFactor = Math.abs(ny); // 0 at equator, 1 at poles
-				const latitudePenalty = latitudeFactor * 40; // Up to -40° at poles
+				let latitudePenalty = 0;
+
+				switch (planet.type) {
+					case 'ice':
+						// Ice planets are cold everywhere, slight variation
+						latitudePenalty = latitudeFactor * 5; // Minimal effect, already cold
+						break;
+					case 'desert':
+					case 'jungle':
+					case 'volcanic':
+						// Hot planets stay hot, minimal pole cooling
+						latitudePenalty = latitudeFactor * 10; // Small penalty
+						break;
+					case 'earth-like':
+					case 'water':
+						// Realistic latitude gradient
+						latitudePenalty = latitudeFactor * 40; // Strong gradient
+						break;
+					default:
+						latitudePenalty = latitudeFactor * 30; // Moderate gradient
+				}
 
 				hexTile.temperature = Math.max(0, Math.min(100, baseTemp + tempVariation - latitudePenalty));
 
 				// Calculate dryness (inverse of water proximity, plus noise)
 				const dryNoise = drynessNoise(nx * this.NOISE_SCALE, ny * this.NOISE_SCALE);
-				const baseDryness = elevation > 0 ? 60 : 20; // Higher elevation = drier
+
+				// Base dryness varies by planet type
+				let baseDryness: number;
+				switch (planet.type) {
+					case 'desert':
+						baseDryness = elevation > 0 ? 90 : 80; // Very dry everywhere
+						break;
+					case 'ice':
+						baseDryness = elevation > 0 ? 75 : 60; // Dry (frozen water)
+						break;
+					case 'jungle':
+					case 'water':
+						baseDryness = elevation > 0 ? 30 : 10; // Very humid/wet
+						break;
+					case 'volcanic':
+						baseDryness = elevation > 0 ? 70 : 50; // Dry with steam
+						break;
+					default: // earth-like, etc
+						baseDryness = elevation > 0 ? 60 : 20; // Moderate
+				}
+
 				hexTile.dryness = Math.max(0, Math.min(100, baseDryness + dryNoise * 30));
 
 				// Determine terrain type from elevation, temperature, and dryness
