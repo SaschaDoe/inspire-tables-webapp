@@ -237,8 +237,7 @@
 
 					<!-- Full Entity View (Read-only details) -->
 					<div class="entity-viewer-section">
-						<h3 class="section-title">📋 Full Details</h3>
-						<EntityViewer entity={generatedEntity} entityType={selectedEntityType || ''} />
+								<EntityViewer entity={generatedEntity} entityType={selectedEntityType || ''} />
 					</div>
 				</div>
 

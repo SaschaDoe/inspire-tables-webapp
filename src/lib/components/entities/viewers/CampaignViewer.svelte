@@ -15,13 +15,6 @@
 
 	const dispatch = createEventDispatcher();
 
-	// Basic info derived state
-	const basicInfo = $derived([
-		{ label: 'ID', value: campaign.id },
-		{ label: 'Narrative Medium', value: campaign.narrativeMediumType },
-		{ label: 'Blend Intensity', value: `${campaign.blendIntensity}/10` }
-	]);
-
 	// Primary genre info
 	const primaryGenreInfo = $derived(() => {
 		if (!campaign.genreMix?.primaryGenre) return [];
@@ -57,9 +50,6 @@
 </script>
 
 <div class="campaign-viewer">
-	<!-- Campaign name as heading -->
-	<h2 class="campaign-name">{campaign.name || 'Unnamed Campaign'}</h2>
-
 	<!-- Genre Mix -->
 	{#if campaign.genreMix}
 		<Section title="Genre Mix">
@@ -107,15 +97,6 @@
 <style>
 	.campaign-viewer {
 		padding: 0;
-	}
-
-	.campaign-name {
-		font-size: 2rem;
-		font-weight: 700;
-		color: rgb(192 132 252);
-		margin: 0 0 1.5rem 0;
-		text-align: center;
-		letter-spacing: 0.02em;
 	}
 
 	.genre-description {

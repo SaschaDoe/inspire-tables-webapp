@@ -18,8 +18,10 @@
 	import type { Galaxy } from '$lib/entities/celestial/galaxy';
 	import type { SolarSystem } from '$lib/entities/celestial/solarSystem';
 	import type { Planet } from '$lib/entities/celestial/planet';
+	import type { Campaign } from '$lib/entities/campaign';
 
 	// Import specialized viewers
+	import CampaignViewer from './viewers/CampaignViewer.svelte';
 	import CharacterViewer from './viewers/CharacterViewer.svelte';
 	import VillainViewer from './viewers/VillainViewer.svelte';
 	import MonsterViewer from './viewers/MonsterViewer.svelte';
@@ -68,6 +70,8 @@
 	 */
 	const viewerComponent = $derived.by(() => {
 		switch (entityType) {
+			case 'campaign':
+				return CampaignViewer;
 			case 'character':
 				return CharacterViewer;
 			case 'villain':
@@ -117,6 +121,8 @@
 
 		// Some viewers need special prop names or additional props
 		switch (entityType) {
+			case 'campaign':
+				return { campaign: entity as Campaign, parentEntity };
 			case 'character':
 				return { character: entity as Character, parentEntity };
 			case 'villain':
