@@ -29,11 +29,38 @@
 		);
 	});
 
+	// Helper function to get approximate size range when sizeInLightyears is 0 (backward compatibility)
+	function getApproximateSizeRange(size: string): string {
+		switch (size) {
+			case 'tiny':
+				return '1,000 - 7,000';
+			case 'small':
+				return '7,000 - 10,000';
+			case 'medium':
+			case 'normal sized':
+				return '10,000 - 100,000';
+			case 'big':
+			case 'large':
+				return '100,000 - 1,000,000';
+			case 'huge':
+			case 'gigantic':
+				return '1,000,000 - 10,000,000';
+			default:
+				return '0';
+		}
+	}
+
 	const basicInfo = $derived([
 		{ label: 'Name', value: galaxy.name },
 		{ label: 'Type', value: galaxy.type },
 		{ label: 'Age', value: `${galaxy.ageInYears.toLocaleString()} million years (${galaxy.age})` },
-		{ label: 'Size', value: `${galaxy.sizeInLightyears.toLocaleString()} ly (${galaxy.size})` },
+		{
+			label: 'Size',
+			value:
+				galaxy.sizeInLightyears > 0
+					? `${galaxy.sizeInLightyears.toLocaleString()} ly (${galaxy.size})`
+					: `${getApproximateSizeRange(galaxy.size)} ly (${galaxy.size})`
+		},
 		{ label: 'Mass', value: `${galaxy.massInSolarMasses} solar masses (${galaxy.mass})` },
 		{ label: 'Active Nucleus', value: galaxy.hasActiveGalacticNucleus ? 'Yes' : 'No' },
 		{ label: 'Rotation Velocity', value: `${galaxy.rotationVelocity} km/s` }

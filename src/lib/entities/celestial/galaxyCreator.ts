@@ -129,9 +129,12 @@ export class GalaxyCreator extends Creator<Galaxy> {
 			case 'small':
 				return this.dice.rollInterval(7000, 10000);
 			case 'medium':
+			case 'normal sized':
 				return this.dice.rollInterval(10000, 100000);
+			case 'big':
 			case 'large':
 				return this.dice.rollInterval(100000, 1000000);
+			case 'huge':
 			case 'gigantic':
 				return this.dice.rollInterval(1000000, 10000000);
 			default:
@@ -151,11 +154,14 @@ export class GalaxyCreator extends Creator<Galaxy> {
 				secondNumber = 10;
 				break;
 			case 'medium':
+			case 'normal sized':
 				secondNumber = 11;
 				break;
+			case 'big':
 			case 'large':
 				secondNumber = 12;
 				break;
+			case 'huge':
 			case 'gigantic':
 				secondNumber = 13;
 				break;

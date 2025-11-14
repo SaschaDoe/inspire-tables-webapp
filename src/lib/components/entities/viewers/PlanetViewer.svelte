@@ -6,6 +6,7 @@
 	import EntityList from '../shared/EntityList.svelte';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { autoSaveNestedEntities, createAddEntityHandler, createEventForwarders } from './viewerUtils';
+	import PlanetRenderer from '$lib/components/three/PlanetRenderer.svelte';
 
 	interface Props {
 		planet: Planet;
@@ -29,8 +30,35 @@
 
 	const basicInfo = $derived([
 		{ label: 'Name', value: planet.name },
+		{
+			label: 'Translation',
+			value: planet.nameTranslation ? `${planet.nameTranslation} - "${planet.nameMeaning}"` : '-'
+		},
 		{ label: 'Type', value: planet.type },
-		{ label: 'Livable', value: planet.isLivable ? 'Yes' : 'No' }
+		{ label: 'Livable', value: planet.isLivable ? 'Yes' : 'No' },
+		{ label: 'Size', value: planet.size }
+	]);
+
+	const atmosphereInfo = $derived([
+		{ label: 'Atmosphere', value: planet.atmosphere },
+		{ label: 'Weather', value: planet.weather }
+	]);
+
+	const orbitalInfo = $derived([
+		{ label: 'Distance from Star', value: `${planet.distanceFromStar.toFixed(2)} AU` },
+		{
+			label: 'Orbital Period',
+			value: `${planet.orbitPeriod} days (${(planet.orbitPeriod / 365).toFixed(2)} Earth years)`
+		},
+		{ label: 'Rotation Period', value: `${planet.rotationPeriod} hours` },
+		{ label: 'Axial Tilt', value: `${planet.obliquity}°` }
+	]);
+
+	const physicalInfo = $derived([
+		{ label: 'Surface Gravity', value: `${planet.surfaceGravity.toFixed(2)}g` },
+		{ label: 'Magnetic Field', value: planet.hasMagneticField ? 'Yes' : 'No' },
+		{ label: 'Rings', value: planet.rings.length > 0 ? `${planet.rings.length} ring(s)` : 'None' },
+		{ label: 'Moons', value: planet.moons.length > 0 ? planet.moons.join(', ') : 'None' }
 	]);
 
 	const continentRules = PlanetCreator.NESTED_ENTITY_RULES.continents;
@@ -40,8 +68,26 @@
 </script>
 
 <div class="planet-viewer">
-	<Section title="Planet Information">
+	<Section title="3D Visualization">
+		<div class="planet-3d-container">
+			<PlanetRenderer {planet} containerWidth={400} containerHeight={400} />
+		</div>
+	</Section>
+
+	<Section title="Basic Information">
 		<InfoGrid items={basicInfo} />
+	</Section>
+
+	<Section title="Atmosphere">
+		<InfoGrid items={atmosphereInfo} />
+	</Section>
+
+	<Section title="Orbital Mechanics">
+		<InfoGrid items={orbitalInfo} />
+	</Section>
+
+	<Section title="Physical Properties">
+		<InfoGrid items={physicalInfo} />
 	</Section>
 
 	<EntityList
@@ -68,6 +114,14 @@
 <style>
 	.planet-viewer {
 		padding: 0;
+	}
+
+	.planet-3d-container {
+		width: 400px;
+		height: 400px;
+		margin: 0 auto;
+		border-radius: 0.5rem;
+		overflow: hidden;
 	}
 
 	.description-text {

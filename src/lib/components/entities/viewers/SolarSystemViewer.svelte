@@ -6,6 +6,7 @@
 	import EntityList from '../shared/EntityList.svelte';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { autoSaveNestedEntities, createAddEntityHandler, createEventForwarders } from './viewerUtils';
+	import SolarSystemScene from '$lib/components/three/SolarSystemScene.svelte';
 
 	interface Props {
 		solarSystem: SolarSystem;
@@ -15,6 +16,9 @@
 	let { solarSystem, parentEntity }: Props = $props();
 
 	const dispatch = createEventDispatcher();
+
+	let selectedPlanetId: string | null = $state(null);
+	let sceneComponent: SolarSystemScene | null = null;
 
 	// Auto-save nested entities to navigator
 	onMount(() => {
@@ -28,7 +32,21 @@
 		);
 	});
 
-	const basicInfo = $derived([{ label: 'Name', value: solarSystem.name }]);
+	const basicInfo = $derived([
+		{ label: 'Name', value: solarSystem.name },
+		{ label: 'Stage', value: solarSystem.stage },
+		{ label: 'Age', value: `${solarSystem.age.toFixed(1)} billion years` },
+		{
+			label: 'Habitable Zone',
+			value: `${solarSystem.habitableZoneStart.toFixed(2)} - ${solarSystem.habitableZoneEnd.toFixed(2)} AU`
+		}
+	]);
+
+	function resetCamera() {
+		if (sceneComponent) {
+			sceneComponent.resetCamera();
+		}
+	}
 
 	const planetRules = SolarSystemCreator.NESTED_ENTITY_RULES.planets;
 	const starRules = SolarSystemCreator.NESTED_ENTITY_RULES.stars;
@@ -39,9 +57,29 @@
 </script>
 
 <div class="solar-system-viewer">
+	<Section title="3D Solar System">
+		<div class="solar-system-3d-container">
+			<SolarSystemScene
+				bind:this={sceneComponent}
+				{solarSystem}
+				containerWidth={600}
+				containerHeight={600}
+				bind:selectedPlanetId
+				on:openEntity={handleOpenEntity}
+			/>
+			<button class="reset-camera-btn" onclick={resetCamera}>Reset Camera</button>
+		</div>
+	</Section>
+
 	<Section title="Solar System Information">
 		<InfoGrid items={basicInfo} />
 	</Section>
+
+	{#if solarSystem.stageDescription}
+		<Section title="System Stage">
+			<p class="description-text">{solarSystem.stageDescription}</p>
+		</Section>
+	{/if}
 
 	<EntityList
 		entities={solarSystem.stars}
@@ -81,6 +119,31 @@
 <style>
 	.solar-system-viewer {
 		padding: 0;
+	}
+
+	.solar-system-3d-container {
+		width: 600px;
+		height: 650px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.reset-camera-btn {
+		padding: 0.5rem 1rem;
+		background: rgb(99 102 241);
+		color: white;
+		border: none;
+		border-radius: 0.375rem;
+		cursor: pointer;
+		font-size: 0.875rem;
+		font-weight: 500;
+		transition: background-color 0.2s;
+	}
+
+	.reset-camera-btn:hover {
+		background: rgb(79 70 229);
 	}
 
 	.description-text {
