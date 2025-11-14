@@ -3,6 +3,9 @@ import { WorldMap } from './worldMap';
 import { HexTile } from './hexTile';
 import { TerrainType } from './terrainType';
 import { makeNoise2D } from 'open-simplex-noise';
+import { ContinentDetector } from '$lib/utils/continentDetector';
+import { ContinentCreator } from './continentCreator';
+import type { Continent } from './continent';
 
 export class WorldMapCreator {
 	private static readonly NOISE_SCALE = 4.0;
@@ -27,7 +30,54 @@ export class WorldMapCreator {
 		// Generate hex grid
 		worldMap.hexTiles = this.generateHexGrid(planet, width, height);
 
+		// Detect and tag continents
+		worldMap.continents = ContinentDetector.detectContinents(worldMap.hexTiles);
+
+		// Create Continent entities from detected continents and add to planet
+		this.createContinentEntities(planet, worldMap);
+
 		return worldMap;
+	}
+
+	/**
+	 * Create Continent entities from detected continents
+	 */
+	private static createContinentEntities(planet: Planet, worldMap: WorldMap): void {
+		// Clear existing continents
+		planet.continents = [];
+
+		const continentCreator = new ContinentCreator();
+		continentCreator.withParent(planet.id);
+
+		for (const continentInfo of worldMap.continents) {
+			const continent = continentCreator.create();
+
+			// Override generated size with actual detected size
+			if (continentInfo.size < 50) {
+				continent.size = 'tiny';
+			} else if (continentInfo.size < 200) {
+				continent.size = 'small';
+			} else if (continentInfo.size < 500) {
+				continent.size = 'medium';
+			} else if (continentInfo.size < 1000) {
+				continent.size = 'large';
+			} else {
+				continent.size = 'gigantic';
+			}
+
+			// Store continent ID for navigation
+			continent.id = `continent-${continentInfo.id}`;
+
+			// Override description with location info
+			if (continentInfo.isIsland) {
+				continent.description = `${continent.name} is a ${continent.size} island with ${continent.dominantLandscape}. The climate is ${continent.climate} with ${continent.primaryWeather} weather patterns.`;
+			}
+
+			planet.continents.push(continent);
+
+			// Store mapping from continent info ID to entity ID
+			continentInfo.entityId = continent.id;
+		}
 	}
 
 	/**
@@ -104,8 +154,8 @@ export class WorldMapCreator {
 
 		switch (planetType) {
 			case 'water':
-				baseThreshold = 0.08; // Base ~95% water (waterworld)
-				variationRange = 0.05; // Can vary from 92-98% water (tiny islands only)
+				baseThreshold = 0.95; // Base ~95% water (waterworld) - HIGH threshold for water
+				variationRange = 0.03; // Can vary from 92-98% water (tiny islands only)
 				break;
 			case 'ice':
 				baseThreshold = 0.45; // Base ~55% frozen water
@@ -127,6 +177,10 @@ export class WorldMapCreator {
 				baseThreshold = 0.12; // Base ~10% lava/water
 				variationRange = 0.12; // Can vary from 0-25% liquid
 				break;
+			case 'barren':
+				baseThreshold = 0.0; // No water - completely dry
+				variationRange = 0.0; // No variation - always dry
+				break;
 			default:
 				baseThreshold = 0.35;
 				variationRange = 0.12;
@@ -138,6 +192,66 @@ export class WorldMapCreator {
 		const variation = (seedVariation - 0.5) * variationRange; // Center around base
 
 		return Math.max(0, Math.min(0.8, baseThreshold + variation));
+	}
+
+	/**
+	 * Apply continent formation factor based on planet type
+	 * Different planet types have different landmass distribution patterns
+	 */
+	private static applyContinentFactor(
+		elevation: number,
+		nx: number,
+		ny: number,
+		planetType: string,
+		continentNoise: (x: number, y: number) => number
+	): number {
+		switch (planetType) {
+			case 'water': {
+				// Water planets: Scattered tiny islands only
+				// Use pure noise without continent factor - threshold is high (0.92-0.98) so most becomes water
+				// Just return raw elevation to create scattered islands where noise peaks
+				return elevation;
+			}
+
+			case 'earth-like': {
+				// Earth-like: Multiple distributed continents
+				// Use multi-scale noise to create continent patterns
+				const largeContinentNoise = continentNoise(nx * 0.8, ny * 0.8); // Large continental plates
+				const mediumContinentNoise = continentNoise(nx * 2.0, ny * 2.0); // Medium features
+
+				// Normalize to 0-1
+				const largeFeatures = (largeContinentNoise + 1) / 2;
+				const mediumFeatures = (mediumContinentNoise + 1) / 2;
+
+				// Combine noise layers: base elevation + large continental structure + medium variation
+				const continentPattern = elevation * 0.4 + largeFeatures * 0.4 + mediumFeatures * 0.2;
+
+				// Only slight edge dampening to prevent harsh map borders, but allow continents near edges
+				const distanceFromCenter = Math.sqrt(nx * nx + ny * ny);
+				const edgeDampening = Math.max(0.7, 1 - Math.pow(distanceFromCenter, 3)); // Very gentle
+
+				return continentPattern * edgeDampening;
+			}
+
+			case 'jungle':
+			case 'desert':
+			case 'ice': {
+				// Land-dominant planets: Moderate continent factor
+				// Less extreme than old system, allows more varied terrain
+				const distanceFromCenter = Math.sqrt(nx * nx + ny * ny);
+				const continentFactor = Math.pow(Math.max(0, 1 - distanceFromCenter), 1.0); // Moderate falloff
+				return elevation * continentFactor;
+			}
+
+			case 'volcanic':
+			case 'barren':
+			default: {
+				// Other planets: Original system (strong central focus)
+				const distanceFromCenter = Math.sqrt(nx * nx + ny * ny);
+				const continentFactor = Math.pow(Math.max(0, 1 - distanceFromCenter), 1.5);
+				return elevation * continentFactor;
+			}
+		}
 	}
 
 	/**
@@ -153,6 +267,7 @@ export class WorldMapCreator {
 		const elevationNoise = makeNoise2D(planet.seed);
 		const temperatureNoise = makeNoise2D(planet.seed + 1);
 		const drynessNoise = makeNoise2D(planet.seed + 2);
+		const continentNoise = makeNoise2D(planet.seed + 3); // For multi-continent generation
 
 		for (let y = 0; y < height; y++) {
 			grid[y] = [];
@@ -166,17 +281,12 @@ export class WorldMapCreator {
 				const nx = (x / width) * 2 - 1;
 				const ny = (y / height) * 2 - 1;
 
-				// Calculate distance from center for island/continent generation
-				const distanceFromCenter = Math.sqrt(nx * nx + ny * ny);
-
-				// Calculate elevation with continent factor
-				// Stronger falloff at edges to create oceans
-				const continentFactor = Math.pow(Math.max(0, 1 - distanceFromCenter), 1.5);
+				// Calculate elevation based on planet type
 				let elevation = elevationNoise(nx * this.NOISE_SCALE, ny * this.NOISE_SCALE);
 				elevation = (elevation + 1) / 2; // Normalize to 0-1
 
-				// Apply continent factor and water threshold
-				elevation = elevation * continentFactor;
+				// Apply planet-specific landmass distribution
+				elevation = this.applyContinentFactor(elevation, nx, ny, planet.type, continentNoise);
 
 				// Determine if this should be water or land based on threshold
 				if (elevation < waterThreshold) {
@@ -284,7 +394,57 @@ export class WorldMapCreator {
 		y: number,
 		height: number
 	): TerrainType {
-		// Polar regions (top and bottom 10% of map)
+		// Water bodies (elevation 0)
+		if (elevation === 0) {
+			const polarThreshold = height * 0.1;
+			const isPolar = y < polarThreshold || y > height - polarThreshold;
+			if (temperature < 10 || isPolar) return TerrainType.IceFloe;
+			if (dryness > 80) return TerrainType.SaltLake;
+			return TerrainType.Water;
+		}
+
+		// PLANET-TYPE FIRST: Themed planets override temperature/dryness
+		// Ice planets: Everything is frozen
+		if (planetType === 'ice') {
+			if (elevation <= 2) return TerrainType.Tundra;
+			if (elevation <= 5) return TerrainType.Snow;
+			return TerrainType.SnowMountain;
+		}
+
+		// Desert planets: Everything is desert/barren
+		if (planetType === 'desert') {
+			if (elevation <= 2) return TerrainType.Desert;
+			if (elevation <= 5) return TerrainType.Hills;
+			if (elevation >= 8) return TerrainType.HighMountain;
+			return TerrainType.Mountain;
+		}
+
+		// Jungle planets: Everything is jungle/forest
+		if (planetType === 'jungle') {
+			if (elevation <= 2) return TerrainType.Jungle;
+			if (elevation <= 5) return TerrainType.JungleHills;
+			// High mountains can be grass-covered peaks
+			if (elevation >= 8) return TerrainType.HighMountain;
+			return TerrainType.GrassHills; // Forest-covered mountains
+		}
+
+		// Volcanic planets: Lava and ash everywhere
+		if (planetType === 'volcanic') {
+			if (elevation <= 2) return TerrainType.AshPlains;
+			if (elevation <= 5) return TerrainType.AshHills;
+			if (elevation >= 8) return TerrainType.Lava;
+			return TerrainType.Mountain;
+		}
+
+		// Barren planets: Lifeless rocky desert, no water, no vegetation
+		if (planetType === 'barren') {
+			if (elevation <= 2) return TerrainType.Desert;
+			if (elevation <= 5) return TerrainType.Hills;
+			if (elevation >= 8) return TerrainType.HighMountain;
+			return TerrainType.Mountain;
+		}
+
+		// Earth-like and Water planets: Use temperature/dryness for variety
 		const polarThreshold = height * 0.1;
 		const isPolar = y < polarThreshold || y > height - polarThreshold;
 
@@ -293,42 +453,26 @@ export class WorldMapCreator {
 			return TerrainType.Snow;
 		}
 
-		// Water bodies (elevation 0)
-		if (elevation === 0) {
-			if (temperature < 10 || isPolar) return TerrainType.IceFloe;
-			if (dryness > 80) return TerrainType.SaltLake;
-			return TerrainType.Water;
-		}
-
-		// Planet-specific biases
-		const isJunglePlanet = planetType === 'jungle';
-		const isDesertPlanet = planetType === 'desert';
-		const isIcePlanet = planetType === 'ice';
-
 		// Low elevation (elevation 1-2)
 		if (elevation <= 2) {
-			if (temperature < 20 || isIcePlanet) return TerrainType.Tundra;
-			if (isDesertPlanet || (temperature > 70 && dryness > 60)) return TerrainType.Desert;
-			if (isJunglePlanet || (temperature > 60 && dryness < 40)) return TerrainType.Jungle;
+			if (temperature < 20) return TerrainType.Tundra;
+			if (temperature > 70 && dryness > 60) return TerrainType.Desert;
+			if (temperature > 60 && dryness < 40) return TerrainType.Jungle;
 			if (dryness > 60) return TerrainType.Plains;
 			return TerrainType.Grass;
 		}
 
 		// Medium elevation (elevation 3-5) - Hills
 		if (elevation <= 5) {
-			if (planetType === 'volcanic' && temperature > 80) return TerrainType.AshHills;
-			if (isJunglePlanet || (temperature > 60 && dryness < 40)) return TerrainType.JungleHills;
-			if (temperature < 25 || isIcePlanet) return TerrainType.Snow;
-			if (dryness > 60 || isDesertPlanet) return TerrainType.Hills;
+			if (temperature > 60 && dryness < 40) return TerrainType.JungleHills;
+			if (temperature < 25) return TerrainType.Snow;
+			if (dryness > 60) return TerrainType.Hills;
 			return TerrainType.GrassHills;
 		}
 
 		// High elevation (elevation 6+) - Mountains
-		if (temperature < 20 || isIcePlanet) return TerrainType.SnowMountain;
+		if (temperature < 20) return TerrainType.SnowMountain;
 		if (elevation >= 8) return TerrainType.HighMountain;
-		if (planetType === 'volcanic' && temperature > 80) {
-			return elevation > 7 ? TerrainType.Lava : TerrainType.AshPlains;
-		}
 		return TerrainType.Mountain;
 	}
 }

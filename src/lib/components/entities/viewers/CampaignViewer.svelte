@@ -19,10 +19,7 @@
 	const basicInfo = $derived([
 		{ label: 'ID', value: campaign.id },
 		{ label: 'Narrative Medium', value: campaign.narrativeMediumType },
-		{
-			label: 'Created',
-			value: campaign.id ? new Date().toLocaleDateString() : '-'
-		}
+		{ label: 'Blend Intensity', value: `${campaign.blendIntensity}/10` }
 	]);
 
 	// Genre mix info
@@ -52,11 +49,6 @@
 			});
 		});
 
-		items.push({
-			label: 'Blend Intensity',
-			value: `${campaign.genreMix.blendIntensity}/10`
-		});
-
 		return items;
 	});
 </script>
@@ -77,17 +69,6 @@
 				<p class="genre-desc-text">{campaign.genreMix.description}</p>
 			</div>
 			<InfoGrid items={genreMixInfo()} />
-		</Section>
-	{/if}
-
-	<!-- Creation Log -->
-	{#if campaign.creationLog && campaign.creationLog.length > 0}
-		<Section title="Creation Log">
-			<div class="creation-log">
-				{#each campaign.creationLog as logEntry}
-					<div class="log-entry">{logEntry}</div>
-				{/each}
-			</div>
 		</Section>
 	{/if}
 
@@ -129,27 +110,6 @@
 		font-style: italic;
 	}
 
-	.creation-log {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		padding: 1rem;
-		background: rgb(30 27 75 / 0.3);
-		border-radius: 0.5rem;
-		max-height: 400px;
-		overflow-y: auto;
-	}
-
-	.log-entry {
-		padding: 0.5rem 0.75rem;
-		background: rgb(30 27 75 / 0.5);
-		border-left: 2px solid rgb(147 51 234 / 0.5);
-		border-radius: 0.375rem;
-		font-size: 0.8125rem;
-		color: rgb(203 213 225);
-		font-family: 'Courier New', monospace;
-	}
-
 	.description-text {
 		padding: 1rem;
 		background: rgb(30 27 75 / 0.3);
@@ -162,22 +122,4 @@
 		white-space: pre-wrap;
 	}
 
-	/* Custom scrollbar for creation log */
-	.creation-log::-webkit-scrollbar {
-		width: 8px;
-	}
-
-	.creation-log::-webkit-scrollbar-track {
-		background: rgb(30 27 75 / 0.3);
-		border-radius: 4px;
-	}
-
-	.creation-log::-webkit-scrollbar-thumb {
-		background: rgb(147 51 234 / 0.5);
-		border-radius: 4px;
-	}
-
-	.creation-log::-webkit-scrollbar-thumb:hover {
-		background: rgb(147 51 234 / 0.7);
-	}
 </style>

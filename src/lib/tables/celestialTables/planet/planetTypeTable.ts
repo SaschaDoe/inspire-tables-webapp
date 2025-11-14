@@ -2,6 +2,7 @@ import { Table } from '../../table';
 import { TableEntry } from '../../tableEntry';
 import { TableTitles } from '../../tableTitles';
 import { TableType } from '../../tableType';
+import { DiceRole } from '../../diceRole';
 
 const livablePlanetTypes = ['earth-like', 'desert', 'ice', 'water', 'jungle'];
 
@@ -14,8 +15,7 @@ export class LivablePlanetTypeTable extends Table {
 			new TableEntry('jungle').withRoleInterval(10, 10),
 			new TableEntry('ice').withRoleInterval(11, 11)
 		];
-		super(entries, TableTitles.LivablePlanetType);
-		this.tableType = TableType.Other;
+		super(entries, TableTitles.LivablePlanetType, TableType.Other, new DiceRole(1, 11, 0));
 	}
 }
 
@@ -31,7 +31,6 @@ export class AllPlanetTypeTable extends Table {
 			new TableEntry('gas giant').withRoleInterval(11, 13),
 			new TableEntry('barren').withRoleInterval(14, 15)
 		];
-		super(entries, TableTitles.PlanetType);
-		this.tableType = TableType.Other;
+		super(entries, TableTitles.PlanetType, TableType.Other, new DiceRole(1, 15, 0));
 	}
 }

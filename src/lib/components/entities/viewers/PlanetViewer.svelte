@@ -24,6 +24,8 @@
 	let selectedHex: HexTile | null = $state(null);
 	let showWorldMapError: string | null = $state(null);
 	let mapKey = $state(0); // Force re-render of map component
+	let showContinents = $state(false);
+	let continentSelectionMode = $state(false);
 
 	// Auto-save nested entities to navigator
 	onMount(() => {
@@ -37,7 +39,6 @@
 	});
 
 	const basicInfo = $derived([
-		{ label: 'Name', value: planet.name },
 		{
 			label: 'Translation',
 			value: planet.nameTranslation ? `${planet.nameTranslation} - "${planet.nameMeaning}"` : '-'
@@ -100,6 +101,31 @@
 		selectedHex = event.detail.hex;
 	}
 
+	function handleContinentSelected(
+		event: CustomEvent<{ continent: any; tiles: HexTile[] }>
+	) {
+		const continentInfo = event.detail.continent;
+
+		// Navigate to the continent entity if it has an entityId
+		if (continentInfo.entityId) {
+			const continentEntity = planet.continents.find((c) => c.id === continentInfo.entityId);
+			if (continentEntity) {
+				dispatch('openEntity', { entity: continentEntity });
+				return;
+			}
+		}
+
+		// Fallback: just show the first tile info from the continent
+		selectedHex = event.detail.tiles[0] || null;
+	}
+
+	// When continent selection mode is enabled, automatically show continents
+	$effect(() => {
+		if (continentSelectionMode) {
+			showContinents = true;
+		}
+	});
+
 	const hexInfo = $derived(
 		selectedHex
 			? [
@@ -118,21 +144,50 @@
 </script>
 
 <div class="planet-viewer">
-	<Section title="3D Visualization">
+	<!-- Planet name as heading -->
+	<h2 class="planet-name">{planet.name}</h2>
+
+	<!-- Side-by-side layout: Basic info and 3D visualization -->
+	<div class="planet-overview">
+		<div class="planet-info">
+			<InfoGrid items={basicInfo} />
+		</div>
 		<div class="planet-3d-container">
 			<PlanetRenderer {planet} containerWidth={400} containerHeight={400} />
 		</div>
-	</Section>
+	</div>
 
 	<!-- World Map Section -->
 	{#if planet.type !== 'gas giant'}
 		<Section title="World Map">
 			{#if planet.worldMap}
 				<div class="world-map-controls">
+					<div class="continent-controls">
+						<label class="toggle-label">
+							<input type="checkbox" bind:checked={showContinents} />
+							<span>Show Continents</span>
+						</label>
+						<label class="toggle-label">
+							<input type="checkbox" bind:checked={continentSelectionMode} />
+							<span>Continent Selection Mode</span>
+						</label>
+						{#if planet.worldMap.continents && planet.worldMap.continents.length > 0}
+							<span class="continent-count"
+								>{planet.worldMap.continents.length}
+								{planet.worldMap.continents.length === 1 ? 'Continent' : 'Continents'} Detected</span
+							>
+						{/if}
+					</div>
 					<button class="regenerate-btn" onclick={regenerateWorldMap}>Regenerate Map</button>
 				</div>
 				{#key mapKey}
-					<HexMapCanvas worldMap={planet.worldMap} on:hexSelected={handleHexSelected} />
+					<HexMapCanvas
+						worldMap={planet.worldMap}
+						{showContinents}
+						{continentSelectionMode}
+						on:hexSelected={handleHexSelected}
+						on:continentSelected={handleContinentSelected}
+					/>
 				{/key}
 				{#if selectedHex}
 					<div class="hex-info-panel">
@@ -151,10 +206,6 @@
 			{/if}
 		</Section>
 	{/if}
-
-	<Section title="Basic Information">
-		<InfoGrid items={basicInfo} />
-	</Section>
 
 	<Section title="Atmosphere">
 		<InfoGrid items={atmosphereInfo} />
@@ -194,18 +245,111 @@
 		padding: 0;
 	}
 
+	.planet-name {
+		font-size: 2rem;
+		font-weight: 700;
+		color: rgb(192 132 252);
+		margin: 0 0 1.5rem 0;
+		text-align: center;
+		letter-spacing: 0.02em;
+	}
+
+	.planet-overview {
+		display: flex;
+		gap: 2rem;
+		align-items: center;
+		margin-bottom: 2rem;
+		flex-wrap: wrap;
+	}
+
+	.planet-info {
+		flex: 0 0 auto;
+		width: 280px;
+		min-width: 250px;
+	}
+
+	/* Make info items display vertically in the planet info section */
+	.planet-info :global(.info-grid) {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.planet-info :global(.info-item) {
+		display: flex;
+		flex-direction: row;
+		align-items: baseline;
+		gap: 0.5rem;
+		padding: 0.5rem 0.75rem;
+		background: rgb(30 27 75 / 0.3);
+		border-radius: 0.375rem;
+		border-left: 3px solid rgb(147 51 234 / 0.5);
+	}
+
+	.planet-info :global(.info-label) {
+		min-width: 90px;
+		flex-shrink: 0;
+		font-size: 0.7rem;
+	}
+
+	.planet-info :global(.info-value) {
+		flex: 1;
+		font-size: 0.8rem;
+	}
+
 	.planet-3d-container {
-		width: 400px;
-		height: 400px;
-		margin: 0 auto;
+		width: 500px;
+		height: 500px;
+		flex-shrink: 0;
 		border-radius: 0.5rem;
 		overflow: hidden;
 	}
 
 	.world-map-controls {
 		display: flex;
-		justify-content: flex-end;
+		justify-content: space-between;
+		align-items: center;
 		margin-bottom: 1rem;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+
+	.continent-controls {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+
+	.toggle-label {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		color: rgb(203 213 225);
+		font-size: 0.875rem;
+		cursor: pointer;
+		user-select: none;
+	}
+
+	.toggle-label input[type='checkbox'] {
+		width: 18px;
+		height: 18px;
+		cursor: pointer;
+		accent-color: rgb(147 51 234);
+	}
+
+	.toggle-label:hover span {
+		color: rgb(192 132 252);
+	}
+
+	.continent-count {
+		color: rgb(192 132 252);
+		font-size: 0.875rem;
+		font-weight: 600;
+		padding: 0.25rem 0.75rem;
+		background: rgb(30 27 75 / 0.5);
+		border-radius: 0.375rem;
+		border: 1px solid rgb(147 51 234 / 0.3);
 	}
 
 	.generate-btn,

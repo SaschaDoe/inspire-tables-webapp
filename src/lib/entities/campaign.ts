@@ -12,7 +12,5 @@ export class Campaign extends Entity {
 	// Genre information
 	genreMix: GenreMix | null = null;
 	narrativeMediumType: NarrativeMediumType = NarrativeMediumType.RPG;
-
-	// Roll results and creation log
-	creationLog: string[] = [];
+	blendIntensity: number = 5; // 0-10 scale, how deeply genres are mixed
 }

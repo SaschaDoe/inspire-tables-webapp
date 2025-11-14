@@ -35,6 +35,25 @@
 		cleanup();
 	});
 
+	// React to planet changes and recreate the 3D model
+	$effect(() => {
+		// Watch for changes to key planet properties
+		const triggerUpdate = planet.seed + planet.type + planet.size + planet.brightness;
+
+		// Only update if scene is initialized (skip initial mount)
+		if (scene && planetMeshes.length > 0) {
+			// Clean up old planet meshes
+			planetMeshes.forEach((mesh) => {
+				scene.remove(mesh);
+				disposeMesh(mesh);
+			});
+			planetMeshes = [];
+
+			// Create new planet with updated properties
+			createPlanet();
+		}
+	});
+
 	function initScene() {
 		scene = new THREE.Scene();
 		camera = new THREE.PerspectiveCamera(
@@ -51,7 +70,7 @@
 	}
 
 	function createPlanet() {
-		const scale = getScale(planet.size);
+		const scale = getScale(planet.size, planet.type);
 		const resolution = getResolution(planet.size);
 
 		// Create planet surface

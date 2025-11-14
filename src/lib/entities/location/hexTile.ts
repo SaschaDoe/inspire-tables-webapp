@@ -13,6 +13,7 @@ export class HexTile extends Entity {
 	elevation = 0; // Height (0-10 scale)
 	temperature = 50; // Temperature value (0-100)
 	dryness = 50; // Moisture/dryness (0-100, higher = drier)
+	continentId?: number; // ID of the continent this tile belongs to
 
 	// Regional/overland map properties
 	type = ''; // Legacy type field

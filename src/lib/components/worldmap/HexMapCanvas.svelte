@@ -7,15 +7,43 @@
 	interface Props {
 		worldMap: WorldMap;
 		hexSize?: number;
+		showContinents?: boolean;
+		continentSelectionMode?: boolean;
 	}
 
-	let { worldMap, hexSize = 20 }: Props = $props();
+	let {
+		worldMap,
+		hexSize = 20,
+		showContinents = false,
+		continentSelectionMode = false
+	}: Props = $props();
 
 	const dispatch = createEventDispatcher();
 
 	let selectedHex: HexTile | null = $state(null);
 	let hoveredHex: HexTile | null = $state(null);
+	let selectedContinentId: number | null = $state(null);
 	let scale = $state(0.6); // Start zoomed out
+
+	// Generate distinct colors for each continent
+	const continentColors = $derived.by(() => {
+		const colors = new Map<number, string>();
+
+		if (!worldMap.continents || worldMap.continents.length === 0) {
+			return colors;
+		}
+
+		const hueStep = 360 / worldMap.continents.length;
+
+		worldMap.continents.forEach((continent, index) => {
+			const hue = (index * hueStep) % 360;
+			const saturation = 60 + (index % 3) * 10;
+			const lightness = 50 + (index % 2) * 10;
+			colors.set(continent.id, `hsla(${hue}, ${saturation}%, ${lightness}%, 0.4)`);
+		});
+
+		return colors;
+	});
 
 	const zoomFactor = 0.2;
 	const minScale = 0.2;
@@ -62,25 +90,56 @@
 	}
 
 	/**
-	 * Handle hex click
+	 * Handle hex click (optimized to batch state updates)
 	 */
 	function handleHexClick(hexTile: HexTile) {
-		selectedHex = hexTile;
-		dispatch('hexSelected', { hex: hexTile });
+		if (
+			continentSelectionMode &&
+			hexTile.continentId !== undefined &&
+			worldMap.continents
+		) {
+			// Only update if selecting a different continent
+			if (selectedContinentId !== hexTile.continentId) {
+				selectedContinentId = hexTile.continentId;
+				const continent = worldMap.continents.find((c) => c.id === hexTile.continentId);
+				if (continent) {
+					dispatch('continentSelected', { continent, tiles: continent.tiles });
+				}
+			}
+		} else {
+			// Select single hex
+			selectedHex = hexTile;
+			selectedContinentId = null;
+			dispatch('hexSelected', { hex: hexTile });
+		}
 	}
 
 	/**
-	 * Handle hex hover
+	 * Get fill color for a hex tile (terrain color or continent overlay)
+	 */
+	function getHexFill(hexTile: HexTile): string {
+		if (showContinents && hexTile.continentId !== undefined) {
+			return continentColors.get(hexTile.continentId) || TERRAIN_COLORS[hexTile.terrainType];
+		}
+		return TERRAIN_COLORS[hexTile.terrainType];
+	}
+
+	/**
+	 * Handle hex hover (disabled during continent selection for performance)
 	 */
 	function handleHexHover(hexTile: HexTile) {
-		hoveredHex = hexTile;
+		if (!continentSelectionMode) {
+			hoveredHex = hexTile;
+		}
 	}
 
 	/**
 	 * Handle hex hover end
 	 */
 	function handleHexLeave() {
-		hoveredHex = null;
+		if (!continentSelectionMode) {
+			hoveredHex = null;
+		}
 	}
 
 	/**
@@ -118,29 +177,57 @@
 		scale = 0.6;
 	}
 
+	// Pre-compute tile keys for faster lookups
+	const selectedHexKey = $derived(selectedHex ? `${selectedHex.x},${selectedHex.y}` : null);
+	const hoveredHexKey = $derived(hoveredHex ? `${hoveredHex.x},${hoveredHex.y}` : null);
+
 	/**
-	 * Get stroke color for hex
+	 * Get stroke color for hex (optimized with early exit)
 	 */
 	function getHexStroke(hexTile: HexTile): string {
-		if (selectedHex?.x === hexTile.x && selectedHex?.y === hexTile.y) {
-			return '#f59e0b';
+		// Fast path: continent selection mode
+		if (continentSelectionMode && selectedContinentId !== null) {
+			return hexTile.continentId === selectedContinentId ? '#f59e0b' : 'rgba(0, 0, 0, 0.2)';
 		}
-		if (hoveredHex?.x === hexTile.x && hoveredHex?.y === hexTile.y) {
-			return '#a855f7';
+
+		// Fast path: nothing selected or hovered
+		if (!selectedHexKey && !hoveredHexKey) {
+			return 'rgba(0, 0, 0, 0.2)';
 		}
+
+		const tileKey = `${hexTile.x},${hexTile.y}`;
+
+		// Single hex selection
+		if (selectedHexKey === tileKey) return '#f59e0b';
+
+		// Hover
+		if (hoveredHexKey === tileKey) return '#a855f7';
+
 		return 'rgba(0, 0, 0, 0.2)';
 	}
 
 	/**
-	 * Get stroke width for hex
+	 * Get stroke width for hex (optimized with early exit)
 	 */
 	function getHexStrokeWidth(hexTile: HexTile): number {
-		if (selectedHex?.x === hexTile.x && selectedHex?.y === hexTile.y) {
-			return 2;
+		// Fast path: continent selection mode
+		if (continentSelectionMode && selectedContinentId !== null) {
+			return hexTile.continentId === selectedContinentId ? 2.5 : 0.5;
 		}
-		if (hoveredHex?.x === hexTile.x && hoveredHex?.y === hexTile.y) {
-			return 1.5;
+
+		// Fast path: nothing selected or hovered
+		if (!selectedHexKey && !hoveredHexKey) {
+			return 0.5;
 		}
+
+		const tileKey = `${hexTile.x},${hexTile.y}`;
+
+		// Single hex selection
+		if (selectedHexKey === tileKey) return 2;
+
+		// Hover
+		if (hoveredHexKey === tileKey) return 1.5;
+
 		return 0.5;
 	}
 
@@ -177,7 +264,7 @@
 						{#each row as hexTile}
 							<polygon
 								points={getHexPoints(hexTile)}
-								fill={TERRAIN_COLORS[hexTile.terrainType]}
+								fill={getHexFill(hexTile)}
 								stroke={getHexStroke(hexTile)}
 								stroke-width={getHexStrokeWidth(hexTile)}
 								class="hex-tile"
@@ -187,7 +274,11 @@
 								role="button"
 								tabindex="0"
 							>
-								<title>{getTerrainName(hexTile.terrainType)} ({hexTile.x}, {hexTile.y})</title>
+								<title
+									>{getTerrainName(hexTile.terrainType)} ({hexTile.x}, {hexTile.y}){hexTile.continentId
+										? ` - Continent ${hexTile.continentId}`
+										: ''}</title
+								>
 							</polygon>
 						{/each}
 					{/each}

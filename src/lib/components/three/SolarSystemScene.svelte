@@ -116,7 +116,7 @@
 	}
 
 	function createStar(star: any): THREE.Mesh {
-		const scale = getScale(star.size, 0.3);
+		const scale = getScale(star.size, undefined, 0.3);
 		const resolution = getResolution(star.size);
 		const geometry = new THREE.SphereGeometry(scale, resolution, resolution);
 		const texture = new THREE.DataTexture(
@@ -227,7 +227,7 @@
 
 	function createPlanetMeshes(planet: any): THREE.Mesh[] {
 		const meshes: THREE.Mesh[] = [];
-		const scale = getScale(planet.size, 1.5); // Increased from 0.3 to 1.5 for bigger planets
+		const scale = getScale(planet.size, planet.type, 1.5); // Increased from 0.3 to 1.5 for bigger planets
 		const resolution = getResolution(planet.size);
 
 		// Handle backward compatibility for planet colors

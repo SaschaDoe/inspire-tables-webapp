@@ -52,6 +52,12 @@ export const entityConfigRegistry: Record<string, EntityConfigMetadata> = {
 				label: 'Narrative Medium',
 				inputType: 'select',
 				options: ['RPG', 'Book', 'Movie', 'Video Game']
+			},
+			{
+				propertyName: 'blendIntensity',
+				label: 'Blend Intensity (1-10)',
+				inputType: 'number',
+				placeholder: '5'
 			}
 		]
 	},

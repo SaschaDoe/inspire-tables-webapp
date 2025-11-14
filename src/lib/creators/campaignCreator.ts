@@ -15,8 +15,6 @@ const genreToSubGenreMap: { [key: string]: any } = {
 };
 
 export class CampaignCreator extends Creator<Campaign> {
-	private creationLog: string[] = [];
-
 	create(): Campaign {
 		const campaign = new Campaign();
 		this.setParentReference(campaign); // Set parent if provided
@@ -28,27 +26,29 @@ export class CampaignCreator extends Creator<Campaign> {
 		campaign.narrativeMediumType =
 			this.overrides['narrativeMediumType'] || NarrativeMediumType.RPG;
 
+		// Use override or roll for blend intensity
+		campaign.blendIntensity =
+			this.overrides['blendIntensity'] !== undefined
+				? this.overrides['blendIntensity']
+				: this.dice.rollInterval(1, 10);
+
 		// Create genre mix (can be overridden per property)
-		campaign.genreMix = this.createGenreMix();
-		campaign.creationLog = this.creationLog;
+		campaign.genreMix = this.createGenreMix(campaign.blendIntensity);
 		campaign.description = this.generateCampaignDescription(campaign);
 
 		return campaign;
 	}
 
-	private createGenreMix(): GenreMix {
+	private createGenreMix(blendIntensity: number): GenreMix {
 		const genreMix = new GenreMix();
 		genreMix.id = crypto.randomUUID();
 
 		// Create primary genre
 		genreMix.primaryGenre = this.createGenre();
-		this.creationLog.push(`🎭 Primary Genre: ${getGenreFullName(genreMix.primaryGenre.name, genreMix.primaryGenre.subGenreName)}`);
 
 		// Determine if we have multiple genres (20% chance of single genre)
 		const hasMultipleGenres = this.dice.getRandom() > 0.2;
 		const numberOfSubGenres = hasMultipleGenres ? this.dice.rollInterval(1, 3) : 0;
-
-		this.creationLog.push(`🎲 Number of additional genres: ${numberOfSubGenres}`);
 
 		// Create sub-genres
 		for (let i = 0; i < numberOfSubGenres; i++) {
@@ -62,16 +62,14 @@ export class CampaignCreator extends Creator<Campaign> {
 
 			if (fullName !== primaryFullName) {
 				genreMix.subGenres.push(genre);
-				this.creationLog.push(`🎭 Sub-Genre ${i + 1}: ${fullName}`);
 			}
 		}
 
 		// Assign genre weights
 		this.assignGenreWeights(genreMix);
 
-		// Set blend intensity
-		genreMix.blendIntensity = this.dice.rollInterval(1, 10);
-		this.creationLog.push(`⚡ Blend Intensity: ${genreMix.blendIntensity}/10`);
+		// Set blend intensity from parameter
+		genreMix.blendIntensity = blendIntensity;
 
 		genreMix.description = this.generateGenreMixDescription(genreMix);
 
@@ -114,7 +112,6 @@ export class CampaignCreator extends Creator<Campaign> {
 			genreMix.primaryGenre.subGenreName
 		);
 		genreMix.genreWeights[primaryFullName] = primaryWeight;
-		this.creationLog.push(`⚖️ ${primaryFullName}: ${primaryWeight}%`);
 
 		remainingWeight -= primaryWeight;
 
@@ -136,7 +133,6 @@ export class CampaignCreator extends Creator<Campaign> {
 
 			const fullName = getGenreFullName(genre.name, genre.subGenreName);
 			genreMix.genreWeights[fullName] = weight;
-			this.creationLog.push(`⚖️ ${fullName}: ${weight}%`);
 		}
 	}
 

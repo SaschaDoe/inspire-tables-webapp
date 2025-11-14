@@ -3,12 +3,13 @@ import type { Color } from '$lib/entities/celestial/ring';
 import * as THREE from 'three';
 
 /**
- * Calculate 3D scale based on size category
+ * Calculate 3D scale based on size category and planet type
  * @param size - Size category
+ * @param planetType - Type of planet (gas giants are much larger)
  * @param baseScale - Base scale multiplier (default: 1)
  * @returns Calculated scale value
  */
-export function getScale(size: string, baseScale = 1): number {
+export function getScale(size: string, planetType?: string, baseScale = 1): number {
 	const scaleMap: Record<string, number> = {
 		tiny: baseScale * 0.5,
 		small: baseScale * 0.75,
@@ -16,7 +17,14 @@ export function getScale(size: string, baseScale = 1): number {
 		large: baseScale * 1.25,
 		gigantic: baseScale * 1.5
 	};
-	return scaleMap[size] || baseScale;
+	let scale = scaleMap[size] || baseScale;
+
+	// Gas giants are larger than rocky planets (about 1.4x larger on average)
+	if (planetType === 'gas giant') {
+		scale *= 1.4;
+	}
+
+	return scale;
 }
 
 /**
@@ -51,13 +59,17 @@ export function calculateAtmospherePixelColor(
 	atmosphereColor: Color,
 	transparency: number
 ): [number, number, number, number] {
-	// White clouds for nitrogen-oxygen atmosphere with high noise
-	if (planetData.atmosphere === 'nitrogen-oxygen' && noiseValue > 0.7) {
+	// Desert, barren, volcanic, and ice planets never have white clouds
+	const planetsWithoutClouds = ['desert', 'barren', 'volcanic', 'ice'];
+	const hasClouds = !planetsWithoutClouds.includes(planetData.type);
+
+	// White clouds for nitrogen-oxygen atmosphere with high noise (only for suitable planets)
+	if (hasClouds && planetData.atmosphere === 'nitrogen-oxygen' && noiseValue > 0.7) {
 		return [255, 255, 255, 255];
 	}
 
-	// Weather-specific effects
-	if (planetData.atmosphere === 'nitrogen-oxygen') {
+	// Weather-specific effects (only for planets with clouds)
+	if (hasClouds && planetData.atmosphere === 'nitrogen-oxygen') {
 		if (planetData.weather === 'foggy') {
 			// Foggy: White mist with moderate transparency
 			return [255, 255, 255, 150 * transparency];
