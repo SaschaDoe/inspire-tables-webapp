@@ -93,7 +93,8 @@ export class GalaxyCreator extends Creator<Galaxy> {
 		// Create at least one solar system
 		const solarSystemCreator = new SolarSystemCreator();
 		solarSystemCreator.dice = this.dice;
-		galaxy.solarSystems.push(solarSystemCreator.create());
+		const solarSystem = solarSystemCreator.withParent(galaxy.id).create();
+		galaxy.solarSystems.push(solarSystem);
 
 		this.generateDescription(galaxy);
 		return galaxy;

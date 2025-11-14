@@ -26,9 +26,15 @@ export class SolarSystemCreator extends Creator<SolarSystem> {
 		const solarSystem = new SolarSystem();
 		solarSystem.name = new SolarSystemNameTable().roleWithCascade(this.dice).text;
 
-		// Set random position on galaxy image (600px max-width, 400px height)
-		solarSystem.positionX = this.dice.rollInterval(50, 550);
-		solarSystem.positionY = this.dice.rollInterval(50, 350);
+		// Set parent reference if provided
+		if (this.parentId) {
+			solarSystem.parentId = this.parentId;
+		}
+
+		// Set random position on galaxy image (450px max-width, 300px height)
+		// Add margin (60px from edges) to keep markers more centered and visible
+		solarSystem.positionX = this.dice.rollInterval(60, 390);
+		solarSystem.positionY = this.dice.rollInterval(60, 240);
 
 		// Create stars
 		const numberOfSuns = +new NumberOfSunsTable().roleWithCascade(this.dice).text;

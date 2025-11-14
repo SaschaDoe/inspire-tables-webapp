@@ -8,4 +8,5 @@ export class SolarSystem extends Entity {
 	stars: Star[] = [];
 	positionX = 0;
 	positionY = 0;
+	parentId = ''; // Reference to parent Galaxy
 }

@@ -86,11 +86,18 @@
 	}
 
 	function deleteGenericEntity(id: string) {
-		entityStore.deleteEntity(id);
+		// Use cascading delete which handles parent arrays and children
+		const result = entityStore.deleteEntityCascading(id);
+
+		// Close tabs for all deleted entities
+		for (const deletedId of result.deletedEntityIds) {
+			tabStore.closeTabByEntityId(deletedId);
+		}
+
+		// Reload entities to update UI
 		loadAllEntities();
 
-		// Close the tab associated with this entity
-		tabStore.closeTabByEntityId(id);
+		console.log(`[workspace] Deleted ${result.deletedEntityIds.length} entities, updated ${result.updatedParentIds.length} parents`);
 	}
 
 	function openStoryBoard(adventureId: string) {
@@ -169,7 +176,13 @@
 	}
 
 	function deleteAdventure(id: string) {
-		entityStore.deleteEntity(id);
+		// Use cascading delete
+		const result = entityStore.deleteEntityCascading(id);
+
+		// Close tabs for all deleted entities
+		for (const deletedId of result.deletedEntityIds) {
+			tabStore.closeTabByEntityId(deletedId);
+		}
 		loadAdventures();
 		tabStore.closeTabByEntityId(id);
 	}

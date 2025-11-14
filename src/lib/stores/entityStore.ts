@@ -1,6 +1,7 @@
 import { writable, derived } from 'svelte/store';
 import type { Entity, EntityType } from '$lib/types/entity';
 import type { Campaign } from '$lib/entities/campaign';
+import { calculateCascadingDeletion, removeFromParentArray, type DeletionResult } from '$lib/utils/entityDeletion';
 
 interface EntityState {
 	entities: Map<string, Entity>;
@@ -140,6 +141,84 @@ function createEntityStore() {
 				saveToStorage(newState);
 				return newState;
 			});
+		},
+
+		getAllEntities(): Entity[] {
+			let entities: Entity[] = [];
+			subscribe(state => {
+				entities = Array.from(state.entities.values());
+			})();
+			return entities;
+		},
+
+		removeFromRecentlyUsed(entityId: string) {
+			update(state => {
+				const newRecentlyUsed = state.recentlyUsed.filter(id => id !== entityId);
+				const newState = { ...state, recentlyUsed: newRecentlyUsed };
+				saveToStorage(newState);
+				return newState;
+			});
+		},
+
+		removeFromFavorites(entityId: string) {
+			update(state => {
+				const newFavorites = new Set(state.favorites);
+				newFavorites.delete(entityId);
+				const newState = { ...state, favorites: newFavorites };
+				saveToStorage(newState);
+				return newState;
+			});
+		},
+
+		/**
+		 * Cascading delete: removes entity, updates parent arrays, and deletes children
+		 * Returns information about what was deleted for UI updates
+		 */
+		deleteEntityCascading(entityId: string): DeletionResult {
+			const result: DeletionResult = {
+				deletedEntityIds: [],
+				updatedParentIds: []
+			};
+
+			// Calculate what needs to be deleted/updated
+			const deletionPlan = calculateCascadingDeletion(
+				entityId,
+				this.getEntity.bind(this),
+				this.getAllEntities.bind(this)
+			);
+
+			// Update parent entities to remove deleted entities from their arrays
+			for (const parentId of deletionPlan.updatedParentIds) {
+				const parent = this.getEntity(parentId);
+				if (!parent) continue;
+
+				// Find all entities being deleted that are children of this parent
+				for (const deletedId of deletionPlan.deletedEntityIds) {
+					const deletedEntity = this.getEntity(deletedId);
+					if (deletedEntity && deletedEntity.parentId === parentId) {
+						// Remove from parent's nested array
+						const modified = removeFromParentArray(parent, deletedEntity);
+						if (modified) {
+							// Update parent in store with modified customFields
+							this.updateEntity(parentId, {
+								customFields: parent.customFields
+							});
+						}
+					}
+				}
+			}
+
+			// Delete all entities (including children)
+			for (const deletedId of deletionPlan.deletedEntityIds) {
+				this.deleteEntity(deletedId);
+				this.removeFromRecentlyUsed(deletedId);
+				this.removeFromFavorites(deletedId);
+			}
+
+			return {
+				deletedEntityIds: deletionPlan.deletedEntityIds,
+				updatedParentIds: deletionPlan.updatedParentIds
+			};
 		},
 
 		// Get entities by type
