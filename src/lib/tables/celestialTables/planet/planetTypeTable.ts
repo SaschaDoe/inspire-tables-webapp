@@ -18,3 +18,20 @@ export class LivablePlanetTypeTable extends Table {
 		this.tableType = TableType.Other;
 	}
 }
+
+export class AllPlanetTypeTable extends Table {
+	constructor() {
+		const entries = [
+			new TableEntry('earth-like').withRoleInterval(1, 3),
+			new TableEntry('desert').withRoleInterval(4, 5),
+			new TableEntry('water').withRoleInterval(6, 6),
+			new TableEntry('jungle').withRoleInterval(7, 7),
+			new TableEntry('ice').withRoleInterval(8, 9),
+			new TableEntry('volcanic').withRoleInterval(10, 10),
+			new TableEntry('gas giant').withRoleInterval(11, 13),
+			new TableEntry('barren').withRoleInterval(14, 15)
+		];
+		super(entries, TableTitles.PlanetType);
+		this.tableType = TableType.Other;
+	}
+}

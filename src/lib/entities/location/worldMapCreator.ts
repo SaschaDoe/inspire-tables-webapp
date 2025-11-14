@@ -78,8 +78,11 @@ export class WorldMapCreator {
 		switch (planetType) {
 			case 'ice':
 				return { min: 0, max: 30 };
+			case 'water':
 			case 'earth-like':
 				return { min: 30, max: 70 };
+			case 'jungle':
+				return { min: 60, max: 85 }; // Hot and humid
 			case 'desert':
 				return { min: 50, max: 80 };
 			case 'volcanic':
@@ -100,13 +103,21 @@ export class WorldMapCreator {
 		let variationRange: number;
 
 		switch (planetType) {
+			case 'water':
+				baseThreshold = 0.15; // Base ~90% water (waterworld)
+				variationRange = 0.1; // Can vary from 85-95% water
+				break;
 			case 'ice':
-				baseThreshold = 0.5; // Base ~50% water
+				baseThreshold = 0.5; // Base ~50% water (frozen)
 				variationRange = 0.2; // Can vary from 30-70% water
 				break;
 			case 'earth-like':
 				baseThreshold = 0.35; // Base ~70% water
 				variationRange = 0.25; // Can vary from 45-95% water (oceanic to continental)
+				break;
+			case 'jungle':
+				baseThreshold = 0.4; // Base ~60% land (lots of forests)
+				variationRange = 0.2; // Can vary from 50-70% land
 				break;
 			case 'desert':
 				baseThreshold = 0.15; // Base ~15% water
@@ -180,20 +191,19 @@ export class WorldMapCreator {
 				if (x === 0 || x === width - 1) {
 					elevation = 0; // Water at left/right edges
 				}
-				if (y === 0 || y === height - 1) {
-					elevation = 3; // Land at top/bottom edges (poles)
-				} else if (y === 1 || y === height - 2) {
-					// Random land/water near poles
-					elevation = Math.random() > 0.5 ? 3 : 0;
-				}
 
 				hexTile.elevation = elevation;
 
-				// Calculate temperature (base + noise variation)
+				// Calculate temperature (base + noise variation + latitude)
 				const tempNoise = temperatureNoise(nx * this.NOISE_SCALE, ny * this.NOISE_SCALE);
 				const tempVariation = tempNoise * 20; // ±20 variation
 				const baseTemp = tempRange.min + (tempRange.max - tempRange.min) / 2;
-				hexTile.temperature = Math.max(0, Math.min(100, baseTemp + tempVariation));
+
+				// Apply latitude effect (colder at poles)
+				const latitudeFactor = Math.abs(ny); // 0 at equator, 1 at poles
+				const latitudePenalty = latitudeFactor * 40; // Up to -40° at poles
+
+				hexTile.temperature = Math.max(0, Math.min(100, baseTemp + tempVariation - latitudePenalty));
 
 				// Calculate dryness (inverse of water proximity, plus noise)
 				const dryNoise = drynessNoise(nx * this.NOISE_SCALE, ny * this.NOISE_SCALE);
@@ -205,7 +215,9 @@ export class WorldMapCreator {
 					elevation,
 					hexTile.temperature,
 					hexTile.dryness,
-					planet.type
+					planet.type,
+					y,
+					height
 				);
 
 				grid[y][x] = hexTile;
@@ -216,26 +228,42 @@ export class WorldMapCreator {
 	}
 
 	/**
-	 * Determine terrain type based on elevation, temperature, and dryness
+	 * Determine terrain type based on elevation, temperature, dryness, and position
 	 */
 	private static determineTerrainType(
 		elevation: number,
 		temperature: number,
 		dryness: number,
-		planetType: string
+		planetType: string,
+		y: number,
+		height: number
 	): TerrainType {
-		// Water bodies (elevation 0-1)
+		// Polar regions (top and bottom 10% of map)
+		const polarThreshold = height * 0.1;
+		const isPolar = y < polarThreshold || y > height - polarThreshold;
+
+		// Apply ice caps at poles when cold enough
+		if (isPolar && temperature < 15 && elevation > 0) {
+			return TerrainType.Snow;
+		}
+
+		// Water bodies (elevation 0)
 		if (elevation === 0) {
-			if (temperature < 10) return TerrainType.IceFloe;
+			if (temperature < 10 || isPolar) return TerrainType.IceFloe;
 			if (dryness > 80) return TerrainType.SaltLake;
 			return TerrainType.Water;
 		}
 
+		// Planet-specific biases
+		const isJunglePlanet = planetType === 'jungle';
+		const isDesertPlanet = planetType === 'desert';
+		const isIcePlanet = planetType === 'ice';
+
 		// Low elevation (elevation 1-2)
 		if (elevation <= 2) {
-			if (temperature < 20) return TerrainType.Tundra;
-			if (temperature > 70 && dryness > 60) return TerrainType.Desert;
-			if (temperature > 60 && dryness < 40) return TerrainType.Jungle;
+			if (temperature < 20 || isIcePlanet) return TerrainType.Tundra;
+			if (isDesertPlanet || (temperature > 70 && dryness > 60)) return TerrainType.Desert;
+			if (isJunglePlanet || (temperature > 60 && dryness < 40)) return TerrainType.Jungle;
 			if (dryness > 60) return TerrainType.Plains;
 			return TerrainType.Grass;
 		}
@@ -243,13 +271,14 @@ export class WorldMapCreator {
 		// Medium elevation (elevation 3-5) - Hills
 		if (elevation <= 5) {
 			if (planetType === 'volcanic' && temperature > 80) return TerrainType.AshHills;
-			if (temperature > 60 && dryness < 40) return TerrainType.JungleHills;
-			if (dryness > 60) return TerrainType.Hills;
+			if (isJunglePlanet || (temperature > 60 && dryness < 40)) return TerrainType.JungleHills;
+			if (temperature < 25 || isIcePlanet) return TerrainType.Snow;
+			if (dryness > 60 || isDesertPlanet) return TerrainType.Hills;
 			return TerrainType.GrassHills;
 		}
 
 		// High elevation (elevation 6+) - Mountains
-		if (temperature < 20) return TerrainType.SnowMountain;
+		if (temperature < 20 || isIcePlanet) return TerrainType.SnowMountain;
 		if (elevation >= 8) return TerrainType.HighMountain;
 		if (planetType === 'volcanic' && temperature > 80) {
 			return elevation > 7 ? TerrainType.Lava : TerrainType.AshPlains;

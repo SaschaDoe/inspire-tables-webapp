@@ -9,7 +9,7 @@ export class Planet extends Entity {
 	nameMeaning = ''; // Meaning/etymology of the name
 	isLivable = false;
 	continents: Continent[] = [];
-	type = 'earth-like';
+	type: 'earth-like' | 'desert' | 'ice' | 'volcanic' | 'gas giant' | 'jungle' | 'water' | 'barren' = 'earth-like';
 	parentId = ''; // Reference to parent SolarSystem
 	worldMap: WorldMap | null = null; // Hex map for planet surface
 

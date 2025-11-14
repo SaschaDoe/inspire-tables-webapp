@@ -1,7 +1,7 @@
 import { Creator } from '../base/creator';
 import { Planet } from './planet';
 import { PlanetNameTable } from '$lib/tables/celestialTables/planet/planetNameTable';
-import { LivablePlanetTypeTable } from '$lib/tables/celestialTables/planet/planetTypeTable';
+import { LivablePlanetTypeTable, AllPlanetTypeTable } from '$lib/tables/celestialTables/planet/planetTypeTable';
 import { ContinentCreator } from '../location/continentCreator';
 import { Ring, type Color } from './ring';
 import { getResolution } from '$lib/utils/three/celestialRendering';
@@ -23,6 +23,16 @@ export class PlanetCreator extends Creator<Planet> {
 			{ r: 70, g: 120, b: 180 }, // Ocean blue
 			{ r: 90, g: 140, b: 90 }, // Land green
 			{ r: 100, g: 150, b: 200 } // Light blue
+		],
+		jungle: [
+			{ r: 30, g: 100, b: 40 }, // Deep jungle green
+			{ r: 50, g: 120, b: 50 }, // Forest green
+			{ r: 40, g: 110, b: 45 } // Tropical green
+		],
+		water: [
+			{ r: 20, g: 80, b: 150 }, // Deep ocean blue
+			{ r: 30, g: 100, b: 180 }, // Ocean blue
+			{ r: 40, g: 110, b: 200 } // Light ocean
 		],
 		desert: [
 			{ r: 210, g: 180, b: 140 },
@@ -74,9 +84,16 @@ export class PlanetCreator extends Creator<Planet> {
 	create(): Planet {
 		const planet = new Planet();
 		this.setParentReference(planet); // Automatically sets parentId
-		planet.isLivable = this.isLivable;
 		planet.name = new PlanetNameTable().roleWithCascade(this.dice).text;
-		planet.type = new LivablePlanetTypeTable().roleWithCascade(this.dice).text;
+
+		// Use different table based on livable flag
+		// If isLivable is explicitly set, use LivablePlanetTypeTable, otherwise use AllPlanetTypeTable
+		planet.type = this.isLivable
+			? new LivablePlanetTypeTable().roleWithCascade(this.dice).text
+			: new AllPlanetTypeTable().roleWithCascade(this.dice).text as any;
+
+		// Set isLivable based on planet type
+		planet.isLivable = ['earth-like', 'desert', 'ice', 'water', 'jungle'].includes(planet.type);
 
 		// Generate visualization properties
 		this.generateVisualizationProperties(planet);

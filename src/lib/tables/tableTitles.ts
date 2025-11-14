@@ -52,6 +52,7 @@ export enum TableTitles {
 	SolarSystemName = 'Solar System Name',
 	PlanetName = 'Planet Name',
 	LivablePlanetType = 'Livable Planet Type',
+	PlanetType = 'Planet Type',
 	NumberOfSuns = 'Number of Suns',
 	SphereName = 'Sphere Name',
 	SphereNamePrefixes = 'Sphere Name Prefixes',
