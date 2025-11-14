@@ -8,12 +8,13 @@ export class BuildingCreator extends Creator<Building> {
 	create(): Building {
 		const building = new Building();
 
-		building.type = new BuildingTable().roleWithCascade(this.dice).text;
-		building.adjective = new BuildingAdjectiveTable().roleWithCascade(this.dice).text;
-		building.quality = new QualityTable().roleWithCascade(this.dice).text;
+		// Use overrides if provided, otherwise roll on tables
+		building.type = this.overrides['type'] || new BuildingTable().roleWithCascade(this.dice).text;
+		building.adjective = this.overrides['adjective'] || new BuildingAdjectiveTable().roleWithCascade(this.dice).text;
+		building.quality = this.overrides['quality'] || new QualityTable().roleWithCascade(this.dice).text;
 
-		// Generate name
-		building.name = this.generateName(building);
+		// Generate name (use override if provided)
+		building.name = this.overrides['name'] || this.generateName(building);
 
 		// Generate description
 		building.description = this.generateDescription(building);

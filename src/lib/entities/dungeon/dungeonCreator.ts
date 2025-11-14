@@ -39,8 +39,9 @@ export class DungeonCreator extends Creator<Dungeon> {
 	}
 
 	private createFantasyDungeon(dungeon: Dungeon): void {
-		dungeon.name = new DungeonNameTable().roleWithCascade(this.dice).text;
-		dungeon.type = new DungeonTypeTable().roleWithCascade(this.dice).text;
+		// Use overrides if provided
+		dungeon.name = this.overrides['name'] || new DungeonNameTable().roleWithCascade(this.dice).text;
+		dungeon.type = this.overrides['type'] || new DungeonTypeTable().roleWithCascade(this.dice).text;
 
 		// Create monsters
 		const numberOfMonsters = this.dice.rollInterval(1, 3) + 1; // 2-4 monsters
@@ -52,7 +53,7 @@ export class DungeonCreator extends Creator<Dungeon> {
 	}
 
 	private createRealWorldDungeon(dungeon: Dungeon): void {
-		dungeon.name = new RealWorldDungeonNameTable().roleWithCascade(this.dice).text;
+		dungeon.name = this.overrides['name'] || new RealWorldDungeonNameTable().roleWithCascade(this.dice).text;
 		dungeon.type = dungeon.name;
 
 		// Create real world enemies
@@ -63,13 +64,15 @@ export class DungeonCreator extends Creator<Dungeon> {
 	}
 
 	private createRestOfDungeon(dungeon: Dungeon): void {
-		// Adjective (50% chance)
-		if (this.dice.random() > 0.5) {
+		// Adjective (50% chance or if override provided)
+		if (this.overrides['adjective']) {
+			dungeon.adjective = this.overrides['adjective'];
+		} else if (this.dice.random() > 0.5) {
 			dungeon.adjective = new DungeonAdjectiveTable().roleWithCascade(this.dice).text;
 		}
 
-		dungeon.size = new SizeTable().roleWithCascade(this.dice).text;
-		dungeon.state = new DungeonStateTable().roleWithCascade(this.dice).text;
+		dungeon.size = this.overrides['size'] || new SizeTable().roleWithCascade(this.dice).text;
+		dungeon.state = this.overrides['state'] || new DungeonStateTable().roleWithCascade(this.dice).text;
 
 		// Create entrances
 		const entranceCreator = new EntranceCreator();
