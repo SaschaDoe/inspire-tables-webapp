@@ -1,61 +1,23 @@
 import type { Entity, EntityType } from '$lib/types/entity';
 import { entityStore } from '$lib/stores/entityStore';
-import { EntityType as ET } from '$lib/types/entity';
+import { getNestedEntityConfigCached } from './entityHierarchy';
 
 /**
- * Configuration mapping entity types to their nested entity properties
- * This defines which properties on a generated entity contain nested entities
+ * Get nested entity configuration for a specific entity type.
+ * This is auto-generated from creator NESTED_ENTITY_RULES - no manual maintenance needed!
+ *
+ * To add a new parent-child relationship:
+ * 1. Add `parentId = ''` to the child entity
+ * 2. Define `NESTED_ENTITY_RULES` in the parent creator (you likely already have this!)
+ * 3. Call `this.setParentReference(entity)` in child creator's create()
+ * 4. Call `.withParent(parent.id)` when parent creates children
+ *
+ * The nested entity configuration is automatically detected from your NESTED_ENTITY_RULES.
  */
-const nestedEntityConfig: Record<string, Array<{ propertyName: string; childType: EntityType }>> = {
-	[ET.Dungeon]: [
-		{ propertyName: 'rooms', childType: ET.Room },
-		{ propertyName: 'entrances', childType: ET.Entrance },
-		{ propertyName: 'monsters', childType: ET.Monster }
-	],
-	[ET.MagicSystem]: [
-		{ propertyName: 'spells', childType: ET.Spell }
-	],
-	[ET.Character]: [
-		{ propertyName: 'talents', childType: ET.Talent }
-	],
-	[ET.Monster]: [
-		{ propertyName: 'talents', childType: ET.Talent }
-	],
-	[ET.Villain]: [
-		{ propertyName: 'talents', childType: ET.Talent }
-	],
-	[ET.Entrance]: [
-		{ propertyName: 'traps', childType: ET.Trap }
-	],
-	[ET.Sign]: [
-		{ propertyName: 'characters', childType: ET.Character },
-		{ propertyName: 'buildings', childType: ET.Building }
-	],
-	[ET.God]: [
-		{ propertyName: 'habitat', childType: ET.Sphere }
-	],
-	[ET.Faction]: [
-		{ propertyName: 'sign', childType: ET.Sign },
-		{ propertyName: 'members', childType: ET.Character },
-		{ propertyName: 'rituals', childType: ET.Ritual }
-	],
-	[ET.Universe]: [
-		{ propertyName: 'sphereConnections', childType: ET.SphereConnection },
-		{ propertyName: 'spheres', childType: ET.Sphere }
-	],
-	[ET.Sphere]: [
-		{ propertyName: 'galaxies', childType: ET.Galaxy }
-	],
-	[ET.Galaxy]: [
-		{ propertyName: 'solarSystems', childType: ET.SolarSystem }
-	],
-	[ET.SolarSystem]: [
-		{ propertyName: 'planets', childType: ET.Planet }
-	],
-	[ET.Planet]: [
-		{ propertyName: 'continents', childType: ET.Continent }
-	]
-};
+export function getNestedEntityConfig(entityType: EntityType) {
+	const config = getNestedEntityConfigCached();
+	return config[entityType] || [];
+}
 
 /**
  * Wraps a nested entity object with full Entity interface properties
@@ -109,7 +71,7 @@ export function extractAndSaveNestedEntities(parentEntity: Entity): Entity[] {
 	}
 
 	// Get nested entity configuration for this entity type
-	const nestedConfig = nestedEntityConfig[parentEntity.type];
+	const nestedConfig = getNestedEntityConfig(parentEntity.type);
 	if (!nestedConfig) {
 		console.log('[nestedEntityExtractor] No config for entity type:', parentEntity.type);
 		return extractedEntities;
@@ -151,11 +113,4 @@ export function extractAndSaveNestedEntities(parentEntity: Entity): Entity[] {
 	}
 
 	return extractedEntities;
-}
-
-/**
- * Get nested entity configuration for a specific entity type
- */
-export function getNestedEntityConfig(entityType: EntityType) {
-	return nestedEntityConfig[entityType] || [];
 }
