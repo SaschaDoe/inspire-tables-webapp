@@ -20,44 +20,44 @@ export class PlanetCreator extends Creator<Planet> {
 	// Planet color palettes based on type
 	private static readonly PLANET_COLORS: Record<string, Color[]> = {
 		'earth-like': [
-			{ r: 70, g: 120, b: 180 }, // Ocean blue
-			{ r: 90, g: 140, b: 90 }, // Land green
-			{ r: 100, g: 150, b: 200 } // Light blue
+			{ r: 50, g: 100, b: 200 }, // Ocean blue (dominant)
+			{ r: 60, g: 140, b: 70 }, // Land green
+			{ r: 40, g: 90, b: 180 } // Deep ocean blue
 		],
 		jungle: [
-			{ r: 30, g: 100, b: 40 }, // Deep jungle green
-			{ r: 50, g: 120, b: 50 }, // Forest green
-			{ r: 40, g: 110, b: 45 } // Tropical green
+			{ r: 20, g: 120, b: 40 }, // Vibrant jungle green
+			{ r: 40, g: 140, b: 50 }, // Bright forest green
+			{ r: 30, g: 100, b: 35 } // Deep jungle green
 		],
 		water: [
-			{ r: 20, g: 80, b: 150 }, // Deep ocean blue
-			{ r: 30, g: 100, b: 180 }, // Ocean blue
-			{ r: 40, g: 110, b: 200 } // Light ocean
+			{ r: 10, g: 60, b: 180 }, // Deep ocean blue
+			{ r: 20, g: 80, b: 200 }, // Ocean blue
+			{ r: 30, g: 100, b: 220 } // Light ocean blue
 		],
 		desert: [
-			{ r: 210, g: 180, b: 140 },
-			{ r: 200, g: 160, b: 110 },
-			{ r: 190, g: 170, b: 130 }
+			{ r: 193, g: 68, b: 14 }, // Mars red-orange
+			{ r: 220, g: 130, b: 60 }, // Sandy orange
+			{ r: 180, g: 90, b: 50 } // Reddish brown
 		],
 		ice: [
-			{ r: 220, g: 230, b: 255 },
-			{ r: 200, g: 210, b: 230 },
-			{ r: 210, g: 220, b: 240 }
+			{ r: 240, g: 248, b: 255 }, // Snow white
+			{ r: 230, g: 240, b: 250 }, // Ice white
+			{ r: 220, g: 235, b: 255 } // Glacier white
 		],
 		volcanic: [
-			{ r: 140, g: 50, b: 30 },
-			{ r: 180, g: 80, b: 40 },
-			{ r: 160, g: 60, b: 35 }
+			{ r: 140, g: 40, b: 20 }, // Dark volcanic rock
+			{ r: 200, g: 60, b: 30 }, // Glowing lava
+			{ r: 100, g: 30, b: 15 } // Cooled lava
 		],
 		'gas giant': [
 			{ r: 200, g: 150, b: 100 }, // Jupiter-like
-			{ r: 180, g: 170, b: 140 }, // Saturn-like
-			{ r: 140, g: 180, b: 200 } // Uranus/Neptune-like
+			{ r: 220, g: 200, b: 160 }, // Saturn-like (pale yellow)
+			{ r: 140, g: 180, b: 200 } // Uranus/Neptune-like (ice blue)
 		],
 		barren: [
-			{ r: 120, g: 120, b: 120 },
-			{ r: 100, g: 95, b: 90 },
-			{ r: 110, g: 105, b: 100 }
+			{ r: 130, g: 120, b: 110 }, // Grey rock
+			{ r: 100, g: 90, b: 80 }, // Dark grey
+			{ r: 150, g: 140, b: 130 } // Light grey
 		]
 	};
 
@@ -84,13 +84,15 @@ export class PlanetCreator extends Creator<Planet> {
 	create(): Planet {
 		const planet = new Planet();
 		this.setParentReference(planet); // Automatically sets parentId
-		planet.name = new PlanetNameTable().roleWithCascade(this.dice).text;
+
+		// Use overrides if provided
+		planet.name = this.overrides['name'] || new PlanetNameTable().roleWithCascade(this.dice).text;
 
 		// Use different table based on livable flag
 		// If isLivable is explicitly set, use LivablePlanetTypeTable, otherwise use AllPlanetTypeTable
-		planet.type = this.isLivable
+		planet.type = this.overrides['type'] || (this.isLivable
 			? new LivablePlanetTypeTable().roleWithCascade(this.dice).text
-			: new AllPlanetTypeTable().roleWithCascade(this.dice).text as any;
+			: new AllPlanetTypeTable().roleWithCascade(this.dice).text as any);
 
 		// Set isLivable based on planet type
 		planet.isLivable = ['earth-like', 'desert', 'ice', 'water', 'jungle'].includes(planet.type);
@@ -121,7 +123,7 @@ export class PlanetCreator extends Creator<Planet> {
 			'large',
 			'gigantic'
 		];
-		planet.size = sizes[this.dice.rollInterval(0, sizes.length - 1)];
+		planet.size = this.overrides['size'] || sizes[this.dice.rollInterval(0, sizes.length - 1)];
 
 		// Generate color based on planet type
 		const colorPalette =
@@ -137,13 +139,15 @@ export class PlanetCreator extends Creator<Planet> {
 		planet.brightness = 0.5;
 
 		// Generate atmosphere
-		planet.atmosphere = this.generateAtmosphere(planet);
+		planet.atmosphere = this.overrides['atmosphere'] || this.generateAtmosphere(planet);
 		planet.atmosphereColor =
 			PlanetCreator.ATMOSPHERE_COLORS[planet.atmosphere] ||
 			PlanetCreator.ATMOSPHERE_COLORS['none'];
 
 		// Generate weather (only for planets with atmosphere)
-		if (planet.atmosphere !== 'none') {
+		if (this.overrides['weather']) {
+			planet.weather = this.overrides['weather'];
+		} else if (planet.atmosphere !== 'none') {
 			const weathers: Array<'clear' | 'moderate' | 'foggy' | 'stormy'> = [
 				'clear',
 				'moderate',
@@ -156,7 +160,7 @@ export class PlanetCreator extends Creator<Planet> {
 		}
 
 		// Generate obliquity (axial tilt)
-		planet.obliquity = this.dice.rollInterval(0, 30); // Most planets 0-30 degrees
+		planet.obliquity = this.overrides['obliquity'] !== undefined ? this.overrides['obliquity'] : this.dice.rollInterval(0, 30); // Most planets 0-30 degrees
 
 		// Generate rings (gas giants more likely to have rings)
 		if (planet.type === 'gas giant' && this.dice.rollInterval(1, 100) > 50) {
@@ -176,37 +180,48 @@ export class PlanetCreator extends Creator<Planet> {
 	}
 
 	/**
-	 * Generate name translation and meaning
+	 * Generate name translation and meaning based on planet type
 	 */
 	private generateNameDetails(planet: Planet): void {
-		const meanings = [
-			'The Wanderer',
-			'Shining One',
-			'Red Star',
-			'Blue Pearl',
-			'Guardian',
-			'Storm Bringer',
-			'Ice World',
-			'Golden Sphere',
-			'Silent Watcher',
-			'Ancient Home'
-		];
+		// Generate meanings and translations that match the planet type
+		const typeBasedDetails: Record<string, { meanings: string[]; translations: string[] }> = {
+			'earth-like': {
+				meanings: ['Home World', 'Blue Pearl', 'Life Bringer', 'Green Sphere', 'Cradle of Life'],
+				translations: ['Terra', 'Gaia', 'Viridis', 'Vita', 'Mundus']
+			},
+			desert: {
+				meanings: ['Red Sands', 'Dust World', 'Arid One', 'Storm World', 'Crimson Desert'],
+				translations: ['Rubrum', 'Aridus', 'Sabulum', 'Siccus', 'Harena']
+			},
+			ice: {
+				meanings: ['Frozen World', 'Ice Realm', 'Winter Star', 'White Pearl', 'Eternal Cold'],
+				translations: ['Glacies', 'Frigus', 'Niveus', 'Gelidus', 'Hibernus']
+			},
+			water: {
+				meanings: ['Ocean World', 'Blue Depths', 'Endless Sea', 'Water Sphere', 'Liquid Pearl'],
+				translations: ['Aqua', 'Mare', 'Oceanus', 'Caeruleus', 'Profundus']
+			},
+			jungle: {
+				meanings: ['Wild World', 'Green Heart', 'Untamed One', 'Forest Sphere', 'Life Abundant'],
+				translations: ['Viridis', 'Silva', 'Luxuriosus', 'Florens', 'Vegetatus']
+			},
+			volcanic: {
+				meanings: ['Fire World', 'Burning One', 'Lava Sphere', 'Eternal Flame', 'Inferno'],
+				translations: ['Ignis', 'Vulcanus', 'Ardor', 'Flamma', 'Incendium']
+			},
+			'gas giant': {
+				meanings: ['Storm King', 'Sky Giant', 'Eternal Tempest', 'Cloud Colossus', 'Wind Titan'],
+				translations: ['Ventus', 'Gigantus', 'Tempestas', 'Nebula', 'Caelum']
+			},
+			barren: {
+				meanings: ['Dead World', 'Silent Stone', 'Lifeless One', 'Grey Wanderer', 'Empty Sphere'],
+				translations: ['Vastus', 'Sterilis', 'Desertus', 'Mutus', 'Vacuus']
+			}
+		};
 
-		const translations = [
-			'Terra',
-			'Gaia',
-			'Aqua',
-			'Ignis',
-			'Ventus',
-			'Glacies',
-			'Rubrum',
-			'Viridis',
-			'Caeruleus',
-			'Aureus'
-		];
-
-		planet.nameMeaning = meanings[this.dice.rollInterval(0, meanings.length - 1)];
-		planet.nameTranslation = translations[this.dice.rollInterval(0, translations.length - 1)];
+		const details = typeBasedDetails[planet.type] || typeBasedDetails['barren'];
+		planet.nameMeaning = details.meanings[this.dice.rollInterval(0, details.meanings.length - 1)];
+		planet.nameTranslation = details.translations[this.dice.rollInterval(0, details.translations.length - 1)];
 	}
 
 	/**
@@ -214,14 +229,18 @@ export class PlanetCreator extends Creator<Planet> {
 	 */
 	private generatePhysicalProperties(planet: Planet): void {
 		// Calculate surface gravity based on size
-		const gravityMap: Record<string, number> = {
-			tiny: 0.3,
-			small: 0.6,
-			medium: 1.0,
-			large: 1.5,
-			gigantic: 2.5
-		};
-		planet.surfaceGravity = gravityMap[planet.size] || 1.0;
+		if (this.overrides['surfaceGravity'] !== undefined) {
+			planet.surfaceGravity = this.overrides['surfaceGravity'];
+		} else {
+			const gravityMap: Record<string, number> = {
+				tiny: 0.3,
+				small: 0.6,
+				medium: 1.0,
+				large: 1.5,
+				gigantic: 2.5
+			};
+			planet.surfaceGravity = gravityMap[planet.size] || 1.0;
+		}
 
 		// Magnetic field (more likely for larger planets with metallic core)
 		if (planet.size === 'large' || planet.size === 'gigantic') {
@@ -231,9 +250,13 @@ export class PlanetCreator extends Creator<Planet> {
 		}
 
 		// Calculate rotation period (hours per day)
-		// Smaller planets tend to rotate faster
-		const baseRotation = planet.size === 'tiny' ? 10 : planet.size === 'small' ? 16 : 24;
-		planet.rotationPeriod = baseRotation + this.dice.rollInterval(-8, 12);
+		if (this.overrides['rotationPeriod'] !== undefined) {
+			planet.rotationPeriod = this.overrides['rotationPeriod'];
+		} else {
+			// Smaller planets tend to rotate faster
+			const baseRotation = planet.size === 'tiny' ? 10 : planet.size === 'small' ? 16 : 24;
+			planet.rotationPeriod = baseRotation + this.dice.rollInterval(-8, 12);
+		}
 
 		// Orbit period calculated from distance (Kepler's third law approximation)
 		// T^2 ∝ a^3, where T is in Earth years and a is in AU
@@ -279,7 +302,28 @@ export class PlanetCreator extends Creator<Planet> {
 	 * Generate atmosphere type based on planet properties
 	 */
 	private generateAtmosphere(planet: Planet): Planet['atmosphere'] {
-		if (planet.isLivable) {
+		// Desert planets have thin CO2 or no atmosphere (like Mars)
+		if (planet.type === 'desert') {
+			return this.dice.rollInterval(1, 100) > 50 ? 'carbon-dioxide' : 'none';
+		}
+
+		// Barren planets have no atmosphere
+		if (planet.type === 'barren') {
+			return 'none';
+		}
+
+		// Ice planets have thin or no atmosphere
+		if (planet.type === 'ice') {
+			return this.dice.rollInterval(1, 100) > 70 ? 'none' : 'carbon-dioxide';
+		}
+
+		// Volcanic planets have toxic atmosphere
+		if (planet.type === 'volcanic') {
+			return 'toxic';
+		}
+
+		// Earth-like, jungle, and water planets have breathable atmosphere with clouds
+		if (planet.isLivable && (planet.type === 'earth-like' || planet.type === 'jungle' || planet.type === 'water')) {
 			return 'nitrogen-oxygen';
 		}
 
@@ -293,11 +337,6 @@ export class PlanetCreator extends Creator<Planet> {
 		// Gas giants always have atmosphere
 		if (planet.type === 'gas giant') {
 			return atmospheres[this.dice.rollInterval(1, atmospheres.length - 1)];
-		}
-
-		// Ice planets less likely to have thick atmosphere
-		if (planet.type === 'ice' && this.dice.rollInterval(1, 100) > 70) {
-			return 'none';
 		}
 
 		return atmospheres[this.dice.rollInterval(0, atmospheres.length - 1)];
