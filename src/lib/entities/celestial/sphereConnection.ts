@@ -84,4 +84,6 @@ export class SphereConnection extends Entity {
 
 	/** What happens if requirements aren't met */
 	consequencesOfViolation = '';
+
+	parentId = ''; // Reference to parent Universe
 }

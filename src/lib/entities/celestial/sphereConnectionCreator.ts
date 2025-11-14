@@ -15,6 +15,7 @@ export class SphereConnectionCreator extends Creator<SphereConnection> {
 	private toSphereName = '';
 	private forceOneWay: boolean | null = null;
 
+
 	withSpheres(
 		fromSphereId: string,
 		fromSphereName: string,
@@ -40,6 +41,7 @@ export class SphereConnectionCreator extends Creator<SphereConnection> {
 
 	create(): SphereConnection {
 		const connection = new SphereConnection();
+		this.setParentReference(connection);
 		connection.id = crypto.randomUUID();
 		connection.type = EntityType.SphereConnection;
 		connection.fromSphereId = this.fromSphereId;

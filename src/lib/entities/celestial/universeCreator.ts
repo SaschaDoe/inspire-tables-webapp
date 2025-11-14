@@ -23,6 +23,12 @@ export class UniverseCreator extends Creator<Universe> {
 			max: undefined, // No maximum
 			entityType: 'sphere' as const,
 			displayName: 'Sphere'
+		},
+		sphereConnections: {
+			min: 0,
+			max: undefined, // No maximum
+			entityType: 'sphereConnection' as const,
+			displayName: 'Sphere Connection'
 		}
 	};
 
@@ -215,6 +221,7 @@ export class UniverseCreator extends Creator<Universe> {
 
 		const connectionCreator = new SphereConnectionCreator();
 		connectionCreator.dice = this.dice;
+		connectionCreator.withParent(universe.id);
 
 		switch (universe.structureType) {
 			case 'schalen':
