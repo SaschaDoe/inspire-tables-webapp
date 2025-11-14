@@ -3,6 +3,7 @@
 	import { getEntityConfigMetadata, getTableOptions } from '$lib/entities/entityConfigMetadata';
 	import type { EntityTypeInfo } from '$lib/entities/entityRegistry';
 	import EntityViewer from './EntityViewer.svelte';
+	import { SvelteSet } from 'svelte/reactivity';
 
 	interface Props {
 		isOpen: boolean;
@@ -18,6 +19,19 @@
 	let entityTypes = $state<EntityTypeInfo[]>(getEntityTypesList());
 	let editedProperties = $state<Record<string, any>>({}); // Track user edits
 	let lockedProperties = $state<Set<string>>(new Set()); // Track locked properties
+
+	// Group entities by category
+	const categorizedEntities = $derived(() => {
+		const categories: Record<string, EntityTypeInfo[]> = {};
+		entityTypes.forEach(entity => {
+			const category = entity.category || 'Other';
+			if (!categories[category]) {
+				categories[category] = [];
+			}
+			categories[category].push(entity);
+		});
+		return categories;
+	});
 
 	function selectEntityType(type: string) {
 		selectedEntityType = type;
@@ -109,18 +123,29 @@
 				<div class="modal-content">
 					<p class="modal-description">Select an entity type to generate:</p>
 
-					<div class="entity-type-grid">
-						{#each entityTypes as entityType}
-							<button
-								class="entity-type-card {selectedEntityType === entityType.name ? 'selected' : ''}"
-								onclick={() => selectEntityType(entityType.name)}
-							>
-								<div class="entity-icon">{entityType.icon}</div>
-								<h3 class="entity-type-name">{entityType.displayName}</h3>
-								<p class="entity-type-description">{entityType.description}</p>
-							</button>
-						{/each}
-					</div>
+					{#if true}
+						{@const categories = categorizedEntities()}
+						{@const categoryOrder = ['Meta', 'Locations', 'Characters', 'Artefacts', 'Others', 'Cosmic']}
+						{#each categoryOrder as category}
+						{#if categories[category]}
+							<div class="category-section">
+								<h3 class="category-title">{category}</h3>
+								<div class="entity-type-grid">
+									{#each categories[category] as entityType}
+										<button
+											class="entity-type-card {selectedEntityType === entityType.name ? 'selected' : ''}"
+											onclick={() => selectEntityType(entityType.name)}
+										>
+											<div class="entity-icon">{entityType.icon}</div>
+											<h3 class="entity-type-name">{entityType.displayName}</h3>
+											<p class="entity-type-description">{entityType.description}</p>
+										</button>
+									{/each}
+								</div>
+							</div>
+						{/if}
+					{/each}
+					{/if}
 				</div>
 
 				<div class="modal-footer">
@@ -296,6 +321,23 @@
 		color: rgb(216 180 254);
 		margin-bottom: 1.5rem;
 		font-size: 0.875rem;
+	}
+
+	.category-section {
+		margin-bottom: 2rem;
+	}
+
+	.category-section:last-child {
+		margin-bottom: 0;
+	}
+
+	.category-title {
+		color: rgb(192 132 252);
+		font-size: 1.125rem;
+		font-weight: 600;
+		margin-bottom: 1rem;
+		padding-bottom: 0.5rem;
+		border-bottom: 2px solid rgb(168 85 247 / 0.3);
 	}
 
 	.entity-type-grid {

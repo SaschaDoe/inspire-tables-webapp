@@ -43,12 +43,15 @@
 			]
 		},
 		{
-			name: 'Campaign',
+			name: 'Meta',
 			icon: '📚',
 			sections: [
 				{ type: EntityType.Campaign, label: 'Campaigns', icon: '🎭' },
 				{ type: EntityType.Adventure, label: 'Adventures', icon: '🗺️' },
-				{ type: EntityType.Quest, label: 'Quests', icon: '🎯' }
+				{ type: EntityType.Quest, label: 'Quests', icon: '🎯' },
+				{ type: EntityType.Scene, label: 'Scenes', icon: '🎬' },
+				{ type: EntityType.StoryBeat, label: 'Story Beats', icon: '📝' },
+				{ type: EntityType.InitialMeeting, label: 'Initial Meetings', icon: '🤝' }
 			]
 		},
 		{
@@ -57,22 +60,20 @@
 			sections: [
 				{ type: EntityType.Universe, label: 'Universes', icon: '🌐' },
 				{ type: EntityType.Sphere, label: 'Spheres', icon: '🌌' },
+				{ type: EntityType.SphereConnection, label: 'Sphere Connections', icon: '🔗' },
 				{ type: EntityType.Galaxy, label: 'Galaxies', icon: '🌠' },
 				{ type: EntityType.SolarSystem, label: 'Solar Systems', icon: '☀️' },
+				{ type: EntityType.Star, label: 'Stars', icon: '⭐' },
 				{ type: EntityType.Planet, label: 'Planets', icon: '🪐' },
 				{ type: EntityType.Continent, label: 'Continents', icon: '🗾' },
 				{ type: EntityType.Nation, label: 'Nations', icon: '🏛️' },
 				{ type: EntityType.Region, label: 'Regions', icon: '🏞️' },
-				{ type: EntityType.Settlement, label: 'Settlements', icon: '🏘️' }
-			]
-		},
-		{
-			name: 'Dungeons',
-			icon: '🏰',
-			sections: [
-				{ type: EntityType.Dungeon, label: 'Dungeons', icon: '⚔️' },
+				{ type: EntityType.Settlement, label: 'Settlements', icon: '🏘️' },
+				{ type: EntityType.Building, label: 'Buildings', icon: '🏛️' },
+				{ type: EntityType.HexTile, label: 'Hex Tiles', icon: '⬡' },
+				{ type: EntityType.Dungeon, label: 'Dungeons', icon: '🏰' },
 				{ type: EntityType.Room, label: 'Rooms', icon: '🚪' },
-				{ type: EntityType.Entrance, label: 'Entrances', icon: '🏛️' }
+				{ type: EntityType.Entrance, label: 'Entrances', icon: '🗿' }
 			]
 		},
 		{
@@ -80,14 +81,45 @@
 			icon: '👥',
 			sections: [
 				{ type: EntityType.Character, label: 'Characters', icon: '🧙' },
-				{ type: EntityType.Faction, label: 'Factions', icon: '⚔️' }
+				{ type: EntityType.Villain, label: 'Villains', icon: '😈' },
+				{ type: EntityType.Monster, label: 'Monsters', icon: '👹' },
+				{ type: EntityType.Faction, label: 'Factions', icon: '⚔️' },
+				{ type: EntityType.Organization, label: 'Organizations', icon: '🏢' }
+			]
+		},
+		{
+			name: 'Artefacts',
+			icon: '⚔️',
+			sections: [
+				{ type: EntityType.Artifact, label: 'Artefacts', icon: '⚔️' },
+				{ type: EntityType.Treasure, label: 'Treasures', icon: '💰' },
+				{ type: EntityType.Vehicle, label: 'Vehicles', icon: '🚗' },
+				{ type: EntityType.Sign, label: 'Signs', icon: '🛡️' }
+			]
+		},
+		{
+			name: 'Others',
+			icon: '📦',
+			sections: [
+				{ type: EntityType.MagicSystem, label: 'Magic Systems', icon: '🔮' },
+				{ type: EntityType.Spell, label: 'Spells', icon: '✨' },
+				{ type: EntityType.Ritual, label: 'Rituals', icon: '🕯️' },
+				{ type: EntityType.God, label: 'Gods', icon: '⚡' },
+				{ type: EntityType.Talent, label: 'Talents', icon: '✨' },
+				{ type: EntityType.Trap, label: 'Traps', icon: '🪤' },
+				{ type: EntityType.Event, label: 'Events', icon: '🎭' },
+				{ type: EntityType.WeatherEvent, label: 'Weather Events', icon: '🌪️' },
+				{ type: EntityType.Rumor, label: 'Rumors', icon: '💬' },
+				{ type: EntityType.Prophecy, label: 'Prophecies', icon: '🔮' },
+				{ type: EntityType.Clue, label: 'Clues', icon: '🔍' },
+				{ type: EntityType.Illness, label: 'Illnesses', icon: '🦠' }
 			]
 		}
 	];
 
 	// Use Svelte 5 runes for reactive state
-	let expandedCategories = $state(new SvelteSet<string>(['Quick Access', 'Campaign']));
-	let expandedSections = $state(new SvelteSet<string>());
+	let expandedCategories = new SvelteSet<string>(['Quick Access', 'Meta']);
+	let expandedSections = new SvelteSet<string>();
 
 	// Auto-expand section containing the selected entity
 	$effect(() => {
