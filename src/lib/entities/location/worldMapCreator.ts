@@ -112,8 +112,8 @@ export class WorldMapCreator {
 				variationRange = 0.15; // Can vary from 40-60% water (rest is ice/tundra)
 				break;
 			case 'earth-like':
-				baseThreshold = 0.35; // Base ~70% water
-				variationRange = 0.12; // Can vary from 60-80% water (more realistic range)
+				baseThreshold = 0.38; // Base ~65% water
+				variationRange = 0.08; // Can vary from 60-72% water (Earth-like continents)
 				break;
 			case 'jungle':
 				baseThreshold = 0.42; // Base ~60% land (rivers/lakes but mostly land)
