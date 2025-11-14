@@ -6,6 +6,10 @@ import { MainGenreTable } from '$lib/tables/genreTables/mainGenreTable';
 import { FantasySubGenreTable } from '$lib/tables/genreTables/fantasySubGenreTable';
 import { SciFiSubGenreTable } from '$lib/tables/genreTables/sciFiSubGenreTable';
 import { CampaignNameTable } from '$lib/tables/campaignTables/campaignNameTable';
+import { CampaignToneTable } from '$lib/tables/campaignTables/campaignToneTable';
+import { CampaignPowerScaleTable } from '$lib/tables/campaignTables/campaignPowerScaleTable';
+import { CampaignDurationTable } from '$lib/tables/campaignTables/campaignDurationTable';
+import { CampaignTimePeriodTable } from '$lib/tables/campaignTables/campaignTimePeriodTable';
 
 // Map genres to their sub-genre tables
 const genreToSubGenreMap: { [key: string]: any } = {
@@ -15,6 +19,22 @@ const genreToSubGenreMap: { [key: string]: any } = {
 };
 
 export class CampaignCreator extends Creator<Campaign> {
+	// Nested entity requirements
+	static readonly NESTED_ENTITY_RULES = {
+		adventures: {
+			min: 0,
+			max: undefined, // No maximum
+			entityType: 'adventure' as const,
+			displayName: 'Adventure'
+		},
+		universes: {
+			min: 0,
+			max: 1, // Typically one universe per campaign
+			entityType: 'universe' as const,
+			displayName: 'Universe'
+		}
+	};
+
 	create(): Campaign {
 		const campaign = new Campaign();
 		this.setParentReference(campaign); // Set parent if provided
@@ -33,7 +53,17 @@ export class CampaignCreator extends Creator<Campaign> {
 				: this.dice.rollInterval(1, 10);
 
 		// Create genre mix (can be overridden per property)
-		campaign.genreMix = this.createGenreMix(campaign.blendIntensity);
+		campaign.genreMix = this.overrides['genreMix'] || this.createGenreMix(campaign.blendIntensity);
+
+		// Initialize setting properties with overrides or table rolls
+		campaign.setting = this.overrides['setting'] || '';
+		campaign.tone = this.overrides['tone'] || new CampaignToneTable().roleWithCascade(this.dice).text;
+		campaign.powerScale = this.overrides['powerScale'] || new CampaignPowerScaleTable().roleWithCascade(this.dice).text;
+		campaign.durationType = this.overrides['durationType'] || new CampaignDurationTable().roleWithCascade(this.dice).text;
+		campaign.timePeriod = this.overrides['timePeriod'] || new CampaignTimePeriodTable().roleWithCascade(this.dice).text;
+		campaign.centralConflict = this.overrides['centralConflict'] || '';
+		campaign.mainThemes = this.overrides['mainThemes'] || [];
+
 		campaign.description = this.generateCampaignDescription(campaign);
 
 		return campaign;

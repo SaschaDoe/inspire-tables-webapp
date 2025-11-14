@@ -8,6 +8,10 @@ import { DungeonStateTable } from '$lib/tables/dungeonTables/dungeonStateTable';
 import { SizeTable } from '$lib/tables/otherTables/sizeTable';
 import { AllPlanetTypeTable } from '$lib/tables/celestialTables/planet/planetTypeTable';
 import { CampaignNameTable } from '$lib/tables/campaignTables/campaignNameTable';
+import { CampaignToneTable } from '$lib/tables/campaignTables/campaignToneTable';
+import { CampaignPowerScaleTable } from '$lib/tables/campaignTables/campaignPowerScaleTable';
+import { CampaignDurationTable } from '$lib/tables/campaignTables/campaignDurationTable';
+import { CampaignTimePeriodTable } from '$lib/tables/campaignTables/campaignTimePeriodTable';
 
 /**
  * Configuration for a single property that can be configured
@@ -48,10 +52,46 @@ export const entityConfigRegistry: Record<string, EntityConfigMetadata> = {
 				table: () => new CampaignNameTable()
 			},
 			{
+				propertyName: 'setting',
+				label: 'Setting/World',
+				inputType: 'text',
+				placeholder: 'e.g., The Forgotten Realms, Neo-Tokyo'
+			},
+			{
 				propertyName: 'narrativeMediumType',
 				label: 'Narrative Medium',
 				inputType: 'select',
 				options: ['RPG', 'Book', 'Movie', 'Video Game']
+			},
+			{
+				propertyName: 'tone',
+				label: 'Tone',
+				inputType: 'table',
+				table: () => new CampaignToneTable()
+			},
+			{
+				propertyName: 'powerScale',
+				label: 'Power Scale',
+				inputType: 'table',
+				table: () => new CampaignPowerScaleTable()
+			},
+			{
+				propertyName: 'durationType',
+				label: 'Duration Type',
+				inputType: 'table',
+				table: () => new CampaignDurationTable()
+			},
+			{
+				propertyName: 'timePeriod',
+				label: 'Time Period',
+				inputType: 'table',
+				table: () => new CampaignTimePeriodTable()
+			},
+			{
+				propertyName: 'centralConflict',
+				label: 'Central Conflict',
+				inputType: 'text',
+				placeholder: 'Main threat or conflict driving the story'
 			},
 			{
 				propertyName: 'blendIntensity',

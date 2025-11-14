@@ -285,6 +285,10 @@ export enum TableTitles {
 	// Campaign tables
 	CampaignName = 'Campaign Name',
 	CampaignStatement = 'Campaign Statement',
+	CampaignTone = 'Campaign Tone',
+	CampaignPowerScale = 'Campaign Power Scale',
+	CampaignDuration = 'Campaign Duration',
+	CampaignTimePeriod = 'Campaign Time Period',
 
 	// Mythic GME tables - Core Mechanics
 	MythicFateChart = 'Fate Chart',
