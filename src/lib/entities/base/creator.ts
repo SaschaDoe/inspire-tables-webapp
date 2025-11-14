@@ -5,6 +5,7 @@ export abstract class Creator<T> {
 	generationOption: GenerationOption = GenerationOption.Gonzo;
 	dice: Dice = new Dice();
 	protected parentId?: string; // Optional parent reference
+	protected overrides: Record<string, any> = {}; // Property overrides
 
 	withGenerationOption(option: GenerationOption): this {
 		this.generationOption = option;
@@ -18,6 +19,15 @@ export abstract class Creator<T> {
 
 	withParent(parentId: string): this {
 		this.parentId = parentId;
+		return this;
+	}
+
+	/**
+	 * Set property overrides for entity generation
+	 * @param overrides - Object with property names as keys and override values
+	 */
+	withOverrides(overrides: Record<string, any>): this {
+		this.overrides = overrides;
 		return this;
 	}
 
