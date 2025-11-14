@@ -104,8 +104,8 @@ export class WorldMapCreator {
 
 		switch (planetType) {
 			case 'water':
-				baseThreshold = 0.15; // Base ~90% water (waterworld)
-				variationRange = 0.1; // Can vary from 85-95% water
+				baseThreshold = 0.08; // Base ~95% water (waterworld)
+				variationRange = 0.05; // Can vary from 92-98% water (tiny islands only)
 				break;
 			case 'ice':
 				baseThreshold = 0.45; // Base ~55% frozen water
