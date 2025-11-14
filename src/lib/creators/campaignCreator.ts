@@ -1,10 +1,11 @@
 import { Campaign, NarrativeMediumType } from '$lib/entities/campaign';
 import { GenreMix } from '$lib/entities/genreMix';
 import { Genre, getGenreFullName } from '$lib/entities/genre';
-import { Dice } from '$lib/utils/dice';
+import { Creator } from '$lib/entities/base/creator';
 import { MainGenreTable } from '$lib/tables/genreTables/mainGenreTable';
 import { FantasySubGenreTable } from '$lib/tables/genreTables/fantasySubGenreTable';
 import { SciFiSubGenreTable } from '$lib/tables/genreTables/sciFiSubGenreTable';
+import { CampaignNameTable } from '$lib/tables/campaignTables/campaignNameTable';
 
 // Map genres to their sub-genre tables
 const genreToSubGenreMap: { [key: string]: any } = {
@@ -13,20 +14,21 @@ const genreToSubGenreMap: { [key: string]: any } = {
 	// Add more as we create them
 };
 
-export class CampaignCreator {
-	private dice: Dice;
-	private narrativeMedium: NarrativeMediumType;
+export class CampaignCreator extends Creator<Campaign> {
 	private creationLog: string[] = [];
-
-	constructor(narrativeMedium: NarrativeMediumType = NarrativeMediumType.RPG) {
-		this.dice = new Dice();
-		this.narrativeMedium = narrativeMedium;
-	}
 
 	create(): Campaign {
 		const campaign = new Campaign();
-		campaign.id = crypto.randomUUID();
-		campaign.narrativeMediumType = this.narrativeMedium;
+		this.setParentReference(campaign); // Set parent if provided
+
+		// Use override or roll for name
+		campaign.name = this.overrides['name'] || new CampaignNameTable().roleWithCascade(this.dice).text;
+
+		// Use override or default for narrativeMediumType
+		campaign.narrativeMediumType =
+			this.overrides['narrativeMediumType'] || NarrativeMediumType.RPG;
+
+		// Create genre mix (can be overridden per property)
 		campaign.genreMix = this.createGenreMix();
 		campaign.creationLog = this.creationLog;
 		campaign.description = this.generateCampaignDescription(campaign);

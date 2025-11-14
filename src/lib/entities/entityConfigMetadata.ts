@@ -7,6 +7,7 @@ import { DungeonAdjectiveTable } from '$lib/tables/dungeonTables/dungeonAdjectiv
 import { DungeonStateTable } from '$lib/tables/dungeonTables/dungeonStateTable';
 import { SizeTable } from '$lib/tables/otherTables/sizeTable';
 import { AllPlanetTypeTable } from '$lib/tables/celestialTables/planet/planetTypeTable';
+import { CampaignNameTable } from '$lib/tables/campaignTables/campaignNameTable';
 
 /**
  * Configuration for a single property that can be configured
@@ -38,6 +39,22 @@ export interface EntityConfigMetadata {
  * Registry of configuration metadata for each entity type
  */
 export const entityConfigRegistry: Record<string, EntityConfigMetadata> = {
+	campaign: {
+		properties: [
+			{
+				propertyName: 'name',
+				label: 'Campaign Name',
+				inputType: 'table',
+				table: () => new CampaignNameTable()
+			},
+			{
+				propertyName: 'narrativeMediumType',
+				label: 'Narrative Medium',
+				inputType: 'select',
+				options: ['RPG', 'Book', 'Movie', 'Video Game']
+			}
+		]
+	},
 	building: {
 		properties: [
 			{

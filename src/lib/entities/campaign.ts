@@ -1,3 +1,4 @@
+import { Entity } from './base/entity';
 import type { GenreMix } from './genreMix';
 
 export enum NarrativeMediumType {
@@ -7,14 +8,10 @@ export enum NarrativeMediumType {
 	Game = 'Video Game'
 }
 
-export class Campaign {
-	id: string = '';
-	name: string = '';
-	description: string = '';
+export class Campaign extends Entity {
+	// Genre information
 	genreMix: GenreMix | null = null;
 	narrativeMediumType: NarrativeMediumType = NarrativeMediumType.RPG;
-	createdAt: Date = new Date();
-	updatedAt: Date = new Date();
 
 	// Roll results and creation log
 	creationLog: string[] = [];

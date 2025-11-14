@@ -283,6 +283,7 @@ export enum TableTitles {
 	ActionSubGenre = 'Action Sub-Genre',
 
 	// Campaign tables
+	CampaignName = 'Campaign Name',
 	CampaignStatement = 'Campaign Statement',
 
 	// Mythic GME tables - Core Mechanics

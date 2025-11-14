@@ -6,6 +6,7 @@
 import type { ComponentType } from 'svelte';
 
 // Import specialized viewers
+import CampaignViewer from './viewers/CampaignViewer.svelte';
 import CharacterViewer from './viewers/CharacterViewer.svelte';
 import VillainViewer from './viewers/VillainViewer.svelte';
 import MonsterViewer from './viewers/MonsterViewer.svelte';
@@ -35,6 +36,10 @@ export interface ViewerConfig {
  * Registry mapping entity types to their viewer components
  */
 export const viewerRegistry: Record<string, ViewerConfig> = {
+	campaign: {
+		component: CampaignViewer,
+		propName: 'campaign'
+	},
 	character: {
 		component: CharacterViewer,
 		propName: 'character'
