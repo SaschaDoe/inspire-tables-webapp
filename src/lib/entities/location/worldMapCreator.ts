@@ -113,11 +113,11 @@ export class WorldMapCreator {
 				break;
 			case 'earth-like':
 				baseThreshold = 0.35; // Base ~70% water
-				variationRange = 0.25; // Can vary from 45-95% water (oceanic to continental)
+				variationRange = 0.12; // Can vary from 60-80% water (more realistic range)
 				break;
 			case 'jungle':
 				baseThreshold = 0.42; // Base ~60% land (rivers/lakes but mostly land)
-				variationRange = 0.18; // Can vary from 50-70% land
+				variationRange = 0.14; // Can vary from 55-65% land
 				break;
 			case 'desert':
 				baseThreshold = 0.08; // Base ~5% water (very dry)
@@ -129,7 +129,7 @@ export class WorldMapCreator {
 				break;
 			default:
 				baseThreshold = 0.35;
-				variationRange = 0.25;
+				variationRange = 0.12;
 		}
 
 		// Use seed to generate consistent random variation
