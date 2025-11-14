@@ -40,7 +40,8 @@ const nestedEntityConfig: Record<string, Array<{ propertyName: string; childType
 		{ propertyName: 'rituals', childType: ET.Ritual }
 	],
 	[ET.Universe]: [
-		{ propertyName: 'sphereConnections', childType: ET.SphereConnection }
+		{ propertyName: 'sphereConnections', childType: ET.SphereConnection },
+		{ propertyName: 'spheres', childType: ET.Sphere }
 	],
 	[ET.Sphere]: [
 		{ propertyName: 'galaxies', childType: ET.Galaxy }

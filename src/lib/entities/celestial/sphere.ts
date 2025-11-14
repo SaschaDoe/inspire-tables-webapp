@@ -12,4 +12,5 @@ export class Sphere extends Entity {
 	incomingConnectionIds: string[] = [];
 	/** Optional layer number for "schalen" (layered) universe structure */
 	layer?: number;
+	parentId = ''; // Reference to parent Universe
 }

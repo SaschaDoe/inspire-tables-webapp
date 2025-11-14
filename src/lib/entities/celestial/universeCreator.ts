@@ -45,12 +45,13 @@ export class UniverseCreator extends Creator<Universe> {
 
 		// Always create the normal "Material Sphere" first with standard physics
 		const materialSphere = new Sphere();
+		materialSphere.id = crypto.randomUUID();
+		materialSphere.parentId = universe.id; // Set parent reference
 		materialSphere.name = 'Material Sphere';
 		materialSphere.birth = 'Big Bang';
 		materialSphere.rule =
 			'Standard physics with fundamental forces: gravity, electromagnetism, strong and weak nuclear forces';
 		materialSphere.galaxies = []; // Will be populated if accessed
-		materialSphere.id = crypto.randomUUID();
 		universe.spheres.push(materialSphere);
 
 		// Create 0-9 additional random spheres
@@ -59,7 +60,7 @@ export class UniverseCreator extends Creator<Universe> {
 		sphereCreator.dice = this.dice;
 
 		for (let i = 0; i < additionalSpheresCount; i++) {
-			const sphere = sphereCreator.create();
+			const sphere = sphereCreator.withParent(universe.id).create();
 			sphere.id = crypto.randomUUID();
 			universe.spheres.push(sphere);
 		}
