@@ -29,6 +29,7 @@ export class GalaxyCreator extends Creator<Galaxy> {
 
 	create(): Galaxy {
 		const galaxy = new Galaxy();
+		this.setParentReference(galaxy); // Automatically sets parentId
 
 		// Roll galaxy type
 		galaxy.type = new GalaxyTypeTable().roleWithCascade(this.dice).text;

@@ -42,8 +42,17 @@ const nestedEntityConfig: Record<string, Array<{ propertyName: string; childType
 	[ET.Universe]: [
 		{ propertyName: 'sphereConnections', childType: ET.SphereConnection }
 	],
+	[ET.Sphere]: [
+		{ propertyName: 'galaxies', childType: ET.Galaxy }
+	],
 	[ET.Galaxy]: [
 		{ propertyName: 'solarSystems', childType: ET.SolarSystem }
+	],
+	[ET.SolarSystem]: [
+		{ propertyName: 'planets', childType: ET.Planet }
+	],
+	[ET.Planet]: [
+		{ propertyName: 'continents', childType: ET.Continent }
 	]
 };
 

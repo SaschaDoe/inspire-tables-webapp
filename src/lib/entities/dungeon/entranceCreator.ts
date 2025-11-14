@@ -7,6 +7,7 @@ import { TrapCreator } from './trapCreator';
 export class EntranceCreator extends Creator<Entrance> {
 	create(): Entrance {
 		const entrance = new Entrance();
+		this.setParentReference(entrance); // Automatically sets parentId
 
 		// Generate entrance details
 		entrance.entranceType = new EntranceTypeTable().roleWithCascade(this.dice).text;
@@ -15,7 +16,7 @@ export class EntranceCreator extends Creator<Entrance> {
 		// Generate 0-2 traps (1d3 - 1)
 		const numTraps = this.dice.rollInterval(1, 3) - 1;
 		for (let i = 0; i < numTraps; i++) {
-			entrance.traps.push(new TrapCreator().withDice(this.dice).create());
+			entrance.traps.push(new TrapCreator().withDice(this.dice).withParent(entrance.id).create());
 		}
 
 		// Generate name and description

@@ -21,5 +21,23 @@ export abstract class Creator<T> {
 		return this;
 	}
 
+	/**
+	 * Automatically sets parentId on the entity if a parent was provided.
+	 * Call this at the start of create() for any entity that has a parent.
+	 *
+	 * @param entity - The entity to set parentId on
+	 * @example
+	 * create(): SolarSystem {
+	 *   const solarSystem = new SolarSystem();
+	 *   this.setParentReference(solarSystem);
+	 *   // ... rest of creation
+	 * }
+	 */
+	protected setParentReference(entity: any): void {
+		if (this.parentId && entity && typeof entity === 'object') {
+			entity.parentId = this.parentId;
+		}
+	}
+
 	abstract create(): T;
 }

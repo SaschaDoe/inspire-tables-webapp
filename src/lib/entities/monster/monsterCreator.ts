@@ -16,6 +16,7 @@ import { TalentCreator } from '../talent/talentCreator';
 export class MonsterCreator extends Creator<Monster> {
 	create(): Monster {
 		const monster = new Monster();
+		this.setParentReference(monster); // Automatically sets parentId
 
 		monster.gender = new GenderTable().roleWithCascade(this.dice).text;
 		monster.name = this.generateMonsterName();
@@ -51,7 +52,7 @@ export class MonsterCreator extends Creator<Monster> {
 		const talentCreator = new TalentCreator();
 		talentCreator.dice = this.dice;
 		for (let i = 0; i < numberOfTalents; i++) {
-			monster.talents.push(talentCreator.create());
+			monster.talents.push(talentCreator.withParent(monster.id).create());
 		}
 
 		// Generate attributes (3d6 for each - stronger than regular characters)

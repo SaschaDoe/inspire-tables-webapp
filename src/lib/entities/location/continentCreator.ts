@@ -9,6 +9,7 @@ import { WeatherAdjectiveTable } from '$lib/tables/otherTables/weatherAdjectiveT
 export class ContinentCreator extends Creator<Continent> {
 	create(): Continent {
 		const continent = new Continent();
+		this.setParentReference(continent); // Automatically sets parentId
 
 		// Generate continent details
 		continent.name = new ContinentNameTable().roleWithCascade(this.dice).text;

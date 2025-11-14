@@ -56,7 +56,7 @@ export class CharacterCreator extends Creator<Character> {
 		for (let i = 0; i < numberOfTalents; i++) {
 			const talentCreator = new TalentCreator();
 			talentCreator.dice = this.dice;
-			character.talents.push(talentCreator.create());
+			character.talents.push(talentCreator.withParent(character.id).create());
 		}
 
 		// Generate basic attributes (1-6 range for simplicity)

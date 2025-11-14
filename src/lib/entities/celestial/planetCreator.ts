@@ -19,6 +19,7 @@ export class PlanetCreator extends Creator<Planet> {
 
 	create(): Planet {
 		const planet = new Planet();
+		this.setParentReference(planet); // Automatically sets parentId
 		planet.isLivable = this.isLivable;
 		planet.name = new PlanetNameTable().roleWithCascade(this.dice).text;
 		planet.type = new LivablePlanetTypeTable().roleWithCascade(this.dice).text;
@@ -27,7 +28,7 @@ export class PlanetCreator extends Creator<Planet> {
 		if (this.isLivable && this.dice.rollInterval(1, 2) === 2) {
 			const continentCreator = new ContinentCreator();
 			continentCreator.dice = this.dice;
-			planet.continents.push(continentCreator.create());
+			planet.continents.push(continentCreator.withParent(planet.id).create());
 		}
 
 		this.generateDescription(planet);

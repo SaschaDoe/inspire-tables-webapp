@@ -6,6 +6,7 @@ import { TalentCategoryTable } from '$lib/tables/talentTables/talentCategoryTabl
 export class TalentCreator extends Creator<Talent> {
 	create(): Talent {
 		const talent = new Talent();
+		this.setParentReference(talent); // Automatically sets parentId
 
 		talent.category = new TalentCategoryTable().roleWithCascade(this.dice).text;
 		talent.type = new TalentTable().roleWithCascade(this.dice).text;

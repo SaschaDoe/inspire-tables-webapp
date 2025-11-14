@@ -9,6 +9,7 @@ export class RoomCreator extends Creator<Room> {
 
 	create(): Room {
 		const room = new Room();
+		this.setParentReference(room); // Automatically sets parentId
 		room.name = this.generateRoomName();
 
 		// Each room has a chance for different features

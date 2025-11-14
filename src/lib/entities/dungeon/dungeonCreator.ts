@@ -47,7 +47,7 @@ export class DungeonCreator extends Creator<Dungeon> {
 		for (let i = 0; i < numberOfMonsters; i++) {
 			const monsterCreator = new MonsterCreator();
 			monsterCreator.dice = this.dice;
-			dungeon.monsters.push(monsterCreator.create());
+			dungeon.monsters.push(monsterCreator.withParent(dungeon.id).create());
 		}
 	}
 
@@ -76,7 +76,7 @@ export class DungeonCreator extends Creator<Dungeon> {
 		entranceCreator.dice = this.dice;
 		const numberOfEntrances = this.dice.rollInterval(1, 3); // 1-3 entrances
 		for (let i = 0; i < numberOfEntrances; i++) {
-			dungeon.entrances.push(entranceCreator.create());
+			dungeon.entrances.push(entranceCreator.withParent(dungeon.id).create());
 		}
 
 		// Create purposes
@@ -105,7 +105,7 @@ export class DungeonCreator extends Creator<Dungeon> {
 		roomCreator.dice = this.dice;
 		const numberOfRooms = this.dice.rollInterval(3, 12);
 		for (let i = 0; i < numberOfRooms; i++) {
-			dungeon.rooms.push(roomCreator.create());
+			dungeon.rooms.push(roomCreator.withParent(dungeon.id).create());
 		}
 	}
 

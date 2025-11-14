@@ -10,4 +10,5 @@ export class Entrance extends Entity {
 	traps: Trap[] = [];
 	/** IDs of rooms this entrance connects to */
 	connectedRoomIds: string[] = [];
+	parentId = ''; // Reference to parent Dungeon
 }

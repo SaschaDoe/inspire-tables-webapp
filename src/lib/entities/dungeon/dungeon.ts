@@ -27,4 +27,5 @@ export class Room extends Entity {
 	trap = '';
 	/** IDs of other rooms this room connects to */
 	connectedRoomIds: string[] = [];
+	parentId = ''; // Reference to parent Dungeon
 }

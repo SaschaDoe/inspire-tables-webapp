@@ -6,4 +6,5 @@ export class Planet extends Entity {
 	isLivable = false;
 	continents: Continent[] = [];
 	type = 'earth-like';
+	parentId = ''; // Reference to parent SolarSystem
 }

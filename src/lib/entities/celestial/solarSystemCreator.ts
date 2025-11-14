@@ -24,12 +24,9 @@ export class SolarSystemCreator extends Creator<SolarSystem> {
 
 	create(): SolarSystem {
 		const solarSystem = new SolarSystem();
-		solarSystem.name = new SolarSystemNameTable().roleWithCascade(this.dice).text;
+		this.setParentReference(solarSystem); // Automatically sets parentId
 
-		// Set parent reference if provided
-		if (this.parentId) {
-			solarSystem.parentId = this.parentId;
-		}
+		solarSystem.name = new SolarSystemNameTable().roleWithCascade(this.dice).text;
 
 		// Set random position on galaxy image (450px max-width, 300px height)
 		// Add margin (60px from edges) to keep markers more centered and visible
@@ -47,14 +44,14 @@ export class SolarSystemCreator extends Creator<SolarSystem> {
 		// Create at least one livable planet
 		const planetCreator = new PlanetCreator().withLivable();
 		planetCreator.dice = this.dice;
-		solarSystem.planets.push(planetCreator.create());
+		solarSystem.planets.push(planetCreator.withParent(solarSystem.id).create());
 
 		// Possibly add more planets
 		const numExtraPlanets = this.dice.rollInterval(1, 6) - 3; // 0-3 extra planets
 		for (let i = 0; i < numExtraPlanets; i++) {
 			const extraPlanet = new PlanetCreator();
 			extraPlanet.dice = this.dice;
-			solarSystem.planets.push(extraPlanet.create());
+			solarSystem.planets.push(extraPlanet.withParent(solarSystem.id).create());
 		}
 
 		this.generateDescription(solarSystem);

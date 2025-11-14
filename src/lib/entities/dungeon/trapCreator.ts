@@ -6,6 +6,7 @@ import { TrapFunctionTable } from '$lib/tables/dungeonTables/trapFunctionTable';
 export class TrapCreator extends Creator<Trap> {
 	create(): Trap {
 		const trap = new Trap();
+		this.setParentReference(trap); // Automatically sets parentId
 
 		trap.trigger = new TrapTriggerTable().roleWithCascade(this.dice).text;
 		trap.function = new TrapFunctionTable().roleWithCascade(this.dice).text;

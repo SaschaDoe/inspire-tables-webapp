@@ -5,4 +5,5 @@ export class Trap extends Entity {
 	trigger = '';
 	function = '';
 	description = '';
+	parentId = ''; // Reference to parent Entrance
 }

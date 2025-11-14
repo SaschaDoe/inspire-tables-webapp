@@ -17,4 +17,5 @@ export class Galaxy extends Entity {
 	anomalies: string[] = [];
 	isAlreadyScannedForAnomalies = false;
 	solarSystems: SolarSystem[] = [];
+	parentId = ''; // Reference to parent Sphere
 }

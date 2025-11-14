@@ -16,4 +16,5 @@ export class Monster extends Entity {
 	movementType = '';
 	tracks = '';
 	curse = '';
+	parentId = ''; // Reference to parent Dungeon
 }

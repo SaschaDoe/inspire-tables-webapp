@@ -7,4 +7,5 @@ export class Continent extends Entity {
 	climate = '';
 	dominantLandscape = '';
 	primaryWeather = '';
+	parentId = ''; // Reference to parent Planet
 }

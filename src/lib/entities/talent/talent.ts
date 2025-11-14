@@ -5,4 +5,5 @@ export class Talent extends Entity {
 	category = '';
 	type = '';
 	description = '';
+	parentId = ''; // Reference to parent Character/Monster/Villain
 }
