@@ -84,7 +84,7 @@ export class WorldMapCreator {
 			case 'jungle':
 				return { min: 60, max: 85 }; // Hot and humid
 			case 'desert':
-				return { min: 50, max: 80 };
+				return { min: 60, max: 90 }; // Very hot, even at poles
 			case 'volcanic':
 				return { min: 70, max: 100 };
 			default:
@@ -187,9 +187,12 @@ export class WorldMapCreator {
 					elevation = Math.floor(elevation) + 1; // +1 to avoid 0 (which is water)
 				}
 
-				// Force borders to specific elevations
+				// Force borders to water for water-rich planets only
+				// Desert and volcanic planets shouldn't have forced water
 				if (x === 0 || x === width - 1) {
-					elevation = 0; // Water at left/right edges
+					if (planet.type !== 'desert' && planet.type !== 'volcanic') {
+						elevation = 0; // Water at left/right edges
+					}
 				}
 
 				hexTile.elevation = elevation;
@@ -209,10 +212,13 @@ export class WorldMapCreator {
 						latitudePenalty = latitudeFactor * 5; // Minimal effect, already cold
 						break;
 					case 'desert':
-					case 'jungle':
 					case 'volcanic':
-						// Hot planets stay hot, minimal pole cooling
-						latitudePenalty = latitudeFactor * 10; // Small penalty
+						// Extremely hot planets - almost no cooling at poles
+						latitudePenalty = latitudeFactor * 5; // Tiny penalty
+						break;
+					case 'jungle':
+						// Tropical - stays warm
+						latitudePenalty = latitudeFactor * 8; // Small penalty
 						break;
 					case 'earth-like':
 					case 'water':
