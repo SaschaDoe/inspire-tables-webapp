@@ -15,6 +15,7 @@ export enum EntityType {
 	// Locations - Celestial
 	Universe = 'universe',
 	Sphere = 'sphere',
+	SphereConnection = 'sphereConnection',
 	Galaxy = 'galaxy',
 	SolarSystem = 'solarSystem',
 	Planet = 'planet',

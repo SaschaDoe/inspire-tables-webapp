@@ -4,16 +4,28 @@
 	import Section from '../shared/Section.svelte';
 	import InfoGrid from '../shared/InfoGrid.svelte';
 	import EntityList from '../shared/EntityList.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import { autoSaveNestedEntities, createAddEntityHandler, createEventForwarders } from './viewerUtils';
 
 	interface Props {
 		planet: Planet;
-		parentEntity?: any; // The workspace entity wrapper
+		parentEntity?: any;
 	}
 
 	let { planet, parentEntity }: Props = $props();
 
 	const dispatch = createEventDispatcher();
+
+	// Auto-save nested entities to navigator
+	onMount(() => {
+		autoSaveNestedEntities(
+			{
+				continents: { entities: planet.continents, entityType: 'continent' }
+			},
+			parentEntity,
+			dispatch
+		);
+	});
 
 	const basicInfo = $derived([
 		{ label: 'Name', value: planet.name },
@@ -21,23 +33,10 @@
 		{ label: 'Livable', value: planet.isLivable ? 'Yes' : 'No' }
 	]);
 
-	// Get the rules from PlanetCreator
 	const continentRules = PlanetCreator.NESTED_ENTITY_RULES.continents;
 
-	function handleOpenEntity(event: CustomEvent<{ entity: any }>) {
-		dispatch('openEntity', { entity: event.detail.entity });
-	}
-
-	function handleEntityUpdated(event: CustomEvent<{ entity: any }>) {
-		dispatch('entityUpdated', { entity: event.detail.entity });
-	}
-
-	function handleAddContinent(continent: any) {
-		planet.continents = [...planet.continents, continent];
-		if (parentEntity) {
-			dispatch('entityUpdated', { entity: parentEntity });
-		}
-	}
+	const { handleOpenEntity, handleEntityUpdated } = createEventForwarders(dispatch);
+	const handleAddContinent = createAddEntityHandler(planet, 'continents', parentEntity, dispatch);
 </script>
 
 <div class="planet-viewer">

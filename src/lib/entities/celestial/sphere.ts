@@ -6,4 +6,10 @@ export class Sphere extends Entity {
 	galaxies: Galaxy[] = [];
 	rule = '';
 	birth = '';
+	/** IDs of sphere connections from this sphere */
+	outgoingConnectionIds: string[] = [];
+	/** IDs of sphere connections to this sphere */
+	incomingConnectionIds: string[] = [];
+	/** Optional layer number for "schalen" (layered) universe structure */
+	layer?: number;
 }

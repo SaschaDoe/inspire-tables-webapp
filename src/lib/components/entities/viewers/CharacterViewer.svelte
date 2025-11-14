@@ -5,16 +5,28 @@
 	import InfoGrid from '../shared/InfoGrid.svelte';
 	import AttributesGrid from '../shared/AttributesGrid.svelte';
 	import EntityList from '../shared/EntityList.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import { autoSaveNestedEntities, createAddEntityHandler, createEventForwarders } from './viewerUtils';
 
 	interface Props {
 		character: Character;
-		parentEntity?: any; // The workspace entity wrapper
+		parentEntity?: any;
 	}
 
 	let { character, parentEntity }: Props = $props();
 
 	const dispatch = createEventDispatcher();
+
+	// Auto-save nested entities to navigator
+	onMount(() => {
+		autoSaveNestedEntities(
+			{
+				talents: { entities: character.talents, entityType: 'talent' }
+			},
+			parentEntity,
+			dispatch
+		);
+	});
 
 	const basicInfo = $derived([
 		{ label: 'Name', value: character.name || 'Unnamed' },
@@ -47,23 +59,10 @@
 		].filter(Boolean)
 	);
 
-	// Get the rules from CharacterCreator
 	const talentRules = CharacterCreator.NESTED_ENTITY_RULES.talents;
 
-	function handleOpenEntity(event: CustomEvent<{ entity: any }>) {
-		dispatch('openEntity', { entity: event.detail.entity });
-	}
-
-	function handleEntityUpdated(event: CustomEvent<{ entity: any }>) {
-		dispatch('entityUpdated', { entity: event.detail.entity });
-	}
-
-	function handleAddTalent(talent: any) {
-		character.talents = [...character.talents, talent];
-		if (parentEntity) {
-			dispatch('entityUpdated', { entity: parentEntity });
-		}
-	}
+	const { handleOpenEntity, handleEntityUpdated } = createEventForwarders(dispatch);
+	const handleAddTalent = createAddEntityHandler(character, 'talents', parentEntity, dispatch);
 </script>
 
 <div class="character-viewer">

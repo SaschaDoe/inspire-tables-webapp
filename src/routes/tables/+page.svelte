@@ -1,17 +1,77 @@
 <script lang="ts">
 	import { tableMetadata } from '$lib/data/tableMetadata.generated';
 	import type { TableType } from '$lib/tables/tableType';
+	import type { TableMetadata } from '$lib/data/tableMetadata.generated';
 	import { onMount } from 'svelte';
 
 	let activeCategory = $state<TableType | null>(null);
 	let categoryRefs: Map<TableType, HTMLElement> = new Map();
+	let subcategoryRefs: Map<string, HTMLElement> = new Map();
 	let scrollContainer: HTMLElement;
+	let expandedCategories = $state<Set<TableType>>(new Set());
+
+	// Group tables by subcategory within each category
+	interface SubcategoryGroup {
+		subcategory: string | null;
+		tables: TableMetadata[];
+	}
+
+	const categoriesWithSubcategories = tableMetadata.map((category) => {
+		const subcategoryMap = new Map<string | null, TableMetadata[]>();
+
+		for (const table of category.tables) {
+			const subcategory = table.subcategory || null;
+			if (!subcategoryMap.has(subcategory)) {
+				subcategoryMap.set(subcategory, []);
+			}
+			subcategoryMap.get(subcategory)!.push(table);
+		}
+
+		const groups: SubcategoryGroup[] = Array.from(subcategoryMap.entries())
+			.map(([subcategory, tables]) => ({ subcategory, tables }))
+			.sort((a, b) => {
+				// Put null (no subcategory) first
+				if (a.subcategory === null) return -1;
+				if (b.subcategory === null) return 1;
+				return a.subcategory.localeCompare(b.subcategory);
+			});
+
+		// Get unique subcategories (excluding null)
+		const subcategories = groups
+			.filter((g) => g.subcategory !== null)
+			.map((g) => g.subcategory as string);
+
+		return {
+			...category,
+			subcategoryGroups: groups,
+			subcategories
+		};
+	});
+
+	function toggleCategory(categoryType: TableType) {
+		const newSet = new Set(expandedCategories);
+		if (newSet.has(categoryType)) {
+			newSet.delete(categoryType);
+		} else {
+			newSet.add(categoryType);
+		}
+		expandedCategories = newSet;
+	}
 
 	function setCategoryRef(node: HTMLElement, categoryType: TableType) {
 		categoryRefs.set(categoryType, node);
 		return {
 			destroy() {
 				categoryRefs.delete(categoryType);
+			}
+		};
+	}
+
+	function setSubcategoryRef(node: HTMLElement, key: string) {
+		subcategoryRefs.set(key, node);
+		return {
+			destroy() {
+				subcategoryRefs.delete(key);
 			}
 		};
 	}
@@ -53,6 +113,18 @@
 			});
 		}
 	}
+
+	function scrollToSubcategory(categoryType: TableType, subcategory: string) {
+		const key = `${categoryType}-${subcategory}`;
+		const element = subcategoryRefs.get(key);
+		if (element && scrollContainer) {
+			const offsetTop = element.offsetTop - scrollContainer.offsetTop - 20;
+			scrollContainer.scrollTo({
+				top: offsetTop,
+				behavior: 'smooth'
+			});
+		}
+	}
 </script>
 
 <div class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
@@ -81,19 +153,60 @@
 				<div class="bg-slate-800/50 backdrop-blur rounded-lg p-4 border border-purple-500/20">
 					<h2 class="text-lg font-semibold text-white mb-4">Categories</h2>
 					<nav class="space-y-1">
-						{#each tableMetadata as category}
-							<button
-								onclick={() => scrollToCategory(category.type)}
-								class="w-full text-left px-3 py-2 rounded-md transition-all {activeCategory ===
-								category.type
-									? 'bg-purple-600 text-white font-medium'
-									: 'text-purple-200 hover:bg-slate-700/50'}"
-							>
-								<div class="flex items-center justify-between">
-									<span>{category.type}</span>
-									<span class="text-xs opacity-70">({category.tables.length})</span>
-								</div>
-							</button>
+						{#each categoriesWithSubcategories as category}
+							<div>
+								<button
+									onclick={() => {
+										scrollToCategory(category.type);
+										if (category.subcategories.length > 0) {
+											toggleCategory(category.type);
+										}
+									}}
+									class="w-full text-left px-3 py-2 rounded-md transition-all {activeCategory ===
+									category.type
+										? 'bg-purple-600 text-white font-medium'
+										: 'text-purple-200 hover:bg-slate-700/50'}"
+								>
+									<div class="flex items-center justify-between">
+										<div class="flex items-center gap-2">
+											{#if category.subcategories.length > 0}
+												<svg
+													class="w-4 h-4 transition-transform {expandedCategories.has(
+														category.type
+													)
+														? 'rotate-90'
+														: ''}"
+													fill="none"
+													stroke="currentColor"
+													viewBox="0 0 24 24"
+												>
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="2"
+														d="M9 5l7 7-7 7"
+													/>
+												</svg>
+											{/if}
+											<span>{category.type}</span>
+										</div>
+										<span class="text-xs opacity-70">({category.tables.length})</span>
+									</div>
+								</button>
+
+								{#if category.subcategories.length > 0 && expandedCategories.has(category.type)}
+									<div class="ml-6 mt-1 space-y-1 border-l-2 border-purple-500/30 pl-3">
+										{#each category.subcategories as subcategory}
+											<button
+												onclick={() => scrollToSubcategory(category.type, subcategory)}
+												class="w-full text-left px-2 py-1.5 text-sm rounded transition-all text-purple-300 hover:bg-slate-700/30 hover:text-purple-200"
+											>
+												{subcategory}
+											</button>
+										{/each}
+									</div>
+								{/if}
+							</div>
 						{/each}
 					</nav>
 				</div>
@@ -105,7 +218,7 @@
 					bind:this={scrollContainer}
 					class="space-y-8 max-h-[calc(100vh-200px)] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-purple-600 scrollbar-track-slate-800"
 				>
-					{#each tableMetadata as category}
+					{#each categoriesWithSubcategories as category}
 						<section
 							use:setCategoryRef={category.type}
 							data-category={category.type}
@@ -118,23 +231,59 @@
 								</p>
 							</div>
 
-							<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-								{#each category.tables as tableInfo}
-									<a
-										href="/tables/{encodeURIComponent(tableInfo.title)}"
-										class="block bg-slate-800/50 backdrop-blur rounded-lg p-4 border border-purple-500/20 hover:border-purple-500/40 hover:bg-slate-800/70 transition-all group"
+							{#each category.subcategoryGroups as group}
+								{#if group.subcategory}
+									<div
+										class="mb-8"
+										use:setSubcategoryRef={`${category.type}-${group.subcategory}`}
 									>
-										<h3 class="text-lg font-semibold text-white mb-2 group-hover:text-purple-300 transition-colors">
-											{tableInfo.title}
-										</h3>
-										<div class="flex items-center text-sm">
-											<span class="text-purple-300 text-xs">
-												Click to view and roll
-											</span>
+										<!-- Subcategory Header with improved styling -->
+										<div class="mb-5">
+											<h3
+												class="text-xl font-bold text-purple-400 pb-2 border-b-2 border-purple-500/40 inline-block"
+											>
+												{group.subcategory}
+											</h3>
 										</div>
-									</a>
-								{/each}
-							</div>
+
+										<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pl-4 border-l-2 border-purple-500/30">
+											{#each group.tables as tableInfo}
+												<a
+													href="/tables/{encodeURIComponent(tableInfo.title)}"
+													class="block bg-slate-800/50 backdrop-blur rounded-lg p-4 border border-purple-500/20 hover:border-purple-400 hover:bg-slate-800/70 transition-all group"
+												>
+													<h4 class="text-lg font-semibold text-white mb-2 group-hover:text-purple-300 transition-colors">
+														{tableInfo.title}
+													</h4>
+													<div class="flex items-center text-sm">
+														<span class="text-purple-300 text-xs">
+															Click to view and roll
+														</span>
+													</div>
+												</a>
+											{/each}
+										</div>
+									</div>
+								{:else}
+									<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+										{#each group.tables as tableInfo}
+											<a
+												href="/tables/{encodeURIComponent(tableInfo.title)}"
+												class="block bg-slate-800/50 backdrop-blur rounded-lg p-4 border border-purple-500/20 hover:border-purple-500/40 hover:bg-slate-800/70 transition-all group"
+											>
+												<h3 class="text-lg font-semibold text-white mb-2 group-hover:text-purple-300 transition-colors">
+													{tableInfo.title}
+												</h3>
+												<div class="flex items-center text-sm">
+													<span class="text-purple-300 text-xs">
+														Click to view and roll
+													</span>
+												</div>
+											</a>
+										{/each}
+									</div>
+								{/if}
+							{/each}
 						</section>
 					{/each}
 				</div>

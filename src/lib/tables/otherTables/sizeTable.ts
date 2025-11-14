@@ -3,14 +3,11 @@ import {TableEntry} from "../tableEntry";
 import {TableTitles} from "../tableTitles";
 import {TableType} from "../tableType";
 
+export const Sizes = ["tiny", "small", "medium", "large", "gigantic", "huge", "big", "normal sized"];
+
 export class SizeTable extends Table{
     constructor(){
-        let entries = [] as TableEntry[];
-        entries.push(new TableEntry("huge"))
-        entries.push(new TableEntry("big"))
-        entries.push(new TableEntry("normal sized"))
-        entries.push(new TableEntry("small"))
-        entries.push(new TableEntry("tiny"))
+        const entries = Sizes.map(size => new TableEntry(size));
         super(entries, TableTitles.Size);
         this.tableType = TableType.Other;
     }

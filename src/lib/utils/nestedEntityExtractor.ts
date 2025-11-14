@@ -38,6 +38,9 @@ const nestedEntityConfig: Record<string, Array<{ propertyName: string; childType
 		{ propertyName: 'sign', childType: ET.Sign },
 		{ propertyName: 'members', childType: ET.Character },
 		{ propertyName: 'rituals', childType: ET.Ritual }
+	],
+	[ET.Universe]: [
+		{ propertyName: 'sphereConnections', childType: ET.SphereConnection }
 	]
 };
 
@@ -50,11 +53,14 @@ function wrapNestedEntity(
 	parentEntity: Entity
 ): Entity {
 	return {
+		// Spread all properties from the nested entity first
+		...nestedEntity,
+		// Then override with Entity interface requirements
 		id: nestedEntity.id || crypto.randomUUID(),
 		type: type,
 		name: nestedEntity.name || `${type} ${(nestedEntity.id || '').slice(0, 8)}`,
 		description: nestedEntity.description || '',
-		tags: [],
+		tags: nestedEntity.tags || [],
 		parentId: parentEntity.id,
 		campaignId: parentEntity.campaignId,
 		metadata: {

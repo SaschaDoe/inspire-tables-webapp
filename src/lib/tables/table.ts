@@ -15,6 +15,7 @@ export class Table {
 	entries: TableEntry[];
 	functions: ((factory: any, roleResult: RoleResult) => void)[] = [];
 	tableType: TableType;
+	subcategory?: string;
 
 	constructor(
 		entries: TableEntry[] = [new TableEntry().withRoleInterval(1, 6)],

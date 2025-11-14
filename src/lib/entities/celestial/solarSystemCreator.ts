@@ -26,6 +26,10 @@ export class SolarSystemCreator extends Creator<SolarSystem> {
 		const solarSystem = new SolarSystem();
 		solarSystem.name = new SolarSystemNameTable().roleWithCascade(this.dice).text;
 
+		// Set random position on galaxy image (600px max-width, 400px height)
+		solarSystem.positionX = this.dice.rollInterval(50, 550);
+		solarSystem.positionY = this.dice.rollInterval(50, 350);
+
 		// Create stars
 		const numberOfSuns = +new NumberOfSunsTable().roleWithCascade(this.dice).text;
 		for (let i = 0; i < numberOfSuns; i++) {

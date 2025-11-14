@@ -36,6 +36,7 @@ import { WeatherEventCreator } from './event/weatherEventCreator';
 import { MagicSystemCreator } from './magic/magicSystemCreator';
 import { UniverseCreator } from './celestial/universeCreator';
 import { SphereCreator } from './celestial/sphereCreator';
+import { SphereConnectionCreator } from './celestial/sphereConnectionCreator';
 import { GalaxyCreator } from './celestial/galaxyCreator';
 import { SolarSystemCreator } from './celestial/solarSystemCreator';
 import { PlanetCreator } from './celestial/planetCreator';
@@ -64,6 +65,14 @@ export const entityRegistry: Record<string, EntityTypeInfo> = {
 		icon: '🌌',
 		description: 'Generate a cosmic sphere with galaxies, rules, and creation method',
 		creator: () => new SphereCreator()
+	},
+	sphereConnection: {
+		name: 'sphereConnection',
+		displayName: 'Sphere Connection',
+		icon: '🔗',
+		description:
+			'Generate a connection between spheres with travel methods, rules, and journey conditions',
+		creator: () => new SphereConnectionCreator()
 	},
 	galaxy: {
 		name: 'galaxy',

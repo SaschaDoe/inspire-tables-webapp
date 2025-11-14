@@ -7,6 +7,7 @@ interface TableMetadata {
 	type: string;
 	importPath: string;
 	className: string;
+	subcategory?: string;
 }
 
 interface TableCategory {
@@ -82,6 +83,15 @@ function extractTableType(fileContent: string): string | null {
 }
 
 /**
+ * Extract subcategory from subcategory assignment
+ * Looks for: this.subcategory = 'XXX'
+ */
+function extractSubcategory(fileContent: string): string | null {
+	const match = fileContent.match(/this\.subcategory\s*=\s*['"]([^'"]+)['"]/);
+	return match ? match[1] : null;
+}
+
+/**
  * Extract table metadata by parsing the file content
  */
 function extractTableMetadata(filePath: string): TableMetadata | null {
@@ -107,12 +117,14 @@ function extractTableMetadata(filePath: string): TableMetadata | null {
 		}
 
 		const importPath = getImportPath(filePath);
+		const subcategory = extractSubcategory(fileContent);
 
 		return {
 			title,
 			type,
 			importPath,
-			className
+			className,
+			...(subcategory && { subcategory })
 		};
 	} catch (error) {
 		console.error(`❌ Error processing ${filePath}:`, error);
@@ -243,11 +255,13 @@ export interface TableMetadata {
 	type: TableType;
 	importPath: string;
 	className: string;
+	subcategory?: string;
 }
 
 export interface TableCategory {
 	type: TableType;
 	tables: TableMetadata[];
+	subcategories?: Map<string, TableMetadata[]>;
 }
 
 // Lightweight metadata - no actual table imports

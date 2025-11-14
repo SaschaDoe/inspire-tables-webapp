@@ -4,16 +4,28 @@
 	import Section from '../shared/Section.svelte';
 	import InfoGrid from '../shared/InfoGrid.svelte';
 	import EntityList from '../shared/EntityList.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import { autoSaveNestedEntities, createAddEntityHandler, createEventForwarders } from './viewerUtils';
 
 	interface Props {
 		faction: Faction;
-		parentEntity?: any; // The workspace entity wrapper
+		parentEntity?: any;
 	}
 
 	let { faction, parentEntity }: Props = $props();
 
 	const dispatch = createEventDispatcher();
+
+	// Auto-save nested entities to navigator
+	onMount(() => {
+		autoSaveNestedEntities(
+			{
+				rituals: { entities: faction.rituals, entityType: 'ritual' }
+			},
+			parentEntity,
+			dispatch
+		);
+	});
 
 	const basicInfo = $derived([
 		{ label: 'Name', value: faction.name },
@@ -24,23 +36,10 @@
 		{ label: 'Motivation', value: faction.motivation }
 	]);
 
-	// Get the rules from FactionCreator
 	const ritualRules = FactionCreator.NESTED_ENTITY_RULES.rituals;
 
-	function handleOpenEntity(event: CustomEvent<{ entity: any }>) {
-		dispatch('openEntity', { entity: event.detail.entity });
-	}
-
-	function handleEntityUpdated(event: CustomEvent<{ entity: any }>) {
-		dispatch('entityUpdated', { entity: event.detail.entity });
-	}
-
-	function handleAddRitual(ritual: any) {
-		faction.rituals = [...faction.rituals, ritual];
-		if (parentEntity) {
-			dispatch('entityUpdated', { entity: parentEntity });
-		}
-	}
+	const { handleOpenEntity, handleEntityUpdated } = createEventForwarders(dispatch);
+	const handleAddRitual = createAddEntityHandler(faction, 'rituals', parentEntity, dispatch);
 </script>
 
 <div class="faction-viewer">

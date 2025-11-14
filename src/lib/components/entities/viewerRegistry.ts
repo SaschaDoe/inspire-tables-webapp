@@ -18,6 +18,12 @@ import AdventureViewer from './viewers/AdventureViewer.svelte';
 import QuestViewer from './viewers/QuestViewer.svelte';
 import FactionViewer from './viewers/FactionViewer.svelte';
 import SettlementViewer from './viewers/SettlementViewer.svelte';
+import UniverseViewer from './viewers/UniverseViewer.svelte';
+import SphereViewer from './viewers/SphereViewer.svelte';
+import SphereConnectionViewer from './viewers/SphereConnectionViewer.svelte';
+import GalaxyViewer from './viewers/GalaxyViewer.svelte';
+import SolarSystemViewer from './viewers/SolarSystemViewer.svelte';
+import PlanetViewer from './viewers/PlanetViewer.svelte';
 
 export interface ViewerConfig {
 	component: ComponentType;
@@ -77,6 +83,36 @@ export const viewerRegistry: Record<string, ViewerConfig> = {
 	settlement: {
 		component: SettlementViewer,
 		propName: 'settlement'
+	},
+	universe: {
+		component: UniverseViewer,
+		propName: 'universe',
+		needsParentEntity: true
+	},
+	sphere: {
+		component: SphereViewer,
+		propName: 'sphere',
+		needsParentEntity: true
+	},
+	sphereConnection: {
+		component: SphereConnectionViewer,
+		propName: 'sphereConnection',
+		needsParentEntity: true
+	},
+	galaxy: {
+		component: GalaxyViewer,
+		propName: 'galaxy',
+		needsParentEntity: true
+	},
+	solarSystem: {
+		component: SolarSystemViewer,
+		propName: 'solarSystem',
+		needsParentEntity: true
+	},
+	planet: {
+		component: PlanetViewer,
+		propName: 'planet',
+		needsParentEntity: true
 	}
 };
 

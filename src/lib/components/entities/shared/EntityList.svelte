@@ -54,15 +54,7 @@
 	}
 
 	function handleAddEntity(entity: any) {
-		console.log('[EntityList] handleAddEntity called with:', {
-			entityType,
-			displayName,
-			entity,
-			entitiesBeforeAdd: entities
-		});
-		// Call the parent's callback to add the entity
 		onAddEntity(entity);
-		console.log('[EntityList] onAddEntity callback completed');
 	}
 </script>
 

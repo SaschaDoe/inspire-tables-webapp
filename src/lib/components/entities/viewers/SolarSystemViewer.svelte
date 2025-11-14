@@ -4,53 +4,38 @@
 	import Section from '../shared/Section.svelte';
 	import InfoGrid from '../shared/InfoGrid.svelte';
 	import EntityList from '../shared/EntityList.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import { autoSaveNestedEntities, createAddEntityHandler, createEventForwarders } from './viewerUtils';
 
 	interface Props {
 		solarSystem: SolarSystem;
-		parentEntity?: any; // The workspace entity wrapper
+		parentEntity?: any;
 	}
 
 	let { solarSystem, parentEntity }: Props = $props();
 
 	const dispatch = createEventDispatcher();
 
+	// Auto-save nested entities to navigator
+	onMount(() => {
+		autoSaveNestedEntities(
+			{
+				planets: { entities: solarSystem.planets, entityType: 'planet' },
+				stars: { entities: solarSystem.stars, entityType: 'star' }
+			},
+			parentEntity,
+			dispatch
+		);
+	});
+
 	const basicInfo = $derived([{ label: 'Name', value: solarSystem.name }]);
 
-	// Get the rules from SolarSystemCreator
 	const planetRules = SolarSystemCreator.NESTED_ENTITY_RULES.planets;
 	const starRules = SolarSystemCreator.NESTED_ENTITY_RULES.stars;
 
-	function handleOpenEntity(event: CustomEvent<{ entity: any }>) {
-		dispatch('openEntity', { entity: event.detail.entity });
-	}
-
-	function handleEntityUpdated(event: CustomEvent<{ entity: any }>) {
-		dispatch('entityUpdated', { entity: event.detail.entity });
-	}
-
-	function handleAddStar(star: any) {
-		solarSystem.stars = [...solarSystem.stars, star];
-		if (parentEntity) {
-			dispatch('entityUpdated', { entity: parentEntity });
-		}
-	}
-
-	function handleAddPlanet(planet: any) {
-		console.log('[SolarSystemViewer] handleAddPlanet called', {
-			planet,
-			planetsBeforeAdd: solarSystem.planets,
-			parentEntity
-		});
-		solarSystem.planets = [...solarSystem.planets, planet];
-		console.log('[SolarSystemViewer] planets after reassignment:', solarSystem.planets);
-		if (parentEntity) {
-			console.log('[SolarSystemViewer] dispatching entityUpdated with parentEntity:', parentEntity);
-			dispatch('entityUpdated', { entity: parentEntity });
-		} else {
-			console.warn('[SolarSystemViewer] No parentEntity - entityUpdated not dispatched!');
-		}
-	}
+	const { handleOpenEntity, handleEntityUpdated } = createEventForwarders(dispatch);
+	const handleAddStar = createAddEntityHandler(solarSystem, 'stars', parentEntity, dispatch);
+	const handleAddPlanet = createAddEntityHandler(solarSystem, 'planets', parentEntity, dispatch);
 </script>
 
 <div class="solar-system-viewer">

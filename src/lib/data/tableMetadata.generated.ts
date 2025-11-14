@@ -1,6 +1,6 @@
 // THIS FILE IS AUTO-GENERATED - DO NOT EDIT MANUALLY
 // Run 'npm run generate:metadata' to regenerate this file
-// Generated on: 2025-11-12T07:56:56.745Z
+// Generated on: 2025-11-14T03:42:03.541Z
 
 import { TableType } from '$lib/tables/tableType';
 
@@ -9,11 +9,13 @@ export interface TableMetadata {
 	type: TableType;
 	importPath: string;
 	className: string;
+	subcategory?: string;
 }
 
 export interface TableCategory {
 	type: TableType;
 	tables: TableMetadata[];
+	subcategories?: Map<string, TableMetadata[]>;
 }
 
 // Lightweight metadata - no actual table imports
@@ -303,6 +305,34 @@ export const tableMetadata: TableCategory[] = [
 				"className": "DungeonEntriesTable"
 			},
 			{
+				"title": "Ecliptic Galaxy Images",
+				type: TableType.Location,
+				"importPath": "locationTables/galaxyTables/eclipticGalaxyImagesTable",
+				"className": "EclipticGalaxyImagesTable",
+				"subcategory": "Galaxy"
+			},
+			{
+				"title": "Galaxy Anomalies",
+				type: TableType.Location,
+				"importPath": "locationTables/galaxyTables/galaxyAnomaliesTable",
+				"className": "GalaxyAnomaliesTable",
+				"subcategory": "Galaxy"
+			},
+			{
+				"title": "Galaxy Images",
+				type: TableType.Location,
+				"importPath": "locationTables/galaxyTables/galaxyImagesTable",
+				"className": "GalaxyImagesTable",
+				"subcategory": "Galaxy"
+			},
+			{
+				"title": "Galaxy Type",
+				type: TableType.Location,
+				"importPath": "locationTables/galaxyTables/galaxyTypeTable",
+				"className": "GalaxyTypeTable",
+				"subcategory": "Galaxy"
+			},
+			{
 				"title": "Hex Feature",
 				type: TableType.Location,
 				"importPath": "locationTables/hexFeatureTable",
@@ -339,6 +369,13 @@ export const tableMetadata: TableCategory[] = [
 				"className": "NationNameTable"
 			},
 			{
+				"title": "Other Galaxy Images",
+				type: TableType.Location,
+				"importPath": "locationTables/galaxyTables/otherGalaxyImagesTable",
+				"className": "OtherGalaxyImagesTable",
+				"subcategory": "Galaxy"
+			},
+			{
 				"title": "Ritual Location",
 				type: TableType.Location,
 				"importPath": "ritualTables/ritualLocationTable",
@@ -349,6 +386,13 @@ export const tableMetadata: TableCategory[] = [
 				type: TableType.Location,
 				"importPath": "locationTables/sphereTable",
 				"className": "SphereTable"
+			},
+			{
+				"title": "Spiral Galaxy Images",
+				type: TableType.Location,
+				"importPath": "locationTables/galaxyTables/spiralGalaxyImagesTable",
+				"className": "SpiralGalaxyImagesTable",
+				"subcategory": "Galaxy"
 			},
 			{
 				"title": "Structure",
@@ -955,6 +999,12 @@ export const tableMetadata: TableCategory[] = [
 				"className": "DifficultyTable"
 			},
 			{
+				"title": "Dimensional Structure",
+				type: TableType.Other,
+				"importPath": "celestialTables/universe/dimensionalStructureTable",
+				"className": "DimensionalStructureTable"
+			},
+			{
 				"title": "Distance",
 				type: TableType.Other,
 				"importPath": "otherTables/distanceTable",
@@ -995,6 +1045,12 @@ export const tableMetadata: TableCategory[] = [
 				type: TableType.Other,
 				"importPath": "otherTables/fractionQuestTable",
 				"className": "FractionQuestTable"
+			},
+			{
+				"title": "Fundamental Laws",
+				type: TableType.Other,
+				"importPath": "celestialTables/universe/fundamentalLawsTable",
+				"className": "FundamentalLawsTable"
 			},
 			{
 				"title": "God Domain",
@@ -1423,6 +1479,12 @@ export const tableMetadata: TableCategory[] = [
 				"className": "TruthLevelTable"
 			},
 			{
+				"title": "Universe Age",
+				type: TableType.Other,
+				"importPath": "celestialTables/universe/universeAgeTable",
+				"className": "UniverseAgeTable"
+			},
+			{
 				"title": "Vocal",
 				type: TableType.Other,
 				"importPath": "otherTables/vocalTable",
@@ -1562,7 +1624,8 @@ export const tableMetadata: TableCategory[] = [
 				"title": "Galaxy Name",
 				type: TableType.Name,
 				"importPath": "celestialTables/galaxyNameTable",
-				"className": "GalaxyNameTable"
+				"className": "GalaxyNameTable",
+				"subcategory": "Galaxy"
 			},
 			{
 				"title": "God Byname",
@@ -1715,6 +1778,12 @@ export const tableMetadata: TableCategory[] = [
 				"className": "SouthAmericanMaleNameTable"
 			},
 			{
+				"title": "Sphere Connection Name",
+				type: TableType.Name,
+				"importPath": "celestialTables/sphereConnection/sphereConnectionNameTable",
+				"className": "SphereConnectionNameTable"
+			},
+			{
 				"title": "Sphere Name",
 				type: TableType.Name,
 				"importPath": "celestialTables/sphere/sphereNameTable",
@@ -1731,6 +1800,24 @@ export const tableMetadata: TableCategory[] = [
 				type: TableType.Name,
 				"importPath": "celestialTables/sphere/sphereNameSuffixesTable",
 				"className": "SphereNameSuffixesTable"
+			},
+			{
+				"title": "Universe Name",
+				type: TableType.Name,
+				"importPath": "celestialTables/universe/universeNameTable",
+				"className": "UniverseNameTable"
+			},
+			{
+				"title": "Universe Name Prefixes",
+				type: TableType.Name,
+				"importPath": "celestialTables/universe/universeNamePrefixesTable",
+				"className": "UniverseNamePrefixesTable"
+			},
+			{
+				"title": "Universe Name Suffixes",
+				type: TableType.Name,
+				"importPath": "celestialTables/universe/universeNameSuffixesTable",
+				"className": "UniverseNameSuffixesTable"
 			}
 		]
 	},

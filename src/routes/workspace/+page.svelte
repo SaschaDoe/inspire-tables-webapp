@@ -31,9 +31,7 @@
 	});
 
 	function loadAllEntities() {
-		console.log('[Workspace] loadAllEntities called');
 		const allEntities = entityStore.searchEntities('');
-		console.log('[Workspace] loadAllEntities - total entities:', allEntities.length);
 
 		// Load adventures
 		adventures = new Map(
@@ -55,13 +53,6 @@
 			});
 
 		allOtherEntities = groupedEntities;
-		console.log('[Workspace] loadAllEntities - allOtherEntities updated:', {
-			types: Array.from(allOtherEntities.keys()),
-			counts: Array.from(allOtherEntities.entries()).map(([type, entities]) => ({
-				type,
-				count: entities.length
-			}))
-		});
 	}
 
 	function toggleSidebar() {
@@ -400,11 +391,6 @@
 
 	function handleEntityUpdated(event: CustomEvent<{ entity: Entity }>) {
 		const updatedEntity = event.detail.entity;
-		console.log('[Workspace] handleEntityUpdated called', {
-			updatedEntity,
-			customFields: updatedEntity.customFields,
-			generatedEntity: updatedEntity.customFields?.generatedEntity
-		});
 		// Update the entire entity in the store, including the generatedEntity with all nested entities
 		// Deep clone the generatedEntity to ensure Svelte detects the change
 		entityStore.updateEntity(updatedEntity.id, {
@@ -413,10 +399,8 @@
 				generatedEntity: JSON.parse(JSON.stringify(updatedEntity.customFields?.generatedEntity))
 			}
 		});
-		console.log('[Workspace] entityStore.updateEntity completed, calling loadAllEntities');
 		// Reload to reflect changes
 		loadAllEntities();
-		console.log('[Workspace] loadAllEntities completed');
 	}
 </script>
 

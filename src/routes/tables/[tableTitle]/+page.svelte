@@ -12,6 +12,16 @@
 	let isLoading = $state(true);
 	let isFateChart = $state(false);
 
+	// Check if the current table is a galaxy images table
+	const isGalaxyImagesTable = $derived(
+		table?.title.includes('Galaxy Images') || false
+	);
+
+	// Helper to check if a result is an image filename
+	function isImageResult(result: string): boolean {
+		return result.endsWith('.png') || result.endsWith('.jpg') || result.endsWith('.jpeg');
+	}
+
 	onMount(async () => {
 		const tableTitle = decodeURIComponent($page.params.tableTitle);
 		// Check if this is the Fate Chart (special 2D table)
@@ -110,7 +120,17 @@
 											{entry.toString()}
 										</div>
 										<div class="flex-1">
-											<p class="text-white">{entry.textWithCascades || entry.text}</p>
+											<p class="text-white mb-2">{entry.textWithCascades || entry.text}</p>
+											{#if isGalaxyImagesTable && isImageResult(entry.text)}
+												<div class="mt-2">
+													<img
+														src="/galaxies/{entry.text}"
+														alt={entry.text}
+														class="max-w-full h-auto rounded border border-purple-400/20 shadow-md"
+														style="max-height: 120px;"
+													/>
+												</div>
+											{/if}
 										</div>
 									</div>
 								{/each}
@@ -174,7 +194,17 @@
 									<div
 										class="p-4 bg-gradient-to-br from-purple-900/50 to-pink-900/50 rounded-lg border border-purple-400/30 shadow-lg"
 									>
-										<p class="text-white text-lg font-medium">{rollResults[0]}</p>
+										<p class="text-white text-lg font-medium mb-3">{rollResults[0]}</p>
+										{#if isGalaxyImagesTable && isImageResult(rollResults[0])}
+											<div class="mt-3 flex justify-center">
+												<img
+													src="/galaxies/{rollResults[0]}"
+													alt={rollResults[0]}
+													class="max-w-full h-auto rounded-lg border border-purple-400/50 shadow-xl"
+													style="max-height: 300px;"
+												/>
+											</div>
+										{/if}
 									</div>
 								</div>
 							{/if}
@@ -188,7 +218,17 @@
 									<div class="space-y-2">
 										{#each rollResults.slice(1) as result, index}
 											<div class="p-3 bg-slate-900/30 rounded border border-purple-500/10">
-												<p class="text-purple-100 text-sm">{result}</p>
+												<p class="text-purple-100 text-sm mb-2">{result}</p>
+												{#if isGalaxyImagesTable && isImageResult(result)}
+													<div class="flex justify-center mt-2">
+														<img
+															src="/galaxies/{result}"
+															alt={result}
+															class="max-w-full h-auto rounded border border-purple-400/30 shadow-lg"
+															style="max-height: 150px;"
+														/>
+													</div>
+												{/if}
 											</div>
 										{/each}
 									</div>

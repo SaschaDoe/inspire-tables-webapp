@@ -37,5 +37,6 @@ export class GalaxyNameTable extends Table {
 		];
 		super(entries, TableTitles.GalaxyName);
 		this.tableType = TableType.Name;
+		this.subcategory = 'Galaxy';
 	}
 }

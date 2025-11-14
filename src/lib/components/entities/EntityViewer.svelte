@@ -14,6 +14,7 @@
 	import type { Settlement } from '$lib/entities/location/settlement';
 	import type { Universe } from '$lib/entities/celestial/universe';
 	import type { Sphere } from '$lib/entities/celestial/sphere';
+	import type { SphereConnection } from '$lib/entities/celestial/sphereConnection';
 	import type { Galaxy } from '$lib/entities/celestial/galaxy';
 	import type { SolarSystem } from '$lib/entities/celestial/solarSystem';
 	import type { Planet } from '$lib/entities/celestial/planet';
@@ -33,6 +34,7 @@
 	import SettlementViewer from './viewers/SettlementViewer.svelte';
 	import UniverseViewer from './viewers/UniverseViewer.svelte';
 	import SphereViewer from './viewers/SphereViewer.svelte';
+	import SphereConnectionViewer from './viewers/SphereConnectionViewer.svelte';
 	import GalaxyViewer from './viewers/GalaxyViewer.svelte';
 	import SolarSystemViewer from './viewers/SolarSystemViewer.svelte';
 	import PlanetViewer from './viewers/PlanetViewer.svelte';
@@ -94,6 +96,8 @@
 				return UniverseViewer;
 			case 'sphere':
 				return SphereViewer;
+			case 'sphereConnection':
+				return SphereConnectionViewer;
 			case 'galaxy':
 				return GalaxyViewer;
 			case 'solarSystem':
@@ -141,6 +145,8 @@
 				return { universe: entity as Universe, parentEntity };
 			case 'sphere':
 				return { sphere: entity as Sphere, parentEntity };
+			case 'sphereConnection':
+				return { sphereConnection: entity as SphereConnection, parentEntity };
 			case 'galaxy':
 				return { galaxy: entity as Galaxy, parentEntity };
 			case 'solarSystem':
