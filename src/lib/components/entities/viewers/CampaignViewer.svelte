@@ -53,10 +53,6 @@
 	<!-- Genre Mix -->
 	{#if campaign.genreMix}
 		<Section title="Genre Mix">
-			<div class="genre-description">
-				<p class="genre-desc-text">{campaign.genreMix.description}</p>
-			</div>
-
 			<!-- Primary Genre -->
 			<div class="genre-section">
 				<h3 class="genre-section-title">Primary Genre</h3>
@@ -85,34 +81,11 @@
 			{/if}
 		</Section>
 	{/if}
-
-	<!-- Description -->
-	{#if campaign.description}
-		<Section title="Description">
-			<p class="description-text">{campaign.description}</p>
-		</Section>
-	{/if}
 </div>
 
 <style>
 	.campaign-viewer {
 		padding: 0;
-	}
-
-	.genre-description {
-		margin-bottom: 1rem;
-		padding: 1rem;
-		background: rgb(30 27 75 / 0.4);
-		border-left: 3px solid rgb(147 51 234);
-		border-radius: 0.5rem;
-	}
-
-	.genre-desc-text {
-		color: rgb(216 180 254);
-		font-size: 0.9375rem;
-		line-height: 1.6;
-		margin: 0;
-		font-style: italic;
 	}
 
 	.genre-section {
@@ -179,17 +152,4 @@
 		color: rgb(148 163 184);
 		font-style: italic;
 	}
-
-	.description-text {
-		padding: 1rem;
-		background: rgb(30 27 75 / 0.3);
-		border-left: 3px solid rgb(168 85 247);
-		border-radius: 0.5rem;
-		color: rgb(216 180 254);
-		font-size: 0.875rem;
-		line-height: 1.6;
-		margin: 0;
-		white-space: pre-wrap;
-	}
-
 </style>
