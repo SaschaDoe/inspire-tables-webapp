@@ -4,6 +4,7 @@
 	import type { EntityTypeInfo } from '$lib/entities/entityRegistry';
 	import EntityViewer from './EntityViewer.svelte';
 	import { SvelteSet } from 'svelte/reactivity';
+	import GenreEditor from './editors/GenreEditor.svelte';
 
 	interface Props {
 		isOpen: boolean;
@@ -172,21 +173,30 @@
 						<div class="editable-properties-section">
 							<div class="properties-grid">
 								{#each metadata.properties as prop}
-									<div class="property-field">
-										<div class="property-header">
-											<label for="prop-{prop.propertyName}" class="property-label">
-												{prop.label}
-											</label>
-											<button
-												class="lock-btn {lockedProperties.has(prop.propertyName) ? 'locked' : ''}"
-												onclick={() => toggleLock(prop.propertyName)}
-												title={lockedProperties.has(prop.propertyName) ? 'Locked (will be kept on regenerate)' : 'Unlocked (will regenerate)'}
-											>
-												{lockedProperties.has(prop.propertyName) ? '🔒' : '🔓'}
-											</button>
+									{#if prop.inputType === 'genre'}
+										<!-- Genre editor spans full width -->
+										<div class="property-field genre-property-field">
+											<GenreEditor
+												genreMix={editedProperties[prop.propertyName]}
+												onChange={(genreMix) => handlePropertyChange(prop.propertyName, genreMix)}
+											/>
 										</div>
+									{:else}
+										<div class="property-field">
+											<div class="property-header">
+												<label for="prop-{prop.propertyName}" class="property-label">
+													{prop.label}
+												</label>
+												<button
+													class="lock-btn {lockedProperties.has(prop.propertyName) ? 'locked' : ''}"
+													onclick={() => toggleLock(prop.propertyName)}
+													title={lockedProperties.has(prop.propertyName) ? 'Locked (will be kept on regenerate)' : 'Unlocked (will regenerate)'}
+												>
+													{lockedProperties.has(prop.propertyName) ? '🔒' : '🔓'}
+												</button>
+											</div>
 
-										{#if prop.inputType === 'table' && prop.table}
+											{#if prop.inputType === 'table' && prop.table}
 											{@const options = getTableOptions(prop.table())}
 											<select
 												id="prop-{prop.propertyName}"
@@ -230,6 +240,7 @@
 											/>
 										{/if}
 									</div>
+									{/if}
 								{/each}
 							</div>
 						</div>
@@ -495,6 +506,10 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
+	}
+
+	.genre-property-field {
+		grid-column: 1 / -1;
 	}
 
 	.property-header {

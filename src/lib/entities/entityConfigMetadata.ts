@@ -17,8 +17,8 @@ export interface PropertyConfig {
 	propertyName: string;
 	/** Display label for the UI */
 	label: string;
-	/** Type of input: 'table' for dropdown from table entries, 'select' for dropdown from fixed options, 'text' for free text input, 'number' for numeric input */
-	inputType: 'table' | 'select' | 'text' | 'number';
+	/** Type of input: 'table' for dropdown from table entries, 'select' for dropdown from fixed options, 'text' for free text input, 'number' for numeric input, 'genre' for genre editor */
+	inputType: 'table' | 'select' | 'text' | 'number' | 'genre';
 	/** Optional: Table class to use for dropdowns (required if inputType is 'table') */
 	table?: () => Table;
 	/** Optional: Fixed options for select dropdowns (required if inputType is 'select') */
@@ -58,6 +58,11 @@ export const entityConfigRegistry: Record<string, EntityConfigMetadata> = {
 				label: 'Blend Intensity (1-10)',
 				inputType: 'number',
 				placeholder: '5'
+			},
+			{
+				propertyName: 'genreMix',
+				label: 'Genre Mix',
+				inputType: 'genre'
 			}
 		]
 	},
