@@ -16,6 +16,15 @@ export const tvTropesMapping: Record<string, string> = {
 	"superhero origin": "SuperheroOrigin", // ✅
 	"serial killer": "SerialKiller", // ✅
 	"lotus eater machine": "LotusEaterMachine", // ✅
+	"accidental hero": "AccidentalHero", // ✅
+	"breakout": "GreatEscape", // ✅
+	"clear my name": "ClearMyName", // ✅
+	"ghost story": "GhostStory", // ✅
+	"a race": "EpicRace", // ✅
+	"rightful king returns": "RightfulKingReturns", // ✅
+	"succession crisis": "SuccessionCrisis", // ✅
+	"one last job": "OneLastJob", // ✅
+	"spot the impostor": "SpotTheImposter", // ✅
 
 	// Tentative mappings (need verification)
 	"15 minutes of fame": "FifteenMinutesOfFame",
@@ -31,7 +40,7 @@ export const tvTropesMapping: Record<string, string> = {
 	"achievement through ignorance": "AchievementsThroughIgnorance",
 
 	// Add more mappings as we discover the correct TV Tropes pages
-	// TODO: Still need to map ~114 more plot tropes + beginning/ending/conflict tropes
+	// TODO: Still need to map ~106 more plot tropes + beginning/ending/conflict tropes
 };
 
 /**
