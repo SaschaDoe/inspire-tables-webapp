@@ -44,11 +44,13 @@ function tropeToPascalCase(tropeName: string): string {
 
 /**
  * Generates a TV Tropes URL for a given trope name
- * @param tropeName The human-readable trope name
+ * @param tropeName The human-readable trope name (may include context after colon)
  * @returns The full TV Tropes URL
  */
 export function getTvTropesUrl(tropeName: string): string {
-	const pascalCaseName = tropeToPascalCase(tropeName);
+	// Remove any context appended after a colon (e.g., "mission from higher power: Higher Power" -> "mission from higher power")
+	const baseTropeName = tropeName.split(':')[0].trim();
+	const pascalCaseName = tropeToPascalCase(baseTropeName);
 	return `https://tvtropes.org/pmwiki/pmwiki.php/Main/${pascalCaseName}`;
 }
 
