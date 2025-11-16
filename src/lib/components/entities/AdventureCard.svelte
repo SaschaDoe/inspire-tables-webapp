@@ -161,12 +161,14 @@
 			{/if}
 
 			<!-- Metadata -->
-			<div class="flex gap-4 text-sm text-blue-300">
-				<span>📅 Created: {new Date(adventure.metadata.createdAt).toLocaleDateString()}</span>
-				{#if adventure.metadata.updatedAt}
-					<span>🔄 Updated: {new Date(adventure.metadata.updatedAt).toLocaleDateString()}</span>
-				{/if}
-			</div>
+			{#if adventure.metadata}
+				<div class="flex gap-4 text-sm text-blue-300">
+					<span>📅 Created: {new Date(adventure.metadata.createdAt).toLocaleDateString()}</span>
+					{#if adventure.metadata.updatedAt}
+						<span>🔄 Updated: {new Date(adventure.metadata.updatedAt).toLocaleDateString()}</span>
+					{/if}
+				</div>
+			{/if}
 		</div>
 	</div>
 </div>

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { storyboardStore, activeBoard, selectedNodes, boardMode, connectingFromNodeId } from '$lib/stores/storyboardStore';
 	import StoryBoardToolbar from './StoryBoardToolbar.svelte';
 	import StoryBoardCanvas from './StoryBoardCanvas.svelte';
@@ -16,7 +15,8 @@
 	// Clipboard for copy/paste
 	let clipboard = $state<typeof $selectedNodes>([]);
 
-	onMount(() => {
+	// Load the board whenever adventureId changes
+	$effect(() => {
 		// Load or create board for this adventure
 		const boards = storyboardStore.getBoardsByAdventure(adventureId);
 		if (boards.length === 0) {

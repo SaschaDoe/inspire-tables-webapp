@@ -11,26 +11,12 @@
 	interface Props {
 		campaign: Campaign;
 		parentEntity?: any;
+		hideEditableFields?: boolean; // Hide fields that are editable in modal
 	}
 
-	let { campaign, parentEntity }: Props = $props();
+	let { campaign, parentEntity, hideEditableFields = false }: Props = $props();
 
 	const dispatch = createEventDispatcher();
-
-	// DEBUG: Log the entire campaign object
-	$effect(() => {
-		console.log('==== CAMPAIGN VIEWER ====');
-		console.log('Full campaign object:', campaign);
-		console.log('campaign.genreMix:', campaign?.genreMix);
-		console.log('Type of genreMix:', typeof campaign?.genreMix);
-		console.log('Is genreMix an object?:', campaign?.genreMix && typeof campaign?.genreMix === 'object');
-		if (campaign?.genreMix) {
-			console.log('Keys in genreMix:', Object.keys(campaign.genreMix));
-			console.log('primaryGenre:', campaign.genreMix.primaryGenre);
-			console.log('genreWeights:', campaign.genreMix.genreWeights);
-		}
-		console.log('========================');
-	});
 
 	// Auto-save nested entities to navigator
 	onMount(() => {
@@ -53,6 +39,7 @@
 
 	// Campaign Information
 	const campaignInfo = $derived([
+		{ label: 'Campaign Name', value: campaign.name || 'Unnamed Campaign' },
 		{ label: 'Narrative Medium', value: campaign.narrativeMediumType },
 		{ label: 'Setting/World', value: campaign.setting || 'Not specified' },
 		{ label: 'Tone', value: campaign.tone || 'Not specified' },
@@ -64,31 +51,11 @@
 
 	// Genre Mix Info
 	const genreMixInfo = $derived.by(() => {
-		console.log('🎯 DERIVED RUNNING - genreMixInfo');
-		// Debug logging
-		console.log('Campaign genreMix:', campaign?.genreMix);
-		console.log('Primary Genre:', campaign?.genreMix?.primaryGenre);
-		console.log('Genre Weights:', campaign?.genreMix?.genreWeights);
-
 		// Comprehensive null checks
-		if (!campaign) {
-			console.log('No campaign');
+		if (!campaign || !campaign.genreMix || !campaign.genreMix.primaryGenre) {
 			return null;
 		}
-		if (!campaign.genreMix) {
-			console.log('No genreMix');
-			return null;
-		}
-		if (!campaign.genreMix.primaryGenre) {
-			console.log('No primaryGenre');
-			return null;
-		}
-		if (!campaign.genreMix.primaryGenre.name) {
-			console.log('No primaryGenre.name');
-			return null;
-		}
-		if (!campaign.genreMix.genreWeights) {
-			console.log('No genreWeights');
+		if (!campaign.genreMix.primaryGenre.name || !campaign.genreMix.genreWeights) {
 			return null;
 		}
 
@@ -101,7 +68,6 @@
 
 			const subGenres = campaign.genreMix.subGenres || [];
 
-			console.log('Genre mix info successfully generated');
 			return {
 				primary: {
 					name: campaign.genreMix.primaryGenre.name || 'Unknown',
@@ -126,18 +92,19 @@
 </script>
 
 <div class="campaign-viewer">
-	<Section title="Campaign Information">
-		<InfoGrid items={campaignInfo} />
-	</Section>
-
-	{#if campaign.centralConflict}
-		<Section title="Central Conflict">
-			<p class="description-text">{campaign.centralConflict}</p>
+	{#if !hideEditableFields}
+		<Section title="Campaign Information">
+			<InfoGrid items={campaignInfo} />
 		</Section>
-	{/if}
 
-	{#if campaign.genreMix}
-		<Section title="Genre Mix">
+		{#if campaign.centralConflict}
+			<Section title="Central Conflict">
+				<p class="description-text">{campaign.centralConflict}</p>
+			</Section>
+		{/if}
+
+		{#if campaign.genreMix}
+			<Section title="Genre Mix">
 			{#if genreMixInfo && genreMixInfo.primary}
 				<!-- Primary Genre -->
 				<div class="genre-block">
@@ -176,6 +143,7 @@
 				<p class="description-text">Genre information not available for this campaign.</p>
 			{/if}
 		</Section>
+		{/if}
 	{/if}
 
 	<EntityList

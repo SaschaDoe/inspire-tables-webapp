@@ -248,7 +248,7 @@
 
 					<!-- Full Entity View (Read-only details) -->
 					<div class="entity-viewer-section">
-								<EntityViewer entity={generatedEntity} entityType={selectedEntityType || ''} />
+								<EntityViewer entity={generatedEntity} entityType={selectedEntityType || ''} hideEditableFields={true} />
 					</div>
 				</div>
 

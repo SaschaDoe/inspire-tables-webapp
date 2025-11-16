@@ -2,6 +2,7 @@
 	import type { Adventure } from '$lib/entities/adventure/adventure';
 	import Section from '../shared/Section.svelte';
 	import InfoGrid from '../shared/InfoGrid.svelte';
+	import StoryBoard from '$lib/components/storyboard/StoryBoard.svelte';
 
 	interface Props {
 		adventure: Adventure;
@@ -13,6 +14,7 @@
 </script>
 
 <div class="adventure-viewer">
+	<!-- Adventure Information Section -->
 	<Section title="Adventure Overview">
 		<InfoGrid items={basicInfo} />
 	</Section>
@@ -27,7 +29,7 @@
 			<div class="story-phase">
 				<h4 class="phase-title">Rising Action</h4>
 				<ul class="phase-list">
-					{#each adventure.risingAction as event}
+					{#each adventure.risingAction as event, i (i)}
 						<li class="phase-item">{event}</li>
 					{/each}
 				</ul>
@@ -48,7 +50,7 @@
 	{#if adventure.plotTropes && adventure.plotTropes.length > 0}
 		<Section title="Plot Tropes">
 			<ul class="trope-list">
-				{#each adventure.plotTropes as trope}
+				{#each adventure.plotTropes as trope, i (i)}
 					<li class="trope-item">{trope}</li>
 				{/each}
 			</ul>
@@ -58,11 +60,46 @@
 	<Section title="Full Description">
 		<p class="description-text">{adventure.description}</p>
 	</Section>
+
+	<!-- Storyboard Section - Now integrated below -->
+	<div class="storyboard-section">
+		<h3 class="storyboard-title">🎬 Story Board</h3>
+		<div class="storyboard-container">
+			{#key adventure.id}
+				<StoryBoard adventureId={adventure.id} />
+			{/key}
+		</div>
+	</div>
 </div>
 
 <style>
 	.adventure-viewer {
-		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.storyboard-section {
+		margin-top: 2rem;
+		padding-top: 2rem;
+		border-top: 2px solid rgb(168 85 247 / 0.3);
+	}
+
+	.storyboard-title {
+		margin: 0 0 1.5rem 0;
+		font-size: 1.25rem;
+		font-weight: 600;
+		color: rgb(216 180 254);
+		padding: 0 1.5rem;
+	}
+
+	.storyboard-container {
+		min-height: 600px;
+		height: 600px;
+		background: rgb(30 27 75 / 0.2);
+		border: 1px solid rgb(168 85 247 / 0.2);
+		border-radius: 0.75rem;
+		overflow: hidden;
 	}
 
 	.story-timeline {

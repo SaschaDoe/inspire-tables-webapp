@@ -48,9 +48,10 @@
 		entity: any;
 		entityType: string;
 		parentEntity?: Entity;
+		hideEditableFields?: boolean; // Pass to viewers to hide editable fields in modal
 	}
 
-	let { entity, entityType, parentEntity }: Props = $props();
+	let { entity, entityType, parentEntity, hideEditableFields = false }: Props = $props();
 
 	const dispatch = createEventDispatcher<{
 		openEntity: { entity: Entity };
@@ -122,7 +123,7 @@
 		// Some viewers need special prop names or additional props
 		switch (entityType) {
 			case 'campaign':
-				return { campaign: entity as Campaign, parentEntity };
+				return { campaign: entity as Campaign, parentEntity, hideEditableFields };
 			case 'character':
 				return { character: entity as Character, parentEntity };
 			case 'villain':
@@ -178,8 +179,6 @@
 	.entity-viewer {
 		padding: 1.5rem;
 		color: white;
-		max-height: 60vh;
-		overflow-y: auto;
 	}
 
 	.entity-viewer::-webkit-scrollbar {

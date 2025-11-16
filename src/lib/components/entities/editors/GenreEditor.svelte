@@ -79,49 +79,154 @@
 
 	function updatePrimaryGenre(mainGenre: string) {
 		if (!genreMix) return;
-		if (!genreMix.primaryGenre) genreMix.primaryGenre = new Genre();
-		genreMix.primaryGenre.name = mainGenre;
-		genreMix.primaryGenre.subGenreName = ''; // Reset sub-genre when main genre changes
+
+		// Create new GenreMix and update primary genre
+		const updatedGenreMix = Object.assign(Object.create(Object.getPrototypeOf(genreMix)), genreMix);
+		if (!genreMix.primaryGenre) {
+			updatedGenreMix.primaryGenre = new Genre();
+		} else {
+			updatedGenreMix.primaryGenre = Object.assign(
+				Object.create(Object.getPrototypeOf(genreMix.primaryGenre)),
+				genreMix.primaryGenre
+			);
+		}
+		updatedGenreMix.primaryGenre.name = mainGenre;
+		updatedGenreMix.primaryGenre.subGenreName = ''; // Reset sub-genre when main genre changes
+		genreMix = updatedGenreMix;
+
 		recalculateWeights();
 		onChange(genreMix);
 	}
 
 	function updatePrimarySubGenre(subGenre: string) {
 		if (!genreMix || !genreMix.primaryGenre) return;
-		genreMix.primaryGenre.subGenreName = subGenre;
+
+		// Create new GenreMix and update primary genre
+		const updatedGenreMix = Object.assign(Object.create(Object.getPrototypeOf(genreMix)), genreMix);
+		updatedGenreMix.primaryGenre = Object.assign(
+			Object.create(Object.getPrototypeOf(genreMix.primaryGenre)),
+			genreMix.primaryGenre
+		);
+		updatedGenreMix.primaryGenre.subGenreName = subGenre;
+		genreMix = updatedGenreMix;
+
 		recalculateWeights();
 		onChange(genreMix);
 	}
 
 	function addAdditionalGenre() {
 		if (!genreMix) return;
+
+		// Get all currently used genre combinations
+		const usedGenres = new Set<string>();
+		if (genreMix.primaryGenre) {
+			usedGenres.add(getGenreFullName(genreMix.primaryGenre.name, genreMix.primaryGenre.subGenreName));
+		}
+		genreMix.subGenres.forEach(g => {
+			usedGenres.add(getGenreFullName(g.name, g.subGenreName));
+		});
+
+		// Get available main genres that aren't fully used
+		const availableMainGenres = mainGenres.filter(mainGenre => {
+			// Check if this main genre is available (either unused or has unused sub-genre combos)
+			const subGenres = getSubGenres(mainGenre);
+
+			if (subGenres.length === 0) {
+				// No sub-genres: check if just the main genre is used
+				return !usedGenres.has(getGenreFullName(mainGenre, ''));
+			} else {
+				// Has sub-genres: check if at least one combo is available
+				return !usedGenres.has(getGenreFullName(mainGenre, '')) ||
+					   subGenres.some(sg => !usedGenres.has(getGenreFullName(mainGenre, sg)));
+			}
+		});
+
+		if (availableMainGenres.length === 0) {
+			// All genre combinations are used
+			return;
+		}
+
+		// Randomly select a main genre
+		const selectedMainGenre = availableMainGenres[Math.floor(Math.random() * availableMainGenres.length)];
+		const subGenres = getSubGenres(selectedMainGenre);
+
+		let selectedSubGenre = '';
+
+		// If this genre has sub-genres defined, try to pick one
+		if (subGenres.length > 0) {
+			// Get available sub-genres for this main genre
+			const availableSubGenres = subGenres.filter(sg =>
+				!usedGenres.has(getGenreFullName(selectedMainGenre, sg))
+			);
+
+			if (availableSubGenres.length > 0) {
+				// Pick a random available sub-genre
+				selectedSubGenre = availableSubGenres[Math.floor(Math.random() * availableSubGenres.length)];
+			}
+			// If no sub-genres are available but the main genre without sub-genre is available, use that
+			else if (!usedGenres.has(getGenreFullName(selectedMainGenre, ''))) {
+				selectedSubGenre = '';
+			}
+		}
+
+		// Create the new genre
 		const newGenre = new Genre();
 		newGenre.id = crypto.randomUUID();
-		newGenre.name = 'fantasy';
-		newGenre.subGenreName = '';
-		genreMix.subGenres.push(newGenre);
+		newGenre.name = selectedMainGenre;
+		newGenre.subGenreName = selectedSubGenre;
+
+		// Create a new GenreMix object to trigger reactivity
+		const updatedGenreMix = Object.assign(Object.create(Object.getPrototypeOf(genreMix)), genreMix);
+		updatedGenreMix.subGenres = [...genreMix.subGenres, newGenre];
+		genreMix = updatedGenreMix;
+
 		recalculateWeights();
 		onChange(genreMix);
 	}
 
 	function removeAdditionalGenre(index: number) {
 		if (!genreMix) return;
-		genreMix.subGenres.splice(index, 1);
+
+		// Create a new GenreMix object to trigger reactivity
+		const updatedGenreMix = Object.assign(Object.create(Object.getPrototypeOf(genreMix)), genreMix);
+		updatedGenreMix.subGenres = genreMix.subGenres.filter((_, i) => i !== index);
+		genreMix = updatedGenreMix;
+
 		recalculateWeights();
 		onChange(genreMix);
 	}
 
 	function updateAdditionalGenre(index: number, mainGenre: string) {
 		if (!genreMix) return;
-		genreMix.subGenres[index].name = mainGenre;
-		genreMix.subGenres[index].subGenreName = ''; // Reset sub-genre
+
+		// Create new GenreMix and update the specific genre
+		const updatedGenreMix = Object.assign(Object.create(Object.getPrototypeOf(genreMix)), genreMix);
+		updatedGenreMix.subGenres = [...genreMix.subGenres];
+		updatedGenreMix.subGenres[index] = Object.assign(
+			Object.create(Object.getPrototypeOf(genreMix.subGenres[index])),
+			genreMix.subGenres[index]
+		);
+		updatedGenreMix.subGenres[index].name = mainGenre;
+		updatedGenreMix.subGenres[index].subGenreName = ''; // Reset sub-genre
+		genreMix = updatedGenreMix;
+
 		recalculateWeights();
 		onChange(genreMix);
 	}
 
 	function updateAdditionalSubGenre(index: number, subGenre: string) {
 		if (!genreMix) return;
-		genreMix.subGenres[index].subGenreName = subGenre;
+
+		// Create new GenreMix and update the specific genre
+		const updatedGenreMix = Object.assign(Object.create(Object.getPrototypeOf(genreMix)), genreMix);
+		updatedGenreMix.subGenres = [...genreMix.subGenres];
+		updatedGenreMix.subGenres[index] = Object.assign(
+			Object.create(Object.getPrototypeOf(genreMix.subGenres[index])),
+			genreMix.subGenres[index]
+		);
+		updatedGenreMix.subGenres[index].subGenreName = subGenre;
+		genreMix = updatedGenreMix;
+
 		recalculateWeights();
 		onChange(genreMix);
 	}
@@ -177,7 +282,7 @@
 					value={genreMix?.primaryGenre?.name || 'fantasy'}
 					onchange={(e) => updatePrimaryGenre(e.currentTarget.value)}
 				>
-					{#each mainGenres as genre}
+					{#each mainGenres as genre (genre)}
 						<option value={genre}>{genre}</option>
 					{/each}
 				</select>
@@ -192,7 +297,7 @@
 						onchange={(e) => updatePrimarySubGenre(e.currentTarget.value)}
 					>
 						<option value="">None</option>
-						{#each getSubGenres(genreMix.primaryGenre.name) as subGenre}
+						{#each getSubGenres(genreMix.primaryGenre.name) as subGenre (subGenre)}
 							<option value={subGenre}>{subGenre}</option>
 						{/each}
 					</select>
@@ -217,7 +322,7 @@
 		<div class="genre-group additional-genres-group">
 			<h4 class="genre-group-title">Additional Genres</h4>
 
-			{#each genreMix.subGenres as subGenre, index}
+			{#each genreMix.subGenres as subGenre, index (subGenre.id)}
 				<div class="genre-row additional-genre-row">
 					<div class="field-group">
 						<label class="field-label">Main Genre</label>
@@ -226,7 +331,7 @@
 							value={subGenre.name}
 							onchange={(e) => updateAdditionalGenre(index, e.currentTarget.value)}
 						>
-							{#each mainGenres as genre}
+							{#each mainGenres as genre (genre)}
 								<option value={genre}>{genre}</option>
 							{/each}
 						</select>
@@ -241,7 +346,7 @@
 								onchange={(e) => updateAdditionalSubGenre(index, e.currentTarget.value)}
 							>
 								<option value="">None</option>
-								{#each getSubGenres(subGenre.name) as sg}
+								{#each getSubGenres(subGenre.name) as sg (sg)}
 									<option value={sg}>{sg}</option>
 								{/each}
 							</select>

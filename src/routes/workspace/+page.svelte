@@ -213,8 +213,8 @@
 		const tab = $activeTab;
 		if (!tab) return null;
 
-		// Check if this is a generic generated entity (not old-style campaign/adventure, or storyboard)
-		if (tab.entityType !== 'adventure' && tab.entityType !== 'storyboard') {
+		// Check if this is a generic generated entity (not storyboard)
+		if (tab.entityType !== 'storyboard') {
 			// For campaigns, check if it's a generated entity (has customFields.generatedEntity)
 			if (tab.entityType === 'campaign') {
 				// Look in allOtherEntities for generated campaigns
@@ -225,6 +225,22 @@
 					return entity;
 				}
 				// Otherwise let it fall through to old-style campaign handling
+				return null;
+			}
+
+			// For adventures, check both new entities and old adventures Map
+			if (tab.entityType === 'adventure') {
+				// First try allOtherEntities for new generated adventures
+				const entitiesOfType = allOtherEntities.get(tab.entityType as EntityType);
+				const entity = entitiesOfType?.find(e => e.id === tab.entityId);
+				if (entity) return entity;
+
+				// Otherwise check old adventures Map
+				const oldAdventure = adventures.get(tab.entityId);
+				if (oldAdventure) {
+					// Return it as-is, it already has customFields structure
+					return oldAdventure;
+				}
 				return null;
 			}
 
@@ -243,11 +259,12 @@
 		return campaigns.find(c => c.id === tab.entityId) || null;
 	});
 
-	let currentAdventure = $derived.by(() => {
-		const tab = $activeTab;
-		if (!tab || tab.entityType !== 'adventure') return null;
-		return adventures.get(tab.entityId) || null;
-	});
+	// No longer needed - adventures now use generic entity viewer
+	// let currentAdventure = $derived.by(() => {
+	// 	const tab = $activeTab;
+	// 	if (!tab || tab.entityType !== 'adventure') return null;
+	// 	return adventures.get(tab.entityId) || null;
+	// });
 
 	let currentStoryBoardAdventureId = $derived.by(() => {
 		const tab = $activeTab;
@@ -383,6 +400,12 @@
 				entityType = 'galaxy';
 			} else if (clickedEntity.planets !== undefined || clickedEntity.stars !== undefined) {
 				entityType = 'solarSystem';
+			} else if (clickedEntity.spheres !== undefined) {
+				entityType = 'universe';
+			} else if (clickedEntity.beginning !== undefined && clickedEntity.climax !== undefined && clickedEntity.ending !== undefined) {
+				entityType = 'adventure';
+			} else if (clickedEntity.adventures !== undefined && clickedEntity.universes !== undefined) {
+				entityType = 'campaign';
 			}
 
 			// Check if this entity already exists in the store by ID
@@ -542,15 +565,6 @@
 							const adv = adventures.get(id);
 							if (adv) openAdventure(adv);
 						}}
-					/>
-				{:else if currentAdventure}
-					<AdventureCard
-						adventure={currentAdventure}
-						showActions={true}
-						onDelete={deleteAdventure}
-						onNameChange={updateAdventureName}
-						onStatusChange={updateAdventureStatus}
-						onOpenStoryBoard={openStoryBoard}
 					/>
 				{:else if currentStoryBoardAdventureId}
 					<StoryBoard adventureId={currentStoryBoardAdventureId} />

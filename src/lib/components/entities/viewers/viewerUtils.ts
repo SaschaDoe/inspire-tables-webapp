@@ -61,7 +61,24 @@ export function createAddEntityHandler<T extends Record<string, any>>(
 ) {
 	return (entity: any) => {
 		parentObject[arrayKey] = [...parentObject[arrayKey], entity] as T[keyof T];
+
 		if (parentEntity) {
+			// Update the parent entity in the store with the modified object
+			const existingEntity = entityStore.getEntity(parentEntity.id);
+			if (existingEntity) {
+				entityStore.updateEntity(parentEntity.id, {
+					...existingEntity,
+					customFields: {
+						...existingEntity.customFields,
+						generatedEntity: parentObject
+					},
+					metadata: {
+						...existingEntity.metadata,
+						updatedAt: new Date()
+					}
+				});
+			}
+
 			dispatch('entityUpdated', { entity: parentEntity });
 		}
 	};
