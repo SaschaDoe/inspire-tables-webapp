@@ -7,22 +7,31 @@
  * Format: { "our trope name": "ActualTvTropesPageName" }
  */
 export const tvTropesMapping: Record<string, string> = {
-	// Plot Tropes
-	"mission from higher power": "MissionFromGod",
+	// Plot Tropes (✅ = verified to exist on TV Tropes)
+	"mission from higher power": "MissionFromGod", // ✅
+	"alien invasion": "AlienInvasion", // ✅
+	"heist": "TheCaper", // ✅
+	"love triangle": "LoveTriangle", // ✅
+	"brainwashed": "Brainwashed", // ✅
+	"superhero origin": "SuperheroOrigin", // ✅
+	"serial killer": "SerialKiller", // ✅
+	"lotus eater machine": "LotusEaterMachine", // ✅
+
+	// Tentative mappings (need verification)
 	"15 minutes of fame": "FifteenMinutesOfFame",
 	"dragon": "OurDragonsAreDifferent", // or "DragonSlaying" or "TheHero"?
 	"lost wedding ring": "LostWeddingRing",
 
-	// Beginning Tropes
+	// Beginning Tropes (need verification)
 	"action prologue": "ActionPrologue",
 	"how we got here": "HowWeGotHere",
 
-	// Conflict Tropes
+	// Conflict Tropes (need verification)
 	"stupidity": "TooDumbToLive",
 	"achievement through ignorance": "AchievementsThroughIgnorance",
 
 	// Add more mappings as we discover the correct TV Tropes pages
-	// TODO: This needs to be populated with all tropes from the tables
+	// TODO: Still need to map ~114 more plot tropes + beginning/ending/conflict tropes
 };
 
 /**

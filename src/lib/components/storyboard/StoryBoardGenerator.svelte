@@ -132,9 +132,9 @@
 			<div class="modal-body">
 				<!-- Category selector -->
 				<div class="category-grid">
-					{#each categories as category}
+					{#each categories as category (category.type)}
 						<button
-							class="category-btn {category === selectedCategory ? 'active' : ''}"
+							class="category-btn {category.type === selectedCategory.type ? 'active' : ''}"
 							onclick={() => {
 								selectedCategory = category;
 								selectedTable = null;
@@ -143,7 +143,7 @@
 						>
 							<span class="category-icon">{category.icon}</span>
 							<span class="category-name">{category.name}</span>
-							<span class="category-count">{category.tables.length}</span>
+							<span class="category-count">{category.metadata.length}</span>
 						</button>
 					{/each}
 				</div>
@@ -161,7 +161,7 @@
 
 				<!-- Table list -->
 				<div class="table-list">
-					{#each filteredTables as table}
+					{#each filteredTables as table (table.title)}
 						<button
 							class="table-item {table === selectedTable ? 'selected' : ''}"
 							onclick={() => (selectedTable = table)}
