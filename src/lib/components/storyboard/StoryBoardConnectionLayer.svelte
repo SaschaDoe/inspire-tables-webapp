@@ -2,6 +2,10 @@
 	import { activeBoard, activeConnections, activeNodes, storyboardStore } from '$lib/stores/storyboardStore';
 	import type { StoryBoardConnection, StoryBoardNode } from '$lib/types/storyboard';
 
+	let selectedConnectionId = $state<string | null>(null);
+	let editingConnectionId = $state<string | null>(null);
+	let editingLabel = $state('');
+
 	// Find node by ID
 	function getNode(nodeId: string): StoryBoardNode | undefined {
 		return $activeNodes.find((n) => n.id === nodeId);
@@ -73,20 +77,68 @@
 		};
 	}
 
-	// Handle connection click for deletion
+	// Handle connection click for selection and deletion
 	function handleConnectionClick(e: MouseEvent, connectionId: string) {
 		e.stopPropagation();
 		if (!$activeBoard) return;
+
+		// Double-click to edit
+		if (e.detail === 2) {
+			e.preventDefault();
+			const connection = $activeConnections.find((c) => c.id === connectionId);
+			if (connection) {
+				editingConnectionId = connectionId;
+				editingLabel = connection.label || '';
+			}
+			return;
+		}
 
 		// Ctrl+Click or Right-click to delete
 		if (e.ctrlKey || e.button === 2) {
 			e.preventDefault();
 			if (confirm('Delete this connection?')) {
 				storyboardStore.deleteConnection($activeBoard.id, connectionId);
+				if (selectedConnectionId === connectionId) {
+					selectedConnectionId = null;
+				}
 			}
+			return;
+		}
+
+		// Regular click to select
+		selectedConnectionId = connectionId;
+	}
+
+	// Handle label editing
+	function saveLabel(connectionId: string) {
+		if (!$activeBoard) return;
+		storyboardStore.updateConnection($activeBoard.id, connectionId, { label: editingLabel });
+		editingConnectionId = null;
+	}
+
+	function cancelEdit() {
+		editingConnectionId = null;
+	}
+
+	// Keyboard handler for deleting selected connection
+	function handleKeyDown(e: KeyboardEvent) {
+		if (!$activeBoard || !selectedConnectionId) return;
+
+		if (e.key === 'Delete' || e.key === 'Backspace') {
+			e.preventDefault();
+			if (confirm('Delete this connection?')) {
+				storyboardStore.deleteConnection($activeBoard.id, selectedConnectionId);
+				selectedConnectionId = null;
+			}
+		}
+
+		if (e.key === 'Escape') {
+			selectedConnectionId = null;
 		}
 	}
 </script>
+
+<svelte:window onkeydown={handleKeyDown} />
 
 <!-- Connection layer sits above nodes but below selection box -->
 <g class="connection-layer" style="pointer-events: {$activeConnections.length > 0 ? 'all' : 'none'}">
@@ -119,18 +171,20 @@
 	{#each $activeConnections as connection (connection.id)}
 		{@const path = generatePath(connection)}
 		{@const labelPos = getLabelPosition(connection)}
+		{@const isSelected = selectedConnectionId === connection.id}
+		{@const isEditing = editingConnectionId === connection.id}
 
 		{#if path}
 			<g class="connection-group">
 				<!-- Main connection path -->
 				<path
 					d={path}
-					stroke={connection.color || '#a855f7'}
-					stroke-width="2"
+					stroke={isSelected ? '#3b82f6' : connection.color || '#a855f7'}
+					stroke-width={isSelected ? '3' : '2'}
 					fill="none"
 					stroke-dasharray={getDashArray(connection.lineType)}
 					marker-end={connection.endMarker === 'arrow' ? 'url(#arrowhead)' : connection.endMarker === 'circle' ? 'url(#circle-marker)' : 'none'}
-					class="connection-path"
+					class="connection-path {isSelected ? 'selected' : ''}"
 					onclick={(e) => handleConnectionClick(e, connection.id)}
 					oncontextmenu={(e) => handleConnectionClick(e, connection.id)}
 				/>
@@ -146,32 +200,62 @@
 					oncontextmenu={(e) => handleConnectionClick(e, connection.id)}
 				/>
 
-				<!-- Connection label -->
-				{#if connection.label && labelPos}
-					<g class="connection-label">
-						<!-- Background rectangle for better readability -->
-						<rect
-							x={labelPos.x - connection.label.length * 3}
-							y={labelPos.y - 10}
-							width={connection.label.length * 6}
-							height="16"
-							fill="rgba(15, 23, 42, 0.9)"
-							stroke="rgba(168, 85, 247, 0.5)"
-							stroke-width="1"
-							rx="3"
-						/>
-						<text
-							x={labelPos.x}
-							y={labelPos.y}
-							text-anchor="middle"
-							dominant-baseline="middle"
-							fill="rgb(216, 180, 254)"
-							font-size="12"
-							font-weight="500"
+				<!-- Connection label or edit input -->
+				{#if labelPos}
+					{#if isEditing}
+						<foreignObject
+							x={labelPos.x - 75}
+							y={labelPos.y - 15}
+							width="150"
+							height="30"
 						>
-							{connection.label}
-						</text>
-					</g>
+							<div class="label-editor">
+								<input
+									type="text"
+									bind:value={editingLabel}
+									onkeydown={(e) => {
+										if (e.key === 'Enter') {
+											saveLabel(connection.id);
+										} else if (e.key === 'Escape') {
+											cancelEdit();
+										}
+										e.stopPropagation();
+									}}
+									onclick={(e) => e.stopPropagation()}
+									class="label-input"
+									placeholder="Label..."
+									autofocus
+								/>
+								<button class="save-btn" onclick={() => saveLabel(connection.id)}>✓</button>
+								<button class="cancel-btn" onclick={cancelEdit}>✕</button>
+							</div>
+						</foreignObject>
+					{:else if connection.label}
+						<g class="connection-label">
+							<!-- Background rectangle for better readability -->
+							<rect
+								x={labelPos.x - connection.label.length * 3}
+								y={labelPos.y - 10}
+								width={connection.label.length * 6}
+								height="16"
+								fill="rgba(15, 23, 42, 0.9)"
+								stroke={isSelected ? 'rgba(59, 130, 246, 0.8)' : 'rgba(168, 85, 247, 0.5)'}
+								stroke-width={isSelected ? '2' : '1'}
+								rx="3"
+							/>
+							<text
+								x={labelPos.x}
+								y={labelPos.y}
+								text-anchor="middle"
+								dominant-baseline="middle"
+								fill="rgb(216, 180, 254)"
+								font-size="12"
+								font-weight="500"
+							>
+								{connection.label}
+							</text>
+						</g>
+					{/if}
 				{/if}
 			</g>
 		{/if}

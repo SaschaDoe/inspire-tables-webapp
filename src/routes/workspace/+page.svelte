@@ -28,6 +28,16 @@
 		// Load campaigns from entity store
 		campaigns = entityStore.getCampaigns();
 		loadAllEntities();
+
+		// Check if there's an entity ID in the URL
+		const urlParams = new URLSearchParams(window.location.search);
+		const entityId = urlParams.get('entity');
+		if (entityId) {
+			const entity = entityStore.getEntity(entityId);
+			if (entity) {
+				tabStore.openTab(entity);
+			}
+		}
 	});
 
 	function loadAllEntities() {

@@ -1,8 +1,13 @@
 <script lang="ts">
 	import { storyboardStore, activeBoard, canUndo, canRedo, selectedNodes, boardMode } from '$lib/stores/storyboardStore';
 	import StoryBoardGenerator from './StoryBoardGenerator.svelte';
+	import EntityGeneratorModal from '$lib/components/entities/EntityGeneratorModal.svelte';
+	import { entityStore } from '$lib/stores/entityStore';
+	import { getEntityTypesList } from '$lib/entities/entityRegistry';
+	import type { Entity, EntityType } from '$lib/types/entity';
 
 	let showGenerator = $state(false);
+	let showEntityModal = $state(false);
 
 	function addCard() {
 		if (!$activeBoard) return;
@@ -20,6 +25,60 @@
 
 	function openGenerator() {
 		showGenerator = true;
+	}
+
+	function openEntityModal() {
+		showEntityModal = true;
+	}
+
+	function handleEntitySave(generatedEntity: any, entityType: string) {
+		if (!$activeBoard) return;
+
+		// Get entity type info for styling
+		const entityTypes = getEntityTypesList();
+		const entityTypeInfo = entityTypes.find((et) => et.name === entityType);
+
+		// Create the full entity object with required metadata
+		const entity: Entity = {
+			id: generatedEntity.id,
+			type: entityType as EntityType,
+			name: generatedEntity.name || `${entityType} ${generatedEntity.id.slice(0, 8)}`,
+			description: generatedEntity.description || '',
+			tags: [],
+			metadata: {
+				createdAt: new Date(),
+				updatedAt: new Date()
+			},
+			relationships: [],
+			customFields: { generatedEntity: generatedEntity }
+		};
+
+		// Save entity to the entity store
+		entityStore.createEntity(entity);
+
+		// Calculate center of viewport
+		const viewportCenterX =
+			(-$activeBoard.viewport.x + window.innerWidth / 2) / $activeBoard.viewport.zoom;
+		const viewportCenterY =
+			(-$activeBoard.viewport.y + window.innerHeight / 2) / $activeBoard.viewport.zoom;
+
+		// Add entity as a node to the storyboard
+		storyboardStore.addNode(
+			$activeBoard.id,
+			{
+				x: viewportCenterX - 100,
+				y: viewportCenterY - 60,
+				width: 200,
+				height: 120,
+				label: entity.name,
+				notes: entity.description,
+				icon: entityTypeInfo?.icon || '✨',
+				entityType: entityType as any,
+				entityId: entity.id,
+				layer: 0
+			},
+			`Create Entity: ${entity.name}`
+		);
 	}
 
 	function deleteSelected() {
@@ -67,6 +126,8 @@
 		const newMode = $boardMode === 'draw' ? 'select' : 'draw';
 		storyboardStore.setMode($activeBoard.id, newMode);
 	}
+
+	let showHelp = $state(false);
 </script>
 
 <div class="toolbar">
@@ -85,9 +146,14 @@
 			<span>Add Card</span>
 		</button>
 
-		<button onclick={openGenerator} class="toolbar-btn generate" title="Generate from Tables (G)">
+		<button onclick={openGenerator} class="toolbar-btn generate" title="Roll on Tables (G)">
 			<span class="icon">🎲</span>
-			<span>Generate</span>
+			<span>Roll</span>
+		</button>
+
+		<button onclick={openEntityModal} class="toolbar-btn entity" title="Create Entity (E)">
+			<span class="icon">✨</span>
+			<span>Entity</span>
 		</button>
 
 		<button
@@ -132,10 +198,87 @@
 		<button onclick={resetView} class="toolbar-btn" title="Reset View (Ctrl+0)">
 			<span class="icon">⊙</span>
 		</button>
+
+		<button onclick={() => (showHelp = !showHelp)} class="toolbar-btn" title="Help & Shortcuts">
+			<span class="icon">?</span>
+		</button>
 	</div>
 </div>
 
+<!-- Help Modal -->
+{#if showHelp}
+	<div class="help-overlay" onclick={() => (showHelp = false)}>
+		<div class="help-modal" onclick={(e) => e.stopPropagation()}>
+			<div class="help-header">
+				<h2>Keyboard Shortcuts & Tips</h2>
+				<button class="close-btn" onclick={() => (showHelp = false)}>✕</button>
+			</div>
+			<div class="help-content">
+				<div class="help-section">
+					<h3>🔗 Connections</h3>
+					<ul>
+						<li><kbd>Alt</kbd> + <kbd>Click</kbd> on first node, then <kbd>Alt</kbd> + <kbd>Click</kbd> on second node to create a connection</li>
+						<li><kbd>Click</kbd> on a connection line to select it</li>
+						<li><kbd>Double-click</kbd> on a connection to edit its label</li>
+						<li><kbd>Delete</kbd> key to remove selected connection</li>
+						<li><kbd>Ctrl</kbd> + <kbd>Click</kbd> or <kbd>Right-click</kbd> on connection for quick delete</li>
+						<li><kbd>Esc</kbd> to cancel connection mode</li>
+					</ul>
+				</div>
+				<div class="help-section">
+					<h3>📝 Cards</h3>
+					<ul>
+						<li><kbd>Ctrl</kbd> + <kbd>N</kbd> - Add new card</li>
+						<li><kbd>Delete</kbd> or <kbd>Backspace</kbd> - Delete selected cards</li>
+						<li><kbd>Ctrl</kbd> + <kbd>C</kbd> / <kbd>Ctrl</kbd> + <kbd>V</kbd> - Copy/Paste</li>
+						<li><kbd>Ctrl</kbd> + <kbd>D</kbd> - Duplicate selected</li>
+						<li><kbd>Double-click</kbd> entity card to open in new tab</li>
+					</ul>
+				</div>
+				<div class="help-section">
+					<h3>🎯 Selection</h3>
+					<ul>
+						<li><kbd>Click + Drag</kbd> - Box select multiple cards</li>
+						<li><kbd>Shift</kbd> + <kbd>Click</kbd> - Add to selection</li>
+						<li><kbd>Ctrl</kbd> + <kbd>A</kbd> - Select all</li>
+						<li><kbd>Esc</kbd> - Deselect all</li>
+					</ul>
+				</div>
+				<div class="help-section">
+					<h3>🎨 Drawing</h3>
+					<ul>
+						<li><kbd>D</kbd> - Toggle draw mode</li>
+						<li>Draw freehand lines and shapes</li>
+					</ul>
+				</div>
+				<div class="help-section">
+					<h3>🖱️ Navigation</h3>
+					<ul>
+						<li><kbd>Space</kbd> + <kbd>Drag</kbd> - Pan canvas</li>
+						<li><kbd>Middle Mouse</kbd> + <kbd>Drag</kbd> - Pan canvas</li>
+						<li><kbd>Ctrl</kbd> + <kbd>Scroll</kbd> - Zoom in/out</li>
+						<li><kbd>Arrow Keys</kbd> - Nudge selected cards (hold <kbd>Shift</kbd> for 10px)</li>
+						<li><kbd>Ctrl</kbd> + <kbd>0</kbd> - Reset view</li>
+					</ul>
+				</div>
+				<div class="help-section">
+					<h3>↩️ Undo/Redo</h3>
+					<ul>
+						<li><kbd>Ctrl</kbd> + <kbd>Z</kbd> - Undo</li>
+						<li><kbd>Ctrl</kbd> + <kbd>Y</kbd> or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd> - Redo</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+{/if}
+
 <StoryBoardGenerator show={showGenerator} onClose={() => (showGenerator = false)} />
+<EntityGeneratorModal
+	bind:isOpen={showEntityModal}
+	onClose={() => (showEntityModal = false)}
+	onSave={handleEntitySave}
+/>
 
 <style>
 	.toolbar {
@@ -239,6 +382,17 @@
 		background: linear-gradient(to right, rgb(245 158 11), rgb(217 119 6));
 	}
 
+	.toolbar-btn.entity {
+		background: linear-gradient(to right, rgb(168 85 247), rgb(139 92 246));
+		border: none;
+		color: white;
+		font-weight: 600;
+	}
+
+	.toolbar-btn.entity:hover {
+		background: linear-gradient(to right, rgb(139 92 246), rgb(124 58 237));
+	}
+
 	.icon {
 		font-size: 1.125rem;
 		line-height: 1;
@@ -251,5 +405,110 @@
 		color: rgb(216 180 254);
 		min-width: 3.5rem;
 		text-align: center;
+	}
+
+	.help-overlay {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.7);
+		backdrop-filter: blur(4px);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 2000;
+		animation: fadeIn 0.2s ease-out;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	.help-modal {
+		background: linear-gradient(to bottom right, rgb(30 27 75), rgb(88 28 135 / 0.9));
+		border: 2px solid rgb(168 85 247);
+		border-radius: 1rem;
+		max-width: 800px;
+		width: 90%;
+		max-height: 80vh;
+		display: flex;
+		flex-direction: column;
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+		animation: slideUp 0.3s ease-out;
+	}
+
+	@keyframes slideUp {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.help-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 1.5rem;
+		border-bottom: 1px solid rgb(168 85 247 / 0.3);
+	}
+
+	.help-header h2 {
+		color: white;
+		font-size: 1.5rem;
+		font-weight: bold;
+		margin: 0;
+	}
+
+	.help-content {
+		flex: 1;
+		overflow-y: auto;
+		padding: 1.5rem;
+	}
+
+	.help-section {
+		margin-bottom: 1.5rem;
+	}
+
+	.help-section:last-child {
+		margin-bottom: 0;
+	}
+
+	.help-section h3 {
+		color: rgb(192 132 252);
+		font-size: 1.125rem;
+		font-weight: 600;
+		margin: 0 0 0.75rem 0;
+	}
+
+	.help-section ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.help-section li {
+		color: rgb(216 180 254);
+		padding: 0.5rem 0;
+		font-size: 0.875rem;
+		line-height: 1.5;
+	}
+
+	kbd {
+		background: rgb(168 85 247 / 0.2);
+		border: 1px solid rgb(168 85 247 / 0.4);
+		border-radius: 0.25rem;
+		padding: 0.125rem 0.375rem;
+		font-family: monospace;
+		font-size: 0.75rem;
+		color: rgb(216 180 254);
+		white-space: nowrap;
 	}
 </style>

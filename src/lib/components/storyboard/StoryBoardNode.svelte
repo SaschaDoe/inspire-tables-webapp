@@ -4,6 +4,7 @@
 	import { tabStore } from '$lib/stores/tabStore';
 	import type { StoryBoardNode } from '$lib/types/storyboard';
 	import type { Entity } from '$lib/types/entity';
+	import { getEntityTypesList } from '$lib/entities/entityRegistry';
 
 	interface Props {
 		node: StoryBoardNode;
@@ -12,23 +13,10 @@
 	let { node }: Props = $props();
 
 	// Entity sync - watch for changes to the linked entity
-	let linkedEntity = $state<Entity | undefined>(undefined);
-	let entityMissing = $state(false);
-
-	$effect(() => {
-		if (node.entityId) {
-			linkedEntity = $allEntities.find((e) => e.id === node.entityId);
-			entityMissing = !linkedEntity;
-
-			// Auto-update label if entity name changed
-			if (linkedEntity && linkedEntity.name !== node.label && $activeBoard) {
-				storyboardStore.updateNode($activeBoard.id, node.id, { label: linkedEntity.name });
-			}
-		} else {
-			linkedEntity = undefined;
-			entityMissing = false;
-		}
-	});
+	let linkedEntity = $derived(
+		node.entityId ? $allEntities.find((e) => e.id === node.entityId) : undefined
+	);
+	let entityMissing = $derived(node.entityId ? !linkedEntity : false);
 
 	// Drag state
 	let isDragging = $state(false);
@@ -38,6 +26,7 @@
 	// Tooltip state
 	let showTooltip = $state(false);
 	let tooltipTimeout: number;
+	let tooltipPos = $state({ x: 0, y: 0 });
 
 	// Context menu for generated cards
 	let showContextMenu = $state(false);
@@ -94,8 +83,13 @@
 
 	function handleClick(e: MouseEvent) {
 		if (e.detail === 2 && $activeBoard) {
-			// Double-click - start editing
-			// For now just select
+			// Double-click
+			// If node has a linked entity, open it in a new tab
+			if (linkedEntity) {
+				// Open in new browser tab
+				const url = `/workspace?entity=${linkedEntity.id}`;
+				window.open(url, '_blank');
+			}
 		}
 	}
 
@@ -162,12 +156,21 @@
 		e.stopPropagation();
 		if (!linkedEntity) return;
 
-		// Open entity in workspace
-		tabStore.openEntityTab(linkedEntity.id, linkedEntity.name, linkedEntity.type);
+		// Open entity in workspace in new tab
+		const url = `/workspace?entity=${linkedEntity.id}`;
+		window.open(url, '_blank');
 	}
 
-	function handleMouseEnter() {
+	function handleMouseEnter(e: MouseEvent) {
 		if (linkedEntity) {
+			// Calculate tooltip position in screen coordinates
+			const target = e.currentTarget as HTMLElement;
+			const rect = target.getBoundingClientRect();
+			tooltipPos = {
+				x: rect.left,
+				y: rect.bottom + 8 // 8px below the node
+			};
+
 			tooltipTimeout = window.setTimeout(() => {
 				showTooltip = true;
 			}, 500); // Show tooltip after 500ms hover
@@ -179,27 +182,84 @@
 		showTooltip = false;
 	}
 
-	// Color mapping for entity types
+	// Color mapping for entity types (expanded for all types)
 	const colorMap: Record<string, string> = {
+		// Meta
 		campaign: 'from-purple-500 to-pink-500',
 		adventure: 'from-blue-500 to-cyan-500',
+		quest: 'from-indigo-500 to-blue-500',
+		storyBeat: 'from-violet-500 to-purple-500',
+
+		// Characters
 		character: 'from-green-500 to-emerald-500',
+		villain: 'from-red-600 to-rose-600',
+		monster: 'from-orange-600 to-red-500',
+
+		// Locations - Celestial
+		universe: 'from-indigo-900 to-purple-900',
+		sphere: 'from-purple-700 to-indigo-700',
+		sphereConnection: 'from-cyan-600 to-blue-600',
+		galaxy: 'from-purple-600 to-pink-600',
+		solarSystem: 'from-yellow-500 to-orange-500',
+		planet: 'from-blue-400 to-green-400',
+		star: 'from-yellow-300 to-orange-300',
+
+		// Locations - Terrestrial
+		continent: 'from-green-600 to-teal-600',
+		nation: 'from-blue-600 to-indigo-600',
+		region: 'from-teal-500 to-green-500',
+		settlement: 'from-amber-500 to-yellow-500',
+		building: 'from-stone-500 to-gray-500',
 		location: 'from-yellow-500 to-orange-500',
+
+		// Dungeons
+		dungeon: 'from-gray-700 to-stone-700',
+		entrance: 'from-stone-600 to-gray-600',
+		room: 'from-slate-500 to-gray-500',
+		trap: 'from-red-500 to-orange-500',
+
+		// Factions
+		faction: 'from-red-500 to-pink-500',
+		organization: 'from-indigo-500 to-purple-500',
+
+		// Magic & Religion
+		magicSystem: 'from-purple-500 to-fuchsia-500',
+		spell: 'from-violet-400 to-purple-400',
+		ritual: 'from-purple-600 to-indigo-600',
+		god: 'from-yellow-400 to-amber-400',
+
+		// Items & Objects
+		artifact: 'from-amber-600 to-orange-600',
+		treasure: 'from-yellow-500 to-amber-500',
+		vehicle: 'from-gray-600 to-slate-600',
+		talent: 'from-pink-500 to-rose-500',
+
+		// Events
+		event: 'from-cyan-500 to-blue-500',
+		rumor: 'from-slate-400 to-gray-400',
+		prophecy: 'from-purple-400 to-pink-400',
+		illness: 'from-green-700 to-emerald-700',
+		clue: 'from-blue-400 to-cyan-400',
+		weatherEvent: 'from-sky-400 to-blue-400',
+
+		// Misc
 		scene: 'from-red-500 to-rose-500',
+		initialMeeting: 'from-pink-400 to-rose-400',
 		generated: 'from-yellow-500 to-amber-500'
 	};
 
-	const iconMap: Record<string, string> = {
-		campaign: '🎭',
-		adventure: '🗺️',
-		character: '👤',
-		location: '📍',
-		scene: '🎬',
-		generated: '🎲'
-	};
+	// Get entity type info for icon
+	const entityTypes = getEntityTypesList();
+	const entityTypeInfo = $derived(
+		node.entityType ? entityTypes.find((et) => et.name === node.entityType) : null
+	);
 
-	let gradientColor = $derived(node.entityType ? colorMap[node.entityType] : 'from-purple-500 to-pink-500');
-	let iconEmoji = $derived(node.entityType ? iconMap[node.entityType] : '📝');
+	let gradientColor = $derived(
+		node.entityType && colorMap[node.entityType]
+			? colorMap[node.entityType]
+			: 'from-purple-500 to-pink-500'
+	);
+	let iconEmoji = $derived(entityTypeInfo?.icon || node.icon || '📝');
 	let isGenerated = $derived(node.entityType === 'generated');
 
 	// Handle window click for context menu
@@ -270,26 +330,6 @@
 			{/if}
 		</div>
 
-		<!-- Entity tooltip -->
-		{#if showTooltip && linkedEntity}
-			<div class="tooltip">
-				<div class="tooltip-header">
-					<span class="tooltip-icon">{node.icon || iconEmoji}</span>
-					<span class="tooltip-title">{linkedEntity.name}</span>
-				</div>
-				<div class="tooltip-type">{linkedEntity.type}</div>
-				{#if linkedEntity.description}
-					<div class="tooltip-description">{linkedEntity.description}</div>
-				{/if}
-				{#if linkedEntity.tags && linkedEntity.tags.length > 0}
-					<div class="tooltip-tags">
-						{#each linkedEntity.tags as tag}
-							<span class="tag">{tag}</span>
-						{/each}
-					</div>
-				{/if}
-			</div>
-		{/if}
 
 		<!-- Context menu for generated cards -->
 		{#if showContextMenu && isGenerated}
@@ -310,6 +350,32 @@
 		{/if}
 	</div>
 </foreignObject>
+
+<!-- Entity tooltip (rendered outside foreignObject with fixed positioning) -->
+{#if showTooltip && linkedEntity}
+	<foreignObject x="0" y="0" width="100%" height="100%" style="pointer-events: none; overflow: visible;">
+		<div
+			class="tooltip"
+			style="position: fixed; left: {tooltipPos.x}px; top: {tooltipPos.y}px;"
+		>
+			<div class="tooltip-header">
+				<span class="tooltip-icon">{node.icon || iconEmoji}</span>
+				<span class="tooltip-title">{linkedEntity.name}</span>
+			</div>
+			<div class="tooltip-type">{linkedEntity.type}</div>
+			{#if linkedEntity.description}
+				<div class="tooltip-description">{linkedEntity.description}</div>
+			{/if}
+			{#if linkedEntity.tags && linkedEntity.tags.length > 0}
+				<div class="tooltip-tags">
+					{#each linkedEntity.tags as tag}
+						<span class="tag">{tag}</span>
+					{/each}
+				</div>
+			{/if}
+		</div>
+	</foreignObject>
+{/if}
 
 <style>
 	.node {
@@ -531,10 +597,6 @@
 	}
 
 	.tooltip {
-		position: absolute;
-		top: 100%;
-		left: 0;
-		margin-top: 0.5rem;
 		min-width: 250px;
 		max-width: 350px;
 		background: rgb(15 23 42);
@@ -542,7 +604,7 @@
 		border-radius: 0.5rem;
 		padding: 1rem;
 		box-shadow: 0 10px 40px rgb(0 0 0 / 0.5);
-		z-index: 100;
+		z-index: 1000;
 		pointer-events: none;
 		animation: fadeIn 0.2s ease-out;
 	}
