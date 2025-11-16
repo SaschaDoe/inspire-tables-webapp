@@ -3,6 +3,7 @@
 	import Section from '../shared/Section.svelte';
 	import InfoGrid from '../shared/InfoGrid.svelte';
 	import StoryBoard from '$lib/components/storyboard/StoryBoard.svelte';
+	import { getTvTropesUrl } from '$lib/utils/tvTropesUtils';
 
 	interface Props {
 		adventure: Adventure;
@@ -51,7 +52,17 @@
 		<Section title="Plot Tropes">
 			<ul class="trope-list">
 				{#each adventure.plotTropes as trope, i (i)}
-					<li class="trope-item">{trope}</li>
+					<li class="trope-item">
+						<a
+							href={getTvTropesUrl(trope)}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="trope-link"
+						>
+							{trope}
+							<span class="external-icon">↗</span>
+						</a>
+					</li>
 				{/each}
 			</ul>
 		</Section>
@@ -176,8 +187,39 @@
 		background: rgb(30 27 75 / 0.5);
 		border: 1px solid rgb(168 85 247 / 0.2);
 		border-radius: 0.375rem;
-		color: rgb(216 180 254);
 		font-size: 0.875rem;
+		transition: all 0.2s;
+	}
+
+	.trope-item:hover {
+		background: rgb(30 27 75 / 0.7);
+		border-color: rgb(168 85 247 / 0.4);
+		transform: translateX(2px);
+	}
+
+	.trope-link {
+		color: rgb(216 180 254);
+		text-decoration: none;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		transition: color 0.2s;
+	}
+
+	.trope-link:hover {
+		color: rgb(233 213 255);
+	}
+
+	.external-icon {
+		font-size: 0.75rem;
+		color: rgb(168 85 247);
+		opacity: 0.7;
+		transition: opacity 0.2s;
+	}
+
+	.trope-link:hover .external-icon {
+		opacity: 1;
 	}
 
 	.description-text {
