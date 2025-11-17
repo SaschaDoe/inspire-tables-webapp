@@ -180,14 +180,21 @@
 		// Calculate total width of all cards: 5 cards + 4 gaps
 		const totalWidth = (5 * cardWidth) + (4 * gap); // 2080px
 
-		// For Story Seeds, use simple fixed positioning relative to viewport center
-		// This ensures all 5 cards are visible regardless of zoom/pan state
-		const startX = viewportCenterX - (totalWidth / 2);
+		// Place cards starting from a safe left position
+		// Ensure leftmost card is always visible (min 50px from left edge)
+		const minLeftMargin = 50;
+		let startX = viewportCenterX - (totalWidth / 2);
+
+		// If startX would be negative or too close to edge, adjust it
+		if (startX < minLeftMargin) {
+			startX = minLeftMargin;
+		}
+
 		const xOffset = offsetMultiplier * cardSpacing;
 		const finalX = startX + xOffset;
 		const finalY = viewportCenterY - 200;
 
-		console.log(`Card ${offsetMultiplier} (${card.type}): viewport center=(${viewportCenterX.toFixed(0)}, ${viewportCenterY.toFixed(0)}), position=(${finalX.toFixed(0)}, ${finalY.toFixed(0)}), totalWidth=${totalWidth}`);
+		console.log(`Card ${offsetMultiplier} (${card.type}): viewport center=(${viewportCenterX.toFixed(0)}, ${viewportCenterY.toFixed(0)}), position=(${finalX.toFixed(0)}, ${finalY.toFixed(0)}), startX=${startX.toFixed(0)}`);
 
 		const nodeData = {
 			x: finalX,
