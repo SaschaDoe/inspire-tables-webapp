@@ -172,18 +172,26 @@
 
 		const typeInfo = STORY_ENGINE_CARD_TYPES[card.type];
 
-		// Arrange cards in a nice spread pattern (horizontal layout with spacing)
-		const cardSpacing = 420; // Space between cards (card width 400px + 20px gap)
-		const xOffset = offsetMultiplier * cardSpacing;
+		// Arrange cards in a nice horizontal spread
+		const cardWidth = 400;
+		const gap = 20;
+		const cardSpacing = cardWidth + gap; // 420px between card starts
 
-		// Center all 5 cards: total span is 4 gaps * 420px = 1680px
-		// Plus half card width on each side: 1680 + 400 = 2080px total width
-		// Start at center minus half total width: viewportCenterX - 1040
-		const startX = viewportCenterX - ((4 * cardSpacing) / 2) - 200; // Properly center 5 cards
+		// Calculate total width of all cards: 5 cards + 4 gaps
+		const totalWidth = (5 * cardWidth) + (4 * gap); // 2080px
+
+		// For Story Seeds, use simple fixed positioning relative to viewport center
+		// This ensures all 5 cards are visible regardless of zoom/pan state
+		const startX = viewportCenterX - (totalWidth / 2);
+		const xOffset = offsetMultiplier * cardSpacing;
+		const finalX = startX + xOffset;
+		const finalY = viewportCenterY - 200;
+
+		console.log(`Card ${offsetMultiplier} (${card.type}): viewport center=(${viewportCenterX.toFixed(0)}, ${viewportCenterY.toFixed(0)}), position=(${finalX.toFixed(0)}, ${finalY.toFixed(0)}), totalWidth=${totalWidth}`);
 
 		const nodeData = {
-			x: startX + xOffset,
-			y: viewportCenterY - 200,
+			x: finalX,
+			y: finalY,
 			width: 400,
 			height: 400,
 			label: '', // Story Engine cards don't use label
