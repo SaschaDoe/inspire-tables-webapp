@@ -185,6 +185,7 @@ function createStoryBoardStore() {
 					locked: false,
 					collapsed: false,
 					layer: node.layer ?? 5,
+					groupId: node.groupId, // Group ID for moving nodes together
 					storyEngineCard: node.storyEngineCard, // Story Engine card data
 					metadata: {
 						createdAt: new Date(),
@@ -268,9 +269,27 @@ function createStoryBoardStore() {
 						const snapshot = createSnapshot(board, 'Move card');
 						addToHistory(board, snapshot);
 					}
+
+					// Calculate delta for group movement
+					const deltaX = x - node.x;
+					const deltaY = y - node.y;
+
+					// Move the node
 					node.x = x;
 					node.y = y;
 					node.metadata.updatedAt = new Date();
+
+					// If node is part of a group, move all other nodes in the group
+					if (node.groupId) {
+						board.nodes.forEach((n) => {
+							if (n.id !== nodeId && n.groupId === node.groupId) {
+								n.x += deltaX;
+								n.y += deltaY;
+								n.metadata.updatedAt = new Date();
+							}
+						});
+					}
+
 					board.metadata.updatedAt = new Date();
 					if (!skipSnapshot) {
 						saveToStorage(state);

@@ -25,6 +25,7 @@ export interface StoryBoardNode {
 	locked: boolean; // Prevent accidental moves
 	collapsed: boolean; // Show minimal info
 	layer: number; // Z-index layer (0 = back, 10 = front)
+	groupId?: string; // Nodes with same groupId move together
 
 	// Entity sync
 	entityError?: 'deleted' | 'not-found'; // Track broken references

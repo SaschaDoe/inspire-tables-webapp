@@ -20,8 +20,8 @@
 	function handleMouseDown(e: MouseEvent) {
 		if (!$activeBoard) return;
 
-		// Middle mouse or Space+click for panning
-		if (e.button === 1 || (isSpacePressed && e.button === 0)) {
+		// Middle mouse, Space+click, or Right-click for panning
+		if (e.button === 1 || (isSpacePressed && e.button === 0) || e.button === 2) {
 			e.preventDefault();
 			isPanning = true;
 			panStart = {
@@ -164,6 +164,11 @@
 		isPanning || isSpacePressed ? 'grabbing' : $boardMode === 'draw' ? 'crosshair' : 'default'
 	);
 
+	function handleContextMenu(e: MouseEvent) {
+		// Prevent browser context menu on right-click
+		e.preventDefault();
+	}
+
 	// Calculate selection box dimensions for rendering
 	let selectionBox = $derived(() => {
 		if (!isBoxSelecting) return null;
@@ -187,6 +192,7 @@
 	onmousemove={handleMouseMove}
 	onmouseup={handleMouseUp}
 	onwheel={handleWheel}
+	oncontextmenu={handleContextMenu}
 	role="application"
 	tabindex="-1"
 >

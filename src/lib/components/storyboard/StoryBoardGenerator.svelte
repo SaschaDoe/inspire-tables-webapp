@@ -159,7 +159,7 @@
 		}
 	}
 
-	function addStoryEngineCardToBoard(card: StoryEngineCard, offsetMultiplier: number = 0) {
+	function addStoryEngineCardToBoard(card: StoryEngineCard, offsetMultiplier: number = 0, groupId?: string) {
 		if (!$activeBoard) {
 			console.error('No active board!');
 			return;
@@ -172,15 +172,20 @@
 
 		const typeInfo = STORY_ENGINE_CARD_TYPES[card.type];
 
+		// Arrange cards in a nice spread pattern (horizontal layout with spacing)
+		const cardSpacing = 420; // Space between cards
+		const xOffset = offsetMultiplier * cardSpacing;
+
 		const nodeData = {
-			x: viewportCenterX - 200 + offsetMultiplier * 20,
-			y: viewportCenterY - 200 + offsetMultiplier * 20,
+			x: viewportCenterX - 800 + xOffset, // Start further left for better centering
+			y: viewportCenterY - 200,
 			width: 400,
 			height: 400,
 			label: '', // Story Engine cards don't use label
 			notes: `Story Engine: ${typeInfo.name}`,
 			icon: typeInfo.icon,
 			layer: 0,
+			groupId: groupId, // Add group ID for moving cards together
 			storyEngineCard: {
 				type: card.type,
 				cues: Array.from(card.cues), // Convert Proxy to plain array
@@ -434,8 +439,10 @@
 									<button
 										class="add-btn"
 										onclick={() => {
+											// Generate a single groupId for all cards in this Story Seed
+											const storySeedGroupId = crypto.randomUUID();
 											generatedStorySeed!.forEach((card, index) => {
-												addStoryEngineCardToBoard(card, index);
+												addStoryEngineCardToBoard(card, index, storySeedGroupId);
 											});
 											generatedStorySeed = null;
 										}}

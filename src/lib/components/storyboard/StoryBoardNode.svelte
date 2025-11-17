@@ -303,7 +303,7 @@
 
 <foreignObject x={node.x} y={node.y} width={node.width} height={node.height}>
 	<div
-		class="node {node.selected ? 'selected' : ''} {isDragging ? 'dragging' : ''} {$connectingFromNodeId === node.id ? 'connecting' : ''}"
+		class="node {node.selected ? 'selected' : ''} {isDragging ? 'dragging' : ''} {$connectingFromNodeId === node.id ? 'connecting' : ''} {node.groupId ? 'grouped' : ''}"
 		data-generated={isGenerated}
 		onmousedown={handleMouseDown}
 		onclick={handleClick}
@@ -313,6 +313,13 @@
 		role="button"
 		tabindex="0"
 	>
+		<!-- Group indicator badge -->
+		{#if node.groupId}
+			<div class="group-badge" title="Grouped - will move together">
+				<span class="group-icon">🔗</span>
+			</div>
+		{/if}
+
 		<!-- Glow effect -->
 		<div class="node-glow bg-gradient-to-r {gradientColor}"></div>
 
@@ -460,6 +467,21 @@
 		user-select: none;
 		backdrop-filter: blur(8px);
 		box-shadow: 0 4px 12px rgb(0 0 0 / 0.3);
+	}
+
+	/* Grouped nodes styling */
+	.node.grouped {
+		border-color: rgb(59 130 246 / 0.5);
+		box-shadow:
+			0 0 0 2px rgb(59 130 246 / 0.2),
+			0 4px 12px rgb(0 0 0 / 0.3);
+	}
+
+	.node.grouped:hover {
+		border-color: rgb(59 130 246 / 0.7);
+		box-shadow:
+			0 0 0 2px rgb(59 130 246 / 0.3),
+			0 8px 24px rgb(59 130 246 / 0.3);
 	}
 
 	/* Generated cards styling */
@@ -941,5 +963,37 @@
 	.se-cue-item.se-active .se-cue-text {
 		color: white;
 		font-weight: 700;
+	}
+
+	/* Group badge styling */
+	.group-badge {
+		position: absolute;
+		top: -8px;
+		right: -8px;
+		width: 24px;
+		height: 24px;
+		background: linear-gradient(135deg, rgb(59 130 246), rgb(37 99 235));
+		border: 2px solid rgb(15 23 42);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 10;
+		box-shadow: 0 2px 8px rgb(0 0 0 / 0.4);
+		animation: groupPulse 2s infinite;
+	}
+
+	@keyframes groupPulse {
+		0%, 100% {
+			box-shadow: 0 2px 8px rgb(59 130 246 / 0.4);
+		}
+		50% {
+			box-shadow: 0 2px 12px rgb(59 130 246 / 0.6);
+		}
+	}
+
+	.group-icon {
+		font-size: 0.75rem;
+		filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
 	}
 </style>
