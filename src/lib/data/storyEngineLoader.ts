@@ -11,6 +11,17 @@ function parseCardsFromDeck(deckData: any, expansionName: string, deck: StoryEng
 		return; // Skip files without cardTypes structure
 	}
 
+	// Handle backstories expansion with backstoryEngine cards
+	if (deckData.cardTypes.backstoryEngine) {
+		deck.cards.engines.push(
+			...deckData.cardTypes.backstoryEngine.cards.map((card: any) => ({
+				type: 'engine' as StoryEngineCardType,
+				cues: card.cues,
+				expansion: expansionName
+			}))
+		);
+	}
+
 	if (deckData.cardTypes.agent) {
 		deck.cards.agents.push(
 			...deckData.cardTypes.agent.cards.map((card: any) => ({
