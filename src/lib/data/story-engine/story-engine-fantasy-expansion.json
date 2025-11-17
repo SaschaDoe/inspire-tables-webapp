@@ -1,0 +1,241 @@
+{
+  "deck": "Story Engine Fantasy Expansion - Written In Dragonfire",
+  "cardTypes": {
+    "agent": {
+      "name": "Agent",
+      "description": "Fantasy-themed characters who make choices in the story",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["A WIZARD", "A CONQUEROR", "A RULER", "A PILGRIM"]
+        },
+        {
+          "cues": ["A ROGUE", "A HIRED KNIFE", "A BEGGAR", "A RANGER"]
+        },
+        {
+          "cues": ["A TACTICIAN", "A DIGGER", "A SELLSWORD", "A KENNEL MASTER"]
+        },
+        {
+          "cues": ["A BANDIT", "A STALKER", "AN OUTLAW", "A THIEF"]
+        },
+        {
+          "cues": ["AN ELEMENTAL", "A TREEFOLK", "A NATURE SPIRIT", "A WISP"]
+        },
+        {
+          "cues": ["AN INVOKER", "A MONK", "A BARD", "A MYSTIC"]
+        },
+        {
+          "cues": ["A DRUID", "A BARBARIAN", "A BLACKSMITH", "A SEER"]
+        },
+        {
+          "cues": ["A MAGE", "AN ARDENT", "A TRADER", "AN HEIR"]
+        },
+        {
+          "cues": ["A BEHEMOTH", "A FAMILIAR", "A DRAGON", "A BEAST"]
+        },
+        {
+          "cues": ["AN ARCHER", "A FIGHTER", "A SCOUT", "A MILITANT"]
+        },
+        {
+          "cues": ["A GUARD", "A PALADIN", "A SORCERER", "A SENTINEL"]
+        },
+        {
+          "cues": ["A WARRIOR", "AN ACOLYTE", "A SELLSWORD", "A CLERIC"]
+        }
+      ]
+    },
+    "engine": {
+      "name": "Engine",
+      "description": "Fantasy-themed motivations and relationships that drive the story",
+      "cueCount": 2,
+      "cards": [
+        {
+          "cues": ["WANTS TO ENCHANT", "WANTS TO CREATE A MASTERPIECE FOR/INVOLVING"]
+        },
+        {
+          "cues": ["WANTS TO SCHEME OR/INVOLVING", "WANTS TO FOIL A SCHEME OR/INVOLVING"]
+        },
+        {
+          "cues": ["WANTS TO CLAIM THE HIDDEN ARTIFACT OF", "WANTS TO START A WAR ON/WITH"]
+        },
+        {
+          "cues": ["WANTS TO STOP THE NEGOTIATIONS FOR/OF", "WANTS TO STOP AN ENEMY FROM REACHING"]
+        },
+        {
+          "cues": ["WANTS TO SABOTAGE AN ENEMY WITH", "WANTS TO MAP (OR MAP THE HISTORY OF)"]
+        },
+        {
+          "cues": ["WANTS TO DRIVE OUT A SPIRIT THAT HAS POSSESSED", "WANTS TO PREVENT A WAR FROM BEING STARTED BY"]
+        },
+        {
+          "cues": ["WANTS TO FIND THE PATH HOME AND THEIR ONLY LEAD IS", "WANTS TO SOLVE THE PUZZLE OF"]
+        },
+        {
+          "cues": ["WANTS TO OBTAIN A RARE SPELL COMPONENT FROM", "WANTS TO LEAD A RITUAL THAT WILL LEAVE OR/WITH"]
+        },
+        {
+          "cues": ["WANTS TO DISARM THE TRAP OF", "WANTS TO NAVIGATE A MAZE AT THE HEART OF WHICH SITS"]
+        },
+        {
+          "cues": ["WANTS TO PLEDGE THEIR LIFE IN SERVICE TO", "WANTS TO BE HEALED BY"]
+        },
+        {
+          "cues": ["WANTS TO WIN A DUEL WITH/IN/ATOP", "WANTS TO PAY AN OLD DEBT TO/WITH"]
+        },
+        {
+          "cues": ["CAN ONLY BE UNLOCKED THAT CAN ONLY BE UNLOCKED BY AN ANCIENT DOOR THAT", "WANTS TO OPEN AN ANCIENT DOOR THAT"]
+        }
+      ]
+    },
+    "anchor": {
+      "name": "Anchor",
+      "description": "Fantasy-themed objects, locations, or events of importance",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["A CAVERN", "AN AXE", "A GLACIER", "A CLOAK"]
+        },
+        {
+          "cues": ["A CROWN", "A HILL", "A TALISMAN", "A BREASTPLATE"]
+        },
+        {
+          "cues": ["A SUMMIT", "AN INN", "A KEEP", "A HARP"]
+        },
+        {
+          "cues": ["A BULWARK", "A WHIP", "A MASK", "A CARVING"]
+        },
+        {
+          "cues": ["A PAIR OF GLOVES", "A SADDLE", "A FRIGATE", "A TORCH"]
+        },
+        {
+          "cues": ["A MARKET", "A RING", "AN ICON", "A POTION"]
+        },
+        {
+          "cues": ["AN EMPIRE", "A SPREAD", "A THRONE", "A PORT"]
+        },
+        {
+          "cues": ["AN AERIE", "AN ENCAMPMENT", "A CLUB", "AN EGG"]
+        },
+        {
+          "cues": ["A SANCTUARY", "A SPELL", "A SCROLL", "AN ORCHARD"]
+        },
+        {
+          "cues": ["A GROVE", "A STAFF", "A BOW", "A TREE"]
+        },
+        {
+          "cues": ["A CASTLE", "AN ARMY", "A WARHAMMER", "A SIEGE"]
+        },
+        {
+          "cues": ["AN AMULET", "A TUNDRA", "A SWORD", "A SUIT OF MAIL"]
+        }
+      ]
+    },
+    "conflict": {
+      "name": "Conflict",
+      "description": "Fantasy-themed obstacles, consequences, or dilemmas",
+      "cueCount": 2,
+      "cards": [
+        {
+          "cues": ["BUT IT WILL OPEN OLD WOUNDS", "BUT THE GODS WILL PUNISH THEM"]
+        },
+        {
+          "cues": ["BUT THEY MUST FORGET THE THING THAT MEANS THE WORLD TO THEM", "BUT IT WILL MEAN LIVING DOWN ARMS FOREVER"]
+        },
+        {
+          "cues": ["BUT THEY MUST MAKE A SACRIFICE NO ONE WILL EVER KNOW ABOUT", "BUT IT WILL CAUSE A CATACLYSM"]
+        },
+        {
+          "cues": ["BUT THEY WILL BURN OUT THE LUST OF THEIR POWER", "BUT THEIR GREATEST ENEMY WILL RETURN"]
+        },
+        {
+          "cues": ["BUT THEY WILL BE EXILED FOREVER", "BUT IT WILL MEAN AN ANCIENT CULT WILL BE RELEASED"]
+        },
+        {
+          "cues": ["BUT THEIR ARMS FOREVER DOWN LIVING MEAN WILL IT", "BUT THEY WILL HAVE TO ACT AGAINST THEIR RELIGION"]
+        },
+        {
+          "cues": ["BUT IT WILL BRING DARKNESS TO THOSE WHOSE PATHS THEY CROSS", "BUT THEY WILL BRING DARKNESS TO THOSE WHOSE PATHS THEY CROSS"]
+        },
+        {
+          "cues": ["BUT THEIR HOMELAND WILL BE PUT TO THE TORCH", "BUT THEY WILL NEVER FIND PEACE AGAIN"]
+        },
+        {
+          "cues": ["BUT SOMETHING SACRED WILL BE DEFILED", "SHATTERING AN OLD TRUCE"]
+        },
+        {
+          "cues": ["BUT THEY WILL GAIN A CORRUPTING POWER", "BUT IT WILL MEAN A CITY IS DESTROYED"]
+        },
+        {
+          "cues": ["BUT IT WILL LOOSE A PLAGUE ON THE WORLD", "BUT IT WILL MEAN AN IMPORTANT HEIRLOOM"]
+        },
+        {
+          "cues": ["BUT IT WILL MEAN THE END OF WONDER IN THE WORLD", "BUT THEY MUST FORSAKE THAT WHICH THEY WORSHIP"]
+        }
+      ]
+    },
+    "aspect": {
+      "name": "Aspect",
+      "description": "Fantasy-themed adjectives that describe other cards",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["ELVISH", "RADIANT", "THIRSTY", "DEXTEROUS"]
+        },
+        {
+          "cues": ["FAIRY-TOUCHED", "OBSIDIAN", "NECROTIC", "SPINED"]
+        },
+        {
+          "cues": ["UNDEAD", "HALFLING", "SUNDERED", "BRAZEN"]
+        },
+        {
+          "cues": ["COURAGEOUS", "ADAMANTINE", "WISE", "BOOBY-TRAPPED"]
+        },
+        {
+          "cues": ["MERFOLK", "MASTERWORK", "DRACONIAN", "CHAOTIC"]
+        },
+        {
+          "cues": ["DIABOLICAL", "BILIOUS", "THORNY", "PLUCKY"]
+        },
+        {
+          "cues": ["DWARVEN", "POISONED", "INTELLIGENT", "BURDENED"]
+        },
+        {
+          "cues": ["TOXIC", "HALF-ELVEN", "LAWFUL", "HALF-ORKISH"]
+        },
+        {
+          "cues": ["ELEMENTAL", "TRUE-HEARTED", "STRONG", "LABYRINTHINE"]
+        },
+        {
+          "cues": ["CHARISMATIC", "HSIMOND", "EXPANSIVE", "BLOODIED"]
+        },
+        {
+          "cues": ["CRYSTALLINE", "CELESTIAL", "TOUGH", "TYRANNICAL"]
+        },
+        {
+          "cues": ["BLASPHEMOUS", "VALIANT", "PLUCKY", "INFERNAL"]
+        }
+      ]
+    }
+  },
+  "usage": {
+    "description": "A 60-card fantasy expansion with genre-focused cards across all 5 card types",
+    "integration": [
+      "Use only expansion cards - Provides genre-focused prompts, but you will cycle through the same cards more often",
+      "Mix expansion cards into the main deck - The main deck works with all genres, so the added cards will increase the genre focus",
+      "Freely mix multiple expansions and boosters - Blending genres is a rewarding (and challenging) way to create prompts"
+    ],
+    "notes": [
+      "You may wish to temporarily remove cards from the main deck to increase the proportion of expansion cards and create more genre-focused prompts"
+    ]
+  },
+  "credits": {
+    "design": "Peter Chiykowski",
+    "production": "Miroki Tong, Zach Schuster",
+    "sensitivity_review": "A. Z. Louise, Sonya Ballantyne, Yasmine Fahmy",
+    "curriculum_review": "Kendra Harrison",
+    "proofreading": "Leigh Teetzel, Tyson Pink",
+    "box_images": "CRUSH Visual",
+    "agent_images": "Colin Searle, CRUSH Visual, San Kim, Toma Feizo Gas, William Liu",
+    "anchor_images": "CRUSH Visual, Frank Hong, Frank Yang, San Kim, Toma Feizo Gas"
+  }
+}

@@ -4,7 +4,132 @@ let cachedDeck: StoryEngineDeck | null = null;
 let loadingPromise: Promise<StoryEngineDeck> | null = null;
 
 /**
- * Load the main Story Engine deck (lazy loaded)
+ * Parse cards from a deck data structure
+ */
+function parseCardsFromDeck(deckData: any, expansionName: string, deck: StoryEngineDeck) {
+	if (deckData.cardTypes.agent) {
+		deck.cards.agents.push(
+			...deckData.cardTypes.agent.cards.map((card: any) => ({
+				type: 'agent' as StoryEngineCardType,
+				cues: card.cues,
+				expansion: expansionName
+			}))
+		);
+	}
+
+	if (deckData.cardTypes.engine) {
+		deck.cards.engines.push(
+			...deckData.cardTypes.engine.cards.map((card: any) => ({
+				type: 'engine' as StoryEngineCardType,
+				cues: card.cues,
+				expansion: expansionName
+			}))
+		);
+	}
+
+	if (deckData.cardTypes.anchor) {
+		deck.cards.anchors.push(
+			...deckData.cardTypes.anchor.cards.map((card: any) => ({
+				type: 'anchor' as StoryEngineCardType,
+				cues: card.cues,
+				expansion: expansionName
+			}))
+		);
+	}
+
+	if (deckData.cardTypes.conflict) {
+		deck.cards.conflicts.push(
+			...deckData.cardTypes.conflict.cards.map((card: any) => ({
+				type: 'conflict' as StoryEngineCardType,
+				cues: card.cues,
+				expansion: expansionName
+			}))
+		);
+	}
+
+	if (deckData.cardTypes.aspect) {
+		deck.cards.aspects.push(
+			...deckData.cardTypes.aspect.cards.map((card: any) => ({
+				type: 'aspect' as StoryEngineCardType,
+				cues: card.cues,
+				expansion: expansionName
+			}))
+		);
+	}
+}
+
+/**
+ * Parse cards from a booster set structure
+ */
+function parseCardsFromBoosterSet(boosterSetData: any, deck: StoryEngineDeck) {
+	// Booster sets have a "boosters" object with multiple boosters inside
+	if (boosterSetData.boosters) {
+		for (const [boosterKey, boosterData] of Object.entries(boosterSetData.boosters)) {
+			const booster = boosterData as any;
+			const expansionName = booster.theme || boosterKey;
+
+			if (booster.cards) {
+				// Parse agents
+				if (booster.cards.agents?.cards) {
+					deck.cards.agents.push(
+						...booster.cards.agents.cards.map((card: any) => ({
+							type: 'agent' as StoryEngineCardType,
+							cues: card.cues,
+							expansion: expansionName
+						}))
+					);
+				}
+
+				// Parse engines
+				if (booster.cards.engines?.cards) {
+					deck.cards.engines.push(
+						...booster.cards.engines.cards.map((card: any) => ({
+							type: 'engine' as StoryEngineCardType,
+							cues: card.cues,
+							expansion: expansionName
+						}))
+					);
+				}
+
+				// Parse anchors
+				if (booster.cards.anchors?.cards) {
+					deck.cards.anchors.push(
+						...booster.cards.anchors.cards.map((card: any) => ({
+							type: 'anchor' as StoryEngineCardType,
+							cues: card.cues,
+							expansion: expansionName
+						}))
+					);
+				}
+
+				// Parse conflicts
+				if (booster.cards.conflicts?.cards) {
+					deck.cards.conflicts.push(
+						...booster.cards.conflicts.cards.map((card: any) => ({
+							type: 'conflict' as StoryEngineCardType,
+							cues: card.cues,
+							expansion: expansionName
+						}))
+					);
+				}
+
+				// Parse aspects
+				if (booster.cards.aspects?.cards) {
+					deck.cards.aspects.push(
+						...booster.cards.aspects.cards.map((card: any) => ({
+							type: 'aspect' as StoryEngineCardType,
+							cues: card.cues,
+							expansion: expansionName
+						}))
+					);
+				}
+			}
+		}
+	}
+}
+
+/**
+ * Load all Story Engine cards (main deck + all expansions + all boosters)
  */
 export async function loadStoryEngineMainDeck(): Promise<StoryEngineDeck> {
 	if (cachedDeck) {
@@ -17,11 +142,8 @@ export async function loadStoryEngineMainDeck(): Promise<StoryEngineDeck> {
 	}
 
 	loadingPromise = (async () => {
-		// Dynamic import for lazy loading
-		const storyEngineData = await import('./story-engine/story-engine-cards.json');
-
 		const deck: StoryEngineDeck = {
-			name: storyEngineData.deck,
+			name: 'Story Engine - Complete Collection',
 			cards: {
 				agents: [],
 				engines: [],
@@ -31,50 +153,41 @@ export async function loadStoryEngineMainDeck(): Promise<StoryEngineDeck> {
 			}
 		};
 
-		// Parse agents
-		if (storyEngineData.cardTypes.agent) {
-			deck.cards.agents = storyEngineData.cardTypes.agent.cards.map((card: any) => ({
-				type: 'agent' as StoryEngineCardType,
-				cues: card.cues,
-				expansion: 'main'
-			}));
-		}
+		// Load main deck
+		const mainDeck = await import('./story-engine/story-engine-cards.json');
+		parseCardsFromDeck(mainDeck, 'main', deck);
 
-		// Parse engines
-		if (storyEngineData.cardTypes.engine) {
-			deck.cards.engines = storyEngineData.cardTypes.engine.cards.map((card: any) => ({
-				type: 'engine' as StoryEngineCardType,
-				cues: card.cues,
-				expansion: 'main'
-			}));
-		}
+		// Load all expansions
+		const fantasyExpansion = await import('./story-engine/story-engine-fantasy-expansion.json');
+		parseCardsFromDeck(fantasyExpansion, 'fantasy', deck);
 
-		// Parse anchors
-		if (storyEngineData.cardTypes.anchor) {
-			deck.cards.anchors = storyEngineData.cardTypes.anchor.cards.map((card: any) => ({
-				type: 'anchor' as StoryEngineCardType,
-				cues: card.cues,
-				expansion: 'main'
-			}));
-		}
+		const horrorExpansion = await import('./story-engine/story-engine-horror-expansion.json');
+		parseCardsFromDeck(horrorExpansion, 'horror', deck);
 
-		// Parse conflicts
-		if (storyEngineData.cardTypes.conflict) {
-			deck.cards.conflicts = storyEngineData.cardTypes.conflict.cards.map((card: any) => ({
-				type: 'conflict' as StoryEngineCardType,
-				cues: card.cues,
-				expansion: 'main'
-			}));
-		}
+		const backstoriesExpansion = await import(
+			'./story-engine/story-engine-backstories-expansion.json'
+		);
+		parseCardsFromDeck(backstoriesExpansion, 'backstories', deck);
 
-		// Parse aspects
-		if (storyEngineData.cardTypes.aspect) {
-			deck.cards.aspects = storyEngineData.cardTypes.aspect.cards.map((card: any) => ({
-				type: 'aspect' as StoryEngineCardType,
-				cues: card.cues,
-				expansion: 'main'
-			}));
-		}
+		const mysteryExpansion = await import('./story-engine/story-engine-mystery-expansion.json');
+		parseCardsFromDeck(mysteryExpansion, 'mystery', deck);
+
+		const uniqueItemsExpansion = await import(
+			'./story-engine/story-engine-unique-items-expansion.json'
+		);
+		parseCardsFromDeck(uniqueItemsExpansion, 'unique-items', deck);
+
+		const starterExpansion = await import(
+			'./story-engine/story-engine-starter-expansion-set.json'
+		);
+		parseCardsFromDeck(starterExpansion, 'starter', deck);
+
+		// Load booster sets
+		const dreamerBoosterSet = await import('./story-engine/story-engine-dreamer-booster-set.json');
+		parseCardsFromBoosterSet(dreamerBoosterSet, deck);
+
+		const founderBoosterSet = await import('./story-engine/story-engine-founder-booster-set.json');
+		parseCardsFromBoosterSet(founderBoosterSet, deck);
 
 		cachedDeck = deck;
 		loadingPromise = null;

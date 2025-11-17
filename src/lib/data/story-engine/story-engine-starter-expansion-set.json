@@ -1,0 +1,380 @@
+{
+  "set": "Story Engine Starter Expansion Set",
+  "description": "Three 60-card genre-focused expansions for The Story Engine Deck. Each expansion provides balanced composition with genre-specific prompts.",
+  "totalCards": 180,
+  "expansions": {
+    "fantasy": {
+      "name": "Written in Dragonfire",
+      "theme": "Fantasy",
+      "cardCount": 60,
+      "composition": {
+        "agents": 12,
+        "engines": 12,
+        "anchors": 12,
+        "conflicts": 12,
+        "aspects": 12
+      },
+      "cards": {
+        "agents": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Ruler", "A Wizard", "A Noble", "A Conqueror"]},
+            {"cues": ["A Rogue", "An Emissary", "A Hiker King", "A Tactician"]},
+            {"cues": ["A Swashbuckler", "A Dicker", "A Ranger", "A Beggar"]},
+            {"cues": ["An Invoker", "A Monk", "A Bard", "A Druid"]},
+            {"cues": ["An Elemental", "A Stalker", "A Ghoul", "A Weaver"]},
+            {"cues": ["A Bandit", "A Ranger", "A Beggar", "A Merchant"]},
+            {"cues": ["A Barbarian", "A Blacksmith", "A Seer", "An Heir"]},
+            {"cues": ["A Mage", "A Trader", "An Heir", "An Archivist"]},
+            {"cues": ["An Archer", "A Father", "A Scout", "A Smith"]},
+            {"cues": ["A Behemoth", "A Familiar", "A Dragon", "A Beast Tamer"]},
+            {"cues": ["A Warrior", "An Altruist", "A Grandmaster", "A Cleric"]},
+            {"cues": ["A Guard", "A Paladin", "A Minion", "A Sorcerer"]}
+          ]
+        },
+        "engines": {
+          "cards": [
+            {"cue": "Wants to start a war onward"},
+            {"cue": "Wants to create a masterpiece for involving"},
+            {"cue": "Wants to enchant"},
+            {"cue": "Wants to prevent a war from being started by"},
+            {"cue": "Wants to stop the negotiations for/or"},
+            {"cue": "Wants to end an exile with/in/of"},
+            {"cue": "Wants to sabotage an enemy with"},
+            {"cue": "Wants to claim the hidden artifact of"},
+            {"cue": "Wants to map (or map the history of)"},
+            {"cue": "Wants to disarm the trap of"},
+            {"cue": "Wants to pledge their life in service to"},
+            {"cue": "Wants to solve the puzzle of"},
+            {"cue": "Wants to navigate a maze at the heart of which sits"},
+            {"cue": "Wants to find the path home and their only lead is"},
+            {"cue": "Wants to lead a final, desperate charge on/for"},
+            {"cue": "Wants to be healed by"},
+            {"cue": "Wants to open an ancient book that can only be unlocked by"},
+            {"cue": "Wants to stop an enemy from reaching"},
+            {"cue": "Wants to obtain a rare spell component from"},
+            {"cue": "Wants to win a duel with/in/atop"},
+            {"cue": "Wants to pay an old debt with/to"}
+          ]
+        },
+        "anchors": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Cavern", "An Axe", "A Glacier", "A Keep"]},
+            {"cues": ["A Crown", "A Mass", "A Breastplate", "A Hill"]},
+            {"cues": ["A Summit", "An Axe", "A Keep", "A Harp"]},
+            {"cues": ["A Bulwark", "A Spirit", "A Mask", "A Shrine"]},
+            {"cues": ["A Pair of Gloves", "A Bundle", "A Torch", "A Frigate"]},
+            {"cues": ["A Market", "A Suit of Mail", "An Icon", "A Potion"]},
+            {"cues": ["An Empire", "A Spear", "A Throne", "A Port"]},
+            {"cues": ["An Aerie", "A Cub", "An Encampment", "An Egg"]},
+            {"cues": ["A Sanctuary", "A Scroll", "An Orchard", "A Spell"]},
+            {"cues": ["A Grove", "A Blade", "A Tree", "A Bow"]},
+            {"cues": ["A Castle", "A Larva", "A Warhammer", "A Siege"]},
+            {"cues": ["An Amulet", "A Suit of Mail", "A Sword", "A Frozen Wasteland"]}
+          ]
+        },
+        "conflicts": {
+          "cards": [
+            {"cue": "But it will cause a cataclysm"},
+            {"cue": "But it will mean leaving down arms forever"},
+            {"cue": "But they will have to act against their religion"},
+            {"cue": "But it will open old wounds"},
+            {"cue": "But one way or another, it will be their last adventure"},
+            {"cue": "But the last of their power out the last burn out the last of their power"},
+            {"cue": "But they must forget the thing that means the world to them"},
+            {"cue": "But they will be exiled forever"},
+            {"cue": "But their greatest enemy will return"},
+            {"cue": "But their homeland will be put to the torch"},
+            {"cue": "But it will mean a city is destroyed"},
+            {"cue": "But something sacred will be defiled"},
+            {"cue": "But it will loose on the world"},
+            {"cue": "But it will mean end of wonder in the world"},
+            {"cue": "But it will mean shattering an old truce"},
+            {"cue": "But they will suffer an injury that does not heal"},
+            {"cue": "But they must forsake that which they worship"},
+            {"cue": "But the gods will punish them"},
+            {"cue": "But an ancient evil will be released"}
+          ]
+        },
+        "aspects": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["Thirsty", "Radiant", "Infernal", "Necrotic"]},
+            {"cues": ["Dextrous", "Radiant", "Fairy-Touched", "Booby-Trapped"]},
+            {"cue": "Undead"},
+            {"cues": ["Brazen", "Natural", "Wise", "Half-Fang"]},
+            {"cues": ["Sundered", "Adamantine", "Courageous", "Chaotic"]},
+            {"cues": ["Bilious", "Masterwork", "Merfolk", "Burdened"]},
+            {"cues": ["Diabolical", "Draconian", "Gnomish", "Half-Elven"]},
+            {"cues": ["Valiant", "Poisoned", "Dwarven", "Intelligent"]},
+            {"cues": ["Toxic", "Strong", "Half-Elven", "Sinking"]},
+            {"cues": ["Elemental", "True-Hearted", "Bloodied", "Labyrinthine"]},
+            {"cues": ["Plucky", "Celestial", "Toxic", "Thorny"]},
+            {"cues": ["Charismatic", "Labyrinthine", "Crystalline", "Blasphemous"]}
+          ]
+        }
+      }
+    },
+    "horror": {
+      "name": "Written in Ash & Bone",
+      "theme": "Horror",
+      "contentWarning": "Contains disturbing cues. We recommend using care, communication, and check-ins when using the deck, especially for collaboration or publication. Horror elements can be powerful and painful triggers for many people.",
+      "cardCount": 60,
+      "composition": {
+        "agents": 12,
+        "engines": 12,
+        "anchors": 12,
+        "conflicts": 12,
+        "aspects": 12
+      },
+      "cards": {
+        "agents": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Detective", "A Skeptic", "A Ghost Hunter", "A Historian"]},
+            {"cues": ["A Priest", "An Exorcist", "A Taxidermist", "A Vampire"]},
+            {"cues": ["A Cannibal", "A Survivor", "A Butcher", "A Millionaire"]},
+            {"cues": ["A Betrothed", "A Banshee", "A Spirit", "A Clone"]},
+            {"cues": ["A Child", "An Heir", "A Camp Leader", "A Murderer"]},
+            {"cues": ["A Gravedigger", "A Mortician", "A Zombie", "A Groundskeeper"]},
+            {"cues": ["A Cult Leader", "A Figurehead", "A Poltergeist", "A Plague Victim"]},
+            {"cues": ["A Medium", "An Innocent", "A Hooker", "A Possessed Person"]},
+            {"cues": ["A Serial Killer", "An Enthusiast", "A Sadist", "A Worshipper"]},
+            {"cues": ["A Fanatic", "A Werewolf", "An Escapee", "A Contortionist"]},
+            {"cues": ["A Clown", "A Slasher", "A Carnival Owner", "A Boogeyman"]},
+            {"cues": ["A First Responder", "An Assassin", "An Arsonist", "Unless Bear", "Patient Zero"]}
+          ]
+        },
+        "engines": {
+          "cards": [
+            {"cue": "Wants to catch a serial killer whose calling card is"},
+            {"cue": "Wants to elaborate that trap for/with"},
+            {"cue": "Wants to destroy a monster whose only weakness is"},
+            {"cue": "Wants to inflict pain on/with/in"},
+            {"cue": "Wants to frame (or frame an enemy using)"},
+            {"cue": "Wants to murder their only lead is"},
+            {"cue": "Wants to settle an old score with"},
+            {"cue": "Wants to escape the trap of"},
+            {"cue": "Wants to cover up the horrifying secret of"},
+            {"cue": "Wants to sacrifice"},
+            {"cue": "Wants to start a cult centered around"},
+            {"cue": "Wants to trigger a memory involving"},
+            {"cue": "Wants to uphold a family legacy involving"},
+            {"cue": "Wants to understand their terrible visions of"},
+            {"cue": "Wants to escape a trauma through/involving"},
+            {"cue": "Wants to commit murder on/with/in"},
+            {"cue": "Wants to imprison a demon inside"},
+            {"cue": "Wants to expose the cult of"},
+            {"cue": "Wants to drive a demon out of"},
+            {"cue": "Wants to escape the madness of"},
+            {"cue": "Wants to overcome a fear of"}
+          ]
+        },
+        "anchors": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Graveyard", "A Chapel", "A Terminal", "A Coffin"]},
+            {"cues": ["A Doll", "A Nursery", "A Vessel", "A Rocking Chair"]},
+            {"cues": ["A Shotgun", "A Round of Ammunition", "A Backwood", "A Hunt"]},
+            {"cues": ["A Cabin", "An Abattoir", "A Knife", "A Logs (Keys)"]},
+            {"cues": ["A Well", "A Set of Keys", "A Hiding Place", "A Flashlight"]},
+            {"cues": ["A Carnival", "A Music Box", "A Funhouse", "A Scream"]},
+            {"cues": ["A Mansion", "A Keyhole", "A Haunting", "A Painting"]},
+            {"cues": ["A Harvest", "A Scythe", "A Disperse", "A Barn"]},
+            {"cues": ["A Skeleton", "An Heirloom", "A Bite", "A Cemetery"]},
+            {"cues": ["A Field", "A Gravesite", "A Corpse", "A Fog"]},
+            {"cues": ["An Asylum", "A Torture Chamber", "A Van", "A Scalpel"]},
+            {"cues": ["A Disguise", "A Tool", "An Infection", "A Void"]}
+          ]
+        },
+        "conflicts": {
+          "cards": [
+            {"cue": "But they must return to the site of an old trauma"},
+            {"cue": "But they will develop a dangerous addiction"},
+            {"cue": "But their darkest desire will be revealed"},
+            {"cue": "But they must face their greatest fear"},
+            {"cue": "But their family never look at them the same again"},
+            {"cue": "But someone they could have saved will die"},
+            {"cue": "But it will drive them to the brink of madness"},
+            {"cue": "But they will have to invite something evil inside"},
+            {"cue": "But something evil will be unleashed on the world"},
+            {"cue": "But something that should have stayed dead will rise again"},
+            {"cue": "But they must cross a line they swore they would never cross"},
+            {"cue": "But it will shatter a delusion they are dependent on"},
+            {"cue": "But they must confront a ghost of the past"},
+            {"cue": "But the memory of what they did haunt them forever"},
+            {"cue": "But only the dead will know of their sacrifice"},
+            {"cue": "But a friend will die and they must choose who"},
+            {"cue": "But their eyes will be opened to the living guilt to the living"},
+            {"cue": "But they will become a monster"},
+            {"cue": "But they will make a devil's bargain"}
+          ]
+        },
+        "aspects": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["Malevolent", "Seedy", "Naive", "Hidden"]},
+            {"cues": ["Silver", "Hidden", "Violent", "Inherited"]},
+            {"cues": ["Foul-Repelling", "Strange", "Feral", "Maddening"]},
+            {"cues": ["Height", "Savage", "Disguised", "Buried"]},
+            {"cues": ["Remote", "Spooky", "Foolish", "Inherited"]},
+            {"cues": ["Subterranean", "Remote", "Innocuous", "Immortal"]},
+            {"cues": ["Muttering", "Demonic", "Ruthless", "Sinking"]},
+            {"cues": ["Unsettling", "Pious", "Doubtful", "Sinking"]},
+            {"cues": ["Nightmarish", "Telepathic", "Shambling", "Forbidden"]},
+            {"cues": ["Supernatural", "Hungry", "Quiet", "Bloodthirsty"]},
+            {"cues": ["Temperamental", "Paranoid", "Dusty", "Unexplored"]},
+            {"cues": ["Foul-Repelling", "Nocturnal", "Amoral", "Creepy"]}
+          ]
+        }
+      }
+    },
+    "scienceFiction": {
+      "name": "Written in the Light of Strange Worlds",
+      "theme": "Science Fiction",
+      "cardCount": 60,
+      "composition": {
+        "agents": 12,
+        "engines": 12,
+        "anchors": 12,
+        "conflicts": 12,
+        "aspects": 12
+      },
+      "cards": {
+        "agents": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["An Extra-Terrestrial", "A Savant", "An Invader", "A Telepath"]},
+            {"cues": ["A Hacker", "A Revolutionary", "A Heist Leader", "A Blackmailer"]},
+            {"cues": ["A Navigator", "A Data Scientist", "A Technician", "A Bartender"]},
+            {"cues": ["An Escaped Experiment", "A Rogue-Maker", "A Pyrokinetic", "A Gene Splicer"]},
+            {"cues": ["A Salvager", "An Engineer", "An Asteroid Miner", "An Arms Dealer"]},
+            {"cues": ["A D.J.", "A Bartender", "A Graffiti Artist", "A Beggar"]},
+            {"cues": ["A Colonist", "A Chemist", "A Cadet", "A Weapons Specialist"]},
+            {"cues": ["A Robot", "An Artificial Intelligence", "A Supercomputer", "A Bodyguard"]},
+            {"cues": ["A Streamer", "An Influencer", "A Performance Artist", "A Gamer"]},
+            {"cues": ["A Prisoner", "A Telepath", "A Test Subject", "A Mechanic"]},
+            {"cues": ["A Pilot", "A Mechanic", "An Operative", "A General"]},
+            {"cues": ["A Chrononaut", "A Translator", "A Professional", "A Terrorist"]}
+          ]
+        },
+        "engines": {
+          "cards": [
+            {"cue": "Wants to topple a government with"},
+            {"cue": "Wants to find the bomb planted over/by"},
+            {"cue": "Wants to uncover a government secret involving"},
+            {"cue": "Wants to unseat a politician with"},
+            {"cue": "Wants to plant a bomb on/in"},
+            {"cue": "Wants to make a power grab with"},
+            {"cue": "Wants to explore a new planet with the help of"},
+            {"cue": "Wants to arrange the release of"},
+            {"cue": "Wants to track down"},
+            {"cue": "Wants to conduct blackmail on/with"},
+            {"cue": "Wants to pull off a heist on/with/of"},
+            {"cue": "Wants to carry out an invasion of/with"},
+            {"cue": "Wants to restore the lost memory of"},
+            {"cue": "Wants to win a race involving"},
+            {"cue": "Wants to invent (or discover)"},
+            {"cue": "Wants to change the future of/with"},
+            {"cue": "Wants to communicate with an alien species through"},
+            {"cue": "Wants to perform an assassination of/with"},
+            {"cue": "Wants to upgrade the tech of"},
+            {"cue": "Wants to make a major research breakthrough on/with"},
+            {"cue": "Wants the rare material they can only get from"}
+          ]
+        },
+        "anchors": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Nebula", "A Governing Device", "An Energy Shield", "A Set of Coordinates"]},
+            {"cues": ["An Engine", "Warp/Loop/An Alcubierre Drive", "A Fuel Source", "A Spaceport"]},
+            {"cues": ["A Metropolis", "A Hover Vehicle", "Sci-Fi Ruin", "A Jetpack"]},
+            {"cues": ["A Surveillance Drone", "A Control Tower", "A Dropship", "A Blaster"]},
+            {"cues": ["A Planet", "A Scrub", "An Organism", "A Biome"]},
+            {"cues": ["A Reactor", "A Magnet (or) Part", "An Energy Weapon", "A Countdown"]},
+            {"cues": ["A Beacon", "A Simulation", "An Explosive", "A Hidden Compartment"]},
+            {"cues": ["A Spaceship", "A Spacesuit", "A Laser", "A Jump Point"]},
+            {"cues": ["A Network", "A Hard Drive", "A Server Room", "A Power Source"]},
+            {"cues": ["A Cryo Pod", "A Star System", "A Bio-Skeleton", "A Modification"]},
+            {"cues": ["A Time Machine", "A Satellite", "A Cypher", "A Particle"]},
+            {"cues": ["A Chemical", "A Black Hole", "A Gang", "A Gene"]}
+          ]
+        },
+        "conflicts": {
+          "cards": [
+            {"cue": "But they will be blacklisted"},
+            {"cue": "But they will never be able to travel off-world again"},
+            {"cue": "But it will mean trusting someone who betrayed them"},
+            {"cue": "But the blowback will land on their closest friend"},
+            {"cue": "But it will mean giving up the chance to fix their biggest regret"},
+            {"cue": "But it will start a war"},
+            {"cue": "But it will mean rioting in the streets"},
+            {"cue": "But it will cause a rift amongst their allies"},
+            {"cue": "But the government will never stop hunting them"},
+            {"cue": "But it will unite their enemies"},
+            {"cue": "But an innocent person will be executed"},
+            {"cue": "But a criminal will go free"},
+            {"cue": "But they will lose their connection to humanity"},
+            {"cue": "But a widely used technology will become unstable"},
+            {"cue": "But they will lose the person closest to them"},
+            {"cue": "But it will make them a fugitive"},
+            {"cue": "But they will never be able to return"},
+            {"cue": "But it will mean a horrible extinction"},
+            {"cue": "But they will join the enemy"}
+          ]
+        },
+        "aspects": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["Black-Market", "Gifted", "Phasing", "Digital"]},
+            {"cues": ["Explosive", "Aquatic", "Disappearing", "Gesturing"]},
+            {"cues": ["Self-Destructive", "Reckless", "New", "Tracked"]},
+            {"cues": ["Alien", "Despotic", "Time-Manipulating", "Infected"]},
+            {"cues": ["Zero-Gravity", "Overcrowded", "Anomalous", "Uncharted"]},
+            {"cues": ["Addictive", "Privately Owned", "Experimental", "Quivering"]},
+            {"cues": ["Hovering", "Telekinetic", "Dark", "Viral"]},
+            {"cues": ["Top-of-the-Line", "Unassuming", "Unlisted", "Long-Range"]},
+            {"cues": ["Advanced", "Reusable", "Radical", "Cutting-Edge"]},
+            {"cues": ["Untraceable", "Rich", "Poor", "Blacklisted"]},
+            {"cues": ["Secretive", "Inspired", "Mobile", "Privately Owned"]},
+            {"cues": ["Self-Destructive", "Xenophobic", "Expanding", "Government-Backed"]}
+          ]
+        }
+      }
+    }
+  },
+  "usage": {
+    "description": "Three 60-card genre expansions providing focused prompts for Fantasy, Horror, and Science Fiction storytelling.",
+    "integration": [
+      "Use only expansion cards - Provides genre-focused prompts, but you will cycle through the same cards more often",
+      "Mix expansion cards into the main deck - The main deck works with all genres, so the added cards will increase the genre focus",
+      "Freely mix multiple expansions and boosters - Blending genres is a rewarding (and challenging) way to create prompts"
+    ],
+    "recommendations": [
+      "You may wish to temporarily remove cards from the main deck to increase the proportion of expansion cards and create more genre-focused prompts"
+    ]
+  },
+  "credits": {
+    "design": "Peter Chiykowski",
+    "production": "Miroki Tong, Zach Schuster",
+    "sensitivity_review": "A. Z. Louise, Sonya Ballantyne, Yasmine Fahmy",
+    "curriculum_review": "Kendra Harrison",
+    "proofreading": "Leigh Teetzel, Tyson Pink",
+    "fantasy": {
+      "box_images": "CRUSH Visual",
+      "agent_images": "Colin Searle, CRUSH Visual, San Kim, Toma Feizo Gas, William Liu",
+      "anchor_images": "CRUSH Visual, Frank Hong, Frank Yang, San Kim, Toma Feizo Gas"
+    },
+    "horror": {
+      "box_images": "Bill Austin",
+      "agent_images": "Ahmad Ossayli, Andrew Gaines, Annie Spratt, Armando Ascorve Morales, Craig Whitehead, Javier Penas, Larm Rmah, Mahdi Rezaei, Matthew Henry, Piotr Wilk, Rob Potter, Robert Zunikoff",
+      "anchor_images": "Aimee Vogelsang, Antony Xia, Daniel Jensen, Doug Maloney, Edilson Borges, Eric Muhr, Logan Smith, Matthew Henry, Samuel Zeller, Valentine Lacoste, William Isted, Yuriy Garnaev"
+    },
+    "scienceFiction": {
+      "box_images": "Lucas Lopez",
+      "agent_images": "Andrey Zvyagintsev, Cata, Dan Schiumarini, Dewang Gupta, Donny Jiang, Donny Jiang, Drew Graham, Eddie Kopp, Emiliano Vittorio, Franck V, Josh Hild, Teo Duldulao",
+      "anchor_images": "Alec Favale, Asoggetti, Israel Palacio, JR Korpa, Kai Dahms, Laurent B, NASA, Nick Wood, Tim de Groot, Victor N D K, Yiran Ding"
+    }
+  }
+}

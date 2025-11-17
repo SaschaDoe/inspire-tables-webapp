@@ -1,0 +1,392 @@
+{
+  "set": "Story Engine Dreamer Booster Set",
+  "description": "Six 20-card genre boosters that add specific genre flavor to Story Engine prompts. Each booster contains 4 Agents, 4 Engines, 4 Anchors, 4 Conflicts, and 4 Aspects focused on a particular genre.",
+  "totalCards": 120,
+  "boosters": {
+    "gothic": {
+      "name": "Empty Graves & Haunted Halls",
+      "theme": "Gothic Horror",
+      "description": "Gothic horror elements including haunted locations, supernatural beings, dark atmospheres, and tragic characters.",
+      "contentWarning": "Contains themes of death, horror, and the supernatural that may be disturbing to some players.",
+      "cardCount": 20,
+      "composition": {
+        "agents": 4,
+        "engines": 4,
+        "anchors": 4,
+        "conflicts": 4,
+        "aspects": 4
+      },
+      "cards": {
+        "agents": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Nurse", "A Governess", "A Psychopomp", "A Coachman"]},
+            {"cues": ["A Gargoyle", "A Wraith", "A Revenant", "A Ghoul"]},
+            {"cues": ["A Scribe", "A Physician", "A Curate", "An Undertaker"]},
+            {"cues": ["An Illegitimate Child", "An Orphan", "A Ward", "A Demoniac"]}
+          ]
+        },
+        "engines": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["Wants to corrupt", "Wants to rescue from oblivion"]},
+            {"cues": ["Wants to torment (or torment someone with)", "Wants to dispossess"]},
+            {"cues": ["Wants to remove corruption from", "Powers from/of"]},
+            {"cues": ["Wants to destroy the city with", "Wants to possess"]}
+          ]
+        },
+        "anchors": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["An Oubliette", "A Sepulchre", "A Memento", "A Casket"]},
+            {"cues": ["A Churchyard", "A Veil", "A Catacomb", "A Grave"]},
+            {"cues": ["A Fen", "A Casket", "A Moor", "A Bog"]},
+            {"cues": ["A Spiral", "An Attic", "A Sanctum", "A Manor"]}
+          ]
+        },
+        "conflicts": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["But they will have to face death itself", "But it will mean the end of their family line"]},
+            {"cues": ["But their sidekick will lose their greatest power", "But they will be haunted by silence"]},
+            {"cues": ["But something horrifying will be set free", "But their nemesis will escape"]},
+            {"cues": ["But they will have to hang up their hat", "But it will turn the city against them"]}
+          ]
+        },
+        "aspects": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["Morbid", "Isolated", "Engraved", "Grandiose"]},
+            {"cues": ["Vexing", "Desiccated", "Alabaster", "Aucient"]},
+            {"cues": ["Crumbling", "Pale", "Elaborate", "Decadent"]},
+            {"cues": ["Incurable", "X-Ray", "Dreary", "Shrinking"]}
+          ]
+        }
+      }
+    },
+    "superhero": {
+      "name": "Superpowers & Sidekicks",
+      "theme": "Superhero",
+      "description": "Superhero action with powered individuals, arch-nemeses, secret identities, and city-saving heroics.",
+      "cardCount": 20,
+      "composition": {
+        "agents": 4,
+        "engines": 4,
+        "anchors": 4,
+        "conflicts": 4,
+        "aspects": 4
+      },
+      "cards": {
+        "agents": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Biologist", "A Meteorologist", "A Superhero", "A Supernaturalist"]},
+            {"cues": ["A Chronoshifter", "A Biothief", "A Thrillseeker", "A Champion"]},
+            {"cues": ["A Henchperson", "A Two-Timer", "A Hostage", "An Informant"]},
+            {"cues": ["An Arch-Nemesis", "An Overlord", "A Mugger", "A Parasite"]}
+          ]
+        },
+        "engines": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["Wants to save the city with/from", "Wants to vanquish"]},
+            {"cues": ["Wants to avenge the loss of", "Wants to gain a deed to/of"]},
+            {"cues": ["Wants to become the guardian of", "Wants to make a weapon of"]},
+            {"cues": ["Wants to protect their land from/with", "Wants to put a bullet in"]}
+          ]
+        },
+        "anchors": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Manor", "A Lair", "A Precinct", "A Skyscraper"]},
+            {"cues": ["A Superweapon", "A Launch Pad", "A Crisis", "An Invention"]},
+            {"cues": ["A Power Plant", "A Conspiracy", "An Innovation", "A Transformation"]},
+            {"cues": ["A Blast of Radiation", "A Suit", "A Belt", "An Encapsulation"]}
+          ]
+        },
+        "conflicts": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["But their sanctum will be destroyed", "But it will leave the city unprotected"]},
+            {"cues": ["But they will never get to ride off into the sunset", "But it will bring war to their homeworld"]},
+            {"cues": ["But all the riches they have earned will be lost", "But one can follow in their footsteps"]},
+            {"cues": ["But their rival will beat them to it", "But the enemy leader will escape unscathed"]}
+          ]
+        },
+        "aspects": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["Trickiest", "Overdrawn", "Unsuspecting", "Bewitched"]},
+            {"cues": ["Spellbound", "Iron", "Fungal", "Idyllic"]},
+            {"cues": ["Courteous", "Foul", "Mossy", "Gigantic"]},
+            {"cues": ["Rancorous", "Witty", "Appropriated", "Stored"]}
+          ]
+        }
+      }
+    },
+    "western": {
+      "name": "Outlaws & Gunslingers",
+      "theme": "Western",
+      "description": "Wild West adventures with cowboys, outlaws, frontier towns, shootouts, and the untamed frontier.",
+      "sensitivityNote": "Created with consultation regarding Indigenous representation. Players should approach Western genre tropes thoughtfully and avoid harmful stereotypes.",
+      "cardCount": 20,
+      "composition": {
+        "agents": 4,
+        "engines": 4,
+        "anchors": 4,
+        "conflicts": 4,
+        "aspects": 4
+      },
+      "cards": {
+        "agents": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Settler", "A Homesteader", "A Cowpoke", "A Horse"]},
+            {"cues": ["A Lone Ranger", "A Desperado", "A Drifter", "An Outlaw"]},
+            {"cues": ["A Rancher", "A Prospector", "A Railroad Worker", "A Tycoon"]},
+            {"cues": ["A Sheriff", "A Deputy", "A Poacher", "A Robin Hood"]}
+          ]
+        },
+        "engines": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["Wants to hold up", "Wants to protect their land from/with"]},
+            {"cues": ["Wants to earn a place in/near", "Wants to put a bullet in"]},
+            {"cues": ["Wants to win a wager involving", "Wants to claim a birthright involving"]},
+            {"cues": ["Wants to reach the magic realm in/with", "Wants to find the lost treasure of"]}
+          ]
+        },
+        "anchors": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Saloon", "A Saddle", "A Pair of Boots", "A Wager"]},
+            {"cues": ["A Meltdown", "A Power Plant", "A Roundup", "A Scar"]},
+            {"cues": ["A Six-Shooter", "A Lasso", "A Terrain", "A Standoff"]},
+            {"cues": ["A Bottle", "A Gathering Place", "A Ranch", "A Treaty"]}
+          ]
+        },
+        "conflicts": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["But they will have to take a cheap shot", "But they will end up dead broke"]},
+            {"cues": ["But their cover will be blown", "But their superior will get away with something heinous"]},
+            {"cues": ["But a past atrocity will go unpunished", "But bad luck will follow them forever"]},
+            {"cues": ["But their nights will start to pass too slowly", "But they will be unable to return to normal life"]}
+          ]
+        },
+        "aspects": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["Resourceful", "Exuberant", "Riddle-Filled", "Vile"]},
+            {"cues": ["Cruel", "Dashing", "Occupied", "Kind"]},
+            {"cues": ["Desolate", "Impatient", "Nebulous", "Hawkish"]},
+            {"cues": ["Stellar", "Comically", "Prismatic", "Fast"]}}
+          ]
+        }
+      }
+    },
+    "fairyTale": {
+      "name": "Fairy Trails & Grim Tales",
+      "theme": "Fairy Tale",
+      "description": "Fairy tale adventures with magical creatures, enchanted forests, curses, quests, and transformations.",
+      "cardCount": 20,
+      "composition": {
+        "agents": 4,
+        "engines": 4,
+        "anchors": 4,
+        "conflicts": 4,
+        "aspects": 4
+      },
+      "cards": {
+        "agents": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Stepchild", "Paris Across", "A Runaway", "An Exile"]},
+            {"cues": ["A Frog", "A Goblin", "A Royal", "A Consort"]},
+            {"cues": ["A Monarch", "A Usurper", "A Fairy", "A Changeling"]},
+            {"cues": ["A Corsair", "A Castaway", "A First Mate", "An Animal Helper"]}
+          ]
+        },
+        "engines": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["Wants to seal the magic realm in/with", "Lost because of"]},
+            {"cues": ["Wants to reclaim their home from/with", "Withstanding/within"]},
+            {"cues": ["Wants to find their parents with", "Wants to join a secret society dedicated to"]},
+            {"cues": ["Wants to break a pact with/involving", "Wants to find the lost teachings of"]}
+          ]
+        },
+        "anchors": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Woodland", "A Quest", "A Rose", "A Feast"]},
+            {"cues": ["A Lamp", "A Pact", "A Boon", "A Curse"]},
+            {"cues": ["A Circle", "A Kingdom", "An Abdication", "A Bargain"]},
+            {"cues": ["A Bell", "A Birthmark", "A Cottage", "An Incantation"]}
+          ]
+        },
+        "conflicts": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["But in a year and a day, it will be reversed", "But a temporary change will become permanent"]},
+            {"cues": ["But they will unleash a monster", "But it will bring war to their homeworld"]},
+            {"cues": ["But one can follow in their footsteps", "But get caught in the crossfire"]},
+            {"cues": ["But trapped in a person of their own making", "But all the knowledge they have learned will be lost"]}
+          ]
+        },
+        "aspects": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["Uncouth", "Wretched", "Elaborate", "Pale"]},
+            {"cues": ["Rigged", "Teleological", "Magnetic", "Shrinking"]},
+            {"cues": ["Good-to-Mouth", "Volcanic", "Prismatic", "Freezing"]},
+            {"cues": ["Mind-Altering", "Blazing", "Trusty", "Highfalutin"]}
+          ]
+        }
+      }
+    },
+    "pulpFiction": {
+      "name": "Pulp Tales & Penny Dreadfuls",
+      "theme": "Pulp Adventure",
+      "description": "Pulp adventure stories with daring explorers, mad scientists, exotic locales, ancient treasures, and thrilling action.",
+      "sensitivityNote": "The pulp genre historically included harmful colonial and racist tropes. Modern players should avoid these elements and focus on adventure while being mindful of representation.",
+      "cardCount": 20,
+      "composition": {
+        "agents": 4,
+        "engines": 4,
+        "anchors": 4,
+        "conflicts": 4,
+        "aspects": 4
+      },
+      "cards": {
+        "agents": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Mad Scientist", "A Bodysnatcher", "A Playboy", "A Socialite"]},
+            {"cues": ["A Rider", "A Folk Hero", "An Adventurer", "A Pilot"]},
+            {"cues": ["A Gunslinger", "A Pulp Artist", "A Paleontologist", "A Journalist"]},
+            {"cues": ["A Sergeant", "A Deserter", "A Drafter", "A Pacifist"]}
+          ]
+        },
+        "engines": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["Wants to expose a secret society dedicated to", "Information from"]},
+            {"cues": ["Wants to reclaim (or reclaim something from)", "Wants to occupy"]},
+            {"cues": ["Wants to be transformed by/into", "Wants to topple"]},
+            {"cues": ["Wants to extract resources from", "No mission focused on"]}
+          ]
+        },
+        "anchors": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Raft", "A Contraption", "An Expedition", "An Archipelago"]},
+            {"cues": ["An Ossuary", "A Lock of Hair", "A Labyrinth", "A Formula"]},
+            {"cues": ["A Lost City", "A Vizmo", "An Inn", "A Comet"]},
+            {"cues": ["A Treasure", "A Beach", "A Plunder", "A Crystal Ball"]}
+          ]
+        },
+        "conflicts": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["But their connection to their past will be stripped of their rank", "But their connection to magic and whimsy"]},
+            {"cues": ["But a past directly will come to light", "But their superior will get away with something heinous"]},
+            {"cues": ["But they will be unable to return to normal life", "But a temporary change will become permanent"]},
+            {"cues": ["But there's days will start to pass too quickly", "But they will be left a shell of their former self"]}
+          ]
+        },
+        "aspects": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["Yellow-Bellied", "Frontier", "Dapper", "Wanted"]},
+            {"cues": ["Uncoded", "Fast-Talking", "Dirty", "Quick-Handed"]},
+            {"cues": ["Brave", "Unwinnable", "Mechanical", "Stellar"]},
+            {"cues": ["War-Worn", "Recalcitrant", "Compact", "Covert"]}
+          ]
+        }
+      }
+    },
+    "militarySciFi": {
+      "name": "Dropships & War Hawks",
+      "theme": "Military Science Fiction",
+      "description": "Military sci-fi action with soldiers, space battles, tactical operations, war zones, and futuristic combat.",
+      "sensitivityNote": "Explore military themes with critical examination. War affects real people. Consider the human cost and avoid glorifying violence.",
+      "cardCount": 20,
+      "composition": {
+        "agents": 4,
+        "engines": 4,
+        "anchors": 4,
+        "conflicts": 4,
+        "aspects": 4
+      },
+      "cards": {
+        "agents": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Grunt", "A War Hawk", "A Sergeant", "A Knight"]},
+            {"cues": ["A Civilian", "A Pacifist", "A Logistician", "A Medic"]},
+            {"cues": ["An Extractor", "A Tunnel Rat", "A Ghost", "An Interpreter"]},
+            {"cues": ["A Spy", "A Lieutenant", "An Interpreter", "A Contractor"]}
+          ]
+        },
+        "engines": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["Wants to end the occupation of", "Wants to succeed at a mission focused on"]},
+            {"cues": ["Wants to install a leader with/of", "No mission focused on"]},
+            {"cues": ["Wants to sabotage a mission focused on", "A sacrifice/no mission focused on"]},
+            {"cues": ["Wants to extract information from", "Information from"]}
+          ]
+        },
+        "anchors": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Helicopter", "A Drop", "An Impact", "A D.M.Z."]},
+            {"cues": ["A Refinery", "An Ore", "An Asteroid", "A Beach"]},
+            {"cues": ["A Galaxy", "A Breach", "A Surrender", "A Proto"]},
+            {"cues": ["A Tribunal", "A Surrender", "A Drop", "A Missile"]}
+          ]
+        },
+        "conflicts": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["But operation will get dangerous or get recently", "But a dangerous operation will"]},
+            {"cues": ["But their cover will be blown", "But their superior will get away with something heinous"]},
+            {"cues": ["But a past atrocity will go unpunished", "But bad luck will follow them forever"]},
+            {"cues": ["But all the knowledge they have learned will be lost", "But they will be unable to return to normal life"]}
+          ]
+        },
+        "aspects": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["Diligent", "Craven", "Classified", "Mined"]},
+            {"cues": ["Planned", "Hawkish", "Burned", "War-Worn"]},
+            {"cues": ["Tactical", "Occupied", "Nebulous", "Desolate"]},
+            {"cues": ["Mundane", "Bored", "Courteous", "Caprieus"]}
+          ]
+        }
+      }
+    }
+  },
+  "usage": {
+    "description": "Six genre-focused 20-card boosters that add specific thematic elements to Story Engine prompts. Each booster can be used independently or mixed with the main Story Engine deck.",
+    "integration": [
+      "Use only one booster - Draw only from a single booster for a genre-focused storytelling session",
+      "Mix one booster into main deck - Add one booster to the base Story Engine deck for occasional genre flavor",
+      "Freely mix multiple boosters - Combine multiple boosters for genre-blending (gothic superhero, sci-fi western, etc.)",
+      "Layer with other expansions - Combine Dreamer boosters with Curio expansions for maximum depth"
+    ],
+    "genreBlending": [
+      "Gothic + Superhero = Dark superhero stories with horror elements",
+      "Western + Fairy Tale = Magical frontier adventures",
+      "Pulp Fiction + Military Sci-Fi = Retro-futuristic space adventures",
+      "Gothic + Fairy Tale = Dark fairy tales and twisted folklore",
+      "Superhero + Military Sci-Fi = Powered soldiers and super-soldier programs",
+      "Western + Pulp Fiction = Classic pulp western adventures"
+    ]
+  },
+  "credits": {
+    "design": "Peter Chiykowski",
+    "publisher": "Rock Paper Cynic"
+  }
+}

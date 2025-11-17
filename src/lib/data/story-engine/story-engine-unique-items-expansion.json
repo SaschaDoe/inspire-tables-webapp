@@ -1,0 +1,178 @@
+{
+  "deck": "Story Engine Unique Items Expansion - Enchanted Items & Cursed Curios",
+  "cardTypes": {
+    "anchor": {
+      "name": "Anchor",
+      "description": "Unique items and artifacts",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["A CHARM", "A LOCK OF CARDS", "A TUREEN", "A MUG"]
+        },
+        {
+          "cues": ["A HIGHLIGHT", "A MEDAL", "A BARRACKS", "A CUIRASS"]
+        },
+        {
+          "cues": ["A TREASURE", "A RING", "A HAMMER", "A POUCH"]
+        },
+        {
+          "cues": ["A KILL", "AN ARROW", "A LANTERN", "A QUILL"]
+        },
+        {
+          "cues": ["A DUNGEON", "A DIE", "A LENS", "A CUBE"]
+        },
+        {
+          "cues": ["A PAIR OF BRACERS", "A BROKING AROUND", "A BLINDFOLD", "A POLEARM"]
+        },
+        {
+          "cues": ["A VENOM", "A SWITCHBLADE", "A LOCKPICK", "A CLOCK"]
+        },
+        {
+          "cues": ["A GATHERING PIECE", "A DRUM", "A CROSSBOW", "A FLUTE"]
+        },
+        {
+          "cues": ["A BELT", "A TENT", "AN EXCAVATION", "A SHOVEL"]
+        },
+        {
+          "cues": ["A SALVE", "A BATH", "A HARPOON", "A SOAP"]
+        },
+        {
+          "cues": ["AN INK", "A WAND", "A RETREAT", "A PIECE OF PAPER"]
+        },
+        {
+          "cues": ["A NET", "A WHIP", "A STUDIO", "A LOOM"]
+        }
+      ]
+    },
+    "aspect": {
+      "name": "Aspect",
+      "description": "Special item-focused aspects with unique powers, properties, descriptions, and restrictions",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["THAT ONLY LIVING THINGS PASS THROUGH", "MADE OF SCAVENGED PARTS", "HIDING AN STOLEN THING LEFT", "THAT HEIGHTENS ONE SENSE"]
+        },
+        {
+          "cues": ["MADE BY A DEAD MASTER ARTISAN", "THAT IMBUES CURISTS", "THAT CAN UNLEASH A SWARM", "CUESTS"]
+        },
+        {
+          "cues": ["THAT GRANTS MISSHAPEN WISHES", "THAT INFLICTS HUNGER OR THIRST", "OBSCURED VISIONS BELONGS TO", "THAT GRANTS HEROIC MIGHT"]
+        },
+        {
+          "cues": ["MADE FROM PARTS OF A FAMOUS SHIP", "THAT DISCIPLINES THOSE AFTER ONE USES IT", "THAT PROTECTS FROM HEAT AND COLD", "THAT DISRUPTS USELESS MEMORIES"]
+        },
+        {
+          "cues": ["MADE BY AN EATING CREATURE", "THAT PROTECTS FROM FEAR", "MADE OF AN UNKNOWN GEMSTONE", "THAT CREATES SILENCE OR DARKNESS"]
+        },
+        {
+          "cues": ["THAT TELLS JOKES OR FACTS", "THAT GUIDES WITH PHANTOM SMELLS", "THAT CAUSES FORGETFULNESS", "THAT DISGUISES WHAT IT TOUCHES"]
+        },
+        {
+          "cues": ["THAT KEEPS PEOPLE OR CREATURE", "THAT SWELLS OF SEA AIR OR WILDFLOWERS", "OBTAINED AS THEIR POWER TO SPEAK", "THAT GRANTS GLIMPSES OF THE FUTURE"]
+        },
+        {
+          "cues": ["THAT INFLICTS A PHOBIA", "MADE FROM THE OLDEST TREE", "THAT ONLY WORKS FOR SINNERS", "THAT HELPS STRIKE CRITICAL BLOWS"]
+        },
+        {
+          "cues": ["THAT ANSWERS UNSPOKEN QUESTIONS", "THAT POISONS", "MADE FROM STRANGE BONES", "THAT GRANTS GOOD/BAD LUCK"]
+        },
+        {
+          "cues": ["THAT GRANTS THE POWER TO SEE THE RECENT PAST", "INSCRIBED WITH A RIDDLE", "MADE OF CORAL", "THAT PROTECTS FROM BLOWS"]
+        },
+        {
+          "cues": ["THAT INFLICTS A RECURRING DREAM", "RECOVERED BY DELUSION ST. O' IT", "THAT BINDS COMPELS ENTHRALLING", "THAT PROTECTS FROM POISON"]
+        },
+        {
+          "cues": ["THAT COMMANDS INSECTS", "COVERED IN MOSS", "THOUSANDS OF STRIKES", "THAT COMMANDS ICE AND SNOW"]
+        },
+        {
+          "cues": ["THAT INDUCES RAGE", "THAT EXITS WHILE BEGGING OR BAD CALLS", "THAT INCREASES TOUGHNESS", "MADE FROM A STRANGE MAP"]
+        },
+        {
+          "cues": ["THAT IS BOUND TO A UNIQUE DESTINY", "THAT SPARKS FLAME ON TOUCH", "THAT CANNOT BE PUT DOWN ONCE PICKED UP", "THAT TURNS WATER INTO RANDOM POTIONS"]
+        },
+        {
+          "cues": ["IMBUED WITH MEMORIES OF THE DEAD", "THAT INDUCES SLEEP OR INSOMNIA", "MADE OF SMOKE", "THAT MANIPULATES SOUND"]
+        },
+        {
+          "cues": ["THAT HAS AN INDESCRIBABLE HUE", "THAT COMPELS DRINKING", "LAUGHTER A WARPING", "THAT PREVENTS HEALING"]
+        },
+        {
+          "cues": ["THAT CAN TRANSFORM INTO A VEHICLE", "THAT HAS AN USUAL WEIGHT", "THAT HAS A LEFT SEW THE", "THAT CAMOUFLAGES"]
+        },
+        {
+          "cues": ["THAT CONTAINS A POCKET DIMENSION", "THAT ATTRACTS OR REPELS ANIMALS", "POWERED BY SONG", "MADE OF ICE"]
+        },
+        {
+          "cues": ["RECHARGED BY PERFECT", "WITH A PROXIMITY ALARM", "THAT GRANTS FLUENCY IN ONE OR MORE LANGUAGES", "THAT IS ALWAYS DAMPENED WITH SOMETHING"]
+        },
+        {
+          "cues": ["THAT WHISPERS WHEN TOUCHED", "THAT GRANTS TELEPATHY", "RECHARGED BY LIGHTNING", "THAT GRANTS WISDOM"]
+        },
+        {
+          "cues": ["ACTIVATED BY A CERTAIN WORD", "THAT MANIPULATES TIME", "FROM A FADING STAR", "FORGED IN OR"]
+        },
+        {
+          "cues": ["THAT IMPAIRS UNDERSTANDING", "THAT INDUCES HYPNOSIS", "INSCRIBED WITH A PROPHECY", "THAT ANIMATES THE DEAD"]
+        },
+        {
+          "cues": ["IN ONE LOCATION", "THAT NULLIFIES OR AMPLIFIES MAGIC", "MADE FROM CRUMBLING STONE", "THAT COMPELS TRUTH-TELLING"]
+        },
+        {
+          "cues": ["THAT INCREASES CHARISMA", "COVERED IN MOSS", "THAT MAKES OTHERS HUNGER AND THIRST", "THAT CARRIES AN AURA OF FROST OR FIRE"]
+        },
+        {
+          "cues": ["THAT WAS BROKEN IN HALF", "THAT GRANTS TELEPORTATION", "CONTAINING A FRAGMENT OF A GOD", "THAT GRANTS LEVITATION"]
+        },
+        {
+          "cues": ["THAT EXTENDS OR SWALLOWS LIGHT", "THAT GRANTS TELEKINESIS", "LEFT UNFINISHED BY ITS CREATOR", "DESIGNED WITH LOST TECHNOLOGY"]
+        },
+        {
+          "cues": ["THAT PLAYS THEATRICALLY APPROPRIATE MUSIC", "THAT GRANTS SHAPE-SHIFTING", "THAT ETERNALS WHICH BINDS WHEN USED ANOTHER ITEM", "THAT ILLUMINATES"]
+        },
+        {
+          "cues": ["THAT IS MAGIC SOME OR SWALLOWING FLESH", "THAT CAN MOVE AND ACT AUTONOMOUSLY", "THAT LOOKS DAMAGED BEYOND REPAIR", "THAT CREATES DOORS, BRIDGES, OR PATHS"]
+        },
+        {
+          "cues": ["THAT GRANTS OR INDUCES VENTRILOQUISM", "THAT TRANSMUTES SUBSTANCES", "THAT LOOKS DAMAGED BEYOND REPAIR", "THAT GRANTS SECOND SIGHT"]
+        },
+        {
+          "cues": ["THAT SHIELDS THE SHINING REMAINS", "THAT AWAKENS A POWERFUL THIRST FOR KNOWLEDGE", "CONTAINED IN BARNACLES", "THAT HEALS WOUNDS"]
+        },
+        {
+          "cues": ["THAT CONSTANTLY RIPPLES OR SHIMMERS", "THAT DETECTS TREASURE", "THAT SECONDS WATER WITHIN", "OBSCURED IN RUIN"]
+        },
+        {
+          "cues": ["POWERED BY DOMINEERED LOSS OR VESSEL", "THAT GRANTS FLIGHT", "THAT SLOWING BEARER", "MADE OF INSECT CARAPACE"]
+        },
+        {
+          "cues": ["THAT TRANSMUTES COUNTERFEIT CURRENCY", "THAT GRANTS MASTERY OF A SKILL", "THAT GRANTS SPEED", "USER PREVENT"]
+        }
+      ]
+    }
+  },
+  "usage": {
+    "description": "A 60-card expansion focused on designing unique items and artifacts with 12 Anchors and 48 special Aspects featuring unique item powers, properties, descriptions, and restrictions",
+    "integration": [
+      "Keep the expansion cards separate - Create prompts using the main deck. Whenever a prompt calls for an Anchor, or an Aspect that could apply to an Anchor, you may choose to draw from the expansion instead",
+      "Mix expansion cards into the main deck - The cards in this expansion can largely be interchanged with cards from the main deck. However, this expansion's Aspects focus on cues for items and equipment (not characters and locations). If you draw an Aspect from this expansion that does not fit your prompt, you may discard and redraw",
+      "Mix only the Anchors into the main deck - You may choose to keep only the Aspects separate to draw from when describing Anchors"
+    ],
+    "notes": [
+      "You may wish to temporarily remove cards from the main deck to increase the proportion of expansion cards and create more item-focused prompts",
+      "The artwork in this deck is from the EMBERWIND™ tabletop roleplaying game"
+    ]
+  },
+  "credits": {
+    "design": "Peter Chiykowski",
+    "production": "Miroki Tong, Zach Schuster",
+    "writing": "Athar Fikry, J. D. Harlock, Shiv MacFarlane, Zach Schuster",
+    "sensitivity_review": "A. Z. Louise, Sonya Ballantyne, Yasmine Fahmy",
+    "curriculum_review": "Kendra Harrison",
+    "proofreading": "Eric Weiss, Leigh Teetzel, Tyson Pink",
+    "art_direction": "Derek Chung",
+    "box_images": "Nick Ragetli",
+    "anchor_images": "Nick Ragetli, CRUSH Visual",
+    "source": "EMBERWIND™ tabletop roleplaying game (emberwindgame.com)"
+  }
+}

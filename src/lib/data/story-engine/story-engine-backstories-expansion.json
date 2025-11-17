@@ -1,0 +1,215 @@
+{
+  "deck": "Story Engine Backstories Expansion - Humble Roots & Epic Origins",
+  "cardTypes": {
+    "backstoryEngine": {
+      "name": "Backstory Engine",
+      "description": "Past motivations and relationships for origin stories",
+      "cueCount": 2,
+      "icon": "gear",
+      "color": "purple/blue",
+      "cards": [
+        {
+          "cues": ["WAS TRAINED BY", "WAS CURSED BY"]
+        },
+        {
+          "cues": ["WAS BORN UNDER THE CONSTELLATION OF/ON", "HAS ALWAYS HAD TO FIGHT FOR"]
+        },
+        {
+          "cues": ["WAS AWAKENED OR ENLIGHTENED BY", "WAS FOUND ON THE DOORSTEP OF/WITH"]
+        },
+        {
+          "cues": ["HAS ALWAYS HAD RECURRING DREAMS ABOUT", "SPENT THEIR CHILDHOOD TRAPPED IN"]
+        },
+        {
+          "cues": ["IS STILL SEARCHING FOR", "IS FIGHTING TO PROVE LOST"]
+        },
+        {
+          "cues": ["ADOPTED AS THEIR EMBLEM", "WAS THE SUBJECT OF A PROJECT INVOLVING"]
+        },
+        {
+          "cues": ["HAS ONE UNFORGETTABLE MEMORY OF", "IS SWORN ALLEGIANCE TO"]
+        },
+        {
+          "cues": ["COMMITTED AN EMBARRASSING BLUNDER INVOLVING", "OWES SOMEONE A DEBT INVOLVING"]
+        },
+        {
+          "cues": ["LOST SOMETHING VITAL TO", "BROUGHT RUIN TO"]
+        },
+        {
+          "cues": ["ONCE SURVIVED BY TAKING REFUGE IN/WITH", "RECEIVED THEIR POWERS FROM"]
+        },
+        {
+          "cues": ["WAS ONCE MISTAKEN FOR", "IS INSPIRED TO LIVE LIKE"]
+        },
+        {
+          "cues": ["HAS ALWAYS CARRIED WITH THEM", "FOUND AN UNEXPECTED PLACE IN/WITH"]
+        },
+        {
+          "cues": ["ONCE STOOD BY A HERO IN A PLACE WITH", "HAS A LONG-STANDING FEUD INVOLVING"]
+        },
+        {
+          "cues": ["ONCE COMMITTED MUTINY OR COMMITTED TO BETRAYING", "WAS SAVED BY"]
+        },
+        {
+          "cues": ["WAS GIVEN A QUEST BY", "WAS RESCUED BY"]
+        },
+        {
+          "cues": ["WAS RUMBLED BY", "WAS BETRAYED BY"]
+        },
+        {
+          "cues": ["ONCE WAS A RIVAL TO OR CAUGHT IN A GAME OF CHANCE INVOLVING", "WAS CHOSEN TO INHERIT (OR INHERIT FROM)"]
+        },
+        {
+          "cues": ["HAS A LIFELONG FEAR OF", "WAS ONCE SAVED BY"]
+        },
+        {
+          "cues": ["LED THEM TO A LIFE EVENTUALLY ABOUT", "WAS TAUGHT TO REVERE ALL ELSE"]
+        },
+        {
+          "cues": ["ONCE RESCUED A STORM FROM", "CONTRACTED A CHILDHOOD ILLNESS FROM"]
+        },
+        {
+          "cues": ["FED THE RAW HUMAN SOUL TO", "WAS BROUGHT TO PRAY ELSEWHERE"]
+        },
+        {
+          "cues": ["CHILD", "WAS HARMED OR RECKONED AFTER"]
+        },
+        {
+          "cues": ["SUFFERED A TRAGIC INVOLVING", "WASHED UP ON SHORE REACH TO"]
+        },
+        {
+          "cues": ["WAS TRAINED TO REVIVE ALL ELSE", "WAS TAUGHT TO REVIVE ALL ELSE"]
+        },
+        {
+          "cues": ["LOST THEIR PARENTS IN AN ACCIDENT INVOLVING", "CALL TO ADVENTURED/FORTH"]
+        },
+        {
+          "cues": ["ONCE RESCUED A MORTAL STORM FROM ABOUT", "INTO A FORGOTTEN SOUTH BROUGHT"]
+        },
+        {
+          "cues": ["ONCE SWORE AN OATH OF CHANGE INVOLVING", "HAS A LONG-STANDING FEUD WITH INVOLVING"]
+        },
+        {
+          "cues": ["ONCE SWORE AN OATH TO CHANGE INVOLVING", "HAS LONG-STANDING AND WITH INVOLVING"]
+        },
+        {
+          "cues": ["ONCE COMMANDED WITH/OVER", "ONCE COMMITTED"]
+        },
+        {
+          "cues": ["WAS TAUGHT TO PRAY WITH", "WAS BROUGHT TO EXILE"]
+        }
+      ]
+    },
+    "backstoryConflict": {
+      "name": "Backstory Conflict",
+      "description": "Past obstacles and consequences that create present-day hooks",
+      "cueCount": 2,
+      "icon": "tree",
+      "color": "brown/red",
+      "cards": [
+        {
+          "cues": ["AND NOW THEY ARE MADE EVEN A TARGET", "AND NOW AN ENEMY IS CARVING THEIR SECRET"]
+        },
+        {
+          "cues": ["AND NOW THE WRONG PEOPLE ARE STARTING TO ASK QUESTIONS", "AND NOW STRANGE QUESTIONS"]
+        },
+        {
+          "cues": ["AND NOW IT WAS A LIE THEIR SEARCH FOR ANSWERS", "AND THEY JUST FOUND A LEAD THAT SEARCH FOR ANSWERS"]
+        },
+        {
+          "cues": ["SHE WILL PAY IT AND NOW THEY ARE ASKING THEM TO MASTER", "AND NOW THEY ANSWERED"]
+        },
+        {
+          "cues": ["AND NOW THEIR DEBT GOOD STAND MEMORY IT MAD", "AND THE LOVE IS SUPERSTITION IN THEM"]
+        },
+        {
+          "cues": ["IT HELPED SOMEONE DISCOVER A PAST SI AND NOW IT WAS BASED ON A LIE", "AND NOW THEY ARE FINDING OUT IT WAS BASED ON A LIE"]
+        },
+        {
+          "cues": ["ALWAYS REMEMBER IT AND NOW THEY ARE JUST A SHELL", "AND NOW IS FORGETTING MEMORY"]
+        },
+        {
+          "cues": ["AND NOW THAT THE DYING SHOWING ELSEWHERE", "AND NOW SOMEONE IS PRESENTING A JUST READ"]
+        },
+        {
+          "cues": ["AND NOW SOMETHING PRECIOUS RELATED THEM TO", "AND NOW SO SOMEONE IS TRYING FORTH IT"]
+        },
+        {
+          "cues": ["AND NOW THEY REALIZE IT MAY A BURDEN PLAN", "AND IT IS ABOUT TO PAY A BROKEN PLAN"]
+        },
+        {
+          "cues": ["IF YOU RECALL SOMETHING THEY RE ABOUT FOR RECOGNIZING FORTH IT", "AND THEY ARE ABOUT FOR RECOGNIZING FORTH IT"]
+        },
+        {
+          "cues": ["AND NOW THEY ARE HAUNTING COULD LOSING THE POSITION OVER IT", "AND NOW THEY COULD LOSING THE POSITION OVER IT"]
+        },
+        {
+          "cues": ["TO CONTROL IT AND OUT", "AND NOW IT ABOUT"]
+        },
+        {
+          "cues": ["NO NOT TRUTH WITH A RIGHT WISH TO", "AND NOT THE TRUTH OF IT'S HAPPENING TO RIGHT WISH TO"]
+        },
+        {
+          "cues": ["AND NOW THEY WILL HAVE TO RETURN FORGET PROMISE", "AND NOW THEY WILL HAVE TO RETURN FORGET PROMISE"]
+        },
+        {
+          "cues": ["AND NOW THEY ARE REALIZE OR FINDING OUT IT WAS THIS", "AND NOW THEY ARE FINALLY OUT OTHERS BEHIND IT"]
+        },
+        {
+          "cues": ["AND NOW IT'S GETTING CLOSE INNER CIRCLE", "AND NOW IT GETTING TO AN INNER CIRCLE"]
+        },
+        {
+          "cues": ["AND THE ONLY PERSON WHO KNOWS WITH IS ABOUT TO DIE", "AND THE ONLY PERSON WHO KNOWS WITH IS ABOUT TO DIE"]
+        },
+        {
+          "cues": ["TO RIGHT FALSE AND TO THIS END AFTER", "AND NOW FOR RETURNING DISCOVER IT IS ABOUT"]
+        },
+        {
+          "cues": ["MOOD AT MEN TOLD TO SHARE ATTENTION", "MOOD AT TO SHARE ATTENTION"]
+        },
+        {
+          "cues": ["ONCE REMEMBER IS IT IS ABOUT TO CALL THEM IN A PLAN", "AND IT IS ABOUT TO PAY BROKEN PLAN"]
+        },
+        {
+          "cues": ["AND NOW THEY ARE HAVING TERRIBLE DREAMS ABOUT IT", "AND NOW THEY ARE HAVING TERRIBLE DREAMS ABOUT IT"]
+        },
+        {
+          "cues": ["IT ONLY SOMETHING THEY'RE READY IN A PLAN", "AND NOW THEY RE READY TO PAY A BROKEN PLAN"]
+        },
+        {
+          "cues": ["AND NOW THE THEY COULD LOSING THE POSITION OVER IT", "AND NOW THEY COULD LOSING THE POSITION OVER IT"]
+        },
+        {
+          "cues": ["IT WAS REMEMBER THEY RE ABOUT FOR RECOGNIZING FORTH IT", "AND THEY ARE ABOUT FOR RECOGNIZING FORTH IT"]
+        },
+        {
+          "cues": ["AND NOW IT TORMENTS OTHERS THE PROMISED", "AND NOW IT TORMENTS OTHERS THE PROMISED"]
+        },
+        {
+          "cues": ["IF ONLY SOMEONE THEY'RE CONNECTED BE", "AND THEY THINK A RECENT HAVE CONNECTED BE"]
+        },
+        {
+          "cues": ["IF YOU TO RIGHT FALSE", "IF YOU TO RIGHT FALSE"]
+        },
+        {
+          "cues": ["AND NOW TO SHARE POSITION", "AND NOW TO SHARE POSITION"]
+        },
+        {
+          "cues": ["AND NOW TORMENTS OTHERS", "AND NOW TORMENTS OTHERS"]
+        }
+      ]
+    }
+  },
+  "usage": {
+    "description": "Backstory Engine-Conflict pairs create character origin stories with present-day plot hooks",
+    "placement": "Tuck diagonally under the Agent or Anchor they originate from, pointing at the Agent or Anchor they orient toward",
+    "integration": [
+      "Keep expansion cards separate - Draw Backstory Engines and Backstory Conflicts instead of standard ones when exploring origin stories",
+      "Mix Backstory Engines into main deck, keep Backstory Conflicts separate - When you draw a Backstory Engine, replace the paired Conflict with a Backstory Conflict"
+    ],
+    "notes": [
+      "Can be used in simple prompts as long as both Engine and Conflict are from the backstory expansion",
+      "Can have both a standard Engine-Conflict pair AND a Backstory Engine-Conflict pair connecting two cards, giving them both a backstory and a present-day relationship"
+    ]
+  }
+}

@@ -1,0 +1,231 @@
+{
+  "deck": "Story Engine Mystery Expansion - Written In Blood & Alibi",
+  "cardTypes": {
+    "agent": {
+      "name": "Agent",
+      "description": "Mystery-themed characters who make choices in the story",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["A HALF-TRUTH", "A TYCOON", "AN EYEWITNESS", "A SOCIALITE"]
+        },
+        {
+          "cues": ["A THUG", "A STREET VENDOR", "A SWINDLER", "A MOURNER"]
+        },
+        {
+          "cues": ["A COP", "A SAFECRACKER", "AN ABDUCTOR", "A GUMSHOE"]
+        },
+        {
+          "cues": ["AN EX-CON", "A TOUT", "AN ATTENDANT", "A BUTLER"]
+        },
+        {
+          "cues": ["A HUSTLER", "A FEMME FATALE", "A CLEANER", "A FIXER"]
+        },
+        {
+          "cues": ["AN ANTIQUE COLLECTOR", "A RINGLEADER", "A DUKE", "A MYSTERY WRITER"]
+        },
+        {
+          "cues": ["A NIHILIST", "A POLICE INSPECTOR", "A JUDGE", "A WARDEN"]
+        },
+        {
+          "cues": ["A CRIMINAL", "A JUROR", "A RECRUIT", "A ROOKIE"]
+        },
+        {
+          "cues": ["AN ABDUCTOR", "A CON ARTIST", "A ROADBLOCK", "A PSYCHIC"]
+        },
+        {
+          "cues": ["AN ESTATE AGENT", "AN ANTHROPOLOGIST", "A SCRIBE", "A LAWYER"]
+        },
+        {
+          "cues": ["A CONTRACT KILLER", "A RELATIVE", "A CREDITOR", "A MOBSTER"]
+        },
+        {
+          "cues": ["A CONFIDENTIAL SOURCE", "AN INSTIGATOR", "A ROBBER", "A SUSPECT"]
+        }
+      ]
+    },
+    "engine": {
+      "name": "Engine",
+      "description": "Mystery-themed motivations and relationships that drive the story",
+      "cueCount": 2,
+      "cards": [
+        {
+          "cues": ["WANTS TO BRIBE SOMEONE WITH", "WANTS TO RUIN THE REPUTATION OF"]
+        },
+        {
+          "cues": ["WANTS TO CLEAR THEIR NAME WITH", "WANTS TO INTIMIDATE (OR INTIMIDATE SOMEONE WITH)"]
+        },
+        {
+          "cues": ["WANTS TO DRAW SUSPICION AWAY FROM", "ON THE OWNERSHIP OF"]
+        },
+        {
+          "cues": ["WANTS TO CAST DOUBT ON", "WANTS TO PLACE SUSPICION ON"]
+        },
+        {
+          "cues": ["WANTS TO POISON", "WANTS TO CREATE A SOCIAL TRAP INVOLVING"]
+        },
+        {
+          "cues": ["WANTS TO ESCAPE THE SOCIAL TRAP OF", "WANTS TO PURGE"]
+        },
+        {
+          "cues": ["WANTS TO OBTAIN A NUMBER FROM", "WANTS TO SILENCE (OR KEEP SOMEONE SILENT WITH)"]
+        },
+        {
+          "cues": ["WANTS TO CREATE A CONVINCING DOUBLE OF", "WANTS TO OBTAIN EVIDENCE OF/FROM"]
+        },
+        {
+          "cues": ["WANTS TO DESTROY EVIDENCE OF/FROM", "WANTS TO IDENTIFY THE DECOYS OF"]
+        },
+        {
+          "cues": ["WANTS TO HUMILIATE (OR HUMILIATE SOMEONE WITH)", "SECRET IDENTITY OF/WITH"]
+        },
+        {
+          "cues": ["WANTS TO OBTAIN A NEW IDENTITY AS/FROM", "WANTS TO EARN THE PRIDE OF"]
+        },
+        {
+          "cues": ["WANTS TO SECURE THE INHERITANCE OF", "WANTS TO EXTRACT A CONFESSION FROM/WITH"]
+        }
+      ]
+    },
+    "anchor": {
+      "name": "Anchor",
+      "description": "Mystery-themed objects, locations, or events of importance",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["A BODY", "A DESK", "AN ALIBI", "A STUDY"]
+        },
+        {
+          "cues": ["AN ALLEY", "A CASE", "A BLACKMAIL", "A DEAD END"]
+        },
+        {
+          "cues": ["A PHOTOGRAPH", "A CLUE", "AN INVITATION", "A GATE"]
+        },
+        {
+          "cues": ["A CERTAIN CERTIFICATE", "A MORGUE", "A WOUND", "AN AUTOPSY"]
+        },
+        {
+          "cues": ["A PASSAGE", "A CASK", "AN INHERITANCE", "A WINE CELLAR"]
+        },
+        {
+          "cues": ["A DARE", "A SOIREE", "A HOOK", "A CONSERVATORY"]
+        },
+        {
+          "cues": ["A STASH", "A KITCHEN", "A FINGERPRINT", "A CLEAVER"]
+        },
+        {
+          "cues": ["HOLDINGS", "A SECURITY SYSTEM", "AN ESTATE", "A CAMERA"]
+        },
+        {
+          "cues": ["A RUG", "A MURDER WEAPON", "A FIRE", "A FIREPLACE"]
+        },
+        {
+          "cues": ["A BAR", "A TRADE", "A CLIQUE", "A DRINK"]
+        },
+        {
+          "cues": ["HOLDING", "A SMOKING GUN", "A CAR", "A GARAGE"]
+        },
+        {
+          "cues": ["A FILM", "A FOOTPRINT", "A CLOSET", "AN OFFICE"]
+        }
+      ]
+    },
+    "conflict": {
+      "name": "Conflict",
+      "description": "Mystery-themed obstacles, consequences, or dilemmas",
+      "cueCount": 2,
+      "cards": [
+        {
+          "cues": ["BUT THEY WILL HAVE TO LIE TO THE PERSON WHO TRUSTS THEM MOST", "BUT THEIR PROBLEMS WILL BE EXPOSED"]
+        },
+        {
+          "cues": ["BUT IT WILL END AN IMPORTANT RELATIONSHIP", "BUT IT WILL RUIN THEM FINANCIALLY"]
+        },
+        {
+          "cues": ["BUT THEY WILL TAKE THE RAP FOR A CRIME THEY DID NOT COMMIT", "BUT THEIR AFFAIR WILL BE EXPOSED"]
+        },
+        {
+          "cues": ["BUT A PAST CRIME WILL BE EXPOSED", "BUT THE NAME OF A DEAR PERSON WILL BE TARNISHED"]
+        },
+        {
+          "cues": ["BUT THEY WILL LOSE THEIR FAMILY", "BUT JUSTICE WILL COME TOO LATE FOR THE LIVING"]
+        },
+        {
+          "cues": ["BUT SOMETHING THEY LOVE WILL BE BURIED", "BUT THEY WILL GO UP IN FLAMES"]
+        },
+        {
+          "cues": ["BUT THEY WILL HAVE TO HURT THEM", "BUT IT WILL MEAN HIDING PART OF THEIR IDENTITY"]
+        },
+        {
+          "cues": ["BUT THEY WILL HAVE TO LET AN ENEMY HURT THEM", "BUT IT WILL COST THEM A FORTUNE"]
+        },
+        {
+          "cues": ["BUT IT WILL MEAN THE DISSECTION OF SOMETHING PERSONAL", "BUT SOMEONE INNOCENT WILL BE CONDEMNED"]
+        },
+        {
+          "cues": ["BUT THEY WILL HAVE TO DESTROY EXCULPATORY EVIDENCE", "BUT THEY WILL HAVE TO FORGIVE SOMEONE GUILTY"]
+        },
+        {
+          "cues": ["BUT THEY WILL HAVE TO REVEAL A HIDING PLACE", "BUT SOMEONE INNOCENT WILL BE CONDEMNED"]
+        },
+        {
+          "cues": ["BUT SOMETHING THEY LOVE WILL GO UP IN FLAMES", "BUT IT WILL COST THEM A FORTUNE"]
+        }
+      ]
+    },
+    "aspect": {
+      "name": "Aspect",
+      "description": "Mystery-themed adjectives that describe other cards",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["GENTRIFIED", "BRIGHT", "AFFECTIONATE", "INKY"]
+        },
+        {
+          "cues": ["OBSCURE", "WIRY", "MULTILINGUAL", "BRASS"]
+        },
+        {
+          "cues": ["FRANK", "RUN-DOWN", "TUMULTUOUS", "DECORATIVE"]
+        },
+        {
+          "cues": ["CANDLELIT", "MULTILINGUAL", "STATE-RUN", "VINTAGE"]
+        },
+        {
+          "cues": ["PHILOSOPHICAL", "CROOKED", "IRREVERENT", "CODED"]
+        },
+        {
+          "cues": ["OFF-THE-GRID", "SMOOTH-TALKING", "MARKED", "UNEXPLAINED"]
+        },
+        {
+          "cues": ["THRILL-SEEKING", "RAY-SHACKLE", "SUSPICIOUS", "MISSING"]
+        },
+        {
+          "cues": ["DEMOLISHED", "SUSPICIOUS", "ESTRANGED", "FINGERPRINTED"]
+        },
+        {
+          "cues": ["MESSAGE-BEARING", "HEREDITARY", "EXCOMMUNICATED", "INDECIPHERABLE"]
+        },
+        {
+          "cues": ["STATE-RUN", "CANDLELIT", "MULTILINGUAL", "VIRULENT"]
+        },
+        {
+          "cues": ["POMPOUS", "STONY", "FAMILIAR", "INSCRIBED"]
+        },
+        {
+          "cues": ["MARKED", "FAMILIAL", "SINCERE", "ILL-GOTTEN"]
+        }
+      ]
+    }
+  },
+  "usage": {
+    "description": "A 60-card mystery expansion with genre-focused cards across all 5 card types",
+    "integration": [
+      "Use only expansion cards - Provides genre-focused prompts, but you will cycle through the same cards more often",
+      "Mix expansion cards into the main deck - The main deck works with all genres, so the added cards will increase the genre focus",
+      "Freely mix multiple expansions and boosters - Blending genres is a rewarding (and challenging) way to create prompts"
+    ],
+    "notes": [
+      "You may wish to temporarily remove cards from the main deck to increase the proportion of expansion cards and create more genre-focused prompts"
+    ]
+  }
+}

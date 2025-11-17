@@ -1,0 +1,383 @@
+{
+  "set": "Story Engine Founder Booster Set",
+  "description": "Six 18-card genre boosters that add specific genre flavor to Story Engine prompts. Each booster contains 5 Agents, 2 Engines, 5 Anchors, 2 Conflicts, and 4 Aspects focused on a particular genre.",
+  "totalCards": 108,
+  "boosters": {
+    "eldritchHorror": {
+      "name": "Dark Crafts & Ancient Horrors",
+      "theme": "Eldritch Horror",
+      "description": "Cosmic horror elements with cultists, ancient entities, forbidden knowledge, and sanity-threatening encounters.",
+      "contentWarning": "Contains disturbing cues. Use care, communication, and check-ins when using the deck, especially for collaboration or publication. Horror elements can be powerful and painful triggers for many people, and the eldritch genre has a history with harmful racist tropes.",
+      "cardCount": 18,
+      "composition": {
+        "agents": 5,
+        "engines": 2,
+        "anchors": 5,
+        "conflicts": 2,
+        "aspects": 4
+      },
+      "cards": {
+        "agents": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["An Inmate", "An Apparition", "A Brute", "A Rogue"]},
+            {"cues": ["A Phantom", "A Psychic", "A Sorcerer", "An Entity"]},
+            {"cues": ["A Cultist", "A Villager", "A Tribal", "A Pilgrim"]},
+            {"cues": ["A Private Investigator", "A Lunatic", "A Skeptic", "A Professor"]},
+            {"cues": ["An Ancient", "A Devil", "A Deity", "A Being"]}
+          ]
+        },
+        "engines": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["Wants to break a curse involving", "Wants to find the coordinates of"]},
+            {"cues": ["Wants to investigate a cult centered around", "Wants to stop the government from discovering"]}
+          ]
+        },
+        "anchors": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Hamlet", "A Lighthouse", "A Shipwreck", "A Stockade"]},
+            {"cues": ["An Incantation", "A Cellar", "A Grimoire", "A Ritual"]},
+            {"cues": ["A Sanitorium", "A Cadaver", "A Nurse", "An Asylum"]},
+            {"cues": ["A Catacomb", "A Ruin", "An Awakening", "A Mausoleum"]},
+            {"cues": ["A Candle", "A Solstice", "A Pentacle", "A Séance"]}
+          ]
+        },
+        "conflicts": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["But the door between the living and the dead will open", "But it will mean joining the enemy"]},
+            {"cues": ["But the memory will haunt them forever", "But it will draw the attention of the government"]}
+          ]
+        },
+        "aspects": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["Occult", "Querant", "Sinister", "Demential"]},
+            {"cues": ["Musty", "Eldritch", "Cursed", "Maddening"]},
+            {"cues": ["Prejudiced", "Unseeking", "Seance", "Uninked"]},
+            {"cues": ["Toothy", "Profane", "Downtrodden", "Populist"]}
+          ]
+        }
+      }
+    },
+    "steampunk": {
+      "name": "Cog Hearts & Steam Souls",
+      "theme": "Steampunk",
+      "description": "Victorian-era technology with steam power, clockwork mechanisms, airships, and industrial innovation.",
+      "cardCount": 18,
+      "composition": {
+        "agents": 5,
+        "engines": 2,
+        "anchors": 5,
+        "conflicts": 2,
+        "aspects": 4
+      },
+      "cards": {
+        "agents": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Clockmaker", "An Airship Captain", "A Pick-Pocket", "A Merchant"]},
+            {"cues": ["A Tinkerer", "A Gadgeteer", "A Pugilist", "An Engineer"]},
+            {"cues": ["A Golem", "An Overseer", "A Drone", "An Automaton"]},
+            {"cues": ["An Artificer", "An Artifact Dealer", "An Enchanter", "A Craftsperson"]},
+            {"cues": ["A Raver", "A Hacktivist", "A Junkie", "A Dissenter"]}
+          ]
+        },
+        "engines": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["Wants to decode ancient blueprints and needs to access to", "Wants to finish a revolutionary new prototype and needs"]},
+            {"cues": ["Wants to win a war by experimenting on", "Wants to outwit or overpower the warlord who controls"]}
+          ]
+        },
+        "anchors": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["An Airship", "A Cogwheel", "A Cannon", "A Foundation"]},
+            {"cues": ["A Mine", "A Crystal", "A Mechanism", "A Schematic"]},
+            {"cues": ["A Generator", "A Chimney", "An Atelier", "A Workshop"]},
+            {"cues": ["A Mecha", "A Moving Fortress", "A Gadget", "A Device"]},
+            {"cues": ["A College", "A Clocktower", "An Orb", "A Laboratory"]}
+          ]
+        },
+        "conflicts": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["But it will compromise the source of their power", "But they must give up the source of their power"]},
+            {"cues": ["But someone else will get credit for their greatest idea", "But they will lose their divine powers"]}
+          ]
+        },
+        "aspects": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["Clockwork", "Enduring", "Malfunctioning", "Flying"]},
+            {"cues": ["Steam-Powered", "Flying", "Modest", "Sentient"]},
+            {"cues": ["Coal-Powered", "Prototype", "Inventive", "Sabotaged"]},
+            {"cues": ["Scrappy", "Sabotaged", "Fantastical", "Dormant"]}
+          ]
+        }
+      }
+    },
+    "cyberpunk": {
+      "name": "Circuits & Cybernetics",
+      "theme": "Cyberpunk",
+      "description": "High-tech dystopia with hackers, corporations, cybernetic enhancements, and digital warfare.",
+      "cardCount": 18,
+      "composition": {
+        "agents": 5,
+        "engines": 2,
+        "anchors": 5,
+        "conflicts": 2,
+        "aspects": 4
+      },
+      "cards": {
+        "agents": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["An Information Broker", "A Fence", "A Corp Executive", "A Journalist"]},
+            {"cues": ["A Supersoldier", "A Cyborg", "A Corp Boss", "A Bodyguard"]},
+            {"cues": ["An Android", "An Enhanced", "A Natural", "A Clone"]},
+            {"cues": ["A Despot", "A Torturer", "A Political Prisoner", "A Dictator"]},
+            {"cues": ["A Field Medic", "An Undercover Agent", "An Activist", "A Surgeon"]}
+          ]
+        },
+        "engines": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["Wants to follow the tracking device planted on/in", "Wants to get the data from a microchip hidden in/on"]},
+            {"cues": ["Wants to break into a government facility for", "Wants to suppress the dangerous invention of"]}
+          ]
+        },
+        "anchors": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Rave", "A Stimulant", "A Warehouse", "A Server"]},
+            {"cues": ["A Bio-Enhancement", "A Microchip", "A Transplant", "An Operating Room"]},
+            {"cues": ["A Lead-Lined Van", "A Server", "A Heist", "A Safehouse"]},
+            {"cues": ["A Password", "A Safehouse", "A Terminal", "An Exoplanet"]},
+            {"cues": ["A Databank", "A Terminal", "An Exoplanet", "A Holodisk"]},
+            {"cues": ["A Corp", "A Holodisk", "A Pentacle", "A Surveillance"]}
+          ]
+        },
+        "conflicts": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["But they will be erased from the net forever", "But rest of their life with false memories"]},
+            {"cues": ["But it will make them a fugitive", "But it will draw the attention of the government"]}
+          ]
+        },
+        "aspects": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["Hedonistic", "Sourced-Up", "Corporate", "Modified"]},
+            {"cues": ["Freelance", "Monied", "Idealistic", "Synthetic"]},
+            {"cues": ["Hard-Wired", "Synthetic", "Proprietary", "Compromised"]},
+            {"cues": ["Mind-Bending", "Creepy", "Surgical", "Gibbering"]}
+          ]
+        }
+      }
+    },
+    "postApocalyptic": {
+      "name": "Wastelands & Wanderers",
+      "theme": "Post-Apocalyptic",
+      "description": "Survival in harsh wastelands with scavengers, mutants, raiders, and the remnants of civilization.",
+      "cardCount": 18,
+      "composition": {
+        "agents": 5,
+        "engines": 2,
+        "anchors": 5,
+        "conflicts": 2,
+        "aspects": 4
+      },
+      "cards": {
+        "agents": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Junk Seller", "A Symbiosis", "A Warband", "A Scavenger"]},
+            {"cues": ["A Road Warrior", "A Statue", "A Raider", "A Wanderer"]},
+            {"cues": ["An Infected", "A Geneticist", "A Mutant", "A Carrier"]},
+            {"cues": ["A Caravan Guard", "A Survivalist", "A Gladiator", "A Trader"]},
+            {"cues": ["A Nomad", "A Scavenger", "A Pariah", "A Drifter"]}
+          ]
+        },
+        "engines": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["Wants to find the cache location hidden on/by", "Wants to make contact with an ancient power through/in"]},
+            {"cues": ["Wants to perform a forbidden ritual with/in/on", "Wants to destroy thwart"]}
+          ]
+        },
+        "anchors": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Gas Mask", "A Ruin", "A Crash Site", "A Bunker"]},
+            {"cues": ["A Cure", "A Medical Building", "A Medical Pack", "An Outpost"]},
+            {"cues": ["A Nuclear Site", "An Outpost", "Memoirs Grains", "A Wasteland"]},
+            {"cues": ["A Vehicle", "A Veil", "An Incendiary Device", "A Roadkamp"]},
+            {"cues": ["A Foundry", "A Tank of Gas", "A Roadkamp", "A Vault"]}
+          ]
+        },
+        "conflicts": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["But their settlement will be exposed to a deadly infection", "But they will have to trade their most precious resource"]},
+            {"cues": ["But they will lose part of their humanity", "But it will mean the sacrifice of someone or something innocent"]}
+          ]
+        },
+        "aspects": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["Hardscrabble", "Cleansing", "Hopeful", "Pre-War"]},
+            {"cues": ["Cannibalistic", "Pre-War", "Plague-Bearing", "Nihilistic"]},
+            {"cues": ["Mutated", "Out-of-Control", "Exposed", "Parasitic"]},
+            {"cues": ["Zombified", "Viral-Rigged", "Automatic", "Enduring"]}
+          ]
+        }
+      }
+    },
+    "mythology": {
+      "name": "Mythwalkers & Eternals",
+      "theme": "Mythology",
+      "description": "Gods, heroes, and mythological creatures with divine powers, epic quests, and legendary artifacts.",
+      "cardCount": 18,
+      "composition": {
+        "agents": 5,
+        "engines": 2,
+        "anchors": 5,
+        "conflicts": 2,
+        "aspects": 4
+      },
+      "cards": {
+        "agents": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Sky Pirate", "A Treasure Hunter", "An Aviator", "A Pilot"]},
+            {"cues": ["A God-Slayer", "A Muse", "A Child-God", "A Demigod"]},
+            {"cues": ["An Oracle", "A Messenger of the Gods", "A Child-God", "A Seer"]},
+            {"cues": ["A Trickster", "An Animal God", "A Forest God", "A Shapeshifter"]},
+            {"cues": ["A Hag", "An Undead God", "A Harbinger", "A Crone"]},
+            {"cues": ["A Titan", "A Harbinger", "A God of Death", "A Minotaur"]}
+          ]
+        },
+        "engines": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["Wants to outwit a god with the help of", "Wants to unleash the divine wrath of"]},
+            {"cues": ["Wants to found a religion on", "Wants to make contact with an ancient power through/in"]}
+          ]
+        },
+        "anchors": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["An Omen", "A Pair of Wings", "A Hood", "A Sign"]},
+            {"cues": ["A Pyre", "A Sacred Mountain", "A Drop of Blood", "A Token"]},
+            {"cues": ["An Alignment", "A Higher Plane", "A Starborn", "A Prophecy"]},
+            {"cues": ["A Temple", "A Relic", "A Holy Order", "A Shrine"]},
+            {"cues": ["A Forge", "A Trial", "A Weapon of Destiny", "An Artifact"]}
+          ]
+        },
+        "conflicts": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["But they will lose their followers", "But they will lose their divine powers"]},
+            {"cues": ["But they do not meet the terms of the prophecy", "But an unethical corp will gain a monopoly"]}
+          ]
+        },
+        "aspects": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["Angelic", "Life-Giving", "Eternal", "Divine"]},
+            {"cues": ["Omnipotent", "Enigmatic", "Worhal", "Soothsaying"]},
+            {"cues": ["Jealous", "Soothsaying", "Knowledge-Granting", "Ominous"]},
+            {"cues": ["Prophetic", "Ominous", "Apocryphal", "Apocalyptic"]}
+          ]
+        }
+      }
+    },
+    "dystopian": {
+      "name": "Jackboots & Chainlink",
+      "theme": "Dystopian",
+      "description": "Oppressive regimes, surveillance states, resistance fighters, and the struggle for freedom.",
+      "cardCount": 18,
+      "composition": {
+        "agents": 5,
+        "engines": 2,
+        "anchors": 5,
+        "conflicts": 2,
+        "aspects": 4
+      },
+      "cards": {
+        "agents": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Guerilla", "An Executioner", "A Mercenary", "A Rebel"]},
+            {"cues": ["A Shooter", "Inhuman", "A Fugitive", "A Sniper"]},
+            {"cues": ["A Prison Guard", "A Loyalist", "A Warden", "A Combatant"]},
+            {"cues": ["A Reaver", "A Warband", "A Marauder", "A Raider"]},
+            {"cues": ["A Bounty Hunter", "A Gunrunner", "A Manhunter", "A Tracker"]}
+          ]
+        },
+        "engines": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["Wants to learn how the world ended and their only lead is", "Wants to finish a revolutionary new prototype and needs"]},
+            {"cues": ["Wants to decode ancient blueprints and needs to access to", "Wants to outwit or overpower the warlord who controls"]}
+          ]
+        },
+        "anchors": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["A Personnel Carrier", "A Detention Camp", "A Grenade", "A Checkpoint"]},
+            {"cues": ["An Unregistered Weapon", "Riot Gear", "A Back Alley", "A Safe House"]},
+            {"cues": ["A Headquarters", "Teleportation", "A Passport", "A Broadcast"]},
+            {"cues": ["A Mass Grave", "A Bolt-Action", "A Government Secret", "A Monument"]},
+            {"cues": ["A Black Site", "A Tracking Device", "A Suppressor Rifle", "A Prison"]}
+          ]
+        },
+        "conflicts": {
+          "cueCount": 2,
+          "cards": [
+            {"cues": ["But they will have to release something that once locked away", "But an unethical corp will gain a monopoly"]},
+            {"cues": ["But it will mean being exposed to dangerous radiation", "But it will cost them their most prized possession"]}
+          ]
+        },
+        "aspects": {
+          "cueCount": 4,
+          "cards": [
+            {"cues": ["Inspiring", "Populist", "Improvised", "Decommissioned"]},
+            {"cues": ["Unbreakable", "Underserved", "Seditious", "Illegal"]},
+            {"cues": ["Defiant", "Illegal", "Brutal", "Decomissioned"]},
+            {"cues": ["Disgraced", "Decommissioned", "Steely", "Compromised"]}
+          ]
+        }
+      }
+    }
+  },
+  "usage": {
+    "description": "Six genre-focused 18-card boosters that add specific thematic elements to Story Engine prompts. Unlike the 20-card Dreamer boosters, Founder boosters have an asymmetrical composition with 5 Agents, 2 Engines, 5 Anchors, 2 Conflicts, and 4 Aspects.",
+    "integration": [
+      "Use only booster cards - Provides genre-focused prompts, but you will cycle through the same cards more often",
+      "Mix booster cards into the main deck - The main deck works with all genres, so the added cards will increase the genre focus",
+      "Freely mix multiple expansions and boosters - Blending genres is a rewarding (and challenging) way to create prompts"
+    ],
+    "note": "You may wish to temporarily remove cards from the main deck to increase the proportion of booster cards and create more genre-focused prompts.",
+    "genreBlending": [
+      "Eldritch Horror + Cyberpunk = Digital cosmic horror with AI gods",
+      "Steampunk + Post-Apocalyptic = Victorian wasteland survivors",
+      "Mythology + Dystopian = Gods in oppressive regimes",
+      "Cyberpunk + Dystopian = Corporate surveillance states",
+      "Eldritch Horror + Mythology = Ancient gods awakening",
+      "Steampunk + Mythology = Divine clockwork mechanisms"
+    ]
+  },
+  "credits": {
+    "design": "Peter Chiykowski",
+    "production": "Miroki Tong, Zach Schuster",
+    "sensitivity_review": "A. Z. Louise, Sonya Ballantyne, Yasmine Fahmy",
+    "curriculum_review": "Kendra Harrison",
+    "proofreading": "Leigh Teetzel, Tyson Pink",
+    "publisher": "Rock Paper Cynic"
+  }
+}

@@ -1,0 +1,242 @@
+{
+  "deck": "Story Engine Horror Expansion - Written In Ash & Bone",
+  "cardTypes": {
+    "agent": {
+      "name": "Agent",
+      "description": "Horror-themed characters who make choices in the story",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["A DETECTIVE", "A GHOST HUNTER", "A DEBUNKER", "A NUISANCE"]
+        },
+        {
+          "cues": ["A PRIEST", "A MINERALIST", "A VAMPIRE", "AN EXORCIST"]
+        },
+        {
+          "cues": ["A CANNIBAL", "AN OCCULTIST", "A BUTCHER", "A BANSHEE"]
+        },
+        {
+          "cues": ["A BETROTHED", "A CLONE", "A SPIRIT", "A BANSHEE"]
+        },
+        {
+          "cues": ["A CHILD", "A HILLBILLY", "A MURDERER", "A CAMP LEADER"]
+        },
+        {
+          "cues": ["A GRAVEDIGGER", "A MORTICIAN", "A ZOMBIE", "A GROUNDSKEEPER"]
+        },
+        {
+          "cues": ["A CULT LEADER", "A POLTERGEIST", "A REVENANT", "A PLAGUE VICTIM"]
+        },
+        {
+          "cues": ["A MEDIUM", "AN INNOCENT", "A POSSESSED PERSON", "A HOOKER"]
+        },
+        {
+          "cues": ["A FANATIC", "A STOWAWAY", "AN ESCAPEE", "A CONTORTIONIST"]
+        },
+        {
+          "cues": ["A SERIAL KILLER", "A WORSHIPPER", "A SADIST", "AN ASSAILANT"]
+        },
+        {
+          "cues": ["A CLOWN", "A SHRIEK", "A CARNIVAL WORKER", "A BOGEYMAN"]
+        },
+        {
+          "cues": ["A FIRST RESPONDER", "AN ARSONIST", "A LAB ASSISTANT", "A PRO VIGILANT"]
+        }
+      ]
+    },
+    "engine": {
+      "name": "Engine",
+      "description": "Horror-themed motivations and relationships that drive the story",
+      "cueCount": 2,
+      "cards": [
+        {
+          "cues": ["WANTS TO SET AN ELABORATE TRAP FOR/WITH", "WANTS TO INFLICT PAIN ON/WITH/IN"]
+        },
+        {
+          "cues": ["WANTS TO SETTLE AN OLD SCORE WITH", "WANTS TO CATCH A SERIAL KILLER WHOSE CALLING CARD IS"]
+        },
+        {
+          "cues": ["WANTS TO DESTROY A MONSTER WHOSE ONLY WEAKNESS IS", "WANTS TO SURVIVE"]
+        },
+        {
+          "cues": ["WANTS TO UNCOVER THE HORRIFYING SECRET OF", "WANTS TO SACRIFICE"]
+        },
+        {
+          "cues": ["WANTS TO SOLVE A MURDER AND THEIR ONLY LEAD IS", "WANTS TO ELABORATE TRAP FOR/WITH (OR IMPLICATE A RIVAL USING)"]
+        },
+        {
+          "cues": ["WANTS TO TRIGGER A MEMORY INVOLVING", "WANTS TO START A CULT BASED ON"]
+        },
+        {
+          "cues": ["WANTS TO ESCAPE A TRAUMA THROUGH/INVOLVING", "WANTS TO UNDERSTAND THEIR TERRIBLE VISIONS OF"]
+        },
+        {
+          "cues": ["WANTS TO IMPRISON A DEMON INSIDE", "WANTS TO UPHOLD A FAMILY LEGACY INVOLVING"]
+        },
+        {
+          "cues": ["WANTS TO COMMIT MURDER ON/WITH/IN", "WANTS TO DRIVE A DEMON OUT OF"]
+        },
+        {
+          "cues": ["WANTS TO OVERCOME A FEAR OF", "WANTS TO ESCAPE THE MADNESS OF"]
+        },
+        {
+          "cues": ["WANTS TO EXPOSE THE EVIL OF", "WANTS TO ESCAPE THEIR VISION OF BEING KILLED BY/IN"]
+        },
+        {
+          "cues": ["WANTS TO COVER UP THE HORRIFYING SECRET OF", "WANTS TO FRAME (OR IMPLICATE A RIVAL USING)"]
+        }
+      ]
+    },
+    "anchor": {
+      "name": "Anchor",
+      "description": "Horror-themed objects, locations, or events of importance",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["A CHAPEL", "A GRAVEYARD", "A COFFIN", "A HYMN"]
+        },
+        {
+          "cues": ["A DOLL", "A ROCKING CHAIR", "A VESSEL", "A NURSERY"]
+        },
+        {
+          "cues": ["A SHOTGUN", "A HUNT", "A ROUND OF AMMUNITION", "A BACKWOOD"]
+        },
+        {
+          "cues": ["A CABIN", "AN ABATTOIR", "A KNIFE", "A TROPHY"]
+        },
+        {
+          "cues": ["A WELL", "A SEANCE", "A HIDING PLACE", "A FLASHLIGHT"]
+        },
+        {
+          "cues": ["A CARNIVAL", "A FUNHOUSE", "A MUSIC BOX", "A MIRROR"]
+        },
+        {
+          "cues": ["A MANSION", "A KEYHOLE", "A PAINTING", "A HAUNTING"]
+        },
+        {
+          "cues": ["A HARVEST", "A BARN", "A DISEASE", "A SCYTHE"]
+        },
+        {
+          "cues": ["A SKELETON", "A CEMETERY", "A BITE", "AN ANTIBIOTIC"]
+        },
+        {
+          "cues": ["A WHEELCHAIR", "A HORRIBLE CHAMBER", "AN ASYLUM", "A SCALPEL"]
+        },
+        {
+          "cues": ["A DISGUISE", "A HAUNTED HOUSE", "A TOY", "AN INFECTION"]
+        },
+        {
+          "cues": ["A FIELD", "A CAMPSITE", "A CORPSE", "A FOG"]
+        }
+      ]
+    },
+    "conflict": {
+      "name": "Conflict",
+      "description": "Horror-themed obstacles, consequences, or dilemmas",
+      "cueCount": 2,
+      "cards": [
+        {
+          "cues": ["BUT THEY MUST FACE THEIR GREATEST FEAR", "BUT THEY WILL DEVELOP A DANGEROUS ADDICTION"]
+        },
+        {
+          "cues": ["BUT SOMEONE THEY COULD HAVE SAVED WILL DIE", "BUT THEIR GREATEST FEAR"]
+        },
+        {
+          "cues": ["BUT A KILLER WILL ESCAPE", "BUT THEIR DARKEST DESIRE WILL BE REVEALED"]
+        },
+        {
+          "cues": ["BUT SOMETHING EVIL WILL BE UNLEASHED ON THE WORLD", "BUT IT WILL MEAN THE MEMORY OF WHAT THEY DID WILL NEVER LOOK AT THEM"]
+        },
+        {
+          "cues": ["BUT IT WILL DRIVE THEM TO THE BRINK OF MADNESS", "BUT THEY WILL HAVE TO INVITE SOMETHING EVIL INSIDE"]
+        },
+        {
+          "cues": ["BUT THEY MUST CONFRONT AN INNER DARKNESS", "BUT THEY MUST RETURN TO THE SITE OF AN OLD TRAUMA"]
+        },
+        {
+          "cues": ["BUT THEY WILL HAVE TO DRAW ON A DARK POWER", "BUT IT WILL LEAD THEIR ENEMY STRAIGHT TO THEM"]
+        },
+        {
+          "cues": ["BUT THEY WILL BE ABLE TO CONFESS THEIR GUILT TO THE LIVING", "BUT IT WILL SHATTER AN OLD TRUCE"]
+        },
+        {
+          "cues": ["BUT A FRIEND WILL DIE AND THEY MUST CHOOSE WHO", "BUT THEY WILL BE BLAMED FOR SOMETHING THEY DID NOT DO"]
+        },
+        {
+          "cues": ["BUT THEY MUST CROSS A LINE THAT THEY SWORE THEY WOULD NEVER CROSS", "BUT A DECISION THEY ARE DEPENDENT"]
+        },
+        {
+          "cues": ["BUT THEY WILL FORGET THEIR ENTIRE LIFE PIECE BY PIECE", "BUT ONLY THE DEAD WILL KNOW OF THEIR SACRIFICE"]
+        },
+        {
+          "cues": ["BUT SHOULD HAVE STAYED DEAD WILL RISE", "BUT THEY WILL RISK DEATH"]
+        }
+      ]
+    },
+    "aspect": {
+      "name": "Aspect",
+      "description": "Horror-themed adjectives that describe other cards",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["VIOLENT", "CREEPY", "HIDDEN", "SEEDY"]
+        },
+        {
+          "cues": ["HEXED", "SAVAGE", "BURIED", "IMMORTAL"]
+        },
+        {
+          "cues": ["EVIL-REPELLING", "FERAL", "STRANGE", "DISGUISED"]
+        },
+        {
+          "cues": ["INNOCUOUS", "MADDENING", "IMMORTAL", "SUBMERGED"]
+        },
+        {
+          "cues": ["UNDYING", "SPOOKY", "REMOTE", "INHERITED"]
+        },
+        {
+          "cues": ["NAIVE", "MALEVOLENT", "SEEDY", "HIDDEN"]
+        },
+        {
+          "cues": ["MUTTERING", "UNSETTLING", "PIOUS", "DEMONIC"]
+        },
+        {
+          "cues": ["QUIVERING", "PARANOID", "SUBTERRANEAN", "TELEPATHIC"]
+        },
+        {
+          "cues": ["QUIET", "BLOODTHIRSTY", "PREDATORY", "HUNGRY"]
+        },
+        {
+          "cues": ["DOUBTFUL", "SINKING", "DEMONIC", "EERFUL"]
+        },
+        {
+          "cues": ["NIGHTMARISH", "TELEPATHIC", "SUBTERRANEAN", "VISION-INDUCING"]
+        },
+        {
+          "cues": ["DUSTY", "TEMPERAMENTAL", "UNEXPLORED", "PREMONITORY"]
+        }
+      ]
+    }
+  },
+  "usage": {
+    "description": "A 60-card horror expansion with genre-focused cards across all 5 card types. Contains cues that may be disturbing - use care, communication, and check-ins especially for collaboration or publication.",
+    "integration": [
+      "Use only expansion cards - Provides genre-focused prompts, but you will cycle through the same cards more often",
+      "Mix expansion cards into the main deck - The main deck works with all genres, so the added cards will increase the genre focus",
+      "Freely mix multiple expansions and boosters - Blending genres is a rewarding (and challenging) way to create prompts"
+    ],
+    "notes": [
+      "You may wish to temporarily remove cards from the main deck to increase the proportion of expansion cards and create more genre-focused prompts",
+      "This expansion contains cues that may be disturbing. We recommend using care, communication, and check-ins when using the deck, especially for collaboration or publication. Horror elements can be powerful and painful triggers for many people."
+    ]
+  },
+  "credits": {
+    "design": "Peter Chiykowski",
+    "production": "Miroki Tong, Zach Schuster",
+    "sensitivity_review": "A. Z. Louise, Sonya Ballantyne, Yasmine Fahmy",
+    "curriculum_review": "Kendra Harrison",
+    "proofreading": "Leigh Teetzel, Tyson Pink",
+    "box_images": "Bill Austin",
+    "agent_images": "Ahmad Ossayli, Andrew Gaines, Annie Spratt, Armando Ascorve Morales, Craig Whitehead, Javier Penas, Larm Rmah, Mahdi Rezaei, Matthew Henry, Piotr Wilk, Rob Potter, Robert Zunikoff",
+    "anchor_images": "Aimee Vogelsang, Antony Xia, Daniel Jensen, Doug Maloney, Edilson Borges, Eric Muhr, Logan Smith, Matthew Henry, Samuel Zeller, Valentine Lacoste, William Isted, Yuriy Garnaev"
+  }
+}
