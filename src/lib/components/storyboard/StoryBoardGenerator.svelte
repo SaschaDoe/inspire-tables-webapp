@@ -579,12 +579,69 @@
 				</section>
 
 				<section class="help-section">
+					<h3>Creating Adventures</h3>
+					<p>Build complex adventures by combining multiple cards in patterns:</p>
+
+					<div class="adventure-patterns">
+						<div class="adventure-pattern">
+							<h4>🔄 Circle of Fate</h4>
+							<p class="pattern-desc">Two characters with reciprocal motivations:</p>
+							<ul class="pattern-cards">
+								<li>2 Agents</li>
+								<li>2 Engines (one pointing each direction)</li>
+								<li>2 Conflicts (paired with Engines)</li>
+							</ul>
+							<div class="pattern-mini-example">
+								<strong>Example:</strong> "A caretaker wants to protect an automaton but the wrong people are asking questions. The automaton wants to find its creator but it was awakened under false pretenses."
+							</div>
+						</div>
+
+						<div class="adventure-pattern">
+							<h4>⚔️ Clash of Wills</h4>
+							<p class="pattern-desc">Two characters competing for the same thing:</p>
+							<ul class="pattern-cards">
+								<li>2 Agents</li>
+								<li>1 Anchor (center - what they both want)</li>
+								<li>2 Engines + 2 Conflicts</li>
+							</ul>
+							<div class="pattern-mini-example">
+								<strong>Example:</strong> "A scholar wants to protect an ancient artifact but it's forbidden. A merchant wants to steal the same artifact but they're being hunted."
+							</div>
+						</div>
+
+						<div class="adventure-pattern">
+							<h4>💔 Soul Divided</h4>
+							<p class="pattern-desc">One character torn between two desires:</p>
+							<ul class="pattern-cards">
+								<li>1 Agent (center)</li>
+								<li>2 Anchors (different goals)</li>
+								<li>2 Engines + 2 Conflicts</li>
+							</ul>
+							<div class="pattern-mini-example">
+								<strong>Example:</strong> A detective torn between saving their partner (one Anchor) and solving the case (another Anchor).
+							</div>
+						</div>
+					</div>
+
+					<div class="worldbuilding-tips">
+						<h4>For Worldbuilding & Adventure Design:</h4>
+						<ul>
+							<li><strong>Generate NPCs:</strong> Create multiple Agents with Engines for quick character concepts</li>
+							<li><strong>Adventure Hooks:</strong> Use Conflicts to design story hooks and obstacles</li>
+							<li><strong>Locations:</strong> Combine Anchors with Aspects to create interesting places</li>
+							<li><strong>Factions:</strong> Create multiple Agents with shared Engines</li>
+							<li><strong>Create Webs:</strong> Connect 3+ characters with interlocking motivations</li>
+						</ul>
+					</div>
+				</section>
+
+				<section class="help-section">
 					<h3>Tips</h3>
 					<ul class="tips-list">
 						<li>💡 Don't overthink - the first interpretation that comes to mind is usually good</li>
 						<li>🔄 Rotate cards freely to find cues that spark ideas</li>
 						<li>✂️ Not every cue needs to fit perfectly - ignore what doesn't work</li>
-						<li>🎭 Create complex stories by placing multiple Agents with different Engines</li>
+						<li>🎭 Place related cards near each other to show relationships</li>
 						<li>🔗 Put Engine and Conflict cards near each other to read as "wants to [ENGINE] but [CONFLICT]"</li>
 					</ul>
 				</section>
@@ -1399,5 +1456,109 @@
 
 	.tips-list li:last-child {
 		margin-bottom: 0;
+	}
+
+	/* Adventure Patterns Styles */
+	.adventure-patterns {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		margin-top: 1rem;
+	}
+
+	.adventure-pattern {
+		background: rgba(30, 58, 138, 0.2);
+		border: 1.5px solid rgba(59, 130, 246, 0.3);
+		border-radius: 0.75rem;
+		padding: 1.25rem;
+	}
+
+	.adventure-pattern h4 {
+		font-size: 1.125rem;
+		font-weight: 700;
+		color: rgb(147, 197, 253);
+		margin: 0 0 0.75rem 0;
+	}
+
+	.pattern-desc {
+		color: rgb(203, 213, 225);
+		font-size: 0.875rem;
+		margin: 0 0 0.75rem 0;
+		font-weight: 600;
+	}
+
+	.pattern-cards {
+		list-style: none;
+		padding: 0;
+		margin: 0 0 1rem 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.375rem;
+	}
+
+	.pattern-cards li {
+		color: rgb(203, 213, 225);
+		font-size: 0.8125rem;
+		padding: 0.375rem 0.75rem;
+		background: rgba(59, 130, 246, 0.1);
+		border-left: 3px solid rgba(59, 130, 246, 0.5);
+		border-radius: 0.25rem;
+	}
+
+	.pattern-mini-example {
+		background: rgba(34, 197, 94, 0.1);
+		border-left: 3px solid rgb(34, 197, 94);
+		border-radius: 0.375rem;
+		padding: 0.875rem;
+		font-size: 0.8125rem;
+		color: rgb(203, 213, 225);
+		font-style: italic;
+		line-height: 1.5;
+	}
+
+	.pattern-mini-example strong {
+		color: rgb(134, 239, 172);
+		font-style: normal;
+		display: block;
+		margin-bottom: 0.375rem;
+	}
+
+	.worldbuilding-tips {
+		margin-top: 1.5rem;
+		padding: 1.25rem;
+		background: rgba(168, 85, 247, 0.1);
+		border: 1.5px solid rgba(168, 85, 247, 0.3);
+		border-radius: 0.75rem;
+	}
+
+	.worldbuilding-tips h4 {
+		font-size: 1rem;
+		font-weight: 700;
+		color: rgb(216, 180, 254);
+		margin: 0 0 0.875rem 0;
+	}
+
+	.worldbuilding-tips ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.625rem;
+	}
+
+	.worldbuilding-tips li {
+		color: rgb(203, 213, 225);
+		font-size: 0.875rem;
+		padding: 0.5rem 0.75rem;
+		background: rgba(168, 85, 247, 0.1);
+		border-left: 3px solid rgba(168, 85, 247, 0.4);
+		border-radius: 0.25rem;
+		line-height: 1.5;
+	}
+
+	.worldbuilding-tips strong {
+		color: rgb(216, 180, 254);
+		font-weight: 700;
 	}
 </style>
