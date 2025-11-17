@@ -46,6 +46,7 @@
 	let selectedStoryEngineType = $state<StoryEngineCardType | 'story-seed' | null>(null);
 	let generatedStoryEngineCard = $state<StoryEngineCard | null>(null);
 	let generatedStorySeed = $state<StoryEngineCard[] | null>(null);
+	let showStoryEngineHelp = $state(false);
 
 	// Load tables when category changes
 	$effect(() => {
@@ -283,6 +284,13 @@
 					</div>
 				{:else}
 					<!-- Story Engine card type selector -->
+					<div class="story-engine-header">
+						<h3 class="story-engine-title">Select Card Type</h3>
+						<button class="help-btn" onclick={() => (showStoryEngineHelp = true)} title="How to use Story Engine">
+							<span class="help-icon">?</span>
+							<span class="help-text">Help</span>
+						</button>
+					</div>
 					<div class="story-engine-types">
 						{#each Object.values(STORY_ENGINE_CARD_TYPES) as typeInfo}
 							<button
@@ -449,6 +457,137 @@
 						</p>
 					</div>
 				{/if}
+			</div>
+		</div>
+	</div>
+{/if}
+
+<!-- Story Engine Help Modal -->
+{#if showStoryEngineHelp}
+	<div class="modal-overlay" onclick={() => (showStoryEngineHelp = false)} role="presentation">
+		<div class="help-modal" onclick={(e) => e.stopPropagation()} role="dialog">
+			<div class="help-header">
+				<h2 class="help-title">📖 Story Engine Guide</h2>
+				<button class="close-btn" onclick={() => (showStoryEngineHelp = false)}>×</button>
+			</div>
+
+			<div class="help-content">
+				<section class="help-section">
+					<h3>What is Story Engine?</h3>
+					<p>Story Engine is a storytelling card system that helps you create characters, conflicts, and complete story prompts through visual card arrangements. Combine five card types to generate everything from simple character concepts to complex multi-character narratives.</p>
+				</section>
+
+				<section class="help-section">
+					<h3>Card Types</h3>
+					<div class="card-types-grid">
+						<div class="card-type-help">
+							<span class="type-help-icon">🟠</span>
+							<div class="type-help-info">
+								<strong>Agent</strong>
+								<p>Characters who make choices. People, creatures, or entities.</p>
+								<em>Examples: Caretaker, Detective, Scholar</em>
+							</div>
+						</div>
+						<div class="card-type-help">
+							<span class="type-help-icon">🟣</span>
+							<div class="type-help-info">
+								<strong>Engine</strong>
+								<p>What characters want or how they relate to others.</p>
+								<em>Examples: "wants to protect", "is hunting"</em>
+							</div>
+						</div>
+						<div class="card-type-help">
+							<span class="type-help-icon">🔵</span>
+							<div class="type-help-info">
+								<strong>Anchor</strong>
+								<p>Objects, places, or events that ground the story.</p>
+								<em>Examples: Ship, Tower, Artifact, Storm</em>
+							</div>
+						</div>
+						<div class="card-type-help">
+							<span class="type-help-icon">🔴</span>
+							<div class="type-help-info">
+								<strong>Conflict</strong>
+								<p>Problems, consequences, or dilemmas.</p>
+								<em>Examples: "time is running out", "it's forbidden"</em>
+							</div>
+						</div>
+						<div class="card-type-help">
+							<span class="type-help-icon">🟢</span>
+							<div class="type-help-info">
+								<strong>Aspect</strong>
+								<p>Adjectives that modify other cards.</p>
+								<em>Examples: Ancient, Haunted, Forgotten</em>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section class="help-section">
+					<h3>How to Use</h3>
+					<div class="usage-steps">
+						<div class="usage-step">
+							<span class="step-number">1</span>
+							<div class="step-content">
+								<strong>Generate Cards</strong>
+								<p>Choose a card type and click "Draw Card", or generate a complete "Story Seed" (5 cards).</p>
+							</div>
+						</div>
+						<div class="usage-step">
+							<span class="step-number">2</span>
+							<div class="step-content">
+								<strong>Add to Storyboard</strong>
+								<p>Click "Add to Storyboard" to place cards on your canvas.</p>
+							</div>
+						</div>
+						<div class="usage-step">
+							<span class="step-number">3</span>
+							<div class="step-content">
+								<strong>Rotate Cues</strong>
+								<p>Each card has multiple cues. Use the ◄ ► buttons to rotate through different options.</p>
+							</div>
+						</div>
+						<div class="usage-step">
+							<span class="step-number">4</span>
+							<div class="step-content">
+								<strong>Arrange & Connect</strong>
+								<p>Drag cards to arrange them. Place related cards near each other to form relationships and story patterns.</p>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section class="help-section">
+					<h3>Story Seed Pattern</h3>
+					<p>The simplest complete story prompt uses 5 cards:</p>
+					<div class="pattern-example">
+						<div class="pattern-formula">
+							<span class="pattern-part">🟠 Agent</span>
+							<span class="pattern-plus">+</span>
+							<span class="pattern-part">🟣 Engine</span>
+							<span class="pattern-plus">+</span>
+							<span class="pattern-part">🔵 Anchor</span>
+							<span class="pattern-plus">+</span>
+							<span class="pattern-part">🔴 Conflict</span>
+							<span class="pattern-plus">+</span>
+							<span class="pattern-part">🟢 Aspect</span>
+						</div>
+						<div class="pattern-result">
+							<strong>Example:</strong> "A detective wants to find a haunted ship but time is running out."
+						</div>
+					</div>
+				</section>
+
+				<section class="help-section">
+					<h3>Tips</h3>
+					<ul class="tips-list">
+						<li>💡 Don't overthink - the first interpretation that comes to mind is usually good</li>
+						<li>🔄 Rotate cards freely to find cues that spark ideas</li>
+						<li>✂️ Not every cue needs to fit perfectly - ignore what doesn't work</li>
+						<li>🎭 Create complex stories by placing multiple Agents with different Engines</li>
+						<li>🔗 Put Engine and Conflict cards near each other to read as "wants to [ENGINE] but [CONFLICT]"</li>
+					</ul>
+				</section>
 			</div>
 		</div>
 	</div>
@@ -987,5 +1126,278 @@
 	.add-seed-btn:hover {
 		transform: translateY(-2px);
 		box-shadow: 0 4px 12px rgb(34 197 94 / 0.4);
+	}
+
+	/* Story Engine Help Styles */
+	.story-engine-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0.75rem 1rem;
+		margin-bottom: 0.5rem;
+		background: rgb(30 27 75 / 0.3);
+		border-radius: 0.5rem;
+	}
+
+	.story-engine-title {
+		font-size: 1rem;
+		font-weight: 700;
+		color: white;
+		margin: 0;
+	}
+
+	.help-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: rgba(59, 130, 246, 0.2);
+		border: 1.5px solid rgba(59, 130, 246, 0.4);
+		border-radius: 0.5rem;
+		color: rgb(147, 197, 253);
+		font-size: 0.875rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.help-btn:hover {
+		background: rgba(59, 130, 246, 0.3);
+		border-color: rgba(59, 130, 246, 0.6);
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+	}
+
+	.help-icon {
+		font-size: 1.125rem;
+		font-weight: 900;
+		line-height: 1;
+	}
+
+	.help-text {
+		font-weight: 600;
+	}
+
+	.help-modal {
+		background: rgb(15 23 42);
+		border: 2px solid rgb(59 130 246);
+		border-radius: 1rem;
+		max-width: 700px;
+		max-height: 85vh;
+		width: 100%;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+		animation: slideIn 0.3s ease-out;
+	}
+
+	@keyframes slideIn {
+		from {
+			opacity: 0;
+			transform: translateY(-20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.help-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1.5rem 2rem;
+		background: linear-gradient(135deg, rgb(30 58 138), rgb(29 78 216));
+		border-bottom: 2px solid rgb(59 130 246);
+	}
+
+	.help-title {
+		font-size: 1.5rem;
+		font-weight: 800;
+		color: white;
+		margin: 0;
+	}
+
+	.help-content {
+		padding: 2rem;
+		overflow-y: auto;
+		flex: 1;
+	}
+
+	.help-section {
+		margin-bottom: 2rem;
+	}
+
+	.help-section:last-child {
+		margin-bottom: 0;
+	}
+
+	.help-section h3 {
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: rgb(147, 197, 253);
+		margin: 0 0 1rem 0;
+		padding-bottom: 0.5rem;
+		border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+	}
+
+	.help-section p {
+		color: rgb(203, 213, 225);
+		line-height: 1.6;
+		margin: 0 0 1rem 0;
+	}
+
+	.card-types-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.card-type-help {
+		display: flex;
+		gap: 1rem;
+		padding: 1rem;
+		background: rgba(30, 58, 138, 0.2);
+		border: 1.5px solid rgba(59, 130, 246, 0.3);
+		border-radius: 0.5rem;
+		transition: all 0.2s;
+	}
+
+	.card-type-help:hover {
+		background: rgba(30, 58, 138, 0.3);
+		border-color: rgba(59, 130, 246, 0.5);
+	}
+
+	.type-help-icon {
+		font-size: 2rem;
+		flex-shrink: 0;
+	}
+
+	.type-help-info {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.type-help-info strong {
+		color: white;
+		font-size: 1rem;
+		font-weight: 700;
+	}
+
+	.type-help-info p {
+		color: rgb(203, 213, 225);
+		font-size: 0.875rem;
+		margin: 0;
+	}
+
+	.type-help-info em {
+		color: rgb(148, 163, 184);
+		font-size: 0.8125rem;
+		font-style: normal;
+	}
+
+	.usage-steps {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.usage-step {
+		display: flex;
+		gap: 1rem;
+		align-items: flex-start;
+	}
+
+	.step-number {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2rem;
+		height: 2rem;
+		background: linear-gradient(135deg, rgb(59, 130, 246), rgb(37, 99, 235));
+		border-radius: 50%;
+		color: white;
+		font-weight: 800;
+		font-size: 1rem;
+		flex-shrink: 0;
+	}
+
+	.step-content {
+		flex: 1;
+	}
+
+	.step-content strong {
+		display: block;
+		color: white;
+		font-size: 1rem;
+		margin-bottom: 0.25rem;
+	}
+
+	.step-content p {
+		color: rgb(203, 213, 225);
+		font-size: 0.875rem;
+		margin: 0;
+	}
+
+	.pattern-example {
+		background: rgba(30, 58, 138, 0.2);
+		border: 1.5px solid rgba(59, 130, 246, 0.3);
+		border-radius: 0.75rem;
+		padding: 1.5rem;
+		margin-top: 1rem;
+	}
+
+	.pattern-formula {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem;
+		margin-bottom: 1rem;
+	}
+
+	.pattern-part {
+		padding: 0.5rem 1rem;
+		background: rgba(59, 130, 246, 0.2);
+		border: 1px solid rgba(59, 130, 246, 0.3);
+		border-radius: 0.5rem;
+		color: white;
+		font-size: 0.875rem;
+		font-weight: 600;
+	}
+
+	.pattern-plus {
+		color: rgb(148, 163, 184);
+		font-weight: 700;
+	}
+
+	.pattern-result {
+		padding: 1rem;
+		background: rgba(34, 197, 94, 0.1);
+		border-left: 3px solid rgb(34, 197, 94);
+		border-radius: 0.375rem;
+	}
+
+	.pattern-result strong {
+		display: block;
+		color: rgb(134, 239, 172);
+		font-size: 0.875rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.tips-list {
+		margin: 0;
+		padding-left: 1.5rem;
+		color: rgb(203, 213, 225);
+	}
+
+	.tips-list li {
+		margin-bottom: 0.75rem;
+		line-height: 1.5;
+	}
+
+	.tips-list li:last-child {
+		margin-bottom: 0;
 	}
 </style>
