@@ -20,5 +20,5 @@
 			<circle cx={gridSize / 2} cy={gridSize / 2} r="1" fill="rgb(168 85 247 / 0.2)" />
 		</pattern>
 	</defs>
-	<rect x="-5000" y="-5000" width="10000" height="10000" fill="url(#grid-pattern)" />
+	<rect x="-10000" y="-10000" width="20000" height="20000" fill="url(#grid-pattern)" />
 {/if}

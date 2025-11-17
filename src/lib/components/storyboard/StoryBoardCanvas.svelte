@@ -200,6 +200,9 @@
 		class="canvas-svg"
 		style="transform: translate({$activeBoard?.viewport.x || 0}px, {$activeBoard?.viewport.y || 0}px) scale({$activeBoard?.viewport.zoom || 1})"
 	>
+		<!-- Large background rect to prevent seeing "empty" canvas -->
+		<rect x="-10000" y="-10000" width="20000" height="20000" fill="rgb(15 23 42)" opacity="0.5" />
+
 		<StoryBoardGrid showGrid={$activeBoard?.settings.showGrid} gridSize={$activeBoard?.settings.gridSize} />
 
 		<!-- Drawing layer -->
