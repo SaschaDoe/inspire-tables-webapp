@@ -194,8 +194,6 @@
 		const finalX = startX + xOffset;
 		const finalY = viewportCenterY - 200;
 
-		console.log(`Card ${offsetMultiplier} (${card.type}): viewport center=(${viewportCenterX.toFixed(0)}, ${viewportCenterY.toFixed(0)}), position=(${finalX.toFixed(0)}, ${finalY.toFixed(0)}), startX=${startX.toFixed(0)}`);
-
 		const nodeData = {
 			x: finalX,
 			y: finalY,
@@ -214,15 +212,11 @@
 			}
 		};
 
-		console.log('Adding Story Engine card:', nodeData);
-
 		storyboardStore.addNode(
 			$activeBoard.id,
 			nodeData,
 			`Generate: Story Engine ${typeInfo.name}`
 		);
-
-		console.log('Card added. Total nodes:', $activeBoard.nodes.length);
 	}
 
 	// Handle escape to close
