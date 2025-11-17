@@ -129,6 +129,76 @@ function parseCardsFromBoosterSet(boosterSetData: any, deck: StoryEngineDeck) {
 }
 
 /**
+ * Parse cards from an expansion set structure (like starter set)
+ */
+function parseCardsFromExpansionSet(expansionSetData: any, deck: StoryEngineDeck) {
+	// Expansion sets have an "expansions" object with multiple expansions inside
+	if (expansionSetData.expansions) {
+		for (const [expansionKey, expansionData] of Object.entries(expansionSetData.expansions)) {
+			const expansion = expansionData as any;
+			const expansionName = expansion.theme || expansionKey;
+
+			if (expansion.cards) {
+				// Parse agents
+				if (expansion.cards.agents?.cards) {
+					deck.cards.agents.push(
+						...expansion.cards.agents.cards.map((card: any) => ({
+							type: 'agent' as StoryEngineCardType,
+							cues: card.cues,
+							expansion: expansionName
+						}))
+					);
+				}
+
+				// Parse engines - note: engines may have "cue" (singular) instead of "cues"
+				if (expansion.cards.engines?.cards) {
+					deck.cards.engines.push(
+						...expansion.cards.engines.cards.map((card: any) => ({
+							type: 'engine' as StoryEngineCardType,
+							cues: card.cues || (card.cue ? [card.cue] : []),
+							expansion: expansionName
+						}))
+					);
+				}
+
+				// Parse anchors
+				if (expansion.cards.anchors?.cards) {
+					deck.cards.anchors.push(
+						...expansion.cards.anchors.cards.map((card: any) => ({
+							type: 'anchor' as StoryEngineCardType,
+							cues: card.cues,
+							expansion: expansionName
+						}))
+					);
+				}
+
+				// Parse conflicts - note: conflicts may have "cue" (singular) instead of "cues"
+				if (expansion.cards.conflicts?.cards) {
+					deck.cards.conflicts.push(
+						...expansion.cards.conflicts.cards.map((card: any) => ({
+							type: 'conflict' as StoryEngineCardType,
+							cues: card.cues || (card.cue ? [card.cue] : []),
+							expansion: expansionName
+						}))
+					);
+				}
+
+				// Parse aspects
+				if (expansion.cards.aspects?.cards) {
+					deck.cards.aspects.push(
+						...expansion.cards.aspects.cards.map((card: any) => ({
+							type: 'aspect' as StoryEngineCardType,
+							cues: card.cues || (card.cue ? [card.cue] : []),
+							expansion: expansionName
+						}))
+					);
+				}
+			}
+		}
+	}
+}
+
+/**
  * Load all Story Engine cards (main deck + all expansions + all boosters)
  */
 export async function loadStoryEngineMainDeck(): Promise<StoryEngineDeck> {
@@ -177,10 +247,11 @@ export async function loadStoryEngineMainDeck(): Promise<StoryEngineDeck> {
 		);
 		parseCardsFromDeck(uniqueItemsExpansion, 'unique-items', deck);
 
-		const starterExpansion = await import(
+		// Load starter expansion set (contains 3 expansions: Fantasy, Horror, Sci-Fi)
+		const starterExpansionSet = await import(
 			'./story-engine/story-engine-starter-expansion-set.json'
 		);
-		parseCardsFromDeck(starterExpansion, 'starter', deck);
+		parseCardsFromExpansionSet(starterExpansionSet, deck);
 
 		// Load booster sets
 		const dreamerBoosterSet = await import('./story-engine/story-engine-dreamer-booster-set.json');
