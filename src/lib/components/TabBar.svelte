@@ -5,6 +5,10 @@
 	let tabs = $derived($tabStore.tabs);
 	let activeTabId = $derived($tabStore.activeTabId);
 
+	let tabsContainer: HTMLDivElement;
+	let canScrollLeft = $state(false);
+	let canScrollRight = $state(false);
+
 	function handleTabClick(tabId: string) {
 		tabStore.setActiveTab(tabId);
 	}
@@ -25,6 +29,45 @@
 			tabStore.closeAllTabs();
 		}
 	}
+
+	function updateScrollButtons() {
+		if (!tabsContainer) return;
+
+		const { scrollLeft, scrollWidth, clientWidth } = tabsContainer;
+		canScrollLeft = scrollLeft > 0;
+		canScrollRight = scrollLeft + clientWidth < scrollWidth - 1;
+	}
+
+	function scrollLeft() {
+		if (!tabsContainer) return;
+		tabsContainer.scrollBy({ left: -200, behavior: 'smooth' });
+	}
+
+	function scrollRight() {
+		if (!tabsContainer) return;
+		tabsContainer.scrollBy({ left: 200, behavior: 'smooth' });
+	}
+
+	$effect(() => {
+		if (tabsContainer) {
+			updateScrollButtons();
+			tabsContainer.addEventListener('scroll', updateScrollButtons);
+			window.addEventListener('resize', updateScrollButtons);
+
+			return () => {
+				tabsContainer.removeEventListener('scroll', updateScrollButtons);
+				window.removeEventListener('resize', updateScrollButtons);
+			};
+		}
+	});
+
+	// Update scroll buttons when tabs change
+	$effect(() => {
+		tabs; // Watch tabs array
+		if (tabsContainer) {
+			setTimeout(updateScrollButtons, 0);
+		}
+	});
 
 	function getEntityIcon(entityType: string): string {
 		const icons: Record<string, string> = {
@@ -98,7 +141,13 @@
 </script>
 
 <div class="tab-bar">
-	<div class="tabs-container">
+	{#if canScrollLeft}
+		<button class="scroll-btn scroll-left" onclick={scrollLeft} title="Scroll left">
+			<span>‹‹</span>
+		</button>
+	{/if}
+
+	<div class="tabs-container" bind:this={tabsContainer}>
 		{#each tabs as tab (tab.id)}
 			<div
 				class="tab {activeTabId === tab.id ? 'active' : ''} {tab.isPinned ? 'pinned' : ''}"
@@ -135,6 +184,12 @@
 		{/each}
 	</div>
 
+	{#if canScrollRight}
+		<button class="scroll-btn scroll-right" onclick={scrollRight} title="Scroll right">
+			<span>››</span>
+		</button>
+	{/if}
+
 	<button class="close-all-btn" onclick={handleCloseAllTabs} title="Close all tabs (except pinned)">
 		<span>⊗</span>
 	</button>
@@ -150,15 +205,47 @@
 		align-items: center;
 		background: linear-gradient(to bottom, rgb(30 27 75 / 0.9), rgb(24 21 66 / 0.9));
 		border-bottom: 1px solid rgb(168 85 247 / 0.2);
-		overflow-x: auto;
-		scrollbar-width: thin;
-		scrollbar-color: rgb(168 85 247 / 0.3) transparent;
+		overflow: hidden;
 	}
 
 	.tabs-container {
 		display: flex;
 		flex: 1;
 		min-width: 0;
+		overflow-x: auto;
+		scrollbar-width: none; /* Hide scrollbar for Firefox */
+		-ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+	}
+
+	.tabs-container::-webkit-scrollbar {
+		display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+	}
+
+	.scroll-btn {
+		padding: 0.75rem 0.5rem;
+		background: rgb(168 85 247 / 0.1);
+		border: none;
+		color: rgb(216 180 254);
+		font-size: 1rem;
+		font-weight: bold;
+		cursor: pointer;
+		transition: all 0.2s;
+		border-right: 1px solid rgb(168 85 247 / 0.1);
+		flex-shrink: 0;
+	}
+
+	.scroll-btn:hover {
+		background: rgb(168 85 247 / 0.2);
+		color: white;
+	}
+
+	.scroll-left {
+		border-left: none;
+	}
+
+	.scroll-right {
+		border-right: 1px solid rgb(168 85 247 / 0.1);
+		border-left: 1px solid rgb(168 85 247 / 0.1);
 	}
 
 	.tab {
@@ -255,6 +342,7 @@
 		cursor: pointer;
 		transition: all 0.2s;
 		border-left: 1px solid rgb(168 85 247 / 0.1);
+		flex-shrink: 0;
 	}
 
 	.close-all-btn:hover {
@@ -271,6 +359,7 @@
 		cursor: pointer;
 		transition: all 0.2s;
 		border-left: 1px solid rgb(168 85 247 / 0.1);
+		flex-shrink: 0;
 	}
 
 	.new-tab-btn:hover {
