@@ -1,0 +1,670 @@
+{
+  "deck": "Story Engine Main Deck",
+  "cardTypes": {
+    "agent": {
+      "name": "Agent",
+      "description": "Characters who make choices in the story",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["A WRITER", "A DANCER", "A MUSICIAN", "AN ARTIST"]
+        },
+        {
+          "cues": ["A SOLDIER", "A TOURIST", "A DIPLOMAT", "AN EXPLORER"]
+        },
+        {
+          "cues": ["AN ASSASSIN", "AN ENFORCER", "AN ATHLETIC", "NECESSARY"]
+        },
+        {
+          "cues": ["A GHOST", "A RIVAL", "A VIGILANTE", "AN AVENGER"]
+        },
+        {
+          "cues": ["AN ICONOCLAST", "A RADICAL", "A PROTESTER", "A WARMONGER"]
+        },
+        {
+          "cues": ["A POLITICIAN", "A GUIDE", "A BOSS", "A LEADER"]
+        },
+        {
+          "cues": ["A SHAPE-SHIFTER", "A PET", "A HEDONIST", "A BEAST"]
+        },
+        {
+          "cues": ["A COURIER", "A SHAPESHIFTER", "A MASTER CRAFTSPERSON", "A WORKER"]
+        },
+        {
+          "cues": ["A HOLY PERSON", "A HERMIT", "A MESSIAH", "A TEACHER"]
+        },
+        {
+          "cues": ["A BOOKWORM", "AN APPRENTICE", "AN AMATEUR", "A STUDENT"]
+        },
+        {
+          "cues": ["A GENIUS", "A TYRANT", "A DEMON", "A MONSTER"]
+        },
+        {
+          "cues": ["A PERFORMER", "AN UNDERCOVER", "A SCARY ARTIST", "AN ACTOR"]
+        },
+        {
+          "cues": ["A PARENT", "A BOUNCER", "AN OFFICER", "A GUARDIAN"]
+        },
+        {
+          "cues": ["A PARDEUL", "A COMEDIAN", "A FRAUD", "A FOOL"]
+        },
+        {
+          "cues": ["A MENTOR", "A MARTYR", "A REBEL", "A HERO"]
+        },
+        {
+          "cues": ["A FOREIGNER", "A PUNK", "AN ALIEN", "AN OUTCAST"]
+        },
+        {
+          "cues": ["A GARDENER", "AN ARCHIMONOLOGIOST", "A CURATOR", "A CARETAKER"]
+        },
+        {
+          "cues": ["A SUPERHUMAN", "A GOD", "A VOYAGER", "AN IDOL"]
+        },
+        {
+          "cues": ["A RETIREE", "AN INVENTOR", "A PAINTER", "A VISIONARY"]
+        },
+        {
+          "cues": ["A BLACK SHEEP", "A WITCH", "A DISSIDENT", "A HERETIC"]
+        },
+        {
+          "cues": ["A RESEARCHER", "A VICTIM", "A COLLECTOR", "A HUNTER"]
+        },
+        {
+          "cues": ["A VICTIM", "A WIDOW", "A VETERAN", "A SURVIVOR"]
+        },
+        {
+          "cues": ["A THERAPIST", "A PEACEKEEPER", "A DOCTOR", "A HEALER"]
+        },
+        {
+          "cues": ["A ROMANTIC PARTNER", "A POOR", "A SECRET ADMIRER", "A COMPANION"]
+        },
+        {
+          "cues": ["A SCOUNDREL", "A MANHUNT", "A TYRANT", "A VILLAIN"]
+        },
+        {
+          "cues": ["AN ACADEMIC", "AN EDITOR", "A VIRTUOSO", "AN EXPERT"]
+        },
+        {
+          "cues": ["A SCIENTIST", "A CONSPIRACY THEORIST", "AN INVESTIGATOR"]
+        },
+        {
+          "cues": ["A PUPPET", "A SERVANT", "A MACHINE", "AN AUTOMATON"]
+        },
+        {
+          "cues": ["A MAGNATE", "AN OBNOXIOUS", "A CELEBRITY", "AN ARISTOCRAT"]
+        },
+        {
+          "cues": ["AN ALCOHOLIC", "A CORRUPT", "A PATIENT", "AN ADDICT"]
+        },
+        {
+          "cues": ["AN ARCHITECT", "AN ARTISAN", "A TAILOR", "A DESIGNER"]
+        },
+        {
+          "cues": ["A PREDATOR", "A TEMPORAL", "A BULLY"]
+        },
+        {
+          "cues": ["A STAND-IN", "AN IMPOSTER", "A DOPPELGANGER", "A TWIN"]
+        },
+        {
+          "cues": ["A LIBRARIAN", "AN ESSENTIALIST", "AN ARCHAEOLOGIST", "AN ARCHIVIST"]
+        },
+        {
+          "cues": ["A DREAMER", "A WANDERER", "A RECLUSE", "AN INTROVERT"]
+        },
+        {
+          "cues": ["AN INVESTOR", "AN ISLAM", "A CRAFTER", "A MERCHANT"]
+        }
+      ]
+    },
+    "engine": {
+      "name": "Engine",
+      "description": "Motivations and relationships that drive the story",
+      "cueCount": 2,
+      "cards": [
+        {
+          "cues": ["WANTS TO UNRAVEL THE MYSTERY OF", "WANTS TO SPREAD A LIE ABOUT"]
+        },
+        {
+          "cues": ["WANTS TO BRING DESPAIR TO/WITH", "WANTS TO LET GO OF"]
+        },
+        {
+          "cues": ["WANTS TO HOLD ON TO", "WANTS TO GO BACK TO"]
+        },
+        {
+          "cues": ["WANTS TO STOP BEING HAUNTED BY", "WANTS TO BURY THE SECRET OF"]
+        },
+        {
+          "cues": ["WANTS TO FIND", "WANTS TO ESCAPE"]
+        },
+        {
+          "cues": ["WANTS TO HIDE AN OBSESSION WITH", "WANTS TO EXPOSE THE SECRET OF"]
+        },
+        {
+          "cues": ["WANTS TO RESTORE A MEMORY OF/WITH", "WANTS TO END A CONFLICT WITH"]
+        },
+        {
+          "cues": ["WANTS TO ERASE A MEMORY OF/WITH", "WANTS TO GET REVENGE WITH/ON"]
+        },
+        {
+          "cues": ["WANTS TO DRAW ATTENTION TO", "WANTS TO CREATE (OR IMPROVE)"]
+        },
+        {
+          "cues": ["WANTS TO FIND A WAY BACK TO", "WANTS TO GAIN THE POWER OF"]
+        },
+        {
+          "cues": ["WANTS TO ACHIEVE A DREAM INVOLVING", "WANTS TO END THE POWER OF"]
+        },
+        {
+          "cues": ["WANTS TO FIND REDEMPTION IN/FOR", "WANTS TO DEFEAT"]
+        },
+        {
+          "cues": ["WANTS TO SAVE A LIFE", "WANTS TO SAVE THE WORLD WITH/FROM"]
+        },
+        {
+          "cues": ["WANTS TO DESTROY THE WORLD WITH", "SOMEONE'S DREAM WITH/FOR"]
+        },
+        {
+          "cues": ["WANTS TO WIN (OR WIN) OVER", "WANTS TO GET RID OF"]
+        },
+        {
+          "cues": ["WANTS TO WIN A BET WITH/FOR", "WANTS TO END AN OBLIGATION TO"]
+        },
+        {
+          "cues": ["WANTS TO ESTABLISH LOYALTY THROUGH/IN", "WANTS TO REGAIN"]
+        },
+        {
+          "cues": ["WANTS TO CONCEAL THE DANGERS OF", "WANTS TO ERASE A HEARTBREAK WITH/OF"]
+        },
+        {
+          "cues": ["WANTS TO REVEAL THE DANGERS OF", "WANTS TO FIND LOVE IN/WITH"]
+        },
+        {
+          "cues": ["WANTS TO HEAL (OR FIX)", "WANTS TO HURT (OR DAMAGE)"]
+        },
+        {
+          "cues": ["WANTS TO CONNECT WITH FAMILY THROUGH", "WANTS TO GAIN FREEDOM WITH/FROM"]
+        },
+        {
+          "cues": ["WANTS TO END A FAMILY OBLIGATION TO", "WANTS TO LIBERATE"]
+        },
+        {
+          "cues": ["VICTORY FROM/WITH", "WANTS TO HELP SOLVE THE PROBLEM OF"]
+        },
+        {
+          "cues": ["WANTS TO STEAL (OR STEAL FROM)", "WANTS TO STOP THE THEFT OF"]
+        },
+        {
+          "cues": ["WANTS TO FINALLY SATISFY AN UNSPOKEN DESIRE FOR", "WANTS TO PROTECT"]
+        },
+        {
+          "cues": ["WANTS TO RISE TO THE CHALLENGE OF", "GOOD IN"]
+        },
+        {
+          "cues": ["WANTS TO ABANDON", "WANTS TO SAVE"]
+        },
+        {
+          "cues": ["WANTS TO BETRAY (OR BETRAY SOMEONE WITH)", "WANTS TO OBTAIN"]
+        },
+        {
+          "cues": ["WANTS TO DELIEVE JUSTICE FOR/WITH", "WANTS TO BE SAVED BY"]
+        },
+        {
+          "cues": ["WANTS TO UPSTAGE A RIVAL WITH", "WANTS TO COMMIT A CRIME WITH/INVOLVING"]
+        },
+        {
+          "cues": ["WANTS TO IMPROVE THE REPUTATION OF", "WANTS TO RESTORE GLORY WITH THE HELP OF"]
+        },
+        {
+          "cues": ["WANTS TO SAVE A LOVED ONE WITH", "WANTS TO FOLLOW A PATH LEADING TO"]
+        },
+        {
+          "cues": ["WANTS TO SHIRK RESPONSIBILITY FOR", "WANTS TO GAIN FORTUNE WITH/FROM"]
+        },
+        {
+          "cues": ["WANTS TO UNMASK THE CONSPIRACY OF", "WANTS TO ENACT A SECRET PLAN FOCUSED ON"]
+        },
+        {
+          "cues": ["WANTS TO CONTROL", "WANTS TO GAIN FAME WITH/FROM"]
+        }
+      ]
+    },
+    "anchor": {
+      "name": "Anchor",
+      "description": "Objects, locations, or events of importance",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["A BASEMENT", "A HOUSE", "A LETTER", "A KEEPSAKE"]
+        },
+        {
+          "cues": ["A CAGE", "A TORKEY", "A PRISON", "A TRAP"]
+        },
+        {
+          "cues": ["A FACTORY", "A POSITION", "A JOB", "A MACHINE"]
+        },
+        {
+          "cues": ["A PORTAL", "AN ADDRESS", "A KEY", "A DOOR"]
+        },
+        {
+          "cues": ["AN INVENTION", "A TECHNIQUE", "A WORKSHOP", "A TOOL"]
+        },
+        {
+          "cues": ["AN ARENA", "A SHIELD", "A BLADE", "A FIGHT"]
+        },
+        {
+          "cues": ["A DISCOVERY", "AN ARTIFACT", "A DUMP", "A RUIN"]
+        },
+        {
+          "cues": ["A MEDICINE", "A DEATH", "A CONTAGION", "A HOSPITAL"]
+        },
+        {
+          "cues": ["AN INSTRUMENT", "A SCHOOL", "A TOOL", "A MASTERPIECE"]
+        },
+        {
+          "cues": ["A WORD", "A RIDDLE", "A LIBRARY", "A BOOK"]
+        },
+        {
+          "cues": ["AN ISLAND", "AN ATLAS", "A WORLD", "AN ARCHIVE"]
+        },
+        {
+          "cues": ["A COURT", "A DECREE", "A NATION", "A FLAG"]
+        },
+        {
+          "cues": ["A MINERAL", "A STATUS", "A POOL", "A CAVE"]
+        },
+        {
+          "cues": ["A TATTOO", "A LOOK", "A FACILITY", "A STAIRCASE"]
+        },
+        {
+          "cues": ["A SUITCASE", "A NOTHING", "A DOCUMENT", "A COACH"]
+        },
+        {
+          "cues": ["A COMPASS", "A STORY", "AN OCEAN", "A SHIP"]
+        },
+        {
+          "cues": ["A PUZZLE", "A FLOWER", "A CHURCH", "A GRAVE"]
+        },
+        {
+          "cues": ["A BED", "A DISASTER", "A CAMP", "A CACHE"]
+        },
+        {
+          "cues": ["A BATTLEFIELD", "A FATHER", "A WAR", "A WEAPON"]
+        },
+        {
+          "cues": ["A FORTUNE", "A TOMB/MONUMENT", "A BANK", "A SAFE"]
+        },
+        {
+          "cues": ["A PARADISE", "AN ORDER", "A PLANT", "A FOREST"]
+        },
+        {
+          "cues": ["A PATH", "A TICKET", "A TRIAL", "A MAP"]
+        },
+        {
+          "cues": ["A BOAT", "AN OBSTRUCTION", "A RESTAURANT", "A VILLAGE"]
+        },
+        {
+          "cues": ["A LIE", "A PANG", "A PAWN SHOP", "A TIMEPIECE"]
+        },
+        {
+          "cues": ["A BATTERY", "A DEVICE", "A CITY", "A TOWER"]
+        },
+        {
+          "cues": ["A DRUG", "A DIVISION", "A FIGURING", "A SHRINE"]
+        },
+        {
+          "cues": ["A SCRIPT", "A SERIES", "A PERFORMANCE", "A COSTUME"]
+        },
+        {
+          "cues": ["A PEN", "A BOMB", "A HIDEOUT", "A PIECE OF EVIDENCE"]
+        },
+        {
+          "cues": ["A CODE", "A RECORD", "A CONVENIENT", "A BASE"]
+        },
+        {
+          "cues": ["A POISON", "AN AMBUSH", "A LOST AND FOUND", "A GAME"]
+        },
+        {
+          "cues": ["A COMPANY", "A LABORATORY", "A PROTOTYPE"]
+        },
+        {
+          "cues": ["A PIECE OF CLOTHING", "AN ARCADE", "A BLUEPRINT", "A CONSTRUCTION SITE"]
+        },
+        {
+          "cues": ["A SACRIFICE", "A PIT", "A FLASK", "A MOUNTAIN"]
+        },
+        {
+          "cues": ["A NAME", "AN OLD MANSION", "A REBELLION", "AN ELECTION"]
+        },
+        {
+          "cues": ["A WORK OF ART", "A CURSE", "A HOTEL", "A PIECE OF FURNITURE"]
+        },
+        {
+          "cues": ["AN EXHIBIT", "AN INSTALLATION", "A NECKLACE", "A MUSEUM"]
+        }
+      ]
+    },
+    "conflict": {
+      "name": "Conflict",
+      "description": "Obstacles, consequences, or dilemmas",
+      "cueCount": 2,
+      "cards": [
+        {
+          "cues": [
+            "BUT THEY WILL HAVE TO BREAK A PERSONAL RULE",
+            "BUT THEIR CLOSEST FRIEND WILL LOSE THEIR"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THEIR COMMUNITY WILL REJECT THEM",
+            "BUT THEY WILL HAVE TO ABANDON AN IMPORTANT DUTY"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THEY WILL HAVE TO BREAK A RELIGIOUS RULE",
+            "BREAK A PERSONAL RULE"
+          ]
+        },
+        {
+          "cues": [
+            "BUT MUST RECONCILE WITH AN OLD ENEMY",
+            "BUT NO ONE WILL KNOW THE REASONS WHY"
+          ]
+        },
+        {
+          "cues": [
+            "BUT EVERYONE WILL ASSUME THEY DID IT FOR THE WRONG REASONS",
+            "BUT THEY WILL HAVE TO RESIST A GREAT TEMPTATION"
+          ]
+        },
+        {
+          "cues": [
+            "BUT IT WILL MEAN BETRAYING FAMILY",
+            "BUT THEY WILL HAVE TO ENDURE SOMETHING THAT REPULSES THEM"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THE LAST TIME THEY TRIED, IT ENDED IN HUMILIATION",
+            "BUT THEY WILL HAVE TO TRY SOMETHING FRIGHTENING AND NEW"
+          ]
+        },
+        {
+          "cues": [
+            "BUT IT WILL COST THEIR SOUL",
+            "BUT IT MEANS RISKING THE THING MOST PRECIOUS TO THEM"
+          ]
+        },
+        {
+          "cues": [
+            "BUT IT WILL COST THEIR REPUTATION",
+            "BUT IT WILL COST THEM SELF-RESPECT"
+          ]
+        },
+        {
+          "cues": [
+            "BUT IT WILL REVEAL A HYPOCRISY",
+            "BUT THEY WILL HAVE TO KEEP A TERRIBLE SECRET"
+          ]
+        },
+        {
+          "cues": [
+            "BUT SOMEONE THEY LOVE WILL PAY THE PRICE",
+            "BUT A TERRIBLE SECRET WILL COME OUT"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THEY MUST LEAVE THE FAMILIAR BEHIND AND FACE THE UNKNOWN",
+            "BUT THEY MUST FACE WHAT THEY HAVE BEEN RUNNING FROM"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THEY WILL HAVE TO UNLEARN SOMETHING THEY WERE TAUGHT",
+            "TO LEARN SOMETHING DIFFICULT"
+          ]
+        },
+        {
+          "cues": [
+            "BUT IT WILL MEAN FOREVER LIVING A LIE",
+            "BUT IT WILL MEAN BREAKING A PROMISE"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THEY MUST TAKE UP A BURDEN THEY HAVE BEEN AVOIDING",
+            "BUT IT WILL MEAN KEEPING A PROMISE THEY HAVE BEEN AVOIDING"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THEY MUST LET GO OF SOMETHING THEY ARE HOLDING ON TO",
+            "BUT THEY MUST LET GO OF AN OLD GRUDGE"
+          ]
+        },
+        {
+          "cues": [
+            "BUT IT MEANS GIVING UP THEIR DREAM",
+            "BUT THE INNOCENT WILL SUFFER"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THEY WILL HAVE TO DO SOMETHING THEY CAN NEVER TELL ANYONE ABOUT",
+            "BUT IT WILL COST THEM THEIR MENTAL HEALTH"
+          ]
+        },
+        {
+          "cues": [
+            "BUT IT WILL COST THEIR PHYSICAL HEALTH",
+            "BUT THEY MUST FACE THEIR DEEPEST FEAR"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THE WORLD THEY KNOW",
+            "BUT IT WILL COST THEM"
+          ]
+        },
+        {
+          "cues": [
+            "SOMETHING THEY LOST LONG AGO",
+            "BUT THEY MUST FIND SOMETHING THEY LOST"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THEY WILL HAVE TO TURN AGAINST A MENTOR",
+            "BUT THEY WILL HAVE TO MAKE A PROMISE THEY KNOW THEY CANNOT KEEP"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THEY MUST ACCEPT A LOSS THEY HAVE BEEN IN DENIAL ABOUT",
+            "LOYALTY TO SOMEONE THEY KNOW THEY SHOULDN'T TRUST"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THEY WILL HAVE TO LEARN TO TRUST AGAIN",
+            "BUT IT WILL GAIN THE ATTENTION OF THEIR ENEMY"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THEY WILL HAVE TO EXPLOIT PREJUDICE",
+            "BUT IT MEANS EVIL WILL GO UNPUNISHED"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THEY WILL HAVE TO CONFRONT PREJUDICE",
+            "BUT IT MEANS A GOOD DEED WILL BE PUNISHED"
+          ]
+        },
+        {
+          "cues": [
+            "BUT IT WILL MEAN PROVING SOMEONE ELSE'S DEEDS",
+            "BUT THEY MUST BECOME WHAT THEY FEAR"
+          ]
+        },
+        {
+          "cues": [
+            "BUT IT MAY COST THEM THEIR LIFE",
+            "BUT IT WILL MEAN THE CORRUPTION OF SOMETHING PURE"
+          ]
+        },
+        {
+          "cues": [
+            "BUT IT WILL MEAN TAKING ON A DEBT THEY CANNOT PAY",
+            "BUT ONE WILL BE ABLE TO SEE THE SCARS"
+          ]
+        },
+        {
+          "cues": [
+            "BUT IT WILL TAKE THEM SOMEWHERE THEY NEVER WANTED TO GO",
+            "BUT THEY WILL OWE SOMETHING TO SOMEONE THEY DESPISE"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THEY WILL BEAR THE SCARS FOR ALL TO SEE",
+            "BUT FIRST THEY MUST REPAIR THE DAMAGE THEY HAVE DONE"
+          ]
+        },
+        {
+          "cues": [
+            "BUT IT WILL TURN THEM INTO SOMEONE THEY NEVER WANTED TO BE",
+            "BUT IT WILL MEAN LETTING THEIR GREATEST RIVAL GET AHEAD"
+          ]
+        },
+        {
+          "cues": [
+            "BUT IT WILL GAIN THE RESPECT OF SOMEONE THEY ADMIRE",
+            "BUT THEY WILL LOSE THEIR ADMIRE"
+          ]
+        },
+        {
+          "cues": [
+            "BUT IT MEANS EVIL WILL GO UNPUNISHED",
+            "BUT THEY MUST PUSH A FRIEND AWAY"
+          ]
+        },
+        {
+          "cues": [
+            "BUT THE BLAME WILL FALL ON THEIR CLOSEST FRIEND",
+            "BUT IT WILL GAIN THE ATTENTION OF THEIR ENEMY"
+          ]
+        }
+      ]
+    },
+    "aspect": {
+      "name": "Aspect",
+      "description": "Adjectives that describe other cards",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["DECEPIT", "BEAUTIFUL", "DECEPTIVE", "KIND"]
+        },
+        {
+          "cues": ["FAITHFUL", "PROTECTIVE", "EMPTY", "PEACEFUL"]
+        },
+        {
+          "cues": ["PETTY", "HAUNTED", "ENCHANTED", "VALUABLE"]
+        },
+        {
+          "cues": ["PASSIONATE", "CLEVER", "DIRE", "SILENT"]
+        },
+        {
+          "cues": ["FROZEN", "ETHEREAL", "STALWART", "FALLEN"]
+        },
+        {
+          "cues": ["BEDEVILED", "CONTROLLING", "ORNATE", "SEDUCTIVE"]
+        },
+        {
+          "cues": ["ARCANE", "BELLIGERENT", "ATOLL", "SHADOWY"]
+        },
+        {
+          "cues": ["OBSESSIVE", "PANIC-INDUCING", "CHARMING", "DETERMINED"]
+        },
+        {
+          "cues": ["HARSH", "BURNING", "KEEN", "SHADOWY"]
+        },
+        {
+          "cues": ["INFLUENTIAL", "VINDICTIVE", "DECOY", "CURSED"]
+        },
+        {
+          "cues": ["FRAGILE", "IMPULSIVE", "BLESSED", "ELUSIVE"]
+        },
+        {
+          "cues": ["DIVINE", "FIERY", "HUMBLE", "PRECIOUS"]
+        },
+        {
+          "cues": ["INSPIRED", "FORTUNE-TELLING", "BLOODY", "TRAPPED"]
+        },
+        {
+          "cues": ["MYSTERIOUS", "INVISIBLE", "TRAPPED", "WEALTHY"]
+        },
+        {
+          "cues": ["TALKATIVE", "ICY", "SHOCKING", "HEALING"]
+        },
+        {
+          "cues": ["ANCIENT", "BLIGHTED", "THOUGHTFUL", "BRILLIANT"]
+        },
+        {
+          "cues": ["BITTER", "CORRUPTED", "ELEGANT", "NURTURING"]
+        },
+        {
+          "cues": ["GIANT", "UNLUCKY", "GHOSTLY", "LONG-LOST"]
+        },
+        {
+          "cues": ["INDESTRUCTIBLE", "OMINOUS", "CHARMED", "CHILLING"]
+        },
+        {
+          "cues": ["ILLUSORY", "SECRET", "GENEROUS", "SCARRED"]
+        },
+        {
+          "cues": ["GREEDY", "VAST", "YOUNG", "FIERCE"]
+        },
+        {
+          "cues": ["WOUNDED", "FOUL-MOUTHED", "SIMPLE", "WILD"]
+        },
+        {
+          "cues": ["BROKEN", "HARMLESS", "POWERFUL", "IRREPLACEABLE"]
+        },
+        {
+          "cues": ["SHAPE-SHIFTING", "WHISPERING", "BENEVOLENT", "IRRITATING"]
+        },
+        {
+          "cues": ["DISTANT", "RARE", "COLLAPSING", "WILD"]
+        },
+        {
+          "cues": ["TENDER", "WISH-GRANTING", "SHATTERED", "FEARLESS"]
+        },
+        {
+          "cues": ["PENSIVE", "DESTRUCTIVE", "COMPLEX", "OVERLOOKED"]
+        },
+        {
+          "cues": ["HATED", "GLORIOUS", "INNOVATIVE", "TREACHEROUS"]
+        },
+        {
+          "cues": ["FICKLE", "CONTROVERSIAL", "MIGHTY", "SWIFT"]
+        },
+        {
+          "cues": ["PRIVATE", "TRAUMATIC", "CRUDE", "DURABLE"]
+        },
+        {
+          "cues": ["WELL-LOVED", "UNNERVING", "DISTURBED", "PROTECTED"]
+        },
+        {
+          "cues": ["SURPRISING", "CUT-RATE", "GREEDY", "BESIEGED"]
+        },
+        {
+          "cues": ["MISUNDERSTOOD", "REVOLUTIONARY", "UNDERSTOOD", "HIDDEN"]
+        }
+      ]
+    }
+  }
+}

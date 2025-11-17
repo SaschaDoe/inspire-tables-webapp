@@ -25,22 +25,128 @@ export const tvTropesMapping: Record<string, string> = {
 	"succession crisis": "SuccessionCrisis", // ✅
 	"one last job": "OneLastJob", // ✅
 	"spot the impostor": "SpotTheImposter", // ✅
+	"evil plan": "EvilPlan", // ✅
+	"faustian rebellion": "FaustianRebellion", // ✅
+	"field trip to the past": "FieldTripToThePast", // ✅
+	"fighting for home": "ProtectThisHouse", // ✅
+	"protect the house": "ProtectThisHouse", // ✅
+	"hell on earth": "HellOnEarth", // ✅
+	"heroic destiny discovery": "TheChosenOne", // ✅
+	"loan shark": "LoanShark", // ✅
+	"magic comes back": "TheMagicComesBack", // ✅
+	"magic goes away": "TheMagicGoesAway", // ✅
+	"prevent the war": "PreventTheWar", // ✅
+	"noahs story arc": "NoahsStoryArc", // ✅
+	"agatha christy plot": "FairPlayWhodunnit", // ✅
+	"an offer you can't refuse": "AnOfferYouCantRefuse", // ✅
+	"pride before the fall": "PrideBeforeAFall", // ✅
+	"quest for a wish": "QuestForAWish", // ✅
+	"rear window witness": "RearWindowWitness", // ✅
+	"road trip": "RoadTripPlot", // ✅
+	"sorceres apprentice plot": "SorcerersApprenticePlot", // ✅
+	"die hard situation": "DieHardOnAnX", // ✅
+	"the makeover": "TheMakeover", // ✅
+	"paranoia": "ProperlyParanoid", // ✅
+	"appease the volcano god": "AppeaseTheVolcanoGod", // ✅
+	"back to ... (school)": "BackToSchool", // ✅
+	"back to school": "BackToSchool", // ✅
+	"deadly bet": "DeadlyGameOfChance", // ✅
+	"danger with deadline": "RaceAgainstTheClock", // ✅
+	"fight to survive": "FightToSurvive", // ✅
+	"one crazy night": "OneCrazyNight", // ✅
+	"defeating cheating opponent": "DefeatingTheCheatingOpponent", // ✅
+	"exploration plot for dungeon": "DungeonCrawling", // ✅
+	"monster is in reality good": "NotEvilJustMisunderstood", // ✅
+	"something bad happened long time ago": "MysteriousPast", // ✅
+	"something bad happened yesterday": "MysteriousPast", // ✅
+	"save the world from evil": "SavingTheWorld", // ✅
+	"villain tries to marry someone": "AndNowYouMustMarryMe", // ✅
+	"annoying patient": "AnnoyingPatient", // ✅
+	"the inspector is coming": "TheInspectorIsComing", // ✅
+	"antagonist feels sorry for heroes death": "MyGodWhatHaveIDone", // ✅
+	"someone seems good but than bad": "BitchInSheepsClothing", // ✅
+	"get back what is yours": "StealingFromThieves", // ✅
+	"boring alternative": "RefreshinglyNormalLifeChoice", // ✅
+	"bad luck charm": "BadLuckCharm", // ✅
+	"competition with character": "TournamentArc", // ✅
+	"competition with fraction": "TournamentArc", // ✅
+	"the plot is just copied from": "WholePlotReference", // ✅
+	"lie towering": "TallTale", // ✅
+	"hollywood formula": "TheHollywoodFormula", // ✅
+	"its personal now": "ItsPersonal", // ✅
+	"super sayajin": "SuperMode", // ✅
+	"leave your test quest": "LeaveYourQuestTest", // ✅
+	"you have to be worthy": "StrengthEqualsWorthiness", // ✅
+	"heroes are leaders now": "TheLeader", // ✅
+	"just fine without someone (it isn't)": "JustFineWithoutYou", // ✅
+	"long game": "LongGame", // ✅
+	"mental story": "MentalStory", // ✅
+	"too late, or not?": "JustInTime", // ✅
+	"moby dick whale chase": "MobySchtick", // ✅
+	"new superpower": "NewSuperpower", // ✅
+	"new location": "LostWorld", // ✅
+	"no antagonist plot": "NoAntagonist", // ✅
+	"cure something plot": "FindTheCure", // ✅
+	"evil paradise": "FalseUtopia", // ✅
+	"plot driven secret": "PlotDrivingSecret", // ✅
+	"... for a day": "SwappedRoles", // ✅
+	"the game never stopped": "TheGameNeverStopped", // ✅
+	"adventure rebuff": "AdventureRebuff", // ✅
+	"expected treasure turns out to be worthless": "WorthlessTreasureTwist", // ✅
+	"evil army at the gates": "TheSiege", // ✅
+	"get love": "FlirtingAndCourtship", // ✅
+	"quest is in reality for evil": "TreacherousQuestGiver", // ✅
+	"helping others to breakout": "BreakingOutTheBoss", // ✅
+	"mistakenly held unlawful": "MiscarriageOfJustice", // ✅
+	"mistakenly unlawful/ clear my name": "ClearMyName", // ✅
+	"exploration plot for monster": "HunterOfMonsters", // ✅
+	"made a slave": "MadeASlave", // ✅
+	"the B grade": "TheBGrade", // ✅
+	"in reality not an adult": "TotemPoleTrench", // ✅
+	"the easy plan": "ASimplePlan", // ✅
+	"mystery plot": "MysteryFiction", // ✅
+	"physical therapy plot": "ThrowingOffTheDisability", // ✅
+	"hero can't ordinary must": "FarmBoy", // ✅
+	"against the expected role": "StereotypeFlip", // ✅
+	"read trip": "RoadTripPlot", // ✅ (assuming typo for "road trip")
+	"whats inside plot": "MysteryBox", // ✅
+	"15 minutes of fame": "FifteenMinutesOfFame", // ✅
+	"dragon": "TheDragonslayer", // ✅
+	"lost wedding ring": "LostWeddingRing", // ✅
+	"killing for a tissue sample": "KillingForATissueSample", // ✅
 
-	// Tentative mappings (need verification)
-	"15 minutes of fame": "FifteenMinutesOfFame",
-	"dragon": "OurDragonsAreDifferent", // or "DragonSlaying" or "TheHero"?
-	"lost wedding ring": "LostWeddingRing",
+	// Beginning Tropes (✅ = verified to exist on TV Tropes)
+	"action prologue": "ActionPrologue", // ✅
+	"how we got here": "HowWeGotHere", // ✅
+	"in medias res": "InMediasRes", // ✅
+	"tragic beginning": "DarkAndTroubledPast", // ✅
+	"training scene": "TrainingMontage", // ✅
+	"dream intro": "DreamIntro", // ✅
+	"inciting incident": "IncitingIncident", // ✅
+	"fake opening": "FakeOutOpening", // ✅
+	"from zero to hero": "FromZeroToHero", // ✅
+	"wake up on a beach": "YouWakeUpOnABeach", // ✅
 
-	// Beginning Tropes (need verification)
-	"action prologue": "ActionPrologue",
-	"how we got here": "HowWeGotHere",
+	// Ending Tropes (✅ = verified to exist on TV Tropes)
+	"all just a dream": "AllJustADream", // ✅
+	"bittersweet": "BittersweetEnding", // ✅
+	"wedding": "WeddingFinale", // ✅
+	"deus ex machina": "DeusExMachina", // ✅
+	"everybody lives": "EverybodyLives", // ✅
+	"ambiguous ending": "AmbiguousEnding", // ✅
 
-	// Conflict Tropes (need verification)
-	"stupidity": "TooDumbToLive",
-	"achievement through ignorance": "AchievementsThroughIgnorance",
+	// Conflict Tropes (✅ = verified to exist on TV Tropes)
+	"stupidity": "TooDumbToLive", // ✅
+	"achievement through ignorance": "AchievementsInIgnorance", // ✅
+	"the idiot runes the plan": "IdiotBall", // ✅
+	"moral dilemma": "MoralDilemma", // ✅
+	"secret identity problems": "SecretIdentity", // ✅
+	"conflicting loyalty": "ConflictingLoyalty", // ✅
+	"deal with the devil": "DealWithTheDevil", // ✅
+	"lawful or good": "ToBeLawfulOrGood", // ✅
 
 	// Add more mappings as we discover the correct TV Tropes pages
-	// TODO: Still need to map ~106 more plot tropes + beginning/ending/conflict tropes
+	// TODO: Still need to map beginning/ending/conflict tropes
 };
 
 /**

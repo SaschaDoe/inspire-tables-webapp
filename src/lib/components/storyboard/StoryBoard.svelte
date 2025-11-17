@@ -71,20 +71,28 @@
 			storyboardStore.selectAll($activeBoard.id);
 		}
 
-		// Arrow keys - Nudge selected nodes
+		// Arrow keys - Rotate Story Engine card OR nudge nodes
 		if ($selectedNodes.length > 0 && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-			e.preventDefault();
-			const distance = e.shiftKey ? 10 : 1;
-			let deltaX = 0;
-			let deltaY = 0;
+			// If exactly one Story Engine card is selected, use Left/Right to rotate it
+			if ($selectedNodes.length === 1 && $selectedNodes[0].storyEngineCard && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+				e.preventDefault();
+				const direction = e.key === 'ArrowLeft' ? 'prev' : 'next';
+				storyboardStore.rotateStoryEngineCard($activeBoard.id, $selectedNodes[0].id, direction);
+			} else {
+				// Otherwise, nudge the selected nodes
+				e.preventDefault();
+				const distance = e.shiftKey ? 10 : 1;
+				let deltaX = 0;
+				let deltaY = 0;
 
-			if (e.key === 'ArrowLeft') deltaX = -distance;
-			if (e.key === 'ArrowRight') deltaX = distance;
-			if (e.key === 'ArrowUp') deltaY = -distance;
-			if (e.key === 'ArrowDown') deltaY = distance;
+				if (e.key === 'ArrowLeft') deltaX = -distance;
+				if (e.key === 'ArrowRight') deltaX = distance;
+				if (e.key === 'ArrowUp') deltaY = -distance;
+				if (e.key === 'ArrowDown') deltaY = distance;
 
-			const nodeIds = $selectedNodes.map((n) => n.id);
-			storyboardStore.moveNodes($activeBoard.id, nodeIds, deltaX, deltaY);
+				const nodeIds = $selectedNodes.map((n) => n.id);
+				storyboardStore.moveNodes($activeBoard.id, nodeIds, deltaX, deltaY);
+			}
 		}
 
 		// D key - Toggle draw mode

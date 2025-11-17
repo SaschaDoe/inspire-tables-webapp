@@ -5,6 +5,7 @@
 	import type { StoryBoardNode } from '$lib/types/storyboard';
 	import type { Entity } from '$lib/types/entity';
 	import { getEntityTypesList } from '$lib/entities/entityRegistry';
+	import { STORY_ENGINE_CARD_TYPES } from '$lib/types/storyEngine';
 
 	interface Props {
 		node: StoryBoardNode;
@@ -254,13 +255,41 @@
 		node.entityType ? entityTypes.find((et) => et.name === node.entityType) : null
 	);
 
+	// Derived values for card styling
 	let gradientColor = $derived(
-		node.entityType && colorMap[node.entityType]
-			? colorMap[node.entityType]
-			: 'from-purple-500 to-pink-500'
+		node.storyEngineCard
+			? STORY_ENGINE_CARD_TYPES[node.storyEngineCard.type].color
+			: node.entityType && colorMap[node.entityType]
+				? colorMap[node.entityType]
+				: 'from-purple-500 to-pink-500'
 	);
-	let iconEmoji = $derived(entityTypeInfo?.icon || node.icon || '📝');
+	let iconEmoji = $derived(
+		node.storyEngineCard
+			? STORY_ENGINE_CARD_TYPES[node.storyEngineCard.type].icon
+			: entityTypeInfo?.icon || node.icon || '📝'
+	);
 	let isGenerated = $derived(node.entityType === 'generated');
+
+	// Story Engine rotation handlers
+	function handleRotateNext(e: MouseEvent) {
+		e.stopPropagation();
+		if (!$activeBoard || !node.storyEngineCard) return;
+
+		storyboardStore.rotateStoryEngineCard($activeBoard.id, node.id, 'next');
+	}
+
+	function handleRotatePrev(e: MouseEvent) {
+		e.stopPropagation();
+		if (!$activeBoard || !node.storyEngineCard) return;
+
+		storyboardStore.rotateStoryEngineCard($activeBoard.id, node.id, 'prev');
+	}
+
+	function handleSelectCue(cueIndex: number) {
+		if (!$activeBoard || !node.storyEngineCard) return;
+
+		storyboardStore.setStoryEngineCue($activeBoard.id, node.id, cueIndex);
+	}
 
 	// Handle window click for context menu
 	function handleWindowClick(e: MouseEvent) {
@@ -289,44 +318,86 @@
 
 		<!-- Content -->
 		<div class="node-content">
-			<div class="node-header">
-				<span class="node-icon">{node.icon || iconEmoji}</span>
-				{#if node.selected}
-					<input
-						type="text"
-						value={node.label}
-						oninput={handleLabelInput}
-						class="node-title-input"
-						placeholder="Card name..."
-					/>
-				{:else}
-					<span class="node-title">{node.label || 'Unnamed'}</span>
-				{/if}
-				{#if isGenerated}
-					<span class="generated-badge" title="Generated from table">⚡</span>
-				{/if}
-			</div>
+			{#if node.storyEngineCard?.type}
+				{@const seCard = {
+					type: node.storyEngineCard.type,
+					cues: Array.from(node.storyEngineCard.cues),
+					activeCueIndex: node.storyEngineCard.activeCueIndex
+				}}
+				{@const typeInfo = STORY_ENGINE_CARD_TYPES[seCard.type]}
 
-			{#if node.notes && !node.collapsed}
-				<p class="node-notes">{node.notes}</p>
-			{/if}
-
-			{#if entityMissing && !node.collapsed}
-				<div class="entity-warning">
-					<span class="warning-icon">⚠️</span>
-					<span class="warning-text">Entity deleted</span>
+				<!-- Story Engine Card Header -->
+				<div class="story-engine-header">
+					<div class="se-header-top">
+						<span class="se-icon">{typeInfo.icon}</span>
+						<span class="se-type">{typeInfo.name.toUpperCase()}</span>
+						<span class="se-cue-count">{seCard.activeCueIndex + 1}/{seCard.cues.length}</span>
+					</div>
+					<div class="se-controls">
+						<button class="se-rotate-btn" onclick={handleRotatePrev} title="Previous cue">◄</button>
+						<button class="se-rotate-btn" onclick={handleRotateNext} title="Next cue">►</button>
+					</div>
 				</div>
-			{/if}
 
-			{#if node.entityType && !node.collapsed}
-				<div class="node-footer">
-					<span class="node-type">{node.entityType}</span>
-					{#if linkedEntity}
-						<button class="goto-btn" onclick={handleGotoEntity} title="Open in workspace">
-							→
-						</button>
+				<!-- Active Cue Display -->
+				<div class="se-active-cue">{seCard.cues[seCard.activeCueIndex]}</div>
+
+				<!-- All Cues List (shown when selected) -->
+				{#if node.selected && !node.collapsed}
+					<div class="se-cues-list">
+						<div class="se-list-title">All Cues:</div>
+						{#each seCard.cues as cue, index (index)}
+							<button
+								class="se-cue-item {index === seCard.activeCueIndex ? 'se-active' : ''}"
+								onclick={() => handleSelectCue(index)}
+							>
+								<span class="se-bullet">{index === seCard.activeCueIndex ? '►' : '•'}</span>
+								<span class="se-cue-text">{cue}</span>
+							</button>
+						{/each}
+					</div>
+				{/if}
+			{:else}
+				<!-- Regular Card Layout -->
+				<div class="node-header">
+					<span class="node-icon">{node.icon || iconEmoji}</span>
+					{#if node.selected}
+						<input
+							type="text"
+							value={node.label}
+							oninput={handleLabelInput}
+							class="node-title-input"
+							placeholder="Card name..."
+						/>
+					{:else}
+						<span class="node-title">{node.label || 'Unnamed'}</span>
+					{/if}
+					{#if isGenerated}
+						<span class="generated-badge" title="Generated from table">⚡</span>
 					{/if}
 				</div>
+
+				{#if node.notes && !node.collapsed}
+					<p class="node-notes">{node.notes}</p>
+				{/if}
+
+				{#if entityMissing && !node.collapsed}
+					<div class="entity-warning">
+						<span class="warning-icon">⚠️</span>
+						<span class="warning-text">Entity deleted</span>
+					</div>
+				{/if}
+
+				{#if node.entityType && !node.collapsed}
+					<div class="node-footer">
+						<span class="node-type">{node.entityType}</span>
+						{#if linkedEntity}
+							<button class="goto-btn" onclick={handleGotoEntity} title="Open in workspace">
+								→
+							</button>
+						{/if}
+					</div>
+				{/if}
 			{/if}
 		</div>
 
@@ -704,5 +775,171 @@
 
 	.context-icon {
 		font-size: 1.125rem;
+	}
+
+	/* Story Engine Card Styles */
+	.story-engine-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 0.75rem;
+		margin-bottom: 1rem;
+		padding-bottom: 0.75rem;
+		border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+	}
+
+	.se-header-top {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		flex: 1;
+	}
+
+	.se-icon {
+		font-size: 1.5rem;
+		flex-shrink: 0;
+		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+	}
+
+	.se-type {
+		font-size: 0.75rem;
+		font-weight: 800;
+		color: white;
+		letter-spacing: 0.1em;
+		flex: 1;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+	}
+
+	.se-cue-count {
+		font-size: 0.75rem;
+		color: rgba(255, 255, 255, 0.8);
+		font-weight: 700;
+		background: rgba(0, 0, 0, 0.2);
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.375rem;
+	}
+
+	.se-controls {
+		display: flex;
+		gap: 0.375rem;
+		flex-shrink: 0;
+	}
+
+	.se-rotate-btn {
+		background: rgba(255, 255, 255, 0.15);
+		border: 1.5px solid rgba(255, 255, 255, 0.3);
+		border-radius: 0.375rem;
+		color: white;
+		width: 2rem;
+		height: 2rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.2s;
+		font-size: 0.875rem;
+		font-weight: bold;
+		padding: 0;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	}
+
+	.se-rotate-btn:hover {
+		background: rgba(255, 255, 255, 0.25);
+		border-color: rgba(255, 255, 255, 0.5);
+		transform: scale(1.1);
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+	}
+
+	.se-rotate-btn:active {
+		transform: scale(0.95);
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	}
+
+	.se-active-cue {
+		font-size: 1.125rem;
+		font-weight: 800;
+		color: white;
+		text-align: center;
+		padding: 1rem;
+		line-height: 1.4;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		background: rgba(0, 0, 0, 0.15);
+		border-radius: 0.5rem;
+		min-height: 4rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+	}
+
+	.se-cues-list {
+		margin-top: 1rem;
+		padding-top: 1rem;
+		border-top: 2px solid rgba(255, 255, 255, 0.15);
+		display: flex;
+		flex-direction: column;
+		gap: 0.375rem;
+	}
+
+	.se-list-title {
+		font-size: 0.75rem;
+		font-weight: 700;
+		color: rgba(255, 255, 255, 0.7);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		margin-bottom: 0.5rem;
+	}
+
+	.se-cue-item {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.625rem;
+		padding: 0.5rem 0.75rem;
+		background: rgba(0, 0, 0, 0.15);
+		border: 1.5px solid rgba(255, 255, 255, 0.1);
+		border-radius: 0.375rem;
+		cursor: pointer;
+		transition: all 0.2s;
+		text-align: left;
+		width: 100%;
+	}
+
+	.se-cue-item:hover {
+		background: rgba(255, 255, 255, 0.15);
+		border-color: rgba(255, 255, 255, 0.3);
+		transform: translateX(4px);
+	}
+
+	.se-cue-item.se-active {
+		background: rgba(255, 255, 255, 0.2);
+		border-color: rgba(255, 255, 255, 0.4);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+	}
+
+	.se-bullet {
+		font-size: 0.875rem;
+		color: rgba(255, 255, 255, 0.6);
+		width: 1rem;
+		flex-shrink: 0;
+		margin-top: 0.125rem;
+	}
+
+	.se-cue-item.se-active .se-bullet {
+		color: white;
+	}
+
+	.se-cue-text {
+		font-size: 0.8125rem;
+		color: rgba(255, 255, 255, 0.8);
+		flex: 1;
+		line-height: 1.4;
+		text-transform: uppercase;
+		letter-spacing: 0.025em;
+	}
+
+	.se-cue-item.se-active .se-cue-text {
+		color: white;
+		font-weight: 700;
 	}
 </style>

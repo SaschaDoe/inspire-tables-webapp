@@ -185,6 +185,7 @@ function createStoryBoardStore() {
 					locked: false,
 					collapsed: false,
 					layer: node.layer ?? 5,
+					storyEngineCard: node.storyEngineCard, // Story Engine card data
 					metadata: {
 						createdAt: new Date(),
 						updatedAt: new Date()
@@ -637,6 +638,53 @@ function createStoryBoardStore() {
 		cancelConnection() {
 			update((state) => {
 				state.connectingFromNodeId = null;
+				return state;
+			});
+		},
+
+		// Story Engine card operations
+		rotateStoryEngineCard(boardId: string, nodeId: string, direction: 'next' | 'prev') {
+			update((state) => {
+				const board = state.boards.get(boardId);
+				if (!board) return state;
+
+				const node = board.nodes.find((n) => n.id === nodeId);
+				if (!node || !node.storyEngineCard) return state;
+
+				const maxIndex = node.storyEngineCard.cues.length - 1;
+				let newIndex = node.storyEngineCard.activeCueIndex;
+
+				if (direction === 'next') {
+					newIndex = newIndex >= maxIndex ? 0 : newIndex + 1;
+				} else {
+					newIndex = newIndex <= 0 ? maxIndex : newIndex - 1;
+				}
+
+				node.storyEngineCard.activeCueIndex = newIndex;
+				node.metadata.updatedAt = new Date();
+				board.metadata.updatedAt = new Date();
+				saveToStorage(state);
+				return state;
+			});
+		},
+
+		setStoryEngineCue(boardId: string, nodeId: string, cueIndex: number) {
+			update((state) => {
+				const board = state.boards.get(boardId);
+				if (!board) return state;
+
+				const node = board.nodes.find((n) => n.id === nodeId);
+				if (!node || !node.storyEngineCard) return state;
+
+				// Validate index
+				if (cueIndex < 0 || cueIndex >= node.storyEngineCard.cues.length) {
+					return state;
+				}
+
+				node.storyEngineCard.activeCueIndex = cueIndex;
+				node.metadata.updatedAt = new Date();
+				board.metadata.updatedAt = new Date();
+				saveToStorage(state);
 				return state;
 			});
 		},

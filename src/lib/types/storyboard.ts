@@ -1,4 +1,5 @@
 import type { EntityType } from './entity';
+import type { StoryEngineCardType } from './storyEngine';
 
 export interface StoryBoardNode {
 	id: string;
@@ -27,6 +28,14 @@ export interface StoryBoardNode {
 
 	// Entity sync
 	entityError?: 'deleted' | 'not-found'; // Track broken references
+
+	// Story Engine card data
+	storyEngineCard?: {
+		type: StoryEngineCardType;
+		cues: string[];
+		activeCueIndex: number; // Which cue is currently visible (0-3 for agents/anchors/aspects, 0-1 for engines/conflicts)
+		expansion?: string;
+	};
 
 	metadata: {
 		createdAt: Date;
