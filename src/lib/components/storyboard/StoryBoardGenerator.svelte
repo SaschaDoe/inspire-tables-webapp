@@ -173,11 +173,16 @@
 		const typeInfo = STORY_ENGINE_CARD_TYPES[card.type];
 
 		// Arrange cards in a nice spread pattern (horizontal layout with spacing)
-		const cardSpacing = 420; // Space between cards
+		const cardSpacing = 420; // Space between cards (card width 400px + 20px gap)
 		const xOffset = offsetMultiplier * cardSpacing;
 
+		// Center all 5 cards: total span is 4 gaps * 420px = 1680px
+		// Plus half card width on each side: 1680 + 400 = 2080px total width
+		// Start at center minus half total width: viewportCenterX - 1040
+		const startX = viewportCenterX - ((4 * cardSpacing) / 2) - 200; // Properly center 5 cards
+
 		const nodeData = {
-			x: viewportCenterX - 800 + xOffset, // Start further left for better centering
+			x: startX + xOffset,
 			y: viewportCenterY - 200,
 			width: 400,
 			height: 400,
