@@ -95,8 +95,8 @@
 	}
 
 	function handleContextMenu(e: MouseEvent) {
-		// Only show context menu for generated cards
-		if (!isGenerated) return;
+		// Show context menu for generated cards OR grouped nodes
+		if (!isGenerated && !node.groupId) return;
 
 		e.preventDefault();
 		e.stopPropagation();
@@ -144,6 +144,24 @@
 			notes: `Promoted from generated: ${node.notes}`
 		});
 
+		closeContextMenu();
+	}
+
+	function ungroupNode() {
+		if (!$activeBoard || !node.groupId) return;
+
+		// Ungroup just this node
+		storyboardStore.ungroupNodes($activeBoard.id, [node.id]);
+		closeContextMenu();
+	}
+
+	function ungroupAll() {
+		if (!$activeBoard || !node.groupId) return;
+
+		// Find all nodes in this group and ungroup them
+		const groupedNodes = $activeBoard.nodes.filter((n) => n.groupId === node.groupId);
+		const nodeIds = groupedNodes.map((n) => n.id);
+		storyboardStore.ungroupNodes($activeBoard.id, nodeIds);
 		closeContextMenu();
 	}
 
@@ -409,17 +427,29 @@
 		</div>
 
 
-		<!-- Context menu for generated cards -->
-		{#if showContextMenu && isGenerated}
+		<!-- Context menu for generated cards and grouped nodes -->
+		{#if showContextMenu}
 			<div
 				class="context-menu"
 				style="position: fixed; left: {contextMenuPos.x}px; top: {contextMenuPos.y}px; z-index: 1000;"
 				onclick={(e) => e.stopPropagation()}
 			>
-				<button class="context-menu-item" onclick={promoteToEntity}>
-					<span class="context-icon">⭐</span>
-					<span>Promote to Entity</span>
-				</button>
+				{#if isGenerated}
+					<button class="context-menu-item" onclick={promoteToEntity}>
+						<span class="context-icon">⭐</span>
+						<span>Promote to Entity</span>
+					</button>
+				{/if}
+				{#if node.groupId}
+					<button class="context-menu-item" onclick={ungroupNode}>
+						<span class="context-icon">🔓</span>
+						<span>Ungroup This Card</span>
+					</button>
+					<button class="context-menu-item" onclick={ungroupAll}>
+						<span class="context-icon">💥</span>
+						<span>Ungroup All Cards</span>
+					</button>
+				{/if}
 				<button class="context-menu-item" onclick={closeContextMenu}>
 					<span class="context-icon">✕</span>
 					<span>Cancel</span>

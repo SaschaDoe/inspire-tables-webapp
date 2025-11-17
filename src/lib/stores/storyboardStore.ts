@@ -661,6 +661,27 @@ function createStoryBoardStore() {
 			});
 		},
 
+		// Group operations
+		ungroupNodes(boardId: string, nodeIds: string[]) {
+			update((state) => {
+				const board = state.boards.get(boardId);
+				if (!board) return state;
+
+				// Remove groupId from specified nodes
+				nodeIds.forEach((nodeId) => {
+					const node = board.nodes.find((n) => n.id === nodeId);
+					if (node) {
+						node.groupId = undefined;
+						node.metadata.updatedAt = new Date();
+					}
+				});
+
+				board.metadata.updatedAt = new Date();
+				saveToStorage(state);
+				return state;
+			});
+		},
+
 		// Story Engine card operations
 		rotateStoryEngineCard(boardId: string, nodeId: string, direction: 'next' | 'prev') {
 			update((state) => {
