@@ -198,6 +198,9 @@
 >
 	<svg
 		class="canvas-svg"
+		width="100%"
+		height="100%"
+		viewBox="-10000 -10000 20000 20000"
 		style="transform: translate({$activeBoard?.viewport.x || 0}px, {$activeBoard?.viewport.y || 0}px) scale({$activeBoard?.viewport.zoom || 1})"
 	>
 		<!-- Large background rect to prevent seeing "empty" canvas -->
@@ -245,5 +248,6 @@
 		width: 100%;
 		height: 100%;
 		transform-origin: 0 0;
+		overflow: visible; /* Allow content to render outside viewport bounds */
 	}
 </style>
