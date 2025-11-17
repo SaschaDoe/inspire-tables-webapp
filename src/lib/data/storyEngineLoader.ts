@@ -7,6 +7,10 @@ let loadingPromise: Promise<StoryEngineDeck> | null = null;
  * Parse cards from a deck data structure
  */
 function parseCardsFromDeck(deckData: any, expansionName: string, deck: StoryEngineDeck) {
+	if (!deckData.cardTypes) {
+		return; // Skip files without cardTypes structure
+	}
+
 	if (deckData.cardTypes.agent) {
 		deck.cards.agents.push(
 			...deckData.cardTypes.agent.cards.map((card: any) => ({
