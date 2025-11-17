@@ -157,6 +157,21 @@
 				);
 			});
 		}
+
+		// Ctrl+G - Group selected nodes
+		if (e.ctrlKey && e.key === 'g' && $selectedNodes.length > 1) {
+			e.preventDefault();
+			const groupId = crypto.randomUUID();
+			const nodeIds = $selectedNodes.map((n) => n.id);
+			storyboardStore.groupNodes($activeBoard.id, nodeIds, groupId);
+		}
+
+		// Ctrl+Shift+G - Ungroup selected nodes
+		if (e.ctrlKey && e.shiftKey && e.key === 'G' && $selectedNodes.length > 0) {
+			e.preventDefault();
+			const nodeIds = $selectedNodes.map((n) => n.id);
+			storyboardStore.ungroupNodes($activeBoard.id, nodeIds);
+		}
 	}
 </script>
 

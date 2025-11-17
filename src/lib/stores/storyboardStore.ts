@@ -662,6 +662,26 @@ function createStoryBoardStore() {
 		},
 
 		// Group operations
+		groupNodes(boardId: string, nodeIds: string[], groupId: string) {
+			update((state) => {
+				const board = state.boards.get(boardId);
+				if (!board) return state;
+
+				// Assign groupId to specified nodes
+				nodeIds.forEach((nodeId) => {
+					const node = board.nodes.find((n) => n.id === nodeId);
+					if (node) {
+						node.groupId = groupId;
+						node.metadata.updatedAt = new Date();
+					}
+				});
+
+				board.metadata.updatedAt = new Date();
+				saveToStorage(state);
+				return state;
+			});
+		},
+
 		ungroupNodes(boardId: string, nodeIds: string[]) {
 			update((state) => {
 				const board = state.boards.get(boardId);
