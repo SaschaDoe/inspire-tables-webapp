@@ -4,16 +4,25 @@
 	import InfoGrid from '../shared/InfoGrid.svelte';
 	import StoryBoard from '$lib/components/storyboard/StoryBoard.svelte';
 	import EntityGeneratorModal from '../EntityGeneratorModal.svelte';
+	import NestedEntitiesSection from '../NestedEntitiesSection.svelte';
 	import { getTvTropesUrl } from '$lib/utils/tvTropesUtils';
 	import { parsePlaceholder } from '$lib/utils/placeholderParser';
 	import { entityStore } from '$lib/stores/entityStore';
 	import { tabStore } from '$lib/stores/tabStore';
+	import type { Entity } from '$lib/types/entity';
 
 	interface Props {
 		adventure: Adventure;
 	}
 
 	let { adventure }: Props = $props();
+
+	// Get the entity wrapper for nested entities section
+	const adventureEntity = $derived.by(() => {
+		// Try to get the full entity from store
+		const entity = entityStore.getEntity(adventure.id);
+		return entity || adventure;
+	});
 
 	const basicInfo = $derived([{ label: 'Name', value: adventure.name }]);
 
@@ -134,6 +143,18 @@
 		if (entity) {
 			tabStore.openTab(entity);
 		}
+	}
+
+	function handleNestedEntityOpen(event: CustomEvent<{ entity: Entity }>) {
+		console.log('[AdventureViewer] Opening nested entity:', event.detail.entity);
+		tabStore.openTab(event.detail.entity);
+	}
+
+	function handleNestedEntitiesRefresh() {
+		console.log('[AdventureViewer] Refresh event received, incrementing trigger');
+		// Trigger refresh to reload adventure data
+		refreshTrigger++;
+		console.log('[AdventureViewer] New refreshTrigger value:', refreshTrigger);
 	}
 </script>
 
@@ -259,8 +280,17 @@
 		</Section>
 	{/if}
 
-	<Section title="Full Description">
-		<p class="description-text">{currentAdventure.description}</p>
+	<!-- Nested Entities (Quests, NPCs, etc.) -->
+	<Section title="Related Entities">
+		{#if adventureEntity}
+			<NestedEntitiesSection
+				parentEntity={adventureEntity}
+				on:openEntity={handleNestedEntityOpen}
+				on:refresh={handleNestedEntitiesRefresh}
+			/>
+		{:else}
+			<p style="color: rgb(216 180 254); padding: 1rem;">Loading entity data...</p>
+		{/if}
 	</Section>
 
 	<!-- Storyboard Section - Now integrated below -->

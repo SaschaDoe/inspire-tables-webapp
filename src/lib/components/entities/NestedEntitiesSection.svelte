@@ -4,28 +4,68 @@
 	import { addOneChildEntity, generateMultipleChildEntities } from '$lib/utils/entityAutoGenerator';
 	import { type Entity } from '$lib/types/entity';
 	import { createEventDispatcher } from 'svelte';
+	import { SvelteMap } from 'svelte/reactivity';
 
-	export let parentEntity: Entity;
+	interface Props {
+		parentEntity: Entity;
+	}
+
+	let { parentEntity }: Props = $props();
 
 	const dispatch = createEventDispatcher<{
 		openEntity: { entity: Entity };
 		refresh: void;
 	}>();
 
+	console.log('[NestedEntitiesSection] Initialized with parent:', {
+		parentId: parentEntity.id,
+		parentName: parentEntity.name,
+		parentType: parentEntity.type
+	});
+
 	// Get relationships for this entity type
 	const relationships = getEntityRelationships(parentEntity.type);
 
-	// Get child entities for each relationship
-	function getChildEntitiesForRelationship(relationship: EntityRelationship): Entity[] {
-		const allChildren = entityStore.getChildEntities(parentEntity.id);
-		return allChildren.filter(child => child.type === relationship.childType);
-	}
+	console.log('[NestedEntitiesSection] Found relationships:', relationships);
+
+	// Reactive trigger to force re-render when entities change
+	let updateTrigger = $state(0);
+
+	// Create a reactive map of relationship -> child entities
+	const childrenByRelationship = $derived.by(() => {
+		// Access updateTrigger to create reactivity dependency
+		updateTrigger;
+
+		const map = new SvelteMap<EntityRelationship, Entity[]>();
+		for (const relationship of relationships) {
+			const allChildren = entityStore.getChildEntities(parentEntity.id);
+			// Convert to lowercase for comparison since entity types are lowercase
+			const expectedType = relationship.childType.toLowerCase();
+			const filtered = allChildren.filter(child => child.type === expectedType);
+			console.log(`[NestedEntitiesSection] Getting children for ${relationship.label}:`, filtered.length);
+			map.set(relationship, filtered);
+		}
+		return map;
+	});
 
 	// Add one entity manually
 	async function addOneEntity(relationship: EntityRelationship) {
+		console.log('[NestedEntitiesSection] Add one entity clicked!', {
+			parentEntity: parentEntity.name,
+			relationship
+		});
+
 		const newEntity = addOneChildEntity(parentEntity, relationship);
+
+		console.log('[NestedEntitiesSection] Entity created:', newEntity);
+
 		if (newEntity) {
+			console.log('[NestedEntitiesSection] Incrementing updateTrigger to force UI refresh');
+			updateTrigger++;
+			console.log('[NestedEntitiesSection] Dispatching refresh event');
 			dispatch('refresh');
+		} else {
+			console.warn('[NestedEntitiesSection] No entity was created');
 		}
 	}
 
@@ -33,6 +73,7 @@
 	async function generateMultiple(relationship: EntityRelationship) {
 		const createdEntities = generateMultipleChildEntities(parentEntity, relationship);
 		if (createdEntities.length > 0) {
+			updateTrigger++;
 			dispatch('refresh');
 		}
 	}
@@ -44,10 +85,8 @@
 
 {#if relationships.length > 0}
 	<div class="nested-entities-container">
-		<h3>Related Entities</h3>
-
-		{#each relationships as relationship}
-			{@const childEntities = getChildEntitiesForRelationship(relationship)}
+		{#each relationships as relationship (relationship.childType)}
+			{@const childEntities = childrenByRelationship.get(relationship) || []}
 			{@const count = childEntities.length}
 
 			<div class="relationship-section">
@@ -62,8 +101,8 @@
 							<p>No {relationship.label.toLowerCase()} yet</p>
 						</div>
 					{:else}
-						{#each childEntities as entity}
-							<button class="entity-card" on:click={() => handleEntityClick(entity)}>
+						{#each childEntities as entity (entity.id)}
+							<button class="entity-card" onclick={() => handleEntityClick(entity)}>
 								<div class="entity-card-header">
 									<span class="entity-name">{entity.name}</span>
 									{#if entityStore.isFavorite(entity.id)}
@@ -79,11 +118,11 @@
 				</div>
 
 				<div class="action-buttons">
-					<button class="add-one-btn" on:click={() => addOneEntity(relationship)}>
+					<button class="add-one-btn" onclick={() => addOneEntity(relationship)}>
 						<span class="icon">+</span>
 						Add One {relationship.label.slice(0, -1)}
 					</button>
-					<button class="generate-multiple-btn" on:click={() => generateMultiple(relationship)}>
+					<button class="generate-multiple-btn" onclick={() => generateMultiple(relationship)}>
 						<span class="icon">🎲</span>
 						Generate Multiple ({relationship.minCount}-{relationship.maxCount})
 					</button>

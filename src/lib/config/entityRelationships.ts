@@ -392,7 +392,9 @@ export const entityRelationships: EntityRelationships = {
  * Get relationships for a specific entity type
  */
 export function getEntityRelationships(entityType: string): EntityRelationship[] {
-	return entityRelationships[entityType] || [];
+	// Capitalize first letter to match keys in entityRelationships
+	const capitalizedType = entityType.charAt(0).toUpperCase() + entityType.slice(1);
+	return entityRelationships[capitalizedType] || entityRelationships[entityType] || [];
 }
 
 /**

@@ -20,7 +20,9 @@ export function autoGenerateChildEntities(parentEntity: Entity): Entity[] {
 	for (const relationship of autoGenRelationships) {
 		try {
 			const count = getRandomCount(relationship);
-			const creator = getEntityCreator(relationship.childType);
+			// Convert to lowercase to match entity registry keys
+			const entityType = relationship.childType.toLowerCase();
+			const creator = getEntityCreator(entityType);
 
 			if (!creator) {
 				console.error(`No creator found for type: ${relationship.childType}`);
@@ -30,21 +32,28 @@ export function autoGenerateChildEntities(parentEntity: Entity): Entity[] {
 			console.log(`Auto-generating ${count} ${relationship.childType}(s) for ${parentEntity.type} "${parentEntity.name}"`);
 
 			for (let i = 0; i < count; i++) {
-				const newEntity = creator.create();
+				const generatedEntity = creator.create();
 
-				// Set parent relationship
-				newEntity.parentId = parentEntity.id;
-
-				// Inherit or set campaignId
-				if (parentEntity.campaignId) {
-					newEntity.campaignId = parentEntity.campaignId;
-				} else if (parentEntity.type === EntityType.Campaign) {
-					newEntity.campaignId = parentEntity.id;
-				}
+				// Create workspace entity wrapping the generated entity
+				const workspaceEntity = {
+					id: generatedEntity.id,
+					type: entityType as any,
+					name: generatedEntity.name || `${relationship.label} ${generatedEntity.id.slice(0, 8)}`,
+					description: generatedEntity.description || '',
+					tags: [],
+					parentId: parentEntity.id,
+					campaignId: parentEntity.campaignId || (parentEntity.type === EntityType.Campaign ? parentEntity.id : undefined),
+					metadata: {
+						createdAt: new Date(),
+						updatedAt: new Date()
+					},
+					relationships: [],
+					customFields: { generatedEntity }
+				};
 
 				// Save to store
-				entityStore.createEntity(newEntity);
-				createdChildren.push(newEntity);
+				entityStore.createEntity(workspaceEntity as any);
+				createdChildren.push(workspaceEntity as any);
 			}
 		} catch (error) {
 			console.error(`Error auto-generating ${relationship.childType}:`, error);
@@ -63,26 +72,66 @@ export function autoGenerateChildEntities(parentEntity: Entity): Entity[] {
  * @returns The created child entity or null if creation failed
  */
 export function addOneChildEntity(parentEntity: Entity, relationship: EntityRelationship): Entity | null {
+	console.log('[addOneChildEntity] Starting...', {
+		parentEntity: parentEntity.name,
+		parentType: parentEntity.type,
+		childType: relationship.childType,
+		relationship
+	});
+
 	try {
-		const creator = getEntityCreator(relationship.childType);
+		// Convert to lowercase to match entity registry keys
+		const entityType = relationship.childType.toLowerCase();
+		console.log('[addOneChildEntity] Looking for creator:', entityType);
+
+		const creator = getEntityCreator(entityType);
 		if (!creator) {
 			console.error(`No creator found for type: ${relationship.childType}`);
 			return null;
 		}
 
-		const newEntity = creator.create();
+		console.log('[addOneChildEntity] Creating entity with creator...');
+		const generatedEntity = creator.create();
 
-		// Set parent relationship
-		newEntity.parentId = parentEntity.id;
-		if (parentEntity.campaignId) {
-			newEntity.campaignId = parentEntity.campaignId;
-		} else if (parentEntity.type === EntityType.Campaign) {
-			newEntity.campaignId = parentEntity.id;
-		}
+		console.log('[addOneChildEntity] Created generated entity:', generatedEntity);
+
+		// Create workspace entity wrapping the generated entity
+		const workspaceEntity = {
+			id: generatedEntity.id,
+			type: entityType as any, // 'quest', 'character', etc.
+			name: generatedEntity.name || `${relationship.label} ${generatedEntity.id.slice(0, 8)}`,
+			description: generatedEntity.description || '',
+			tags: [],
+			parentId: parentEntity.id,
+			campaignId: parentEntity.campaignId || (parentEntity.type === EntityType.Campaign ? parentEntity.id : undefined),
+			metadata: {
+				createdAt: new Date(),
+				updatedAt: new Date()
+			},
+			relationships: [],
+			customFields: { generatedEntity }
+		};
+
+		console.log('[addOneChildEntity] Saving workspace entity to store:', {
+			entityId: workspaceEntity.id,
+			entityType: workspaceEntity.type,
+			entityName: workspaceEntity.name,
+			parentId: workspaceEntity.parentId,
+			campaignId: workspaceEntity.campaignId
+		});
 
 		// Save to store
-		entityStore.createEntity(newEntity);
-		return newEntity;
+		entityStore.createEntity(workspaceEntity as any);
+
+		// Dispatch event to tell workspace to refresh its entity list
+		if (typeof window !== 'undefined') {
+			window.dispatchEvent(new CustomEvent('entity-created', {
+				detail: { entityId: workspaceEntity.id, entityType: entityType }
+			}));
+		}
+
+		console.log('[addOneChildEntity] Entity saved successfully!');
+		return workspaceEntity as any;
 	} catch (error) {
 		console.error('Error creating entity:', error);
 		return null;
@@ -100,7 +149,9 @@ export function addOneChildEntity(parentEntity: Entity, relationship: EntityRela
 export function generateMultipleChildEntities(parentEntity: Entity, relationship: EntityRelationship): Entity[] {
 	try {
 		const count = getRandomCount(relationship);
-		const creator = getEntityCreator(relationship.childType);
+		// Convert to lowercase to match entity registry keys
+		const entityType = relationship.childType.toLowerCase();
+		const creator = getEntityCreator(entityType);
 		if (!creator) {
 			console.error(`No creator found for type: ${relationship.childType}`);
 			return [];
@@ -109,19 +160,35 @@ export function generateMultipleChildEntities(parentEntity: Entity, relationship
 		const createdChildren: Entity[] = [];
 
 		for (let i = 0; i < count; i++) {
-			const newEntity = creator.create();
+			const generatedEntity = creator.create();
 
-			// Set parent relationship
-			newEntity.parentId = parentEntity.id;
-			if (parentEntity.campaignId) {
-				newEntity.campaignId = parentEntity.campaignId;
-			} else if (parentEntity.type === EntityType.Campaign) {
-				newEntity.campaignId = parentEntity.id;
-			}
+			// Create workspace entity wrapping the generated entity
+			const workspaceEntity = {
+				id: generatedEntity.id,
+				type: entityType as any,
+				name: generatedEntity.name || `${relationship.label} ${generatedEntity.id.slice(0, 8)}`,
+				description: generatedEntity.description || '',
+				tags: [],
+				parentId: parentEntity.id,
+				campaignId: parentEntity.campaignId || (parentEntity.type === EntityType.Campaign ? parentEntity.id : undefined),
+				metadata: {
+					createdAt: new Date(),
+					updatedAt: new Date()
+				},
+				relationships: [],
+				customFields: { generatedEntity }
+			};
 
 			// Save to store
-			entityStore.createEntity(newEntity);
-			createdChildren.push(newEntity);
+			entityStore.createEntity(workspaceEntity as any);
+			createdChildren.push(workspaceEntity as any);
+		}
+
+		// Dispatch event to tell workspace to refresh its entity list
+		if (typeof window !== 'undefined' && createdChildren.length > 0) {
+			window.dispatchEvent(new CustomEvent('entity-created', {
+				detail: { entityId: createdChildren[0].id, entityType: entityType }
+			}));
 		}
 
 		return createdChildren;

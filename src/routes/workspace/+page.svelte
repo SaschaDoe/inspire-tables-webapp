@@ -9,7 +9,6 @@
 	import EntityGeneratorModal from '$lib/components/entities/EntityGeneratorModal.svelte';
 	import EntityViewer from '$lib/components/entities/EntityViewer.svelte';
 	import EntityNavigator from '$lib/components/entities/EntityNavigator.svelte';
-	import NestedEntitiesSection from '$lib/components/entities/NestedEntitiesSection.svelte';
 	import type { Entity, AdventureEntity } from '$lib/types/entity';
 	import { EntityType } from '$lib/types/entity';
 	import type { Campaign } from '$lib/entities/campaign';
@@ -620,12 +619,6 @@
 							{/if}
 						</div>
 
-						<!-- Nested Entities Section -->
-						<NestedEntitiesSection
-							parentEntity={currentGenericEntity}
-							on:openEntity={handleNestedEntityOpen}
-							on:refresh={handleNestedRefresh}
-						/>
 					</div>
 				{:else if $activeTab}
 					<div class="entity-content">
