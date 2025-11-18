@@ -38,6 +38,17 @@
 				tabStore.openTab(entity);
 			}
 		}
+
+		// Listen for entity creation events from child components
+		const handleEntityCreated = () => {
+			loadAllEntities();
+		};
+		window.addEventListener('entity-created', handleEntityCreated);
+
+		// Cleanup
+		return () => {
+			window.removeEventListener('entity-created', handleEntityCreated);
+		};
 	});
 
 	function loadAllEntities() {

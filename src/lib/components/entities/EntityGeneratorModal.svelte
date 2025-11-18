@@ -10,9 +10,10 @@
 		isOpen: boolean;
 		onClose: () => void;
 		onSave?: (entity: any, entityType: string) => void;
+		defaultEntityType?: string; // If provided, skip selection and generate this type
 	}
 
-	let { isOpen = $bindable(false), onClose, onSave }: Props = $props();
+	let { isOpen = $bindable(false), onClose, onSave, defaultEntityType }: Props = $props();
 
 	let currentStep = $state<'select' | 'view'>('select');
 	let selectedEntityType = $state<string | null>(null);
@@ -20,6 +21,14 @@
 	let entityTypes = $state<EntityTypeInfo[]>(getEntityTypesList());
 	let editedProperties = $state<Record<string, any>>({}); // Track user edits
 	let lockedProperties = $state<Set<string>>(new Set()); // Track locked properties
+
+	// Auto-generate when modal opens with a defaultEntityType
+	$effect(() => {
+		if (isOpen && defaultEntityType && !selectedEntityType) {
+			selectedEntityType = defaultEntityType;
+			generateEntity();
+		}
+	});
 
 	// Group entities by category
 	const categorizedEntities = $derived(() => {

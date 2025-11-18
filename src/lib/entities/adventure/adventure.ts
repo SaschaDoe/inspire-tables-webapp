@@ -1,5 +1,11 @@
 import { Entity } from '../base/entity';
 
+export interface RisingActionEntity {
+	entityId: string;
+	entityType: string;
+	entityName: string;
+}
+
 export class Adventure extends Entity {
 	name = '';
 	description = '';
@@ -8,4 +14,6 @@ export class Adventure extends Entity {
 	climax = '';
 	ending = '';
 	plotTropes: string[] = [];
+	// Map rising action index to entity reference
+	risingActionEntities: Record<number, RisingActionEntity> = {};
 }
