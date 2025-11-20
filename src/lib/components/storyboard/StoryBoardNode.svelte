@@ -969,6 +969,48 @@
 				if (newNode) {
 					storyboardStore.addConnection($activeBoard.id, node.id, newNode.id);
 				}
+			} else if (link.targetDeck === 'story-engine') {
+				const storyEngineCard = await getRandomStoryEngineCard(link.targetCardType as any);
+
+				// Add as a story engine card near this node
+				const offsetX = node.width + 50;
+				const offsetY = 0;
+
+				const typeInfo = STORY_ENGINE_CARD_TYPES[storyEngineCard.type];
+
+				const nodeData = {
+					x: node.x + offsetX,
+					y: node.y + offsetY,
+					width: 400,
+					height: 400,
+					label: link.linkText, // Use link text as label
+					notes: `Spawned from bridge link: ${link.linkText}`,
+					icon: typeInfo.icon,
+					layer: node.layer,
+					storyEngineCard: {
+						type: storyEngineCard.type,
+						cues: Array.from(storyEngineCard.cues),
+						activeCueIndex: 0,
+						expansion: storyEngineCard.expansion
+					}
+				};
+
+				const newNode = storyboardStore.addNode($activeBoard.id, nodeData, `Spawn bridge link: ${link.linkText}`);
+
+				// Track this spawned link with the actual cue text as display name
+				if (newNode) {
+					const displayName = storyEngineCard.cues[0]; // Use first cue as display name
+					const updatedTracking = {
+						...currentNode.bridgeLinksSpawned,
+						[link.linkText]: { nodeId: newNode.id, displayName }
+					};
+					storyboardStore.updateNode($activeBoard.id, node.id, { bridgeLinksSpawned: updatedTracking });
+				}
+
+				// Create connection (no label on line)
+				if (newNode) {
+					storyboardStore.addConnection($activeBoard.id, node.id, newNode.id);
+				}
 			}
 		} catch (error) {
 			console.error('Failed to spawn bridge link:', error);

@@ -119,10 +119,10 @@ export function detectBridgeLinks(cue: string): DetectedBridgeLink[] {
 		}
 	}
 
-	// Pattern for text-based references (e.g., "a Faction", "an Event", "a Region")
+	// Pattern for text-based references (e.g., "a Faction", "an Event", "a Region", "a Conflict")
 	// Common in bridge card cues
 	const textPattern =
-		/\b(a|an)\s+(faction|figure|event|location|object|material|creature|deity|region|landmark|namesake|origin|attribute|advent)\b/gi;
+		/\b(a|an)\s+(faction|figure|event|location|object|material|creature|deity|region|landmark|namesake|origin|attribute|advent|agent|engine|anchor|conflict|aspect)\b/gi;
 
 	while ((match = textPattern.exec(cue)) !== null) {
 		const article = match[1];
@@ -141,6 +141,7 @@ export function detectBridgeLinks(cue: string): DetectedBridgeLink[] {
 			'deity'
 		];
 		const worldBuilderTypes = ['region', 'landmark', 'namesake', 'origin', 'attribute', 'advent'];
+		const storyEngineTypes = ['agent', 'engine', 'anchor', 'conflict', 'aspect'];
 
 		if (loreMasterTypes.includes(typeName)) {
 			links.push({
@@ -153,6 +154,13 @@ export function detectBridgeLinks(cue: string): DetectedBridgeLink[] {
 			links.push({
 				linkText: match[0],
 				targetDeck: 'world-builder',
+				targetCardType: typeName as any,
+				position
+			});
+		} else if (storyEngineTypes.includes(typeName)) {
+			links.push({
+				linkText: match[0],
+				targetDeck: 'story-engine',
 				targetCardType: typeName as any,
 				position
 			});
