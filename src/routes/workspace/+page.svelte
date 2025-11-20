@@ -300,8 +300,7 @@
 		autoGenerateChildEntities(workspaceEntity);
 
 		// Reload entities to show the newly created children
-		loadAllEntities();
-
+	
 		// Open the entity in a tab
 		tabStore.openTab(workspaceEntity);
 	}
@@ -395,16 +394,13 @@
 			entityStore.createEntity(workspaceEntity);
 
 			// Reload entities
-			loadAllEntities();
-
+		
 			// Open it
 			openGenericEntity(workspaceEntity);
 		}
 	}
 
-	function handleNestedRefresh() {
-		loadAllEntities();
-	}
+	// Phase 2: Removed handleNestedRefresh - derived stores update automatically
 
 	function handleEntityUpdated(event: CustomEvent<{ entity: Entity }>) {
 		const updatedEntity = event.detail.entity;
@@ -416,8 +412,7 @@
 				generatedEntity: JSON.parse(JSON.stringify(updatedEntity.customFields?.generatedEntity))
 			}
 		});
-		// Reload to reflect changes
-		loadAllEntities();
+		// Phase 2: Derived stores update automatically - no need to reload
 	}
 </script>
 
