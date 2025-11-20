@@ -523,7 +523,7 @@
 						onNameChange={updateCampaignName}
 						onAddAdventure={addAdventure}
 						onOpenAdventure={(id) => {
-							const adv = adventures.get(id);
+							const adv = $adventureEntities.find(a => a.id === id); // Phase 2: Use derived store
 							if (adv) openAdventure(adv);
 						}}
 					/>
