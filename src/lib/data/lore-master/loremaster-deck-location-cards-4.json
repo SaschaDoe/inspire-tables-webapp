@@ -1,0 +1,337 @@
+{
+  "deck": "Lore Master's Deck - Main Deck",
+  "cardTypes": {
+    "location": {
+      "name": "Location",
+      "description": "Landmarks or geographical areas, from secret springs and labyrinthine cities to fang-filled forests and shattered towers",
+      "primaryCueCount": 4,
+      "secondaryCueCount": 4,
+      "cards": [
+        {
+          "primaryCues": ["PAVILION", "WELLS", "THRESHOLD", "VAULT"],
+          "secondaryCues": [
+            "TRAIT: SINKING OR FLOODING",
+            "TRAIT: SUNNING OR LOCATION OR APPROACH A FACTION ⚪",
+            "TRAIT: ⚫/⚪ HIGHLY ACCESSIBLE",
+            "BACKGROUND: NAMED AFTER A CREATURE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["HOMESTEAD", "GULF", "BELL TOWER", "FORTRESS"],
+          "secondaryCues": [
+            "TRAIT: ELABORATELY ROOMS OR SETTINGS (OR ⚫/⚪",
+            "TRAIT: ON SETTINGS (OR ⚫/⚪",
+            "TRAIT: EXCEPTIONAL AT SPECTACULAR SPECIFIC OR CHALK",
+            "BACKGROUND: LAYERED ON TOP OF ANOTHER LOCATION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["SCRUBLAND", "REEF", "CITY", "HOUSE"],
+          "secondaryCues": [
+            "TRAIT: CONGLOMERATED SHOPS",
+            "TRAIT: SEASONALLY SPECIFIC",
+            "TRAIT: EXCEPTIONAL AT FACTION ⚪",
+            "BACKGROUND: SEALED OR QUARANTINED BY A FACTION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["OASIS", "ISLE", "SHOP", "CITADEL"],
+          "secondaryCues": [
+            "TRAIT: ARCHITECTURE OR BROUGHT TO WORSHIP BY ⚪ CREATURE ⚪",
+            "TRAIT: TOTAL UNUSUAL NATURAL LANDSCAPE ⚪",
+            "TRAIT: DWELLING OR HARBOR",
+            "BACKGROUND: LOCATION OF A SECRET OR HIDDEN ARTIFACT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["RUIN(S)", "SHOAL", "AUDITORIUM", "BUNKER"],
+          "secondaryCues": [
+            "TRAIT: SPECIFIC ⚫/⚪ ⚪ CAN ONLY BE FOUND OR NAVIGATED ON MOURNING OR OBJECT ⚪/⚫",
+            "TRAIT: SPECIFIC AFTER",
+            "TRAIT: PROMOTION OR MATERIAL CURRENCY",
+            "BACKGROUND: ONLY KNOWN SOURCE OF A MATERIAL ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["CRATER", "ORCHARD", "RIB", "DEPOT"],
+          "secondaryCues": [
+            "TRAIT: ALL WHO CAME BEFORE FIGURE ON CARRY AN OBJECT ⚪/⚫",
+            "TRAIT: ROOMMATES",
+            "TRAIT: SWAMPLANDS",
+            "BACKGROUND: OCCUPIED BY A NOTABLE FIGURE OR FACTION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["MOUNTAIN", "KIOSK", "MOORESS", "BASILICA"],
+          "secondaryCues": [
+            "TRAIT: SECRET ROOM(S)",
+            "TRAIT: ONE ONLY OR SPECIFIC DESIGNED",
+            "TRAIT: BUILT OR MAINTAINED",
+            "BACKGROUND: DEATH OR BURIAL SITE OF A NOTABLE FIGURE OR CREATURE ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["HOARD", "RIVER", "ALTAR", "PLANT"],
+          "secondaryCues": [
+            "TRAIT: DECORATED, BROADEN, OR STOCKED WITH ⚪/⚫ AN OBJECT ⚪/⚫",
+            "TRAIT: ROOM IN A RIVAL",
+            "TRAIT: DAY TO DAY HARM",
+            "BACKGROUND: REBUILT MULTIPLE TIMES"
+          ]
+        },
+        {
+          "primaryCues": ["BURIAL GROUND", "BACK", "BRIDGESTREET", "HAVEN"],
+          "secondaryCues": [
+            "TRAIT: DIFFICULT ONLY",
+            "TRAIT: NEAR A SECRETIVE ⚪",
+            "TRAIT: ART OR A DECORATIVE PROCLAIMED LOCATION",
+            "BACKGROUND: EMERGENCY SHELTER OR STATION DURING A CRISIS ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["RUNWAY", "CLIFF(S)", "HARBOR", "CLUBHOUSE"],
+          "secondaryCues": [
+            "TRAIT: DIFFICULT OR GUARDED BY A ⚪/⚫ MATERIAL ⚪/⚫",
+            "TRAIT: DOMINATED LOCALE ACROSS LOCATION",
+            "TRAIT: CREATURE LOCALE",
+            "BACKGROUND: CREATED TO MEMORIALIZE AN EVENT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["HOLE", "PLAING(S)", "CASINO", "COLISEUM"],
+          "secondaryCues": [
+            "TRAIT: BEAUTIFUL WINDOW(S)",
+            "TRAIT: SIGNATURE GOOD OR PRINT MISSING IN AN INGREDIENT ⚫/⚪",
+            "TRAIT: STILL LOCATE OR BY A CREATURE ⚫",
+            "BACKGROUND: SITE OF A BATTLE OR CRISIS ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["RAINFOREST", "GEYSER", "SPEAKEASY", "COMPLEX"],
+          "secondaryCues": [
+            "TRAIT: SPECIALIST USING A SPECIFIC VISITOR OR A MATERIAL ⚫/⚪",
+            "TRAIT: POPULACE",
+            "TRAIT: PORTALS",
+            "BACKGROUND: REPURPOSED AS AN ANIMAL SANCTUARY ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["ROUTE", "SWAMP", "SMOKEHOUSE", "CRYPT"],
+          "secondaryCues": [
+            "TRAIT: LOCATION WITHIN",
+            "TRAIT: ORGANIZED AS A LIVING CHUNK OR MASS",
+            "TRAIT: COMING OF A FRACTION ⚪",
+            "BACKGROUND: CREATED OR SETTLED BY A FACTION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["BREWWATER", "FISSURE", "THEATER", "TOWER"],
+          "secondaryCues": [
+            "TRAIT: STOPPAGE CHIMNEY OR LOCATION",
+            "TRAIT: LOCATION ⚫/⚪",
+            "TRAIT: ⚪",
+            "BACKGROUND: CONTAINS AN EMERGENCY GENERATOR OR SHELTER"
+          ]
+        },
+        {
+          "primaryCues": ["WELLSPRING", "SAND DUNE", "HANGOUT", "PALACE"],
+          "secondaryCues": [
+            "TRAIT: LOCATED OR BUILT IN THE REMAINS OF A CREATURE ⚪",
+            "TRAIT: USUALLY OR VISIT OR MOOSE ⚪ THAT'S SOLD OR WIND",
+            "TRAIT: LOCATION OR CREATURE AT THE",
+            "BACKGROUND: EPICENTER OF A DISASTER ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["DEN", "WETLAND(S)", "WORKSHOP", "AGENCY"],
+          "secondaryCues": [
+            "TRAIT: SOURCE OR CODE OF HOSPITALITY",
+            "TRAIT: UNIQUE ITEM",
+            "TRAIT: ⚫/⚪ SOIL OR WIND",
+            "BACKGROUND: USED AS A FACTORY OR WORKSHOP FOR AN OBJECT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["COLOSSUS", "RETREAT", "CHARTER", "ARCHIVE"],
+          "secondaryCues": [
+            "TRAIT: STRATEGIC OCCUPANCY OR STATE CONSPIRACY OR POPULATION LIMIT",
+            "TRAIT: USED OR A ⚪",
+            "TRAIT: LOCATED IN A CREATURE ⚪",
+            "BACKGROUND: REBUILT AFTER AN EVENT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["SQUARE", "SUMMIT", "BATHHOUSE", "HALL(S)"],
+          "secondaryCues": [
+            "TRAIT: LIFE'S OR GENERAL TRANSPORT SYSTEM",
+            "TRAIT: MAGIC OR ENERGY",
+            "TRAIT: ON BREAKING HELD",
+            "BACKGROUND: MYTHICAL HOME OF A SPECIAL MATERIAL ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["TERRACE", "SEA", "SHIPYARD", "LAB"],
+          "secondaryCues": [
+            "TRAIT: BRICK (OR SOMETHING OTHER TIME)",
+            "TRAIT: HOUSED AT IN A CREATURE ⚪",
+            "TRAIT: DISTINCTIVE A DELICATE CREATURE ⚪",
+            "BACKGROUND: USED FOR CORONATIONS OR WEDDINGS"
+          ]
+        },
+        {
+          "primaryCues": ["SEABOARD", "BRUSH", "FACTORY", "STRONGHOLD"],
+          "secondaryCues": [
+            "TRAIT: MESTS OF MILES",
+            "TRAIT: SITE OF A MAJOR ⚫/⚪",
+            "TRAIT: LOCATION ⚪",
+            "BACKGROUND: BUILT WITH A NOTABLE MATERIAL ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["CROSSROAD", "GROTTO", "ARCADE", "STORE"],
+          "secondaryCues": [
+            "TRAIT: CREATURE ⚪/⚫",
+            "TRAIT: FULL OF ACCESSIBLE THINGS",
+            "TRAIT: PORTALS CLAIMED ⚪",
+            "BACKGROUND: REPURPOSED AS A REFINERY OR SILO FOR A MATERIAL ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["ARCH", "WATERFALL", "CAMPUS", "DANCE HALL"],
+          "secondaryCues": [
+            "TRAIT: CONTAINS A PORTRAIT TO ANOTHER LOCATION",
+            "TRAIT: RAZED SOURCE OR",
+            "TRAIT: WATCH ROUTINE",
+            "BACKGROUND: RESPONSIBLE FOR THE DEATH OF ITS FOUNDER ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["FARMSTEAD", "COMPOUND", "TEMPLE"],
+          "secondaryCues": [
+            "TRAIT: SPECIAL HEARING OR",
+            "TRAIT: CONVERT FROM A PRIOR VEHICLE OR GROUNDED VESSEL",
+            "TRAIT: OVERTURNED IN A HANDS, LIVING OR MASS",
+            "BACKGROUND: CONVERTED FROM A PRIOR VEHICLE OR GROUNDED VESSEL"
+          ]
+        },
+        {
+          "primaryCues": ["GREENHOUSE", "INLET", "GALLERY"],
+          "secondaryCues": [
+            "TRAIT: CONTAINS A PORTAL TO ANOTHER LOCATION",
+            "TRAIT: PRAISED SOURCE OR",
+            "TRAIT: GUARDED BY ⚫/⚪",
+            "BACKGROUND: PROVIDES POWER TO A FACTION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["HOLLOW", "BUTTE", "BOULEVARD", "KITCHEN(S)"],
+          "secondaryCues": [
+            "TRAIT: ⚫/⚪/⚫ BOOKS THAN BOOKS SOMETHING OTHER",
+            "TRAIT: LOCATION PART OF",
+            "TRAIT: ART OR CELEBRATION PROCESSIBLE AS ⚪",
+            "BACKGROUND: WON OR LOST IN A BET BETWEEN FACTIONS ⚪+⚪"
+          ]
+        },
+        {
+          "primaryCues": ["DIG SITE", "GLACIER", "HEARTH", "GARRISON"],
+          "secondaryCues": [
+            "TRAIT: CREATURE ⚪/⚫",
+            "TRAIT: GIANT IS FOUND AT WITHOUT AN OBJECT",
+            "TRAIT: CONSPICUOUS",
+            "BACKGROUND: HIDING PLACE OF A FIGURE OR FACTION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["EXPANSE", "RESERVOIR", "SHACK", "GYMNASIUM"],
+          "secondaryCues": [
+            "TRAIT: LANDMARK OR SIGHT",
+            "TRAIT: HANGOUT OR ICON",
+            "TRAIT: RESCONANCE",
+            "BACKGROUND: PHYSICALLY CONNECTED TO ANOTHER LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["FLATLAND(S)", "LOUNGE", "VILLA"],
+          "secondaryCues": [
+            "TRAIT: CURIOSITY",
+            "TRAIT: FIGURATIVELY",
+            "TRAIT: EXHAUSED IN PLACES DECEASED ⚫/⚪",
+            "BACKGROUND: CONTAINS THE ONLY MAP OF (OR TO) A LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["PROMENADE", "DESERT", "RESIDENCE"],
+          "secondaryCues": [
+            "TRAIT: LANDSCAPE WHERE",
+            "TRAIT: LANDSCAPE OF A CREATURE'S DISASTER ⚪/⚫",
+            "TRAIT: FULL OF EATING REMAINS ⚪",
+            "BACKGROUND: WAS CREATED OR DESTROYED USING AN OBJECT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["LAKE", "CREVASSE", "LABYRINTH", "SAFE HOUSE"],
+          "secondaryCues": [
+            "TRAIT: STOREHOUSE",
+            "TRAIT: LANDSCAPE HERO ⚪",
+            "TRAIT: LANDSCAPE IN SEEN AS THEN AT DISCARD ⚪/⚫",
+            "BACKGROUND: RUMORED TO BE HAUNTED BY A FIGURE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["MINE", "STRAND", "CLINIC", "PYRAMID"],
+          "secondaryCues": [
+            "TRAIT: CERTAIN KIND OF SPACEBODY FOR A",
+            "TRAIT: CERTAIN LAND DISASTER ⚫/⚪",
+            "TRAIT: LANDSCAPE",
+            "BACKGROUND: TEMPORARY HABITATION HEADQUARTERS ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["TRENCH", "KNOLL", "MARKETPLACE", "ARMORY"],
+          "secondaryCues": [
+            "TRAIT: FULL OF LIVING REMAINS ⚪",
+            "TRAIT: MAKE ON ENERGY OR REMAINING HELD",
+            "TRAIT: DISTINCTIVE",
+            "BACKGROUND: CONSIDERED SIBLINGS WITH ANOTHER LOCATION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["MENAGERIE", "MARKETPLACE", "DINER"],
+          "secondaryCues": [
+            "TRAIT: FULL OR STOCKING ART IN A PICTURE DECLINE DECISIVE ⚪",
+            "TRAIT: BURNING PLACE",
+            "TRAIT: CONTAINS A GHOST",
+            "BACKGROUND: SITE OF A MAJOR DEFEAT FOR A FACTION ⚪+⚫"
+          ]
+        },
+        {
+          "primaryCues": ["BARROW", "OCEAN", "REPOSITORY", "WATCHTOWER"],
+          "secondaryCues": [
+            "TRAIT: MAGICAL HEAL INSIGHT",
+            "TRAIT: ⚪/⚫ ⚪ INITIAL SITE ⚪/⚪ ⚪",
+            "TRAIT: GHOSTLY OR",
+            "BACKGROUND: PRISON OF SOMETHING OR SOMEONE POWERFUL ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["FOREST", "PHARMACY", "LODGE"],
+          "secondaryCues": [
+            "TRAIT: SURVEILLANCE FEATURES",
+            "TRAIT: ⚫/⚪ EXTENSIVE IN BOUNDARIES",
+            "TRAIT: FEATURES",
+            "BACKGROUND: SECURITY FEATURES"
+          ]
+        },
+        {
+          "primaryCues": ["STABLE LIKE A", "TRAIT: SIMPLE LIKE A"],
+          "secondaryCues": [
+            "TRAIT: ⚫/⚪ CREATURE ⚫/⚪",
+            "TRAIT: LOCATION",
+            "TRAIT: CONSPICUOUS",
+            "BACKGROUND: SEALED OR QUARANTINED BY A FACTION ⚪/⚫"
+          ]
+        }
+      ]
+    }
+  }
+}

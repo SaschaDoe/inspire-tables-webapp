@@ -1,0 +1,517 @@
+{
+  "deck": "Deck of Worlds Creative Expansion - Lore Fragments (Fresh Ink & Ancient Song)",
+  "cardTypes": {
+    "opus": {
+      "name": "Opus",
+      "description": "Lore formats - types of written, spoken, or performed cultural artifacts to create",
+      "cards": [
+        {
+          "cues": [
+            "WRITE AN INSCRIPTION AGAINST EVIL",
+            "WRITE OR RECITE A EULOGY",
+            "WRITE OR RECITE A MOURNING DIRGE",
+            "DESCRIBE A FOLK HERO'S GRAVESITE FOR A LOCAL CEMETERY"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE SOME JUICY GOSSIP",
+            "WRITE OR RECITE A WORK SONG",
+            "DESCRIBE OR SKETCH A CHURCH, TEMPLE, OR SHRINE",
+            "DESCRIBE OR SKETCH A MONUMENT TO AN IMPORTANT EVENT"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE THREE IMPORTANT LAWS",
+            "A TEXTBOOK",
+            "WRITE A PAGE FROM A TEXTBOOK",
+            "DESCRIBE OR SKETCH HISTORICAL SITES FOR A BROCHURE"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A LOCAL'S DIARY ENTRY",
+            "WRITE OR RECITE A LULLABY",
+            "SKETCH OR DESCRIBE A RUINED OR ABANDONED BUILDING",
+            "LIST MAJOR IMPORTS OR EXPORTS OF A TRADING HUB"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A PAGE FROM A TEXTBOOK",
+            "WRITE OR RECITE AN OATH OR PLEDGE",
+            "DESCRIBE OR SKETCH AN ILL-FATED BUILDING OR PLACE",
+            "DESCRIBE OR SKETCH A REVERED NATURAL FEATURE"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE AN ACCOUNT OF A BATTLE",
+            "WRITE OR RECITE AN OATH OR PLEDGE",
+            "DESCRIBE OR SKETCH THE LANDSCAPE IN THE STYLE OF A HISTORICAL NATURALIST",
+            "DESCRIBE OR SKETCH A FAMOUS LANDMARK"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A LOCAL CREATION STORY",
+            "WRITE OR RECITE A BEDTIME STORY OR FAIRYTALE",
+            "DESCRIBE OR SKETCH AN ILL-FATED LETTER",
+            "DESCRIBE OR SKETCH A MONUMENT IN A PUBLIC SPACE"
+          ]
+        },
+        {
+          "cues": [
+            "EXPLAIN A LOCAL CARD GAME",
+            "EXPLAIN THE ORIGINS OF AN OBSCURE LAW",
+            "DESCRIBE A TYPICAL COMMUNITY MEETING",
+            "TRANSCRIBE A TYPICAL COMMUNITY MEETING"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A TRAVEL DIARY PAGE",
+            "WRITE OR RECITE A WEDDING TOAST",
+            "DESCRIBE OR SKETCH AN ART GALLERY OR A SPECIAL EXHIBIT",
+            "DESCRIBE OR SKETCH A FAMOUS LOCAL OR NATIONAL LANDMARK"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE THE INNKEEPER'S DAILY SCHEDULE",
+            "LIST THE ITEMS IN SOMEONE'S HOME",
+            "WRITE A PROSPECTOR'S DAILY SCHEDULE",
+            "LIST THE ITEMS IN SOMEONE'S DESK"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A RIDDLE",
+            "DESCRIBE OR SKETCH AN ILL-FATED BUILDING OR PLACE",
+            "WRITE OR RECITE AN OMEN OR PROPHECY",
+            "DESCRIBE OR SKETCH A TAVERN OR INN'S INTERIOR"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE AN ANIMAL FABLE",
+            "WRITE OR RECITE A WEDDING SONG",
+            "DESCRIBE OR SKETCH A CIVIC BUILDING",
+            "DESCRIBE OR SKETCH A RELIGIOUS BUILDING"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A PROSPECTING REPORT",
+            "WRITE OR RECITE A TRADITIONAL HYMN OR CHANT",
+            "DESCRIBE OR SKETCH A PLACE OF LEISURE",
+            "LIST THE INVENTORY OF A WAREHOUSE"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A STORY EXPLAINING A LOCAL PHENOMENON",
+            "WRITE OR RECITE A DINNER RHYME",
+            "DESCRIBE OR SKETCH WITNESS TESTIMONY",
+            "A TRAINING MANUAL"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A PAGE FROM A TRAINING MANUAL",
+            "WRITE OR RECITE A FOLK SONG",
+            "DESCRIBE OR SKETCH A COMMUNITY CELEBRATION",
+            "LIST THE MENU FOR A FEAST"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A LYRIC POEM",
+            "WRITE OR RECITE A LULLABY",
+            "DESCRIBE OR SKETCH A LOVED MEMENTO",
+            "DESCRIBE OR SKETCH A CIVIC OR JUDICIAL BUILDING"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A LOVE LETTER",
+            "WRITE OR RECITE A WORK SONG",
+            "WITH REACTIONS",
+            "IN LESS THAN FIFTY WORDS"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A HOME REMEDY",
+            "WRITE OR TELL A FABLE",
+            "DESCRIBE OR SKETCH A TAVERN NOTICE BOARD",
+            "WITH REGIONAL SLANG"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A RESTAURANT MENU",
+            "WRITE OR RECITE A DRINKING SONG",
+            "DESCRIBE OR SKETCH AN IDOL OR ICON FOR A SHRINE",
+            "LIST LOCAL IMPORTS OR EXPORTS"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A LOCAL NAME DEVICE",
+            "WRITE OR RECITE A NURSERY RHYME",
+            "DESCRIBE OR SKETCH A RADICAL OR CONTROVERSIAL PAMPHLET",
+            "EXPLAIN A NAMING PRACTICE"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A POLITICAL MANIFESTO",
+            "WRITE A CURSE OR RECIPE",
+            "WRITE OR RECITE A HERESY OR TABOO",
+            "A PAMPHLET"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A TRICKSTER STORY",
+            "WRITE AN EXCERPT FROM AN EXPERT FROM A BANNED TEXT",
+            "WRITE OR RECITE A LOVE BALLAD",
+            "DESCRIBE OR SKETCH A WORK OF ART"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE AN ACCOUNT OF A HISTORIC EVENT",
+            "WRITE OR RECITE THE LYRICS OF A PROTEST SONG",
+            "DESCRIBE OR SKETCH AN APOTHECARY",
+            "LIST DRUGS OR MEDICINES"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A LOCAL'S CONFESSION",
+            "WRITE OR RECITE A LAST WILL OR TESTAMENT",
+            "DESCRIBE OR SKETCH A WANTED POSTER",
+            "A CONTROVERSIAL PUBLIC ANNOUNCEMENT"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A FOLK SONG",
+            "WRITE OR RECITE A DRINKING SONG",
+            "DESCRIBE OR SKETCH A POLITICAL SPEECH",
+            "WRITE A FARMER'S ALMANAC"
+          ]
+        },
+        {
+          "cues": [
+            "EXPLAIN A LOCAL SPORT",
+            "WRITE OR RECITE A FOLK SONG",
+            "DESCRIBE OR SKETCH THE LAST OUTFIT OR WARDROBE",
+            "LIST LOCAL FESTIVALS"
+          ]
+        },
+        {
+          "cues": [
+            "DESCRIBE A FOLK HERO",
+            "WRITE A LOCAL'S WILL",
+            "WRITE OR RECITE A NURSERY RHYME",
+            "DESCRIBE OR SKETCH A PORTRAIT OF THE HERO"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE THE ETYMOLOGY OF A LOCAL WORD",
+            "WRITE OR RECITE A WARNING",
+            "AND MAKE IT SYMBOLIC",
+            "LIST EUPHEMISMS"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE AN EXCERPT FROM A LITERARY WORK",
+            "WRITE OR RECITE A BIT OF OBSCURE LORE",
+            "DESCRIBE OR SKETCH A MYSTERIOUS ARTIFACT",
+            "WRITE AN EPIC POEM"
+          ]
+        },
+        {
+          "cues": [
+            "WRITE A GHOST STORY",
+            "WRITE OR RECITE A SCARY TALE",
+            "DESCRIBE OR SKETCH A GHOST",
+            "A FAIRY TALE"
+          ]
+        }
+      ]
+    },
+    "flourish": {
+      "name": "Flourish",
+      "description": "Stylistic quirks - optional creative challenges to add flavor to your Opus creations",
+      "cards": [
+        {
+          "cues": [
+            "BY OR INVOLVING A POTTY MOUTH",
+            "WITH PARANOID NOTES",
+            "IN A PRODOCIC STYLE",
+            "IN LESS THAN TEN WORDS"
+          ]
+        },
+        {
+          "cues": [
+            "INVOLVING A FAUX PAS",
+            "IN A CYNICAL TONE",
+            "WITH DOODLES",
+            "IN TOO MANY WORDS"
+          ]
+        },
+        {
+          "cues": [
+            "IN A SKETCH",
+            "IN A SERIOUS TONE",
+            "AND MAKE IT COMPARATIVE",
+            "IN A SKETCH STYLE"
+          ]
+        },
+        {
+          "cues": [
+            "AND MAKE IT COMPARATIVE",
+            "WITH A FOCUS",
+            "AND MAKE IT MESSY",
+            "WITH A BIASED PERSPECTIVE"
+          ]
+        },
+        {
+          "cues": [
+            "WITH RHYME",
+            "WITH REGIONAL SLANG",
+            "IN A PROFOUND STYLE",
+            "IN A HEARTFELT STYLE"
+          ]
+        },
+        {
+          "cues": [
+            "IN TOO MANY WORDS",
+            "IN 100-250 WORDS",
+            "IN A CLINICAL STYLE",
+            "WITH BIG WORDS"
+          ]
+        },
+        {
+          "cues": [
+            "WITH A FOCUS",
+            "WITH SARCASM",
+            "IN JARGON",
+            "WITH FOOTNOTES"
+          ]
+        },
+        {
+          "cues": [
+            "IN FIRST-PERSON PERSPECTIVE",
+            "BY OR INVOLVING SOMEONE POMPOUS",
+            "IN SECOND-PERSON PERSPECTIVE",
+            "IN THIRD-PERSON PERSPECTIVE"
+          ]
+        },
+        {
+          "cues": [
+            "AND MAKE IT MAGICAL",
+            "WITH A FOCUS ON HYPERBOLE",
+            "WITH INACCURACIES",
+            "AND MAKE IT FUNNY"
+          ]
+        },
+        {
+          "cues": [
+            "WITH SARCASM",
+            "BY OR INVOLVING THE MILITARY",
+            "BY OR INVOLVING THE CLERGY",
+            "IN A SATIRICAL STYLE"
+          ]
+        },
+        {
+          "cues": [
+            "INVOLVING MONEY",
+            "IN THE STYLE OF A BALLAD",
+            "WITH A POLITICAL BIAS",
+            "INVOLVING A TRADE"
+          ]
+        },
+        {
+          "cues": [
+            "AND MAKE IT TRAGIC",
+            "AND BE SURE TO OVERSTATE",
+            "AND MAKE IT CREEPY",
+            "AND MAKE IT PATRIOTIC"
+          ]
+        },
+        {
+          "cues": [
+            "WITH REGIONAL SLANG",
+            "BY OR INVOLVING A DAYDREAMER",
+            "BY OR INVOLVING AN OUTCAST",
+            "BRIMMING WITH SPITE"
+          ]
+        },
+        {
+          "cues": [
+            "IN 100-250 WORDS",
+            "IN BRACKETS",
+            "WITH A FOCUS ON SPACING",
+            "IN LESS THAN TEN WORDS"
+          ]
+        },
+        {
+          "cues": [
+            "BY OR INVOLVING SOMEONE POMPOUS",
+            "BY OR INVOLVING SOMEONE LONG DEAD",
+            "BY OR INVOLVING SOMEONE WORLDLY",
+            "BY OR INVOLVING SOMEONE KIND"
+          ]
+        },
+        {
+          "cues": [
+            "IN JARGON",
+            "AS POINT-FORM NOTES",
+            "IN A BOMBOUS TONE",
+            "IN AN ELEVATED STYLE"
+          ]
+        },
+        {
+          "cues": [
+            "IN SECOND-PERSON PERSPECTIVE",
+            "AND MAKE IT CREEPY",
+            "IN A CYNICAL TONE",
+            "IN AN ABSTRACT STYLE"
+          ]
+        },
+        {
+          "cues": [
+            "AND MAKE IT SYMBOLIC",
+            "WITH A FOCUS ON BREVITY",
+            "IN A SERIOUS TONE",
+            "WITH A FOCUS ON METAPHOR OR SIMILE"
+          ]
+        },
+        {
+          "cues": [
+            "INVOLVING A PRANK GONE WRONG",
+            "AND BE SURE TO UNDERSTATE",
+            "AND MAKE IT SYMBOLIC",
+            "WITH ALLITERATION"
+          ]
+        },
+        {
+          "cues": [
+            "WITH A FOCUS ON HYPERBOLE",
+            "INVOLVING A TRADE",
+            "INVOLVING A PRANK GONE WRONG",
+            "INVOLVING FOOD"
+          ]
+        },
+        {
+          "cues": [
+            "BY OR INVOLVING THE MILITARY",
+            "WITHOUT PUNCTUATION",
+            "WITH A FOCUS ON EXAGGERATION",
+            "AND MAKE IT FUNNY"
+          ]
+        },
+        {
+          "cues": [
+            "IN THE STYLE OF A BALLAD",
+            "WITH FOCUS ON SYMBOLS",
+            "AND BE SURE TO COMPARE",
+            "IN AN INSPIRING STYLE"
+          ]
+        },
+        {
+          "cues": [
+            "AND BE SURE TO OVERSTATE",
+            "IN A CLINICAL STYLE",
+            "WITH DIFFERENT VERSIONS",
+            "BY OR INVOLVING A GRUDGE"
+          ]
+        },
+        {
+          "cues": [
+            "BY OR INVOLVING A DAYDREAMER",
+            "BY OR INVOLVING SOMETHING INHUMAN",
+            "BY OR INVOLVING A HERO",
+            "WITH EXCESSIVE DETAIL"
+          ]
+        },
+        {
+          "cues": [
+            "IN BRACKETS",
+            "WITH BIG WORDS",
+            "AIMING AT CHEESY",
+            "BY OR INVOLVING A VILLAIN"
+          ]
+        },
+        {
+          "cues": [
+            "BY OR INVOLVING SOMEONE LONG DEAD",
+            "BY OR INVOLVING A TOURIST",
+            "BY OR INVOLVING A LIAR",
+            "INVOLVING A GRUDGE"
+          ]
+        },
+        {
+          "cues": [
+            "AS POINT-FORM NOTES",
+            "AND MAKE IT REALLY GROSS",
+            "WITH A FOCUS ON METAPHOR OR SIMILE",
+            "IN A MEANDERING STYLE"
+          ]
+        },
+        {
+          "cues": [
+            "AND MAKE IT CREEPY",
+            "WITH A WARNING",
+            "WITH MALAPROPISMS",
+            "BY OR INVOLVING SOMEONE SELFISH"
+          ]
+        },
+        {
+          "cues": [
+            "WITH A FOCUS ON BREVITY",
+            "IN A PROFOUND STYLE",
+            "IN A MEANDERING STYLE",
+            "WITH FOOTNOTES"
+          ]
+        },
+        {
+          "cues": [
+            "BY OR INVOLVING AN OUTCAST",
+            "BY OR INVOLVING A CURMUDGEON",
+            "BY OR INVOLVING SOMEONE SELFISH",
+            "BY OR INVOLVING SOMEONE CORRUPT"
+          ]
+        }
+      ]
+    }
+  },
+  "usage": {
+    "description": "A 60-card expansion (30 Opus + 30 Flourish cards) for creating in-world cultural artifacts. Opus cards tell you what to create (format), while Flourish cards add stylistic challenges and flavor.",
+    "integration": [
+      "Draw one Opus card to determine what kind of lore to create",
+      "Optionally draw one or more Flourish cards to add creative constraints",
+      "Lore can be written, spoken, performed, or visually rendered",
+      "Place completed lore artifacts on microsettings or in world documentation",
+      "Use with Story Engine cards for character-specific perspectives"
+    ],
+    "composition": {
+      "opus_cards": 30,
+      "flourish_cards": 30
+    },
+    "notes": [
+      "Flourish cards are optional - use them to add challenge and variety",
+      "Multiple Flourish cards can be combined for complex creative constraints",
+      "Lore artifacts bring your world to life with tangible cultural details",
+      "Can be adapted for any medium: text, audio, visual, or performance"
+    ]
+  }
+}

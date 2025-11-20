@@ -1,0 +1,400 @@
+{
+  "deck": "Lore Master's Deck - Main Deck",
+  "cardTypes": {
+    "figure": {
+      "name": "Figure",
+      "description": "Individual people and characters, from wise rulers and anarchic mages to gifted scholars and poetical warlords",
+      "primaryCueCount": 4,
+      "secondaryCueCount": 4,
+      "cards": [
+        {
+          "primaryCues": ["BUILDER", "AERONAUT", "EXPERT", "EXTROVERT"],
+          "secondaryCues": [
+            "TRAIT: EXPECTED OR LEGITIMATE",
+            "TRAIT: COLLECTS TREASURES OR GIFTS FROM OBJECT ⚪",
+            "TRAIT: PHYSICAL TRAITS OF PERSONALITY OF A CREATURE ⚪",
+            "BACKGROUND: EMBLEM OR NICKNAME INSPIRED BY AN OBJECT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["AMBASSADOR", "HEALER", "MECHANIC", "OLIGARCH"],
+          "secondaryCues": [
+            "TRAIT: NAMELESS OR STITCHES",
+            "TRAIT: EXECUTE IN LIGHT TACTICAL EFFICIENCY",
+            "TRAIT: TRADE OR ASSOCIATED WITH A SPECIFIC FACTION ⚪",
+            "BACKGROUND: RECEIVED A VISION OF A FUTURE EVENT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["RECORD KEEPER", "TESTER", "WEAPONS MAKER", "IDEALIST"],
+          "secondaryCues": [
+            "TRAIT: SPREAD OR DISTINCTIVE FACTION",
+            "TRAIT: OR GEAR OR COSTUME MADE FROM AN OBJECT ⚪/⚪",
+            "TRAIT: PROMINENT OR CONSPICUOUS",
+            "BACKGROUND: WORKED OR WEASELED THEIR WAY TO THE TOP OF A FACTION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["CLERK", "STORYTELLER", "MANUFACTURER", "VAGRANT"],
+          "secondaryCues": [
+            "TRAIT: BRAVE OR RECKLESS",
+            "TRAIT: TOLD APART OR LOCALS",
+            "TRAIT: EMBLEM OR NICKNAME INSPIRED BY A CREATURE ⚪",
+            "BACKGROUND: EMBLEM OR NICKNAME INSPIRED BY A CREATURE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["JOKER", "ECOLOGIST", "WAYFINDER", "TRADITIONALIST"],
+          "secondaryCues": [
+            "TRAIT: CULTURALLY SPECIFIC HEADWEAR",
+            "TRAIT: MODEST OR FRUGAL",
+            "TRAIT: PAUPERS IN DELIBERATE STATE ⚪",
+            "BACKGROUND: CAUSED THE DOWNFALL OF A FACTION OR FIGURE ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["COMPOSER", "OUTLIER", "EXTREMIST DEFENDER", "DISRUPTOR"],
+          "secondaryCues": [
+            "TRAIT: SERIOUS ALLEGOD TO ⚪/⚫ A MATERIAL ⚪/⚫",
+            "TRAIT: INHERITED",
+            "TRAIT: COMPLETE INNOCUOUS FAVORITE ⚪",
+            "BACKGROUND: ACCOMPLISHMENTS ERASED FROM HISTORY"
+          ]
+        },
+        {
+          "primaryCues": ["TRACKER", "SENTINEL", "MACHINIST", "PUPIL"],
+          "secondaryCues": [
+            "TRAIT: ⚪/⚫ A MATERIAL ⚪/⚫ HISTORIC GRAND IN DIRECT ⚪/⚪",
+            "TRAIT: HONEST OR FLAT",
+            "TRAIT: SOCIALLY SIMULTANEOUS",
+            "BACKGROUND: DOCTRINE OR FOUNDING PRINCIPLES CREATED BY A CREATURE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["AGENT", "DEALER", "VETERINARIAN", "REFUGEE"],
+          "secondaryCues": [
+            "TRAIT: LEADERLESS",
+            "TRAIT: RINGSIDE LOYALIST",
+            "TRAIT: ⚪/⚫ MISHANDLING",
+            "BACKGROUND: LOST CONTROL OF THEIR FORMER HEADQUARTERS ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["RECRUIT", "BEEKEEPER", "REPORTER", "THINKER"],
+          "secondaryCues": [
+            "TRAIT: ⚪/⚫ WARD",
+            "TRAIT: NOTICEABLE SCARS",
+            "TRAIT: WOUNDED ALLEGIANCE",
+            "BACKGROUND: BETRAYED OR DENOUNCED A FIGURE OR FACTION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["ARTIST", "SAGE", "VANDAL", "DELINQUENT"],
+          "secondaryCues": [
+            "TRAIT: PLANNING ON",
+            "TRAIT: FAVORITE TRINKET",
+            "TRAIT: ANIMAL ⚪ PET OR GUARDIAN",
+            "BACKGROUND: NOTABLY RARE ESTATE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["INSTRUCTOR", "COUNCIL MEMBER", "COMMANDANT", "PENITENT"],
+          "secondaryCues": [
+            "TRAIT: RN",
+            "TRAIT: THRILLS OR SHARING NAMES OR WORDS",
+            "TRAIT: DESERVES COMA",
+            "BACKGROUND: LAST PRACTITIONER OF A PROFESSION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["ARSONIST", "SHOPKEEPER", "LINGUIST", "MOUTHPIECE"],
+          "secondaryCues": [
+            "TRAIT: ART, OR LITERATURE",
+            "TRAIT: LOVES A BASIC",
+            "TRAIT: PROMINENTLY PROMINENTLY PARANOID ⚪",
+            "BACKGROUND: RESPONSIBLE FOR DESTROYING AN ARTIFACT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["BROKER", "BOTANIST", "SOLDIER", "LUMINARY"],
+          "secondaryCues": [
+            "TRAIT: OLD MONEY OR NOBILITY HEIR",
+            "TRAIT: INTENSE EYES OR GAZE",
+            "TRAIT: EXPOSED A TRAINING A SPECIFIC CREATURE ⚪",
+            "BACKGROUND: APPRENTICED UNDER A FIGURE OR FACTION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["INSPECTOR", "POET", "LITIGANT", "DEFENDER"],
+          "secondaryCues": [
+            "TRAIT: FRIENDS FAMILY",
+            "TRAIT: SECRET IDENTITY",
+            "TRAIT: ESCAPED OF DISTINCTIVE",
+            "BACKGROUND: PREDICTED A MAJOR EVENT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["INNOVATOR", "ARMOURER", "PREACHER", "OUTSIDER"],
+          "secondaryCues": [
+            "TRAIT: TERRIBLE NIGHTMARES OR OTHER SLEEP",
+            "TRAIT: OR LETTERS",
+            "TRAIT: SECRET AS FAULT",
+            "BACKGROUND: IN A LOVE TRIANGLE ⚪+⚪"
+          ]
+        },
+        {
+          "primaryCues": ["ARTISAN", "MAPMAKER", "STRATEGIST", "AUTOCRAT"],
+          "secondaryCues": [
+            "TRAIT: BECOME IN RECENTLY A NOTABLE FACTION ⚪",
+            "TRAIT: LET A FIGURE ⚪",
+            "TRAIT: KEEPS IN A TIME ⚪",
+            "BACKGROUND: PATRON OF A FACTION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["TECHNOLOGIST", "STYLIST", "WRESTLER", "ADVENTURER"],
+          "secondaryCues": [
+            "TRAIT: DISCREDITED",
+            "TRAIT: SET A FIGURE ⚪",
+            "TRAIT: DISTINCTIVE",
+            "BACKGROUND: CLOSE ALLIES OF ANOTHER FACTION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["AUTHOR", "CROSSFITTER", "ARBITRATOR", "HOTSHOT"],
+          "secondaryCues": [
+            "TRAIT: TERRIBLE NIGHTMARES OR OTHER SLEEP",
+            "TRAIT: OR LETTERS",
+            "TRAIT: SECRET AS FAULT",
+            "BACKGROUND: IN A LOVE TRIANGLE ⚪+⚪"
+          ]
+        },
+        {
+          "primaryCues": ["PIRATE", "ADVISOR", "TRADESPERSON", "ZEALOT"],
+          "secondaryCues": [
+            "TRAIT: COMPLEX OR LEARNING TO LIVE IN A SPECIFIC ⚪/⚪",
+            "TRAIT: ESCAPIST",
+            "TRAIT: OF SIMPLE",
+            "BACKGROUND: CAUSED THE DEATH OF A NOTABLE FIGURE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["FREELANCER", "ADVOCATE", "TRAINER", "CHIEFTAIN"],
+          "secondaryCues": [
+            "TRAIT: OF MIXED ACCENT",
+            "TRAIT: RECRUITMENT SPECIFIC",
+            "TRAIT: CONSTANTLY DISGUISING",
+            "BACKGROUND: INVOLVED IN A TERRIBLE BREAKUP ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["SLEUTH", "CRITIC", "GAMER", "JACK-OF-ALL-TRADES"],
+          "secondaryCues": [
+            "TRAIT: ⚪/⚫ A SPECIFIC TRAIT",
+            "TRAIT: ESCAPES CONNECTING THE POINTS OR STORIES FROM ⚪/⚪",
+            "TRAIT: LIKE GETS INCOME",
+            "BACKGROUND: USED TO GO BY A DIFFERENT NAME"
+          ]
+        },
+        {
+          "primaryCues": ["INNKEEPER", "OFFICIAL", "THESMAN", "APOSTATE"],
+          "secondaryCues": [
+            "TRAIT: ⚪ MATERIAL ⚪/⚫",
+            "TRAIT: WHAT THE ICONS OF ART BEING AN EVENT ⚪",
+            "TRAIT: PROMINENTLY OF BEING ACCOMPLISHED BY AN EVENT ⚪",
+            "BACKGROUND: IN LOVE WITH SOMEONE FORBIDDEN ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["GYMNAST", "ESTABLISHED", "AUDITOR", "DIGNITARY"],
+          "secondaryCues": [
+            "TRAIT: ENTHUSIASTIC",
+            "TRAIT: LOVES AIMS",
+            "TRAIT: LOCATED IN A FIGURE ⚪",
+            "BACKGROUND: CREATED A NOTABLE OBJECT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["PRIZEFIGHTER", "MARSHAL", "RESEARCHER", "GLOBETROTTER"],
+          "secondaryCues": [
+            "TRAIT: ALWAYS, WHISTLES,",
+            "TRAIT: OR HUMS",
+            "TRAIT: ACCUSED OF IN RECENT ⚪/⚫",
+            "BACKGROUND: HAD A TRAUMATIC EXPERIENCE AT A LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["MOGUL", "MESSENGER", "VOLUNTEER", "SCAMMER"],
+          "secondaryCues": [
+            "TRAIT: ESCAPED A SHORT OF TALE",
+            "TRAIT: CLIMBED GROUP",
+            "TRAIT: ACTIVE CITIZEN",
+            "BACKGROUND: IMPRISONED OR PROTECTED BY A FACTION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["ASSISTANT", "SEAMSTER", "COUNSELOR", "SOVEREIGN"],
+          "secondaryCues": [
+            "TRAIT: LOST A LIMB IN A LOCATION ⚪",
+            "TRAIT: DISGRACED",
+            "TRAIT: AGED APPRENTICE",
+            "BACKGROUND: RECEIVED A VISION OF A FUTURE EVENT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["CAPTAIN", "SUGAR", "SPECIALIST", "NURTURER"],
+          "secondaryCues": [
+            "TRAIT: ESTABLISHED BY IN BEING VICTIM A WHILE BEING COMING WITH A MATERIAL ⚪",
+            "TRAIT: APPEARS OR ADAPT OF IN LOCATION",
+            "TRAIT: RECENT OR ADAPT IN LOCATION",
+            "BACKGROUND: HAD A TRAUMATIC EXPERIENCE AT A LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["THIEF", "SCHOLAR", "ECOLOGIST", "WHISTLEBLOWER"],
+          "secondaryCues": [
+            "TRAIT: BECOME IN A DECORATIVE MATERIAL",
+            "TRAIT: NOTE OR NICKNAME",
+            "TRAIT: CURRENTLY EMPLOYED ⚪/⚪",
+            "BACKGROUND: SOLE SURVIVOR OF A TRAGEDY ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["ENTREPRENEUR", "GUIDE", "DIVER", "MINION"],
+          "secondaryCues": [
+            "TRAIT: EXPERT AT FIGURE ⚪",
+            "TRAIT: AT FIGURE ⚪",
+            "TRAIT: DEDICATED TO OR FACTION ⚪",
+            "BACKGROUND: BUILT OR SETTLED A LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["MAGUS", "ATTORNEY", "ICON", "PERFECTIONIST"],
+          "secondaryCues": [
+            "TRAIT: SOCIALLY INFLUENTIAL",
+            "TRAIT: SOCIAL PLANNING",
+            "TRAIT: OR NICKNAME",
+            "BACKGROUND: LINKED TO A CRIME ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["COMMANDER", "ECONOMIST", "PHYSICIAN", "HOBBYIST"],
+          "secondaryCues": [
+            "TRAIT: DISTINCTIVE",
+            "TRAIT: UNKNOWN AT WORKING WITH OR CRAFTING",
+            "TRAIT: ⚪/⚫ OBJECT ⚪/⚫",
+            "BACKGROUND: SWORN ILLEGITIMATE CONNECTIONS"
+          ]
+        },
+        {
+          "primaryCues": ["ENTERTAINER", "ARCHIVIST", "APPRENTICE", "ELDER"],
+          "secondaryCues": [
+            "TRAIT: FILIOTAGE",
+            "TRAIT: WHOLE AT STRAY",
+            "TRAIT: CHRONICALLY NORM",
+            "BACKGROUND: FOUNDED BY SURVIVORS OF A DISASTER OR EVENT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["CONCIERGE", "ARTIFICER", "RACER", "DIRECTOR"],
+          "secondaryCues": [
+            "TRAIT: FROM A FAMILY OR AREA",
+            "TRAIT: UNCOMMON ORIGINS",
+            "TRAIT: TO A FIGURATIVE",
+            "BACKGROUND: MISSING SIGNIFICANT MEMORIES"
+          ]
+        },
+        {
+          "primaryCues": ["BOOKBINDER", "GUARDIAN", "SMITH", "DISCIPLE"],
+          "secondaryCues": [
+            "TRAIT: ⚪/⚫ ⚪ LOCATION ⚪/⚫",
+            "TRAIT: SOCIALLY SKILL OR",
+            "TRAIT: DISTINCTIVE OR PAST",
+            "BACKGROUND: FAMILY FORTUNE IN A RESOURCE OR TRADE GOOD ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["COACH", "DANKER", "MARINER", "BELIEVER"],
+          "secondaryCues": [
+            "TRAIT: INFLUENTIAL ⚪",
+            "TRAIT: ACQUIRED FIND OR ⚪",
+            "TRAIT: GOOD WITH ANIMALS OR SWIMS",
+            "BACKGROUND: PLAYED AN IMPROBABLE ROLE IN A MAJOR EVENT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["CONSULTANT", "OUTFITTER", "LONER", "NUTRITIONIST"],
+          "secondaryCues": [
+            "TRAIT: POSSESSES A POWERFUL NATURAL ⚪",
+            "TRAIT: UNDYING SHAME WORK",
+            "TRAIT: UNDECORATING",
+            "BACKGROUND: ESCAPED THEIR HOMETOWN AND NEVER LOOKED BACK ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["POWERFUL NATURAL ⚪", "POSSESSES A", "TRAIT"],
+          "secondaryCues": [
+            "TRAIT: OF UNKNOWN BIRTH OR LINEAGE",
+            "TRAIT: UNDECORATING",
+            "TRAIT: POSSESSES A",
+            "BACKGROUND: OF UNKNOWN BIRTH OR LINEAGE"
+          ]
+        },
+        {
+          "primaryCues": ["ILLNESS", "CHRONIC PAIN OR", "TRAIT"],
+          "secondaryCues": [
+            "TRAIT: WHISPERS OR",
+            "TRAIT: UNDECIDED OR INCONCLUSIVE",
+            "TRAIT: OR NICKNAME",
+            "BACKGROUND: FORMER CRIMINAL IN A SPECIFIC ROLE ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["BOLD, FASHION SENSE", "TRAIT"],
+          "secondaryCues": [
+            "TRAIT: HEIST AN OBJECT ⚪",
+            "TRAIT: FROM OPTION",
+            "TRAIT: DISTINCTIVE",
+            "BACKGROUND: OWNS A SPECIFIC LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["CONNECTIONS", "UNDERWORLD OR", "TRAIT"],
+          "secondaryCues": [
+            "TRAIT: CONNECTIONS",
+            "TRAIT: HINDERED THEMSELVES",
+            "TRAIT: FINALIST",
+            "BACKGROUND: LINKED TO A CRIME ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["A MATERIAL ⚪/⚫", "TRAIT: RESPECT OR", "SERIOUS ALLEGOD TO ⚪/⚫"],
+          "secondaryCues": [
+            "TRAIT: ⚪/⚫ ⚪ LOCATION ⚪/⚫",
+            "TRAIT: SOCIALLY SKILL",
+            "TRAIT: DISTINCTIVE OR PAST",
+            "BACKGROUND: BUILT OR SETTLED A LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["CORRUPTION ⚪/⚫", "FROM A FAMILY", "TRAIT"],
+          "secondaryCues": [
+            "TRAIT: ⚪/⚫ ⚪ LOCATION ⚪",
+            "TRAIT: SOCIALLY SKILL",
+            "TRAIT: DISTINCTIVE",
+            "BACKGROUND: GALVANIZED BY AN EVENT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["POLYMATH", "TRAIT"],
+          "secondaryCues": [
+            "TRAIT: BOLD ART WORK OR CLOTHING",
+            "TRAIT: USES COMPLEX JARGON ⚪",
+            "TRAIT: GO WORN ITEM OR ACCESSORY OF CLOTHING IDENTIFIED ⚪",
+            "BACKGROUND: KNOWS THE LOCATION FOR A POWERFUL RITUAL ⚪+ ⚪"
+          ]
+        }
+      ]
+    }
+  }
+}

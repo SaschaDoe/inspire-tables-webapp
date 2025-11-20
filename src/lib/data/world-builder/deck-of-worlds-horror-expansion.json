@@ -1,0 +1,262 @@
+{
+  "deck": "Deck of Worlds Horror Expansion - Worlds of Blight & Shadow",
+  "cardTypes": {
+    "region": {
+      "name": "Region",
+      "description": "Horror-themed main terrain types for microsettings",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["NECROPOLIS", "PIT(S)", "BARREN(S)", "WASTELAND"]
+        },
+        {
+          "cues": ["CITY", "WOOD(S)", "SWAMP", "ABYSS"]
+        },
+        {
+          "cues": ["MOOL", "TOMB", "NEST", "LAIR"]
+        },
+        {
+          "cues": ["MOOR", "BATTLEFIELD", "SLAUGHTERHOUSE", "CREMATORIUM"]
+        },
+        {
+          "cues": ["NECROPOLIS", "PIT(S)", "BARREN(S)", "WASTELAND"]
+        },
+        {
+          "cues": ["CITY", "WOOD(S)", "SWAMP", "ABYSS"]
+        },
+        {
+          "cues": ["MOOL", "TOMB", "NEST", "LAIR"]
+        },
+        {
+          "cues": ["MOOR", "BATTLEFIELD", "SLAUGHTERHOUSE", "CREMATORIUM"]
+        }
+      ]
+    },
+    "landmark": {
+      "name": "Landmark",
+      "description": "Horror-themed geographical sites and points of interest",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["CARNIVAL", "MANSION", "FENCE", "CHAPEL"]
+        },
+        {
+          "cues": ["RUN", "RIVER", "VILLAGE", "CABIN"]
+        },
+        {
+          "cues": ["WAREHOUSE", "LAKE", "ORPHANAGE", "FARMHOUSE"]
+        },
+        {
+          "cues": ["TOWN", "SPIRAL", "LABYRINTH", "ARENA"]
+        },
+        {
+          "cues": ["NECROPOLIS", "PIT(S)", "BARREN(S)", "WASTELAND"]
+        },
+        {
+          "cues": ["CITY", "WOOD(S)", "SWAMP", "ABYSS"]
+        },
+        {
+          "cues": ["MOOL", "TOMB", "NEST", "LAIR"]
+        },
+        {
+          "cues": ["MOOR", "BATTLEFIELD", "SLAUGHTERHOUSE", "CREMATORIUM"]
+        },
+        {
+          "cues": ["CARNIVAL", "MANSION", "FENCE", "CHAPEL"]
+        },
+        {
+          "cues": ["RUN", "RIVER", "VILLAGE", "CABIN"]
+        },
+        {
+          "cues": ["WAREHOUSE", "LAKE", "ORPHANAGE", "FARMHOUSE"]
+        },
+        {
+          "cues": ["TOWN", "SPIRAL", "LABYRINTH", "ARENA"]
+        }
+      ]
+    },
+    "namesake": {
+      "name": "Namesake",
+      "description": "Horror-themed prefixes and suffixes for naming locations",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["ABANDONED", "THAT FEEDS", "OF THE END TIMES", "OF MOTHS"]
+        },
+        {
+          "cues": ["NOWHERE", "AT THE MOUTH", "OF THE DEAD", "OF CLAWS"]
+        },
+        {
+          "cues": ["PALE", "THAT SCREAMS", "OF WIDOWS", "OF TOADS"]
+        },
+        {
+          "cues": ["ROTTING", "WITH A PULSE", "OF KEYS", "OF SCYTHES"]
+        },
+        {
+          "cues": ["DEATHLESS", "THAT CRAWLED UP", "OF BLOOD", "OF FOOTPRINTS"]
+        },
+        {
+          "cues": ["DAMNED", "WHERE WALLS HAVE EARS", "OF THORNS", "WHERE NO BLOOMS"]
+        },
+        {
+          "cues": ["RUINED", "OF CORPSES", "WHERE NO BLOOMS", "OF FANGS"]
+        },
+        {
+          "cues": ["CRACKING", "OF THE KERBAD", "OF CHAINS", "OF SILENT MOUTHS"]
+        },
+        {
+          "cues": ["TORN", "THAT CREEPS", "OF DEMONS", "OF GALLOWS"]
+        },
+        {
+          "cues": ["WASTING", "OF THE HANGED ONE", "OF SHADOWS", "OF KNIVES"]
+        },
+        {
+          "cues": ["UNCANNY", "WHERE CALLS HAIR", "OF BLOOD", "OF WOUNDS"]
+        },
+        {
+          "cues": ["EXECUTIONER'S", "THAT WHISPERS", "OF SHADOWS", "OF MAGGOTS"]
+        }
+      ]
+    },
+    "origin": {
+      "name": "Origin",
+      "description": "Horror-themed significant historical events",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["SITE OF LONG-UNSOLVED SERIAL MURDERS", "CURSED FOR THOUSANDS OF YEARS", "SITE OF AN INFAMOUS HEARTBREAK", "AFFECTED BY CENTURIES OF ISOLATION"]
+        },
+        {
+          "cues": ["MADE FAMOUS BY A LOCAL GHOST STORY", "SITE OF A SUPPOSED LOCATION OF A FAMOUS CRYPT", "SITE WHERE SOMETHING SANK INTO THE EARTH", "FOUNDED AS A MONSTER"]
+        },
+        {
+          "cues": ["CREATED THROUGH A PROPHECY", "FOUNDED BY A ROGUE MONARCH", "SHAPED BY PARANORMAL ACTIVITY", "SITE OF A MYSTERIOUS DISAPPEARANCE"]
+        },
+        {
+          "cues": ["SITE OF A GREAT SHATTERING", "ORIGIN OF A DEAD RELIGION", "SITE OF AN INFAMOUS HEARTBREAK", "SITE OF AN UNEXPLAINED MASSACRE"]
+        },
+        {
+          "cues": ["ORIGIN OF AN UNDEAD RITUAL", "FREQUENT PARANORMAL ACTIVITY", "MONSTROUS FLORA", "FOUNDED BY HACKERS"]
+        },
+        {
+          "cues": ["FORMER EXECUTION GROUNDS", "ABANDONED TO COLONY", "CREATED THROUGH EXTREME VIOLENCE", "ORIGIN OF A MYSTERIOUS DISAPPEARANCE"]
+        },
+        {
+          "cues": ["FORMER EXECUTION GROUNDS", "SITE OF A RITUAL HUNT LIMIT", "CREATED BY REFUGEES", "KNOWN FOR PAIN WORSHIP"]
+        },
+        {
+          "cues": ["SITE OF AN UNEXPLAINED MASSACRE", "ORIGIN OF A DEAD RELIGION", "SITE OF AN INFAMOUS HEARTBREAK", "SHAPED BY PARANORMAL ACTIVITY"]
+        }
+      ]
+    },
+    "attribute": {
+      "name": "Attribute",
+      "description": "Horror-themed present-day features and characteristics",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["OVERRUN BY VERMIN", "KNOWN FOR A UNIQUE SMOKE OR CRIME FACTOR DEMON", "SITE OF BLEEDING OR CRYING STATUE", "FREQUENT DEMONIC POSSESSIONS"]
+        },
+        {
+          "cues": ["KNOWN FOR PAIN WORSHIP", "FREQUENT ABDUCTIONS", "HIGHLY SUPERSTITIOUS", "ILLEGAL TRAFFICKING VICTIMS"]
+        },
+        {
+          "cues": ["GOING OUT AT NIGHT IS BANNED", "KNOWN FOR DRINKING BLOOD", "DISTRUSTFUL OF OUTSIDERS", "KNOWN FOR INSECT WORSHIP"]
+        },
+        {
+          "cues": ["SWALLOWING TOADS", "KNOWN FOR OR AGAINST", "SITE OF A RITUAL LIMIT HUNT", "MADE OF BONES"]
+        },
+        {
+          "cues": ["KNOWN FOR HYPNOTIC SOUND(S)", "INDUCING VISIONS", "DARK FOLKLORE", "MONK FOR OR AGAINST CREMATIONS"]
+        },
+        {
+          "cues": ["KNOWN FOR DEATH WORSHIP", "KNOWN FOR MONSTER HUNTERS", "SITE OF A WELL-KNOWN DESTINY", "HOME FOR A FIRST"]
+        },
+        {
+          "cues": ["FREQUENT STREET VIOLENCE", "BRUTAL EXECUTION METHOD", "KNOWN FOR MUTILATION", "LORDED OVER OR HARVEST"]
+        },
+        {
+          "cues": ["SITE OF STRANGE WHISPERING", "KNOWN FOR OR AGAINST CREMATIONS", "BRUTAL EXECUTION METHOD", "LORDED OVER OR MUTILATION"]
+        },
+        {
+          "cues": ["AN INSECT INFESTATION IS TAKING OVER:", "THEY ARE SEMI-BUROWERS, PLAGUE-BEEDERS, OR FLESH-EATERS", "DARK FOLKLORE", "MONK FOR OR AGAINST CREMATIONS"]
+        },
+        {
+          "cues": ["KNOWN FOR DEATH WORSHIP", "KNOWN FOR MONSTER HUNTERS", "SITE OF STRANGE WHISPERING", "BRUTAL EXECUTION METHOD"]
+        },
+        {
+          "cues": ["FREQUENT STREET VIOLENCE", "LORDED OVER OR MUTILATION", "LORDED OVER OR HARVEST", "KNOWN FOR MUTILATION"]
+        },
+        {
+          "cues": ["AN INSECT INFESTATION IS TAKING OVER", "THEY ARE SEMI-BUROWERS", "THE CREATURES HAS CLAIMED", "A HORRIFYING FOLK"]
+        }
+      ]
+    },
+    "advent": {
+      "name": "Advent",
+      "description": "Horror-themed events that may change the area's future",
+      "cards": [
+        {
+          "cue": "A PAST TRAGEDY IS STARTING TO BLEED THROUGH TO THE PRESENT:",
+          "interpretations": ["A MURDER, MASSACRE, OR WAR"]
+        },
+        {
+          "cue": "PEOPLE'S NIGHTMARES ARE BREAKING THROUGH TO THE WAKING WORLD:",
+          "interpretations": ["AS GHOSTS, LIVING DAYDREAMS", "OR MASS HALLUCINATIONS"]
+        },
+        {
+          "cue": "IN THE URBAN ARE MUTTERING, LIVING CREATURES:",
+          "interpretations": ["DEVELOPING SKELETAL STRUCTURE", "WIDENING SKELETAL STRUCTURE", "OR DEVELOPING PSYCHIC POWERS"]
+        },
+        {
+          "cue": "A HORRIFYING FOLK TALE IS COMING TRUE:",
+          "interpretations": ["ABOUT A TERROR, DEVIL BARGAIN, OR TWISTED INACTION"]
+        },
+        {
+          "cue": "A NEW BLIGHT IS SPREADING RAPIDLY:",
+          "interpretations": ["CURSING FERTILIZATION, FORCEFULNESS, OR CANNIBALISTIC PRACTICES"]
+        },
+        {
+          "cue": "A NOCTURNAL PHENOMENON HAS EVERYONE ON EDGE:",
+          "interpretations": ["STRANGE SOUNDS, APPEARING IN DREAMS, OR SOMETHING KNOCKING ON DOORS"]
+        },
+        {
+          "cue": "THE CEMETERIES ARE OVERFLOWING:",
+          "interpretations": ["WITH FRESH CORPSES, RESTLESS DEAD, OR STRANGE PLANTS"]
+        },
+        {
+          "cue": "A HEINOUS CRIME IS SHATTERING THE COMMUNITY:",
+          "interpretations": ["MURDER, VANDALISM OF SOMETHING SACRED, OR A CURSED SERIES OF CRIMES"]
+        }
+      ]
+    }
+  },
+  "usage": {
+    "description": "A 60-card horror expansion with genre-focused cards for creating dark and unsettling worlds. Contains cues that may be disturbing - use care, communication, and check-ins.",
+    "integration": [
+      "Use only expansion cards - Create a world of up to 8 microsettings with cohesive horror focus",
+      "Mix expansion cards into the main deck - Add horror embellishments without restricting to single genre",
+      "Mix cards and use a sideboard - Less random, more intentional worldbuilding when mixing multiple expansions"
+    ],
+    "composition": {
+      "regions": 8,
+      "landmarks": 12,
+      "namesakes": 12,
+      "origins": 8,
+      "attributes": 12,
+      "advents": 8
+    },
+    "content_warning": "This expansion contains cues about violence and death. We recommend using care, communication, and check-ins when using the deck, especially for collaboration or publication. Horror elements can be powerful and painful triggers for many people. There is incredible diversity in what different cultures find horrific. Fear is often rooted in misunderstanding. What might be taboo or terrifying in one culture is normal in another. Think about how you frame the horror elements of your world and which cultural perspective that horror is viewed from."
+  },
+  "credits": {
+    "design": "Peter Chiykowski",
+    "production": "Miroki Tong, Zach Schuster",
+    "writing": "Akira Keith, Athar Fikry, A. Z. Louise, Brendon Alekseii, Cae Hawksmoor, J. D. Harlock, Juliet Kemp, Michael Barker, Sarah Loch, Zach Schuster",
+    "sensitivity_review": "A. Z. Louise, Sonya Ballantyne, Yasmine Fahmy",
+    "curriculum_review": "Kendra Harrison",
+    "proofreading": "Eric Weiss, Leigh Teetzel, Tyson Pink",
+    "box_images": "Krystian Piatek, Sergio Souza",
+    "region_images": "Erik Odiin, Izuddin Helmi Adnan, Jay H, Joe Yates, Pawel Czerwinski, Sergio Souza, USGS, Xiang Ji",
+    "landmark_images": "Andrea Ferrario, Claudio Carrozzo, Dan Asaki, Error 420, Jaromir Kavan, Josh Withers, Malte Schmidt, Manuel Nobauer, Massimo Garanzelli, Matthew Feeney, Medena Rosa, Natalya Letunova, Oliver Roos, Sergio Souza, Stephen Pedersen, Susan Wilkinson, William Dehoogh"
+  }
+}

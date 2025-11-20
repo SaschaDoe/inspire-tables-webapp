@@ -1,0 +1,229 @@
+{
+  "deck": "Lore Master's Deck - Main Deck",
+  "cardTypes": {
+    "modifier": {
+      "name": "Modifier",
+      "description": "Descriptive traits and characteristics to modify other elements",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["ICONIC", "EARNEST", "CALM", "TENACIOUS"]
+        },
+        {
+          "cues": ["PRIMEVAL", "COMPASSIONATE", "MUSCULAR", "GALACTIC"]
+        },
+        {
+          "cues": ["UNTOUCHED", "CYNICAL", "IMAGINATIVE", "WEATHERED"]
+        },
+        {
+          "cues": ["SECURE", "IMPRACTICAL", "CONSCIENTIOUS", "NOSTALGIC"]
+        },
+        {
+          "cues": ["GOTHIC", "CONNECTED", "ADVENTUROUS", "SPIRITUAL"]
+        },
+        {
+          "cues": ["HISTORIC", "CAUTIOUS", "PHILANTHROPIC", "LOGICAL"]
+        },
+        {
+          "cues": ["STATELY", "PROCACTIVE", "OPTIMISTIC", "ANIMATED"]
+        },
+        {
+          "cues": ["GREEN", "AIRHEADED", "WIRY", "ANTIQUATED"]
+        },
+        {
+          "cues": ["MYSTIFYING", "CRAFTY", "ARDENT", "SAINTLY"]
+        },
+        {
+          "cues": ["DECEIVING", "DIPLOMATIC", "BRIGHT-EYED", "MAJESTIC"]
+        },
+        {
+          "cues": ["SOPHISTICATED", "PLAUSIO", "INSIGHTFUL", "DWINORKED"]
+        },
+        {
+          "cues": ["SHABBY", "PUNGENT", "OPEN-MINDED", "GEOMETRIC"]
+        },
+        {
+          "cues": ["PERSISTENT", "ADAPTIVE", "CHEMICAL", "PRACTICING"]
+        },
+        {
+          "cues": ["PIVOTAL", "SPOTTED", "REPELLENT", "VIVID"]
+        },
+        {
+          "cues": ["HUMOROUS", "VIVID", "CRACKED", "BABBLING"]
+        },
+        {
+          "cues": ["HEROIC", "PARASITIC", "BARE", "OMINOUS"]
+        },
+        {
+          "cues": ["IRREDEEMABLE", "DYNAMIC", "METALLIC", "LEGITIMATE"]
+        },
+        {
+          "cues": ["NOBLE", "CHARISMATIC", "BUBBLY", "SPIRITUAL"]
+        },
+        {
+          "cues": ["UNPRECEDENTED", "BLOSSOMING", "PLIABLE", "REFRESHING"]
+        },
+        {
+          "cues": ["CLIMACTIC", "SCARRED", "GLOSSY", "VELVETY"]
+        },
+        {
+          "cues": ["EPIC", "CRESTED", "ROUGH", "WALKING"]
+        },
+        {
+          "cues": ["MYTHICAL", "ROOTED", "CONDUCTIVE", "BROGUE"]
+        },
+        {
+          "cues": ["TENSE", "CRYPTIC", "TASTELESS", "DAPPLED"]
+        },
+        {
+          "cues": ["ACRIMONIOUS", "DIMLY-LIT", "RIGID", "DIMPLISH"]
+        },
+        {
+          "cues": ["UNCONVENTIONAL", "ELITE", "CAREFREE", "COPPER"]
+        },
+        {
+          "cues": ["WELCOMING", "OPPORTUNISTIC", "FLAMBOYANT", "DEEP"]
+        },
+        {
+          "cues": ["ROUND", "PROSPEROUS", "INTENSE", "GRUNGY"]
+        },
+        {
+          "cues": ["BREEZY", "DUTIFUL", "RAKISH", "THOROUGH"]
+        },
+        {
+          "cues": ["EXTRAVAGANT", "TEXTURED", "METICULOUS", "MODERN"]
+        },
+        {
+          "cues": ["SUNKEN", "TRADITIONAL", "STEADFAST", "LEATHERBOUND"]
+        },
+        {
+          "cues": ["GLOWING", "UTOPIAN", "FRAIL", "TOASTY"]
+        },
+        {
+          "cues": ["CLEAN", "TRANSLUCENT", "FLIRTY", "MODEST"]
+        },
+        {
+          "cues": ["AWE-INSPIRING", "DOUBLE-DEALING", "PLAIN", "AGED"]
+        },
+        {
+          "cues": ["WHIMSICAL", "STATELY", "TANNED", "LUXURIOUS"]
+        },
+        {
+          "cues": ["SPELLBINDING", "STUNNING", "INDEPENDENT", "RELIABLE"]
+        },
+        {
+          "cues": ["STIMULATING", "UNPREDICTABLE", "TALL", "RUNIC"]
+        },
+        {
+          "cues": ["RETALIATORY", "INSANE", "FLAKY", "BARGAINING"]
+        },
+        {
+          "cues": ["SPEECHLESS", "DISTRESSED", "DRAB", "EPHEMERAL"]
+        },
+        {
+          "cues": ["DEPLORABLE", "MYSTICAL", "TACKY", "MYSTICAL"]
+        },
+        {
+          "cues": ["PLEASANT", "FEROCIOUS", "RESILIENT", "VOCAL"]
+        },
+        {
+          "cues": ["GRACIOUS", "BURNISHED", "ABSORBENT", "AIRY"]
+        },
+        {
+          "cues": ["LIVELY", "EXPRESSIVE", "MULTICOLORED", "EMBARASSED"]
+        },
+        {
+          "cues": ["MOMENTOUS", "STUDIOUS", "SPONGY", "VIGILANT"]
+        },
+        {
+          "cues": ["DESPERATE", "GROTESQUE", "FRAGRANT", "JOYOUS"]
+        },
+        {
+          "cues": ["CATASTROPHIC", "LIGHTWEIGHT", "SALTY", "LIGHT"]
+        },
+        {
+          "cues": ["MISGUIDED", "DECLINING", "SILKY", "ORGANIC"]
+        },
+        {
+          "cues": ["TRAGIC", "HARDY", "RESISTANT", "ADHESIVE"]
+        },
+        {
+          "cues": ["SEVERE", "MISGUIDED", "CRUSTY", "ORGANIC"]
+        },
+        {
+          "cues": ["ANGULAR", "POLISHED", "BOLD", "STONEMIST"]
+        },
+        {
+          "cues": ["EERIE", "SWEATY", "ENTHUSIASTIC", "INTRICATE"]
+        },
+        {
+          "cues": ["DARK", "VIBRANT", "ATHLETIC", "TRANSCENDENT"]
+        },
+        {
+          "cues": ["FUTURISTIC", "AUTHORITARIAN", "PERCEPTIVE", "GLEAMING"]
+        },
+        {
+          "cues": ["SLIPPERY", "ALTRUISTIC", "SARCASTIC", "EXTRAVAGENT"]
+        },
+        {
+          "cues": ["PAINTED", "MILITARY", "TWITCHY", "ARCHAEOLOGICAL"]
+        },
+        {
+          "cues": ["IMPOSING", "HARMONIZED", "PRAGMATIC", "CLANNONIZED"]
+        },
+        {
+          "cues": ["BURNED-OUT", "FANATICAL", "ARTISTIC", "DRAINING"]
+        },
+        {
+          "cues": ["SPARSE", "UNCEREBRAL", "DISCIPLINED", "TORTUROUS"]
+        },
+        {
+          "cues": ["FRIENDLY", "THUNDEROUS", "BOISTEROUS", "COMPETITIVE"]
+        },
+        {
+          "cues": ["SEDUCED", "PATRIOTIC", "PATIENT", "ESTEEMED"]
+        },
+        {
+          "cues": ["TIMELESS", "SCAVENGED", "CALLOUS", "SCAVENGED"]
+        },
+        {
+          "cues": ["HECTIC", "UNDONE", "SLEAZY", "VAPOROUS"]
+        },
+        {
+          "cues": ["APOCALYPTIC", "SOLLIANT", "BLUNT", "UNDONE"]
+        },
+        {
+          "cues": ["FANCICAL", "ELITE", "STICKY", "MALLEABLE"]
+        },
+        {
+          "cues": ["ATROCIOUS", "BALD", "GRITTY", "SLEEK"]
+        },
+        {
+          "cues": ["SERENDIPITOUS", "TAILORED", "CREAMY", "STURDY"]
+        },
+        {
+          "cues": ["TUMULTUOUS", "DAMAGED", "LUSTROUS", "CONTROVERSIAL"]
+        },
+        {
+          "cues": ["SENSATIONAL", "TWISTED", "BRITTLE", "SKILLISH"]
+        },
+        {
+          "cues": ["MERCILESS", "ILLUMINATED", "DEPLETED", "PLAYFUL"]
+        },
+        {
+          "cues": ["CHARISMATIC", "PLAYFUL", "DELICATE", "PEACEFUL"]
+        },
+        {
+          "cues": ["ERRATIC", "SERPENTING", "ELASTIC", "WINDING"]
+        },
+        {
+          "cues": ["DISCORDANT", "FOLDING", "DAMP", "SNEWY"]
+        },
+        {
+          "cues": ["INHUMANE", "FORTIFYING", "GRANULAR", "FORTIFYING"]
+        }
+      ]
+    }
+  }
+}
+

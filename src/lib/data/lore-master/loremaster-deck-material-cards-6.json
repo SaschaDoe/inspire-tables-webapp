@@ -1,0 +1,463 @@
+{
+  "deck": "Lore Master's Deck - Main Deck",
+  "cardTypes": {
+    "material": {
+      "name": "Material",
+      "description": "Substances and resources used in crafting, building, and trade",
+      "primaryCueCount": 4,
+      "secondaryCueCount": 4,
+      "cards": [
+        {
+          "primaryCues": ["BRICK", "PEARL", "JELLY", "CHAROCOLIC"],
+          "secondaryCues": [
+            "PROPERTIES: MAGIC OR ENERGY-MANIPULATING",
+            "⚫/⚪ IS POSSIBLY A SOURCE OF A FACTION'S OR A FIGURE'S WEALTH ⚪/⚫",
+            "PROPERTIES: RECENTLY DISCOVERED IN A LOCATION ⚪",
+            "BACKGROUND: SOURCE OF A FACTION'S OR FIGURE'S WEALTH ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["TILE", "BONE", "SPICE", "GLUE"],
+          "secondaryCues": [
+            "PROPERTIES: USED FOR RARE, SKIN HAIR CARE, OR BEAUTY",
+            "PROPERTIES: SHOCKINGLY RARE IN A LOCATION ⚪",
+            "PROPERTIES: EXCLUSIVELY HARVESTED OR MINED IN ONE LOCATION ⚪",
+            "BACKGROUND: EXCLUSIVELY HARVESTED OR MINED IN ONE LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["MORTAR", "TAEL", "BROTH", "FUR"],
+          "secondaryCues": [
+            "PROPERTIES: BRIGHT, MULTICOLORED, OR IRIDESCENT",
+            "PROPERTIES: USED IN RITUALS, POTIONS, OR ALCHEMICAL PROCESSES",
+            "PROPERTIES: USED IN CREATING AN OBJECT ⚪",
+            "BACKGROUND: USED IN CREATING AN OBJECT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["ALLOY", "SILK", "NOODLE(S)", "PHEROMONE"],
+          "secondaryCues": [
+            "PROPERTIES: COMES WITH SPIRITS, OR TO-THE-TOUCH",
+            "PROPERTIES: DIFFICULT TO COLLECT, HANDLE, OR TO-THE-TOUCH",
+            "PROPERTIES: USED IN BUILDING OR DECORATING A LOCATION ⚪",
+            "BACKGROUND: USED IN BUILDING OR DECORATING A LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["INSULATION", "SHELL", "PULP", "CHALK"],
+          "secondaryCues": [
+            "PROPERTIES: SANDY, WAXY, OR WHAT",
+            "PROPERTIES: DEPOSITING OR DISCARDING",
+            "PROPERTIES: WEAPON-CRAFTING AN EVENT ⚪/⚫",
+            "BACKGROUND: WEAPON-CRAFTING AN EVENT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["CEMENT", "SCALES", "POWDER", "FERTILIZER"],
+          "secondaryCues": [
+            "PROPERTIES: TEXTILE-LIKE OR OPERATING",
+            "PROPERTIES: COMES WITH SPUN, WOVEN, OR TO-THE-TOUCH",
+            "PROPERTIES: MADE BY RECYCLING A TYPE OF OBJECT ⚪/⚫",
+            "BACKGROUND: MADE BY RECYCLING A TYPE OF OBJECT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["WOOD", "CLOTH", "CHEESE", "FLINT"],
+          "secondaryCues": [
+            "PROPERTIES: NOTORIOUS TASTE, SMELL, OR NOTORIOUSLY TOXIC",
+            "PROPERTIES: OFTEN SOURCING USED OR",
+            "PROPERTIES: USED AS FUEL OR A POWER SOURCE FOR AN ARTIFACT ⚪",
+            "BACKGROUND: USED AS FUEL OR A POWER SOURCE FOR AN ARTIFACT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["ORE", "BEAD", "SAUCE", "REAGENT"],
+          "secondaryCues": [
+            "PROPERTIES: AFFECTS NUTRITION OR CIRCULATION",
+            "PROPERTIES: USED BY A GARISH",
+            "PROPERTIES: USED BY A GARISH",
+            "BACKGROUND: USED BY A GARISH"
+          ]
+        },
+        {
+          "primaryCues": ["MIRROR", "SAWDUST", "FLUID", "BASALT"],
+          "secondaryCues": [
+            "PROPERTIES: SOURCES, GROWS, OR CREATES",
+            "PROPERTIES: OF TYPE, FRAGILITIES, PROPERTIES, OR CHARACTER",
+            "PROPERTIES: OBTAINED OR CONTROLLED VIA EVAPORATION",
+            "BACKGROUND: OBTAINED OR CONTROLLED VIA EVAPORATION"
+          ]
+        },
+        {
+          "primaryCues": ["MINERAL", "ACID", "BLUBBER", "GEMSTONES"],
+          "secondaryCues": [
+            "PROPERTIES: BLESSED, HOLY, OR THOUGHT TO BE",
+            "PROPERTIES: HYBRID ALLOY OR COMPOUND MATERIAL ⚪/⚫",
+            "PROPERTIES: EXPLOSIVE OR HIGHLY REACTIVE",
+            "BACKGROUND: EXPLOSIVE OR HIGHLY REACTIVE"
+          ]
+        },
+        {
+          "primaryCues": ["METAL", "FABRIC", "EGG(S)", "SHRUB"],
+          "secondaryCues": [
+            "PROPERTIES: RECENTLY TRADED, SHIPPED-OUT, OR INTRODUCED",
+            "PROPERTIES: EXCAVATED RARE OR PRECIOUS",
+            "PROPERTIES: EXCEPTIONALLY RARE OR PRECIOUS",
+            "BACKGROUND: EXCEPTIONALLY RARE OR PRECIOUS"
+          ]
+        },
+        {
+          "primaryCues": ["LUMBER", "NUTRITION", "CHOCOLATE", "CHITIN"],
+          "secondaryCues": [
+            "PROPERTIES: PLAYERS GATHERED FROM OR HARVESTED WITH CONSENT",
+            "PROPERTIES: USED IN PROCESSING ALCHEMY OR",
+            "PROPERTIES: USED IN BIRTH/DEATH RITES OF A CULTURE (OR FACTION ⚪)",
+            "BACKGROUND: USED IN BIRTH/DEATH RITES OF A CULTURE (OR FACTION ⚪)"
+          ]
+        },
+        {
+          "primaryCues": ["CRYSTAL", "HORN", "GRAIN", "CORAL"],
+          "secondaryCues": [
+            "PROPERTIES: SIZE-AFFECTING PROPERTIES",
+            "PROPERTIES: MINED OR AFFECTING",
+            "PROPERTIES: SIZE-AFFECTING PROPERTIES",
+            "BACKGROUND: STAPLE FOODSTUFF OF A CULTURE (OR FACTION ⚪)"
+          ]
+        },
+        {
+          "primaryCues": ["STONE", "DRUG", "FLOUR", "FLEECE"],
+          "secondaryCues": [
+            "PROPERTIES: INVISIBLE OR INTANGIBLE OR INTOXICATING PROPERTIES ⚫/⚪",
+            "PROPERTIES: MADE BY RECYCLING WATER ⚫",
+            "PROPERTIES: SHAPING OR DECLINING MATERIALS ⚫",
+            "BACKGROUND: PRIZED VARIANT FOUND ONLY AT ONE LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["BEAN", "POISON", "CREAM", "FIBER"],
+          "secondaryCues": [
+            "PROPERTIES: SHOCKINGLY ADDICTIVE OR LOST OR USED IN HEALING MEDICINE",
+            "PROPERTIES: MADE BY RECYCLING WATER ⚫",
+            "PROPERTIES: SHAPING OR DECLINING MATERIALS ⚫",
+            "BACKGROUND: NATURALLY PRODUCED BY A CREATURE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["SHINGLE(S)", "PIGMENT", "MILK", "GAS"],
+          "secondaryCues": [
+            "PROPERTIES: INCENDIARY OR USED IN ARMORING ⚫/⚪",
+            "PROPERTIES: ARMOR MATERIAL USED IN USED IN A RITUAL OR BATTA",
+            "PROPERTIES: INCENDIARY OR USED IN ARMORING ⚫/⚪",
+            "BACKGROUND: BOSS SOMETHING USED TO BATTER OR OPPRESS"
+          ]
+        },
+        {
+          "primaryCues": ["ROCK", "SAP", "MEAT", "TEXTILE"],
+          "secondaryCues": [
+            "PROPERTIES: DISCOVERED BY MISTAKE",
+            "PROPERTIES: DISSOLVING OR",
+            "PROPERTIES: DISCOVERING OR DECORATING A FRAGMENT ⚫/⚪",
+            "BACKGROUND: GIVEN AS AN INSULT OR NON-KINETIC GESTURE"
+          ]
+        },
+        {
+          "primaryCues": ["CLAY", "SOJOUNE", "BEAN(S)", "LEATHER"],
+          "secondaryCues": [
+            "PROPERTIES: RESULTS OR",
+            "PROPERTIES: ABSORBING OR USED IN LOCATION ⚪",
+            "PROPERTIES: NO NATURAL RESULTS, PREVIOUSLY USED",
+            "BACKGROUND: RESPONSIBLE FOR THE PROSPERITY OF AN OBJECT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["PUTTY", "MAKANA", "SEED(S)", "TUSK"],
+          "secondaryCues": [
+            "PROPERTIES: GLOW OR LIGHT OR EMITTING LIGHT",
+            "PROPERTIES: SHEDS IN RANGE OR",
+            "PROPERTIES: GLOW OR LIGHT OR EMITTING LIGHT",
+            "BACKGROUND: SERVES INTOXICATING OR STIMULATING"
+          ]
+        },
+        {
+          "primaryCues": ["COBBLE(S)", "SOAP", "JUICE", "SCAR"],
+          "secondaryCues": [
+            "PROPERTIES: KEY",
+            "PROPERTIES: SHEDS IN RANGE OR",
+            "PROPERTIES: GLOW OR LIGHT OR EMITTING LIGHT",
+            "BACKGROUND: SERVES INTOXICATING OR STIMULATING"
+          ]
+        },
+        {
+          "primaryCues": ["SEED(S)", "FORM", "ORGAN", "KEY"],
+          "secondaryCues": [
+            "PROPERTIES: GLOW",
+            "PROPERTIES: USED OR",
+            "PROPERTIES: USED OR",
+            "BACKGROUND: SERVES"
+          ]
+        },
+        {
+          "primaryCues": ["QUARTZ", "DYE", "RICE", "SAUCE"],
+          "secondaryCues": [
+            "PROPERTIES: FLASH",
+            "PROPERTIES: RESIN",
+            "PROPERTIES: RESIN",
+            "BACKGROUND: SERVES"
+          ]
+        },
+        {
+          "primaryCues": ["GRANITE", "SALVE", "SYRUP", "VENOM"],
+          "secondaryCues": [
+            "PROPERTIES: WARP",
+            "PROPERTIES: WAX",
+            "PROPERTIES: WARP",
+            "BACKGROUND: ELEMENTAL OR CHEMICAL PROPERTIES"
+          ]
+        },
+        {
+          "primaryCues": ["NUT(S)", "RESIN", "MARBLE", "FISH"],
+          "secondaryCues": [
+            "PROPERTIES: WARP OR WAX",
+            "PROPERTIES: WAX",
+            "PROPERTIES: WARP",
+            "BACKGROUND: ELEMENTAL OR CHEMICAL PROPERTIES"
+          ]
+        },
+        {
+          "primaryCues": ["STEEL", "PAPER", "OIL", "BULB"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPESHIFTING OR SPUNK",
+            "PROPERTIES: SHAPESHIFTING OR SPUNK",
+            "PROPERTIES: MELTING OR CIRCULATING PROPERTIES",
+            "BACKGROUND: MELTING OR CIRCULATING PROPERTIES"
+          ]
+        },
+        {
+          "primaryCues": ["PIGMENT", "ROCK", "FRUIT", "IVORY"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPESHIFTING OR SPUNK",
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "BACKGROUND: SHAPESHIFTING"
+          ]
+        },
+        {
+          "primaryCues": ["GRAVEL", "COAL", "HERB(S)", "COAL"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "BACKGROUND: SHAPESHIFTING"
+          ]
+        },
+        {
+          "primaryCues": ["SANDSTONE", "INK", "VEGETABLE", "PLATINUM"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "BACKGROUND: SHAPESHIFTING"
+          ]
+        },
+        {
+          "primaryCues": ["PLASTER", "SILVER", "ALCOHOL", "GOLD"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "BACKGROUND: SHAPESHIFTING"
+          ]
+        },
+        {
+          "primaryCues": ["CABLE(S)", "POLISH", "SALT", "POLISH"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "BACKGROUND: SHAPESHIFTING"
+          ]
+        },
+        {
+          "primaryCues": ["CERAMIC", "FELT", "SUGAR", "INGOT"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "BACKGROUND: SHAPESHIFTING"
+          ]
+        },
+        {
+          "primaryCues": ["GRAVEL", "SOIL", "BLOOD", "RESIN"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "BACKGROUND: SHAPESHIFTING"
+          ]
+        },
+        {
+          "primaryCues": ["SLATE", "SAND", "VINEGAR", "INGOT"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "BACKGROUND: SHAPESHIFTING"
+          ]
+        },
+        {
+          "primaryCues": ["MAGNET", "BAMBOO", "FAT", "COOLANT"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "BACKGROUND: SHAPESHIFTING"
+          ]
+        },
+        {
+          "primaryCues": ["MAGNET", "DART", "ROOT(S)", "THREAD"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "BACKGROUND: SHAPESHIFTING"
+          ]
+        },
+        {
+          "primaryCues": ["GLASS", "PAINT", "HONEY", "THATCH"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "PROPERTIES: SHAPESHIFTING",
+            "BACKGROUND: SHAPESHIFTING"
+          ]
+        },
+        {
+          "primaryCues": ["MOSS/LICHEN-LIFE SPONGE", "OIL/LICHEN-LIFE", "PARCHMENT", "SPICE"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPESHIFTING ON",
+            "PROPERTIES: MOOT ESPECIALLY IN THE ICON REST IN CASE OR",
+            "PROPERTIES: SHAPESHIFTING ON THE FABRIC OR",
+            "BACKGROUND: USED IN DIVINATION OR PROPHECY (BY A FACTION ⚪/⚫)"
+          ]
+        },
+        {
+          "primaryCues": ["BRINGS INANIMATE OBJECTS TO LIFE", "TRAIT"],
+          "secondaryCues": [
+            "PROPERTIES: LOAN",
+            "PROPERTIES: ON PREPARED WITH CLOSING",
+            "PROPERTIES: FOR CHARMING CHILD-READING BY USED ⚫",
+            "BACKGROUND: BRINGS INANIMATE OBJECTS TO LIFE"
+          ]
+        },
+        {
+          "primaryCues": ["POWDERED OR IMBUED WITH SPIRIT", "TRAIT"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPED OR",
+            "PROPERTIES: WITH OUT OR",
+            "PROPERTIES: IMBUED WITH SPIRIT A LOCATION ⚪",
+            "BACKGROUND: IMBUED WITH SPIRIT A LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["INTOXICATING OR STIMULATING", "PROPERTIES"],
+          "secondaryCues": [
+            "PROPERTIES: STIMULANTE OR",
+            "PROPERTIES: INTOXICATING",
+            "PROPERTIES: STIMULANTE ANIMALLY NATURALIZED IN",
+            "BACKGROUND: NICKNAMED AFTER AN OBJECT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["HELPS TO ICE OR FIRE", "CREATES, AFFECTS, OR"],
+          "secondaryCues": [
+            "PROPERTIES: CREATING OR",
+            "PROPERTIES: GEARING AFFECTS, OR",
+            "PROPERTIES: CREATING NATURALLY AFFIXED NATURALLY IN THE CLAN LOST OR",
+            "BACKGROUND: USED AT IN DECORATING AN OBJECT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["REFLECTIVE OR REFRACTIVE", "PROPERTIES"],
+          "secondaryCues": [
+            "PROPERTIES: SHARPENS OR",
+            "PROPERTIES: SHAPING FOR",
+            "PROPERTIES: REFRACTIVE",
+            "BACKGROUND: SHAPING FOR REEXECUTING A CONSTRUCTION"
+          ]
+        },
+        {
+          "primaryCues": ["INTOXICATING OR STIMULATING", "PROPERTIES"],
+          "secondaryCues": [
+            "PROPERTIES: STIMULANTE ANIMALLY ATTACHED OR NATURALLY IN BY THE DIVINITY NATURALLY",
+            "PROPERTIES: SHAPED OR SPIRIT",
+            "PROPERTIES: STIMULANTE ANIMALLY OR THE SPAN IN A ⚪",
+            "BACKGROUND: USED AT IN DECORATING AN OBJECT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["SMOTHERING OR INTOXICATING", "PROPERTIES"],
+          "secondaryCues": [
+            "PROPERTIES: STIMULATE ANIMALLY ATTRIBUTED NATURALLY IN BY DIVINITY",
+            "PROPERTIES: SHOCKINGLY RARE OR",
+            "PROPERTIES: SHOCKINGLY RARE OR USED IN TRADE WAR OR",
+            "BACKGROUND: SHOCKINGLY RARE OR USED IN TRADE WAR OR SABOTAGES ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["GENERES, AFFECTS, OR REPAIRS TO ICE OR FIRE", "TRAIT"],
+          "secondaryCues": [
+            "PROPERTIES: GENERES, AFFECTS, OR",
+            "PROPERTIES: CREATING ANIMALLY ATTRIBUTED OR GENERED BY ⚫",
+            "PROPERTIES: ANIMALLY ATTRIBUTED NATURALLY IN",
+            "BACKGROUND: ANIMALLY ATTRIBUTED NATURALLY IN A LOCATION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["HARVESTED FROM A CREATURE'S WASTE OR DROPPINGS", "TRAIT"],
+          "secondaryCues": [
+            "PROPERTIES: LIGHT-EMITTING OR",
+            "PROPERTIES: LIGHT-EMITTING ON THE SPACE",
+            "PROPERTIES: LIGHT-EMITTING OR",
+            "BACKGROUND: HARVESTED FROM A CREATURE'S WASTE OR DROPPINGS ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["MOSSY, SPONGE-LIKE OR LICHEN-LIFE", "TRAIT"],
+          "secondaryCues": [
+            "PROPERTIES: MEANTRO LIGHT-CENTERED OR",
+            "PROPERTIES: SHAPESHIFTING ICON LOST ⚫/⚪",
+            "PROPERTIES: OIL LICHEN-LIFE SPONGE ON LOCATION ⚪/⚫",
+            "BACKGROUND: MOSSY, SPONGE-LIKE OR LICHEN-LIFE"
+          ]
+        },
+        {
+          "primaryCues": ["HYBRID ALLOY OR COMPOUND MATERIAL ⚪/⚫", "TRAIT"],
+          "secondaryCues": [
+            "PROPERTIES: LOOSE ALLOY OR",
+            "PROPERTIES: COMPOUND ALLOY OR",
+            "PROPERTIES: CONCERTED BY THE OBJECT",
+            "BACKGROUND: USED IN MAKING A LOCATION'S FLOORS, WALLS, OR DOORS ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["EXCEPTIONALLY RARE OR PRECIOUS", "TRAIT"],
+          "secondaryCues": [
+            "PROPERTIES: EXCEPTIONALLY OR",
+            "PROPERTIES: LIGHT-EMITTING ICON LOST OR RARITY",
+            "PROPERTIES: LOST OR RARITY",
+            "BACKGROUND: EXCEPTIONALLY RARE OR PRECIOUS"
+          ]
+        },
+        {
+          "primaryCues": ["MAGIC OR ENERGY-MANIPULATING OR PRINCIPLING", "PROPERTIES"],
+          "secondaryCues": [
+            "PROPERTIES: ⚫/⚪ OIL SPIRIT OR MOOT ESPECIALLY IN A ⚪/⚫",
+            "PROPERTIES: MANIPULATING OR MAGIC OR ENERGY OR ⚪",
+            "PROPERTIES: HARVESTED BY ⚫/⚪ THE ICON LOST OR LOCATION OR",
+            "BACKGROUND: ENTIRE SUPPLY CONTROLLED BY ONE FIGURE ⚪"
+          ]
+        }
+      ]
+    }
+  }
+}

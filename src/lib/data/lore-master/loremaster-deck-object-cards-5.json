@@ -1,0 +1,409 @@
+{
+  "deck": "Lore Master's Deck - Main Deck",
+  "cardTypes": {
+    "object": {
+      "name": "Object",
+      "description": "Significant items and artifacts, from deity-slaying spears and indestructible armor to prophesied amulets and portal-opening lockpicks",
+      "primaryCueCount": 4,
+      "secondaryCueCount": 4,
+      "cards": [
+        {
+          "primaryCues": ["ROBE", "TOKEN", "GLOBE", "MACE"],
+          "secondaryCues": [
+            "PROPERTIES: MIND-CONTROLLING OR COLLECTABLE PROPERTIES",
+            "PROPERTIES: SHARDS OR COMPANDS A MATERIAL OR OBJECT ⚪",
+            "PROPERTIES: SIMPLE PURPOSE OR APPEARANCE",
+            "BACKGROUND: CRAFTING METHOD PROTECTED BY FORGE OR FACTION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["SHIRT", "CROP", "CANISTER", "MALLET"],
+          "secondaryCues": [
+            "PROPERTIES: RESISTANCE-GRANTING",
+            "PROPERTIES: ⚫/⚪ SHARES OR COMPANDS A MATERIAL OR OBJECT ⚪",
+            "PROPERTIES: CONTAINS SECRETS OR FORBIDDEN KNOWLEDGE",
+            "BACKGROUND: USED IN ROMANTIC GESTURES OR RITES OF PASSAGE"
+          ]
+        },
+        {
+          "primaryCues": ["NECKLACE", "JAR", "AWE", "TRIDENT"],
+          "secondaryCues": [
+            "PROPERTIES: RESISTANCE-GRANTING",
+            "PROPERTIES: ⚫/⚪ THREE SPIRITS MATERIAL ⚪",
+            "PROPERTIES: EXTRACTED OR CONTROLLED WITHIN",
+            "BACKGROUND: CREATED BY CYBORG FOR A NOTABLE FIGURE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["HEADWRAP", "HOLSTER", "UNICORN", "ROD"],
+          "secondaryCues": [
+            "PROPERTIES: SENTIENT",
+            "PROPERTIES: ON MATERIAL PROPERTIES",
+            "PROPERTIES: EXTRACTION OR PROPERTIES",
+            "BACKGROUND: COMMISSIONED BY A FIGURE OR FACTION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["MAIL", "CONTAINER", "STRAP", "CUDGEL"],
+          "secondaryCues": [
+            "PROPERTIES: LIGHTWEIGHT-GRANTING OR FLIGHT-GRANTING",
+            "PROPERTIES: GRANTS THE CROSS",
+            "PROPERTIES: ORNATE OR DECORATIVE",
+            "BACKGROUND: CREATED OR DECORATED WITH A MATERIAL ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["BELT", "BRUSH", "BOX", "MACHETE"],
+          "secondaryCues": [
+            "PROPERTIES: TELEPATHIC OR TELEPATHIC",
+            "PROPERTIES: GAMING TOOL",
+            "PROPERTIES: CANNOT BE A MATERIAL BY A FACTION ⚪/⚫",
+            "BACKGROUND: DECORATED USING A CREATURE'S REMAINS ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["SHADS", "SHACKLES", "BOOBYTRAP", "BOLT(S)"],
+          "secondaryCues": [
+            "PROPERTIES: ⚫/⚪ A CREATURE ⚪",
+            "PROPERTIES: SURPRISINGLY INCLEADENS IN LOCATION ⚪",
+            "PROPERTIES: SHARP WITHIN POWERS OR A CREATURE ⚫/⚪",
+            "BACKGROUND: UNKNOWN ORIGINS"
+          ]
+        },
+        {
+          "primaryCues": ["BRACEMASK", "TENT", "GUITAR", "WARHEAD"],
+          "secondaryCues": [
+            "PROPERTIES: SPAWNING OR SPINE",
+            "PROPERTIES: MYSTERIOUS OR RESISTANT ON SET",
+            "PROPERTIES: THE COMMON LEGEND DECIDED OR THE PROPERTY ⚪",
+            "BACKGROUND: CRAFTED FROM DISMANTLED PIECES OF A LOCATION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["MSUS", "ELIXIR", "TABLET", "ARROW(S)"],
+          "secondaryCues": [
+            "PROPERTIES: MEMORY-AFFECTING",
+            "PROPERTIES: DISPOSED A POST OR SIMPLE SPACE COLLECTION",
+            "PROPERTIES: FORGED BY A FIGURE ⚪",
+            "BACKGROUND: CREATED IN OR ALONGSIDE A LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["HELMS", "POT", "LANTERN", "GUN"],
+          "secondaryCues": [
+            "PROPERTIES: ILLUSION OR TEMPERATURE",
+            "PROPERTIES: CAREFLESS WITH ENERGY",
+            "PROPERTIES: SYMBOL OR",
+            "BACKGROUND: LOST BY A NOTABLE FIGURE OR FACTION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["SHOCKS", "RESURRECTION", "ANVIL", "FIREBOMB"],
+          "secondaryCues": [
+            "PROPERTIES: CAN ONLY BE USED ONCE MORE",
+            "PROPERTIES: RECENTLY DISTRIBUTED SET OR LOCATION",
+            "PROPERTIES: ⚫/⚪ NEWERTING OR COMPLEX",
+            "BACKGROUND: CREATED AS A COMPLEMENT TO ANOTHER OBJECT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["TIL", "SHARP", "CHISEL", "SWORD"],
+          "secondaryCues": [
+            "PROPERTIES: DISGUISING PROPERTIES",
+            "PROPERTIES: CURSED COMPOUND THE NEW CONTROLLED THEORIES ⚪",
+            "PROPERTIES: ⚫/⚪ NEWERTING STOLEN IN A MAGIC A MATERIAL ⚪",
+            "BACKGROUND: REPEATEDLY STOLEN OR APPROPRIATED"
+          ]
+        },
+        {
+          "primaryCues": ["AMULET", "STORK", "NEEDLE(S)", "BOW"],
+          "secondaryCues": [
+            "PROPERTIES: STOKER STOKER OR SHARDS IN FIGURE ⚪",
+            "PROPERTIES: CONTROL OR COMBAT IF CONNECTED BY ⚫/⚪",
+            "PROPERTIES: PRINCIPLY LIMITED IN LOCATION ⚪",
+            "BACKGROUND: CRAFTED FROM DISMANTLED PIECES OF A LOCATION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["BODYSUIT", "TACKEL", "CAPSULE", "SPEAR"],
+          "secondaryCues": [
+            "PROPERTIES: SERVING OR SPINE",
+            "PROPERTIES: MOST PRESERVED OR SET ⚫/⚪ A MATERIAL ⚫/⚪",
+            "PROPERTIES: ⚫/⚪",
+            "BACKGROUND: CRAFTED FROM DISMANTLED PIECES OF A LOCATION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["GLOVE(S)", "CAPSULE", "VIAL", "MINE"],
+          "secondaryCues": [
+            "PROPERTIES: STOKER",
+            "PROPERTIES: STORL",
+            "PROPERTIES: CAPITAL",
+            "BACKGROUND: CREATED OR DECORATED WITH A MATERIAL ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["IKH", "MARAUDING GLASS", "CANTEEN", "KNIFE"],
+          "secondaryCues": [
+            "PROPERTIES: SHIELD OR",
+            "PROPERTIES: SHIELD LOCATION OR OBJECT ⚪",
+            "PROPERTIES: MARAUDING",
+            "BACKGROUND: COMMISSIONED BY A FIGURE OR FACTION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["PANTS", "STOOL", "CODEX", "SLEDGEHAMMER"],
+          "secondaryCues": [
+            "PROPERTIES: GRANTS THE CROSS TO FLIGHT ⚫/⚪",
+            "PROPERTIES: ⚫/⚪ SHIELD LOCATION INSIDE",
+            "PROPERTIES: UNUSUAL",
+            "BACKGROUND: CREATED OR DECORATED WITH A MATERIAL ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["HARNESS", "ARCADIA", "TELESCOPE", "CLAW"],
+          "secondaryCues": [
+            "PROPERTIES: HEALING PROPERTIES",
+            "PROPERTIES: USED IN BEST, TRAVELS OR INTERROGATIONS",
+            "PROPERTIES: POWERFUL",
+            "BACKGROUND: ONCE RESTORED BY A FIGURE OR FACTION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["HELMET", "CHEST", "SATCHEL", "AXE"],
+          "secondaryCues": [
+            "PROPERTIES: SHIELD LOCATION OR HEALING PROPERTIES",
+            "PROPERTIES: USED OR LIMIT",
+            "PROPERTIES: ARCADIA",
+            "BACKGROUND: CREATED BY A RESPONSE TO A CRISIS ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["WATCH", "CHAIN", "MAP", "PIKE"],
+          "secondaryCues": [
+            "PROPERTIES: UNUSABLE BY FIGURES",
+            "PROPERTIES: SHELF PRIMARILY OR",
+            "PROPERTIES: SATCHEL",
+            "BACKGROUND: USED BY A SPECIFIC ROLE OR PROFESSION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["WACTH", "BANDEROLE", "LAUNCHER"],
+          "secondaryCues": [
+            "PROPERTIES: DESTROYED A LITTLE BIT IF USED",
+            "PROPERTIES: INCOMPLETE (OR THOUGHT TO BE SO)",
+            "PROPERTIES: DOMINANTLY LOST",
+            "BACKGROUND: FIRST DEPLOYED IN A MAJOR CONFLICT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["STRANUS", "CERT", "BUCKET", "BAYONET"],
+          "secondaryCues": [
+            "PROPERTIES: CONTAINS REMAINS",
+            "PROPERTIES: ⚫/⚪ A FIGURE ON",
+            "PROPERTIES: OF A FIGURE ON",
+            "BACKGROUND: WRONGLY THOUGHT TO BE DESTROYED IN AN EVENT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["CLASP", "CHARIOT", "BOOK", "RIFLE"],
+          "secondaryCues": [
+            "PROPERTIES: LIVING OR MECHANIZED",
+            "PROPERTIES: CONTROLLED FORCE",
+            "PROPERTIES: AUTOMATON",
+            "BACKGROUND: USED IN ROYAL CEREMONIES"
+          ]
+        },
+        {
+          "primaryCues": ["BRACELET", "RULER", "BACKPACK", "FLAMETHROWER"],
+          "secondaryCues": [
+            "PROPERTIES: CONTAINS REMAINS",
+            "PROPERTIES: OF A FIGURE ON",
+            "PROPERTIES: MUSICAL RECORD",
+            "BACKGROUND: USED FOR A FACTION'S OATH-SWEARING ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["CAPE", "FAN", "DRILL", "BLOWGUN"],
+          "secondaryCues": [
+            "PROPERTIES: INFORMANT OR",
+            "PROPERTIES: COMBINES A CONNECTED BY ⚫/⚪",
+            "PROPERTIES: ⚫/⚪ LOCATION ⚫/⚪",
+            "BACKGROUND: MISSING COMPONENT FOR YEARS"
+          ]
+        },
+        {
+          "primaryCues": ["RING", "BOWL", "SLING"],
+          "secondaryCues": [
+            "PROPERTIES: STOKAR STOLEN IN VERTER SUBMERGED IN VERTER OR DARKNESS",
+            "PROPERTIES: HORSESHOOT",
+            "PROPERTIES: UNDERWATER",
+            "BACKGROUND: HELPED RESOLVE A CRISIS ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["BUCKLER", "ABACUS", "SCISSORS", "FLAIL"],
+          "secondaryCues": [
+            "PROPERTIES: WRAPPED LEADING",
+            "PROPERTIES: WRAPPED",
+            "PROPERTIES: WATERCRAFT",
+            "BACKGROUND: CREATED BY A CREATURE ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["BAND", "CROSS(S)", "INSTRUMENT", "THROWING WEAPON"],
+          "secondaryCues": [
+            "PROPERTIES: SHIELD OR BOOTS",
+            "PROPERTIES: AIRCRAFT",
+            "PROPERTIES: INSTRUMENT",
+            "BACKGROUND: COMMISSIONED BY A FIGURE OR FACTION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["VISOR", "RUNE", "LOCKPICK", "SICKLE"],
+          "secondaryCues": [
+            "PROPERTIES: BOOTS",
+            "PROPERTIES: SWORD",
+            "PROPERTIES: RUNE",
+            "BACKGROUND: CREATED IN OR ALONGSIDE A LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["PAULDRON", "CUP", "GLASSES", "HOOK"],
+          "secondaryCues": [
+            "PROPERTIES: FLAGPOLE",
+            "PROPERTIES: UTENSIL",
+            "PROPERTIES: BALUSTICAL",
+            "BACKGROUND: HELPED RESOLVE A CRISIS ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["COLLAR", "CLASSES", "PROJECTILE(S)"],
+          "secondaryCues": [
+            "PROPERTIES: HELPED COMMUNICATOR",
+            "PROPERTIES: ⚫/⚪",
+            "PROPERTIES: BALUTION",
+            "BACKGROUND: PRIZED BY COLLECTORS"
+          ]
+        },
+        {
+          "primaryCues": ["BANNER", "BALLISTON", "COMMUNICATOR", "STAFF"],
+          "secondaryCues": [
+            "PROPERTIES: CAN SHAPE INTELLIGENCE OR SPT ON GRAPHS",
+            "PROPERTIES: SURVIVING ON",
+            "PROPERTIES: STUNNING OR INTOXICATING PROPERTIES ⚫/⚪",
+            "BACKGROUND: ONE FACTION'S MARK OF SHAME DUE TO AN EVENT ⚪+⚫"
+          ]
+        },
+        {
+          "primaryCues": ["TALISMAN", "DAGGER", "KEY", "HALBERD"],
+          "secondaryCues": [
+            "PROPERTIES: BIKE",
+            "PROPERTIES: WHISTLE",
+            "PROPERTIES: BACKPACK",
+            "BACKGROUND: LINKED TO A PROPHESIED OR APOCALYPTIC EVENT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["CREST", "ICON", "DART(S)"],
+          "secondaryCues": [
+            "PROPERTIES: IMBUED WITH PROPERTIES OF ITS MATERIAL ⚫/⚪",
+            "PROPERTIES: CREATED BY ⚫/⚪ EXACT CULTURE",
+            "PROPERTIES: NORMALLY WITHOUT A FIGURE ⚪",
+            "BACKGROUND: CREATED TO MEMORIALIZE AN EVENT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["QUIVER", "BIKE", "WHIP"],
+          "secondaryCues": [
+            "PROPERTIES: ELEMENTAL PROPERTIES",
+            "PROPERTIES: IMBUED WITH A FIGURE",
+            "PROPERTIES: IN THE RANGE ⚪",
+            "BACKGROUND: LOST OR DESTROYED IN AN EVENT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["OVER LONG DISTANCES", "PROPERTIES: HELPS COMMUNICATE"],
+          "secondaryCues": [
+            "PROPERTIES: SUBMERGED IN WATER OR DARKNESS",
+            "PROPERTIES: PROPERTIES",
+            "PROPERTIES: ELEMENTAL",
+            "BACKGROUND: HELPED RESOLVE A CRISIS ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["AFFECTING PROPERTIES", "PROPERTIES: SPEED OR STRENGTH-"],
+          "secondaryCues": [
+            "PROPERTIES: IMBUED WITH",
+            "PROPERTIES: CAN SHAPE INTELLIGENCE OR SPT ON GRAPHS",
+            "PROPERTIES: SUBMERGED",
+            "BACKGROUND: ONE FACTION'S MARK OF SHAME DUE TO AN EVENT ⚪+⚫"
+          ]
+        },
+        {
+          "primaryCues": ["OR AUTOPILOT", "PROPERTIES: CHANGES INFLUENCE"],
+          "secondaryCues": [
+            "PROPERTIES: STRONG AGAINST",
+            "PROPERTIES: ABSORBING OR",
+            "PROPERTIES: MATERIAL ⚫/⚪",
+            "BACKGROUND: RESPONSIBLE FOR DESTROYING A LOCATION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["ELEMENTAL PROPERTIES", "TRAIT"],
+          "secondaryCues": [
+            "PROPERTIES: ELEMENTAL",
+            "PROPERTIES: FETTY OR PERMANENCE",
+            "PROPERTIES: USED IN BEST, TRAVELS OR INTERROGATIONS",
+            "BACKGROUND: KEPT IN A SPECIFIC LOCATION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["ABSORBING OR", "PROPERTIES"],
+          "secondaryCues": [
+            "PROPERTIES: ABSORBING",
+            "PROPERTIES: STRONG AGAINST",
+            "PROPERTIES: MATERIAL ⚫/⚪",
+            "BACKGROUND: RESPONSIBLE FOR DESTROYING A LOCATION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["OR AUTOPILOT", "PROPERTIES: CHANGES INFLUENCE"],
+          "secondaryCues": [
+            "PROPERTIES: LINKED CONNECTED TO MAD OR ADDICTION",
+            "PROPERTIES: FETTY OR PERMANENCE",
+            "PROPERTIES: ⚫/⚪",
+            "BACKGROUND: LINKED TO A PROPHESIED OR APOCALYPTIC EVENT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["MANIPULATES SOULS", "PROPERTIES: HORDE OR"],
+          "secondaryCues": [
+            "PROPERTIES: ⚫/⚪ CONNECTED IN A FIGURE ⚪",
+            "PROPERTIES: DISCOVERED BY A MATERIAL ⚪/⚫",
+            "PROPERTIES: BELONGING FOR THE",
+            "BACKGROUND: LINKED TO ANCIENT STORIES ABOUT A LOCATION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["SPACE-DISTORTING", "PROPERTIES"],
+          "secondaryCues": [
+            "PROPERTIES: ⚫/⚪ TRANSPORTING",
+            "PROPERTIES: BEING WITH A RANGE ⚪",
+            "PROPERTIES: PROCESSIVES",
+            "BACKGROUND: LOST OR DESTROYED IN AN EVENT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["MATTER-CREATING OR -RESTORING", "PROPERTIES"],
+          "secondaryCues": [
+            "PROPERTIES: BELONG WITHIN ⚫/⚪",
+            "PROPERTIES: FIGURE ⚪+⚫",
+            "PROPERTIES: IN A ⚪/⚫ IN NAVIGATING A LOCATION ⚪",
+            "BACKGROUND: CREATED AS A PERSONAL INSULT ⚪+⚫"
+          ]
+        }
+      ]
+    }
+  }
+}

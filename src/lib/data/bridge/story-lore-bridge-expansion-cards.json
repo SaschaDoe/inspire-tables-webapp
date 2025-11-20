@@ -1,0 +1,599 @@
+{
+  "name": "Story & Lore Bridge Expansion",
+  "description": "60 cards designed to enhance The Story Engine® Deck prompts using cards from Lore Master's Deck, and vice versa.",
+  "cards": [
+    {
+      "type": "engine",
+      "cue": "WANTS TO HEIST",
+      "links": ["figure", "location"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO CAPTURE",
+      "links": ["figure", "creature"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO RESIST",
+      "links": ["figure", "creature"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO MAKE A LAUGHING STOCK OF",
+      "links": ["figure", "aspect"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO SOW HARMONY (OR DISCORD) IN",
+      "links": ["figure"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO CREATE A MASTERPIECE IN THE FORM OF",
+      "links": ["material", "object"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO INITIATE",
+      "links": ["creature", "object"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO DEMORALIZE",
+      "links": ["figure", "material"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO IMMORTALIZE",
+      "links": ["figure", "creature"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO REFORM",
+      "links": ["figure", "creature"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO END",
+      "links": ["figure", "material"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO ENGINEER",
+      "links": ["figure", "creature"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO ESTABLISH",
+      "links": ["figure", "material"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO EXPOSE THE LIES OF",
+      "links": ["figure", "material"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO FIND A TROVE OF",
+      "links": ["material", "object"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEIR FLESH WILL BE TRANSFORMED",
+      "links": ["creature", "material"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THE HISTORY OF A LOCATION WILL BE FOREVER ALTERED",
+      "links": ["location", "event"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT IT WILL COST THEM WHAT THEY VALUE ABOVE ALL ELSE",
+      "links": ["object", "material"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT A CONFRONTATION WILL ENSUE",
+      "links": ["figure", "creature"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT A CLOSE-HELD BOND",
+      "links": ["figure", "creature", "material"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT GREAT POWER WILL BE TURNED",
+      "links": ["figure", "material"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT A PEACEFUL PLACE WILL BE TRANSFORMED BY A CRISIS",
+      "links": ["location", "creature"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT A FRIEND WILL GET HURT",
+      "links": ["figure", "creature"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL WELCOME IN THEIR FEEL WELCOME IN THEIR COMMUNITY",
+      "links": ["figure", "creature"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEIR WORST FEAR WILL COME TRUE",
+      "links": ["creature", "event"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT AN IMPORTANT GUARDIAN WILL FALL",
+      "links": ["creature", "material"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL LOSE THEIR PLACE AT THE RIGHT HAND OF SOMEONE",
+      "links": ["figure", "material"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT A SACRED CREATURE WILL PERISH",
+      "links": ["creature", "creature"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT AN IMPORTANT ARTIFACT WILL BE DESTROYED",
+      "links": ["object"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT A TERRIBLE RUMOR WILL SPREAD IN THEIR COMMUNITY",
+      "links": ["figure", "event"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT A HORRIFYING CREATURE WILL BE UNLEASHED",
+      "links": ["creature", "creature"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEIR REPUTATION ON THEIR PERCEPTION THEY STRUCK",
+      "links": ["creature", "event"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL LOSE THEIR BELIEF IN THEIR GOD OR CAUSE",
+      "links": ["deity", "aspect"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT A TERRIBLE LEGEND WILL RISE TO POWER IN THEIR COMMUNITY",
+      "links": ["figure", "creature"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT A FORTUNE WILL BE LOST",
+      "links": ["material"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT RUIN WILL COME TO A BEAUTIFUL PLACE",
+      "links": ["location"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT AN IRREPLACEABLE LAST OF AN IRREPLACEABLE RESOURCE",
+      "links": ["material"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT A HABITAT WILL BE DESTROYED",
+      "links": ["creature", "material"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT A DISASTER WILL ENSUE",
+      "links": ["creature", "event"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT A TERRIBLE WEAPON WILL END UP IN THE WRONG HANDS",
+      "links": ["object", "material"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT AN ENEMY WILL FINALLY GET TO MAKE THEIR MOVE",
+      "links": ["figure", "creature"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEIR LOVER WILL LEAVE THEM",
+      "links": ["figure"]
+    },
+    {
+      "type": "faction",
+      "cue": "ORPHANS",
+      "nickname_links": ["figure", "creature"],
+      "background": "FORMED IN RESPONSE TO A THREAT",
+      "background_links": ["figure", "creature", "event"]
+    },
+    {
+      "type": "faction",
+      "cue": "KILLERS",
+      "nickname_links": ["figure", "material"],
+      "background": "DEFENDING THE SERVANTS",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "faction",
+      "cue": "BINDERS OF THE",
+      "nickname_links": ["figure", "creature", "event"],
+      "background": "KNIGHTS WHO SWAT AT",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "faction",
+      "cue": "SYNDICATE OF THE",
+      "nickname_links": ["figure", "creature", "event"],
+      "background": "WATCHES THE",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "faction",
+      "cue": "BERKERS OF THE",
+      "nickname_links": ["figure"]
+    },
+    {
+      "type": "faction",
+      "cue": "COLLECTORS",
+      "nickname_links": ["figure", "object"],
+      "background": "LEGION OF",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "faction",
+      "cue": "GANG",
+      "nickname_links": ["figure", "creature", "material"]
+    },
+    {
+      "type": "figure",
+      "cue": "SEEKER OF THE",
+      "nickname_links": ["figure", "figure"],
+      "background": "FIRST AMONG GODS",
+      "background_links": ["deity"]
+    },
+    {
+      "type": "figure",
+      "cue": "KEEPER OF",
+      "nickname_links": ["object", "material"],
+      "background": "STOLEN FROM",
+      "background_links": ["figure", "creature", "material"]
+    },
+    {
+      "type": "figure",
+      "cue": "MASTER OF",
+      "nickname_links": ["object", "material"],
+      "background": "LED PEOPLE",
+      "background_links": ["figure"]
+    },
+    {
+      "type": "figure",
+      "cue": "DEFENSE OF THE",
+      "nickname_links": ["figure", "figure", "event"],
+      "background": "HARVESTER",
+      "background_links": ["figure"]
+    },
+    {
+      "type": "figure",
+      "cue": "DISCIPLE OF THE",
+      "nickname_links": ["figure", "figure", "event"],
+      "background": "MONARCH OF",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "figure",
+      "cue": "GUARDIAN OF THE",
+      "nickname_links": ["figure", "figure"],
+      "background": "APPRENTICE OF",
+      "background_links": ["figure"]
+    },
+    {
+      "type": "figure",
+      "cue": "MAKER OF",
+      "nickname_links": ["object", "material"],
+      "background": "SEER OF THE",
+      "background_links": ["figure"]
+    },
+    {
+      "type": "figure",
+      "cue": "TERRACE OF",
+      "nickname_links": ["figure", "creature"],
+      "background": "MONARCH",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "figure",
+      "cue": "CARRIER OF THE",
+      "nickname_links": ["object", "material"]
+    },
+    {
+      "type": "event",
+      "cue": "NIGHT OF THE",
+      "nickname_links": ["figure", "creature", "material"],
+      "background": "WAR OF",
+      "background_links": ["figure", "creature", "material"]
+    },
+    {
+      "type": "event",
+      "cue": "REVOLUTION",
+      "nickname_links": ["figure", "figure", "event"],
+      "background": "RUIN",
+      "background_links": ["figure", "creature", "event"]
+    },
+    {
+      "type": "event",
+      "cue": "UPRISING",
+      "nickname_links": ["figure", "figure"],
+      "background": "PLAGUE",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "event",
+      "cue": "HERESY",
+      "nickname_links": ["figure", "figure", "event"],
+      "background": "BETRAYAL",
+      "background_links": ["figure", "creature", "object"]
+    },
+    {
+      "type": "event",
+      "cue": "ACT",
+      "nickname_links": ["material", "object", "creature"],
+      "background": "CRISIS",
+      "background_links": ["object", "creature"]
+    },
+    {
+      "type": "event",
+      "cue": "DANCE OF (THE)",
+      "nickname_links": ["figure", "creature"],
+      "background": "PARADE",
+      "background_links": ["figure", "creature", "event"]
+    },
+    {
+      "type": "event",
+      "cue": "FARCE",
+      "nickname_links": ["figure", "creature", "event"],
+      "background": "HARVEST",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "event",
+      "cue": "EDICT",
+      "nickname_links": ["object", "creature"],
+      "background": "BETRAYAL",
+      "background_links": ["figure", "creature", "object"]
+    },
+    {
+      "type": "location",
+      "cue": "WOODS OF THE",
+      "nickname_links": ["figure", "figure", "event"],
+      "background": "TRIAL OF",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "location",
+      "cue": "GRAVES OF THE",
+      "nickname_links": ["figure", "figure", "event"],
+      "background": "RUINS OF THE",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "location",
+      "cue": "PITH OF THE",
+      "nickname_links": ["figure", "figure"],
+      "background": "STEPS OF THE",
+      "background_links": ["figure", "creature", "event"]
+    },
+    {
+      "type": "location",
+      "cue": "TOMB OF THE",
+      "nickname_links": ["figure", "creature"]
+    },
+    {
+      "type": "location",
+      "cue": "TOWER OF",
+      "nickname_links": ["event", "object", "material"]
+    },
+    {
+      "type": "location",
+      "cue": "HOUSE OF (THE)",
+      "nickname_links": ["event", "creature", "material"]
+    },
+    {
+      "type": "location",
+      "cue": "PARADISE",
+      "nickname_links": ["figure", "creature"]
+    },
+    {
+      "type": "location",
+      "cue": "MONUMENT(S)",
+      "nickname_links": ["figure", "creature", "material"]
+    },
+    {
+      "type": "location",
+      "cue": "BASE",
+      "nickname_links": ["creature", "object"]
+    },
+    {
+      "type": "object",
+      "cue": "MASK OF THE",
+      "nickname_links": ["figure", "event", "event"],
+      "background": "NEW SONGS",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "object",
+      "cue": "ROOTS OF THE",
+      "nickname_links": ["figure", "creature", "event"],
+      "background": "BIT OF THE",
+      "background_links": ["figure", "creature", "object"]
+    },
+    {
+      "type": "object",
+      "cue": "SPEAR",
+      "nickname_links": ["figure", "creature", "event"],
+      "background": "SONG",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "object",
+      "cue": "STAFF OF THE",
+      "nickname_links": ["creature", "event"]
+    },
+    {
+      "type": "object",
+      "cue": "BOOK OF THE",
+      "nickname_links": ["creature", "event"]
+    },
+    {
+      "type": "object",
+      "cue": "BLADE",
+      "nickname_links": ["creature", "event", "material"]
+    },
+    {
+      "type": "object",
+      "cue": "TOOTH OF THE",
+      "nickname_links": ["creature", "event", "creature"]
+    },
+    {
+      "type": "object",
+      "cue": "GRIP",
+      "nickname_links": ["figure", "event", "event", "event"]
+    },
+    {
+      "type": "material",
+      "cue": "CHROME",
+      "nickname_links": ["event", "event"],
+      "background": "CLOTH",
+      "background_links": ["figure", "creature", "event"]
+    },
+    {
+      "type": "material",
+      "cue": "SPICE",
+      "nickname_links": ["creature", "event"],
+      "background": "SILK",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "material",
+      "cue": "SAND",
+      "nickname_links": ["creature", "figure", "event"],
+      "background": "IRON",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "material",
+      "cue": "SHINGLE",
+      "nickname_links": ["event", "event"],
+      "background": "STEEL",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "material",
+      "cue": "STONE",
+      "nickname_links": "material",
+      "background": "COLD",
+      "background_links": ["deity", "deity"]
+    },
+    {
+      "type": "material",
+      "cue": "LEAF",
+      "nickname_links": ["creature", "object", "event"],
+      "background": "PARCHMENT",
+      "background_links": ["deity", "deity"]
+    },
+    {
+      "type": "material",
+      "cue": "JUICE",
+      "nickname_links": ["creature", "object", "event"],
+      "background": "SUGAR",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "material",
+      "cue": "TEA",
+      "nickname_links": ["creature", "event"]
+    },
+    {
+      "type": "creature",
+      "cue": "LEAF",
+      "nickname_links": ["figure", "event"],
+      "background": "MANTIS",
+      "background_links": ["figure", "deity", "mantis"]
+    },
+    {
+      "type": "creature",
+      "cue": "ANT",
+      "nickname_links": ["event", "event", "creature"],
+      "background": "SNAKE",
+      "background_links": ["deity"]
+    },
+    {
+      "type": "creature",
+      "cue": "BANK",
+      "nickname_links": ["event", "creature"],
+      "background": "DRAGON",
+      "background_links": ["deity", "deity"]
+    },
+    {
+      "type": "creature",
+      "cue": "WASP",
+      "nickname_links": ["creature", "object", "event"],
+      "background": "FROG",
+      "background_links": ["deity", "deity"]
+    },
+    {
+      "type": "creature",
+      "cue": "CROW",
+      "nickname_links": ["creature", "object", "event"],
+      "background": "MONKEY",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "creature",
+      "cue": "BIRD",
+      "nickname_links": ["creature", "event", "event"],
+      "background": "SPIDER",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "creature",
+      "cue": "SPIDER",
+      "nickname_links": ["creature", "event", "event"],
+      "background": "SNAIL",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "creature",
+      "cue": "MOLD",
+      "nickname_links": ["creature", "figure", "event"],
+      "background": "BEAST",
+      "background_links": ["figure", "creature"]
+    },
+    {
+      "type": "deity",
+      "cue": "GHOST OF THE",
+      "nickname_links": ["figure", "figure", "event"],
+      "background": "BREAKER OF",
+      "background_links": ["deity", "deity"]
+    },
+    {
+      "type": "deity",
+      "cue": "ONE",
+      "nickname_links": ["event", "event", "event"],
+      "background": "WARDEN OF",
+      "background_links": ["deity", "deity"]
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "deck": "Deck of Worlds Fantasy Expansion - Worlds of Myth & Magic",
+  "cardTypes": {
+    "region": {
+      "name": "Region",
+      "description": "Fantasy-themed main terrain types for microsettings",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["VALE", "KINGDOM", "FEN", "SEA"]
+        },
+        {
+          "cues": ["BRIAR(S)", "CITY", "MOUNT", "CAVE(S)"]
+        },
+        {
+          "cues": ["CAIRN", "TAVERN", "KEEP", "TOWN"]
+        },
+        {
+          "cues": ["HENGE", "APOTHECARY", "PORTAL", "SPRING"]
+        },
+        {
+          "cues": ["CITY", "VALE", "SEA", "KINGDOM"]
+        },
+        {
+          "cues": ["FEN", "BRIAR(S)", "MOUNT", "CAVE(S)"]
+        },
+        {
+          "cues": ["CAIRN", "TAVERN", "KEEP", "TOWN"]
+        },
+        {
+          "cues": ["HENGE", "PORTAL", "APOTHECARY", "SPRING"]
+        }
+      ]
+    },
+    "landmark": {
+      "name": "Landmark",
+      "description": "Fantasy-themed geographical sites and points of interest",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["OBELISK", "STAIR", "CROSSROAD", "FORGE"]
+        },
+        {
+          "cues": ["CASTLE", "VILLAGE", "SHRINE", "MARKET"]
+        },
+        {
+          "cues": ["ROAD", "DALE", "MILL", "CITY"]
+        },
+        {
+          "cues": ["HEATH", "FOUNTAIN", "FORT", "CAIRN"]
+        },
+        {
+          "cues": ["TAVERN", "KEEP", "TOWN", "HENGE"]
+        },
+        {
+          "cues": ["APOTHECARY", "PORTAL", "SPRING", "OBELISK"]
+        },
+        {
+          "cues": ["STAIR", "CROSSROAD", "FORGE", "CASTLE"]
+        },
+        {
+          "cues": ["VILLAGE", "SHRINE", "MARKET", "ROAD"]
+        },
+        {
+          "cues": ["DALE", "MILL", "CITY", "HEATH"]
+        },
+        {
+          "cues": ["FOUNTAIN", "FORT", "CAIRN", "TAVERN"]
+        },
+        {
+          "cues": ["KEEP", "TOWN", "HENGE", "APOTHECARY"]
+        },
+        {
+          "cues": ["PORTAL", "SPRING", "OBELISK", "STAIR"]
+        }
+      ]
+    },
+    "namesake": {
+      "name": "Namesake",
+      "description": "Fantasy-themed prefixes and suffixes for naming locations",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["SUNDERED", "WHERE SPIRITS GATHER", "OF DRAGONS", "OF MERCHANTS"]
+        },
+        {
+          "cues": ["DWARVEN", "OF STEEL", "WITHOUT MAGIC", "OF THUNDER"]
+        },
+        {
+          "cues": ["ELVEN", "WHERE BLADES DANCE", "OF SPIRES", "OF BARDS"]
+        },
+        {
+          "cues": ["ORCISH", "THAT ALLOWS NO MURDER", "OF STEEL", "OF PAUPERS"]
+        },
+        {
+          "cues": ["GNOMISH", "WHERE MONSTERS DWELL", "OF MAGES", "OF PROPHETS"]
+        },
+        {
+          "cues": ["HALFLING", "OF HEARTS", "OF WINE", "TWO-PENNY"]
+        },
+        {
+          "cues": ["IRON", "THAT WANNAKES", "OF BEASTS", "OF TRAITORS"]
+        },
+        {
+          "cues": ["CLERIC'S", "UNDER SIEGE", "OF SEARS", "OF MONKS"]
+        },
+        {
+          "cues": ["CROWNLESS", "WHERE THE EYE", "OF GIANTS", "DRUNKARD'S"]
+        },
+        {
+          "cues": ["TYRANT'S", "THAT HELD FAITH", "OF DREAMERS", "OF RAGE"]
+        },
+        {
+          "cues": ["HOLY ORDER", "LAST KNOWN LOCATION OF A LEGENDARY", "OF ROGUES", "WAS ONCE A SACRED PUBLIC SITE"]
+        },
+        {
+          "cues": ["PUBLIC SITE", "DOMINION OF ALL THAT", "LAST KNOWN", "LOCATION OF A"]
+        }
+      ]
+    },
+    "origin": {
+      "name": "Origin",
+      "description": "Fantasy-themed significant historical events",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["SITE OF THE WORLD'S OLDEST TAVERN", "WAS ONCE HOME TO A MYTHICAL CREATURE", "BIRTHPLACE OF AN UNDEFEATED WAR LEADER", "SITE OF A FAMOUS SIEGE"]
+        },
+        {
+          "cues": ["BUILT TO COMMEMORATE A VICTORY", "DOMAIN OF AN ORDER OF MAGES", "WAS ONCE FLOATING", "ORIGIN OF AN INFAMOUS MONSTER'S STIRRING"]
+        },
+        {
+          "cues": ["CREATED BY A ROGUE MONARCH", "SHAPED BY AN AIRBORNE REBELLION", "SHIPYARD BY THE FAE", "RESTING PLACE OF A LEGENDARY GLADIATOR"]
+        },
+        {
+          "cues": ["SITE OF CORONATIONS", "HOME FOR PORTAL ARTS SCHOOL", "LONG HARASS", "GOVERNED BY COUNCILS"]
+        },
+        {
+          "cues": ["BIRTHPLACE OF A RENOWNED MAGE", "SITE OF GREAT POWER", "RULED BY TRIUMVIRATE", "RENOWNED SMITH(S)"]
+        },
+        {
+          "cues": ["KNOWN FOR ASSASSIN(S)", "KNOWN FOR COLLEGE(S)", "UNIQUE MAGIC SYSTEM", "WELL OF NATURE MAGIC"]
+        },
+        {
+          "cues": ["VALUES STRENGTH", "HARSH EXILE LAWS", "BREEDERS OF MAGICAL CREATURE(S)", "KNOWN FOR ALCHEMY"]
+        },
+        {
+          "cues": ["ORIGIN OF AN ORDER OF MAGES", "SITE ONCE FLOATING", "WAS ONCE AIRBORNE", "RESTING PLACE OF A LEGENDARY GLADIATOR"]
+        }
+      ]
+    },
+    "attribute": {
+      "name": "Attribute",
+      "description": "Fantasy-themed present-day features and characteristics",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["LONG HARASS", "BUSTLING TIMEWAYS", "RULED BY TRIUMVIRATE", "HOME FOR UNWANTED"]
+        },
+        {
+          "cues": ["RENOWNED SMITH(S)", "RAPID-FIRE SEASONS", "NON-PHYSICAL CURRENCY", "POPULAR BOOT STOP"]
+        },
+        {
+          "cues": ["KNOWN FOR ASSASSIN(S)", "CONTROLLED BY GUARDS", "SPELL-KOS OF ANCIENT", "KNOWN FOR COLLEGE(S)"]
+        },
+        {
+          "cues": ["UNIQUE MAGIC SYSTEM", "WELL OF NATURE MAGIC", "KNOWN FOR ALCHEMY", "INHABITED BY SHARDS"]
+        },
+        {
+          "cues": ["VALUES STRENGTH", "HARSH EXILE LAWS", "BREEDERS OF MAGICAL CREATURE(S)", "KNOWN FOR ALCHEMY"]
+        },
+        {
+          "cues": ["ANNUAL MAGICAL PHENOMENON", "SIGNATURE WEAPON", "MONK FOR MYTHICAL CREATURES", "GOVERNED BY CHARMS"]
+        },
+        {
+          "cues": ["CLOCKWORK CONSTRUCTION", "UNUSUAL TRADITION", "HEALING SPRING(S)", "KNOWN FOR BEER"]
+        },
+        {
+          "cues": ["RENOWNED WAND-MAKER(S)", "INTELLIGENTEVILDLIFE", "CAN ONLY BE FOUND BY CHILD", "HOME FOR A NATURAL HABITATION"]
+        },
+        {
+          "cues": ["SOURCE OF CHAOTIC MAGIC", "ANNUAL MAGICAL PHENOMENON", "MONK FOR OR MYTHICAL", "GOVERNED BY CHARMS"]
+        },
+        {
+          "cues": ["CLOCKWORK CONSTRUCTION", "SIGNATURE WEAPON", "HEALING SPRING(S)", "KNOWN FOR BEER"]
+        },
+        {
+          "cues": ["RENOWNED WAND-MAKER(S)", "INTELLIGENTEVILDLIFE", "MOVING ACCORDING TO LIKE", "RECEIVING WARE, OR SPENDING"]
+        },
+        {
+          "cues": ["THE LAND ITSELF SEEMS TO BE COMING TO LIFE", "TO BE ITSELF SEEMS", "MOVING WARE, OR SPENDING", "RECEIVING WARE"]
+        }
+      ]
+    },
+    "advent": {
+      "name": "Advent",
+      "description": "Fantasy-themed events that may change the area's future",
+      "cards": [
+        {
+          "cue": "A HOTLY CONTESTED TRIAL BY COMBAT IS ABOUT TO TAKE PLACE:",
+          "interpretations": ["TO SETTLE A FAMILY FEUD", "ACCUSATION, OR DEBT"]
+        },
+        {
+          "cue": "THE LAST PRACTITIONER(S) OF A MAGIC ART WILL SOON DIE:",
+          "interpretations": ["THEY NEED AN APPRENTICE", "SCRIBE, OR CURE"]
+        },
+        {
+          "cue": "AN IMPORTANT SOURCE OF MAGICAL POWER IS DWINDLING:",
+          "interpretations": ["PHYSICAL CENTURIES, RARE CRYSTALS, OR ANCIENT PLANTS"]
+        },
+        {
+          "cue": "A NEW FORM OF MAGIC MIGHT GET BANNED:",
+          "interpretations": ["IT'S GOING HAYWIRE", "DEPLETING RESOURCES, OR BREEDING TRADITION"]
+        },
+        {
+          "cue": "THE POPULATION LACKS FUNDS TO PAY ANNUAL TRIBUTE:",
+          "interpretations": ["TO A MONARCH, FOREIGN NATION, OR MONSTER"]
+        },
+        {
+          "cue": "A LEGENDARY ARTIFACT HAS RESURFACE:",
+          "interpretations": ["A POWERFUL WEAPON, FOR FREE", "OR A RELIGIOUS SYMBOL, OR ORGANISM"]
+        },
+        {
+          "cue": "A STRANGE ENCHANTMENTS TO HAVE FALLEN ONE THE LAND:",
+          "interpretations": ["TO HAVE ENCHANTMENT SUITS ONE THE LANDS", "THERE IS A RACE TO FIND THE TRICK BEFORE"]
+        },
+        {
+          "cue": "A NOBLE IS RESTOWING THEIR FORTUNE VIA A CONTEST:",
+          "interpretations": ["TO FIND A RELIC, SOLVE A PUZZLE, OR SLAY A MONSTER"]
+        }
+      ]
+    }
+  },
+  "usage": {
+    "description": "A 60-card fantasy expansion with genre-focused cards for creating fantasy worlds and settings",
+    "integration": [
+      "Use only expansion cards - Create a world of up to 8 microsettings with cohesive fantasy focus",
+      "Mix expansion cards into the main deck - Add fantasy embellishments without restricting to single genre",
+      "Mix cards and use a sideboard - Less random, more intentional worldbuilding when mixing multiple expansions"
+    ],
+    "composition": {
+      "regions": 8,
+      "landmarks": 12,
+      "namesakes": 12,
+      "origins": 8,
+      "attributes": 12,
+      "advents": 8
+    }
+  },
+  "credits": {
+    "design": "Peter Chiykowski",
+    "production": "Miroki Tong, Zach Schuster",
+    "writing": "Akira Keith, Athar Fikry, A. Z. Louise, Brendon Alekseii, Cae Hawksmoor, J. D. Harlock, Juliet Kemp, Michael Barker, Sarah Loch, Zach Schuster",
+    "sensitivity_review": "A. Z. Louise, Sonya Ballantyne, Yasmine Fahmy",
+    "curriculum_review": "Kendra Harrison",
+    "proofreading": "Eric Weiss, Leigh Teetzel, Tyson Pink",
+    "box_images": "Dariusz Sankowski, Zac Wolff",
+    "region_images": "Alexander Naglestad, Bjorn Kamfjord, Claudia Lorusso, Kaspars Upmanis, Pietro de Grandi, Red Morley Hewitt, Vitaly Ozerov, Will Turner",
+    "landmark_images": "Adrien Olichon, Alfred, Altansukh E, Erwin Doorn, Evan Leith, Gautier Salles, Geran de Klerk, Ivan Bandura, Jason Blackeye, Jona Troes, Lisheng Chang, Lucas Miguel, Luis Eusebio, Max Bottinger, Miguel Sousa, Ryan Warburton, Sergio Souza, Shoeib Abolhassani, Smaran Alva, Timo Wielink, Victor Garcia, Zac Wolff"
+  }
+}

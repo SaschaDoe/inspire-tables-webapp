@@ -1,0 +1,687 @@
+{
+  "deck": "Lore Master's Deck - Deities Expansion",
+  "description": "Master of Gods: 60 cards adding gods, spirits, deities, and cosmic entities. Includes 25 Deity cards and 35 variant lore cards with deity-pairing mechanics.",
+  "cardTypes": {
+    "deity": {
+      "name": "Deity",
+      "description": "Gods, spirits, deities, and cosmic entities",
+      "cards": [
+        {
+          "primaryCues": ["REVELER", "SMUDGER", "RAVAGER", "FRIEND"],
+          "secondaryCues": ["THE LION"]
+        },
+        {
+          "primaryCues": ["MINDFIRE", "TITAN", "NAVIGATOR", "TORCHBEARER"],
+          "secondaryCues": ["THE SERPENT"]
+        },
+        {
+          "primaryCues": ["FIND", "STORY", "WEAVER", "CHAMELEON"],
+          "secondaryCues": ["THE CHAMELEON"]
+        },
+        {
+          "primaryCues": ["CARETAKER", "PASSENGER", "BETRAYER", "CHILD"],
+          "secondaryCues": ["THE LEECH"]
+        },
+        {
+          "primaryCues": ["SHIPMASTER", "ARCHITECT", "HARVEST", "NAVIGATOR"],
+          "secondaryCues": ["THE HUNTER"]
+        },
+        {
+          "primaryCues": ["HARVEST", "CHILD", "PROTECTOR", "LAMPLIGHTER"],
+          "secondaryCues": ["THE EAGLE"]
+        },
+        {
+          "primaryCues": ["PRISONER", "DESTROYER", "DANCER", "ARCHITECT"],
+          "secondaryCues": ["THE MAGPIE"]
+        },
+        {
+          "primaryCues": ["DECEIVER", "PARAGON", "WARDEN", "CRONE"],
+          "secondaryCues": ["THE HERON"]
+        },
+        {
+          "primaryCues": ["ARCHITECT", "DANCER", "CRONE", "TOAD"],
+          "secondaryCues": ["THE TOAD"]
+        },
+        {
+          "primaryCues": ["ENIGMA", "SEEKER", "BEAR", "MEDIATOR"],
+          "secondaryCues": ["THE DRAGON"]
+        },
+        {
+          "primaryCues": ["DANCER", "MEDIATOR", "GUARDIAN", "CONFESSOR"],
+          "secondaryCues": ["THE COLOSSUS"]
+        },
+        {
+          "primaryCues": ["CONFESSOR", "VOYAGER", "TRICKSTER", "COMFORTER"],
+          "secondaryCues": ["THE DOG"]
+        },
+        {
+          "primaryCues": ["LIFE OR GROWTH", "BREAK THROUGH BARRIERS", "HOSPITALITY", "WEALTH OF WIND, OR STORMS"],
+          "secondaryCues": [
+            "BACKGROUND: WORSHIPPED BY ONLY ONE FACTION 0",
+            "DOMAIN: DARKNESS, SHADOWS, OR SECRETS",
+            "BACKGROUND: DYSFUNCTIONAL RELATIONSHIP WITH ANOTHER DEITY 0",
+            "BACKGROUND: HAS ONLY ONE LIVING FOLLOWER 0"
+          ]
+        },
+        {
+          "primaryCues": ["LANGUAGE, STORIES, OR HISTORY", "PROPHECY, LUCK, OR FATE", "CREATION, OR INVENTION"],
+          "secondaryCues": [
+            "BACKGROUND: UNIVERSALLY SCORNED ON THE WORLD",
+            "DOMAIN: LANGUAGE, STORIES, OR HISTORY",
+            "BACKGROUND: LOVER OF ANOTHER DEITY 0"
+          ]
+        },
+        {
+          "primaryCues": ["HIDDEN TREASURE, OR BURIED TRUTHS", "BEGINNINGS, ENDS/ OR PASSAGES"],
+          "secondaryCues": [
+            "DOMAIN: LAW OR JUSTICE",
+            "BACKGROUND: SOURCE OF A MATERIAL 6/0",
+            "TRAIT: ALWAYS FOUND IN GROUPS OR TRIPLES 0"
+          ]
+        },
+        {
+          "primaryCues": ["SPECIES OF 0", "THE AFTERLIFE", "DEATH, OR THE AFTERLIFE"],
+          "secondaryCues": [
+            "DOMAIN: WAR OR COMBAT",
+            "BACKGROUND: BEING HUNTED BY A MORTAL 0",
+            "DOMAIN: BEGINNINGS, ENDS/ OR PASSAGES"
+          ]
+        },
+        {
+          "primaryCues": ["RESTORATION, OR HEALING", "A SPECIFIC EVENT 0"],
+          "secondaryCues": [
+            "TRAIT: BEST FRIEND OR ROMANTIC PARTNER OF A MORTAL 0",
+            "DOMAIN: RESTORATION, HEALING/ OR REBIRTH",
+            "BACKGROUND: TRUE NAME ERASED FROM RECORDS AND MEMORY"
+          ]
+        },
+        {
+          "primaryCues": ["RECKONING OF THEIR SINS/DEEDS", "CONFLICT, GROUNDING BY DEITY'S OWN CONFLICT"],
+          "secondaryCues": [
+            "BACKGROUND: SPIRIT OF A SPECIFIC LOCATION 0",
+            "BACKGROUND: WOUNDED A MORTAL 0",
+            "DOMAIN: ABUNDANCE HIDDEN OR HOARDED OR SPECIFIC GAIN 0"
+          ]
+        },
+        {
+          "primaryCues": ["HIDDEN OR BURIED TREASURE/ BROKEN DOORWAYS OR THEFT FROM DEITY 0", "TRAPPED IN SOMEONE, OR SOMETHING"],
+          "secondaryCues": [
+            "DOMAIN: PORTALS",
+            "BACKGROUND: TWIN OR SIBLING OF ANOTHER GOD 0",
+            "BACKGROUND: CAUSED A SPECIFIC EVENT 0"
+          ]
+        },
+        {
+          "primaryCues": ["THE LOST SIGN/ OR UNSHELTERED", "MARK OF WRATH/ OR FORGIVEN"],
+          "secondaryCues": [
+            "BACKGROUND: FABRICATE 0 OR WEAVE THE DIVINE 0",
+            "TRAIT: APPEARS IN ART 0",
+            "BACKGROUND: VANISHED AFTER AN EVENT 0"
+          ]
+        },
+        {
+          "primaryCues": ["GOOD OMENS/BAD PROMISES", "SPECIFIC FORM OF WORSHIP"],
+          "secondaryCues": [
+            "DOMAIN: NOURISHING FORCE 0 OR NONSPECIFIC SUSTENANCE 0",
+            "BACKGROUND: FOUNDED BY FOLLOWERS OF A DEITY 0",
+            "DOMAIN: DEATH IN A SPECIFIC HABIT 0"
+          ]
+        },
+        {
+          "primaryCues": ["VOWS NEVER TO BREAK", "WITH A FAITH"],
+          "secondaryCues": [
+            "BACKGROUND: PATRON OF A NATION, CITY, OR PLACE 0",
+            "BACKGROUND: ENTRUSTED WITH THE GRAVE OF A DEITY 0/0",
+            "DOMAIN: FOUND WITH ANOTHER 0"
+          ]
+        },
+        {
+          "primaryCues": ["COMPLETED WITH ANOTHER CHARACTER/DEFEATED WITH A FAITH"],
+          "secondaryCues": [
+            "TRAIT: MAKES THE VOICE WHISPER 0/0",
+            "DOMAIN: NONSPECIFIC CHANGE 0/0",
+            "BACKGROUND: FOUNDED BY A DEITY 0"
+          ]
+        },
+        {
+          "primaryCues": ["SUFFERING FORM OF WORSHIP"],
+          "secondaryCues": [
+            "BACKGROUND: MAKE THE VOICE FEEL CALLED TO",
+            "BACKGROUND: DEFEATED A DEITY 0",
+            "BACKGROUND: ONCE TRIED TO USURP A DEITY'S DOMAIN 0"
+          ]
+        },
+        {
+          "primaryCues": ["TOOL", "WEAPON", "CYNIC"],
+          "secondaryCues": ["THE SPIDER", "THE STAG", "THE FLY"]
+        },
+        {
+          "primaryCues": ["OPPORTUNIST", "WISE", "ROGUE"],
+          "secondaryCues": ["THE TRAVELER", "THE NAUTILUS", "THE HARE"]
+        },
+        {
+          "primaryCues": ["USURPER", "BUTCHER", "MIRROR"],
+          "secondaryCues": ["THE DRIFTER", "THE TURTLE", "THE BEAST"]
+        },
+        {
+          "primaryCues": ["SCAVENGER", "LIAR", "DOWN"],
+          "secondaryCues": ["THE GARDENER", "THE FLAME", "THE VULTURE"]
+        },
+        {
+          "primaryCues": ["ROGUE", "GUIDE", "MASOCHIST"],
+          "secondaryCues": ["THE PARASITE"]
+        }
+      ]
+    },
+    "faction": {
+      "name": "Faction",
+      "description": "Deity-linked faction cards (expansion variants)",
+      "cards": [
+        {
+          "primaryCues": ["0'S PIONEERS"],
+          "secondaryCues": [
+            "TRAIT: 0'S RITUALS 0/0",
+            "TRAIT: 0'S PARADE",
+            "TRAIT: STYLISH 0/0",
+            "BACKGROUND: 0-BLESSED"
+          ]
+        },
+        {
+          "primaryCues": ["0'S RIDERS"],
+          "secondaryCues": [
+            "TRAIT: 0'S WITLESSESS",
+            "TRAIT: ARMY OF 0",
+            "TRAIT: 0'S SECT 0/0",
+            "BACKGROUND: 0'S ADVOCATES"
+          ]
+        },
+        {
+          "primaryCues": ["0'S SHADOWS"],
+          "secondaryCues": [
+            "TRAIT: 0'S SECRETS",
+            "TRAIT: 0'S UNWILLING",
+            "TRAIT: 0 DEPRIVED OF 0",
+            "BACKGROUND: CHURCH OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["0'S EXPERIMENTS"],
+          "secondaryCues": [
+            "TRAIT: 0'S EYES",
+            "TRAIT: 0'S CHOIR",
+            "TRAIT: 0 ON THE ATTACK 0",
+            "BACKGROUND: 0'S REAPERS"
+          ]
+        },
+        {
+          "primaryCues": ["PROGRESS, FUTURES NEVER TO COME"],
+          "secondaryCues": [
+            "TRAIT: KEEPING THE VOICE ALIVE 0",
+            "TRAIT: LOST, UNDOING THEIR PASTS 0",
+            "TRAIT: 0 ALL SCATTERED 0",
+            "BACKGROUND: ENTRUSTED WITH THE GRAVE OF A DEITY 0/0"
+          ]
+        }
+      ]
+    },
+    "figure": {
+      "name": "Figure",
+      "description": "Deity-linked figure cards (expansion variants)",
+      "cards": [
+        {
+          "primaryCues": ["0'S PARIAH"],
+          "secondaryCues": [
+            "TRAIT: 0'S PILGRIMAGE",
+            "TRAIT: 0 BELOVED OF 0",
+            "TRAIT: 0 BELONGING 0",
+            "BACKGROUND: SCHOLAR OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["0'S ANOINTED"],
+          "secondaryCues": [
+            "TRAIT: BINDER OF 0",
+            "TRAIT: 0'S RITUAL 0/0",
+            "TRAIT: AVATAR OF 0",
+            "BACKGROUND: HUNTER OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["0'S TRAITOR"],
+          "secondaryCues": [
+            "TRAIT: CHALLENGER OF 0",
+            "TRAIT: 0'S ZEALOT 0",
+            "TRAIT: HAND OF 0",
+            "BACKGROUND: SPEAKER OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["COSMIC WAYPOINT/ AND THE LOST OR LIGHT"],
+          "secondaryCues": [
+            "TRAIT: 0'S VOICE ONLY CONSORT",
+            "TRAIT: DEATHGAIN FROM LIGHT 0 IN THEIR 0",
+            "TRAIT: SECRET OF 0",
+            "BACKGROUND: PARAGON OF A DEITY 0"
+          ]
+        },
+        {
+          "primaryCues": ["CAN SPEAK WITH PLANTS/ OR LAWFULLY"],
+          "secondaryCues": [
+            "TRAIT: WORSHIPING 0 OR MIGHTILY 0",
+            "TRAIT: DESCENT THEIR CORE CONSUMED 0",
+            "TRAIT: SECRET TOOL 0",
+            "BACKGROUND: CHAMPION OR CHOSEN ONE OF A DEITY 0"
+          ]
+        },
+        {
+          "primaryCues": ["MARKUP ARTIST"],
+          "secondaryCues": [
+            "TRAIT: BEST FRIEND OR ROMANTIC PARTNER OF 0",
+            "TRAIT: POSSESSOR OF STOLEN PIECES 0",
+            "TRAIT: SAGE/TOOTH",
+            "BACKGROUND: LAST WORSHIPPER OF A DEITY 0"
+          ]
+        },
+        {
+          "primaryCues": ["BEARER OF A DIVINE ARTIFACT 0"],
+          "secondaryCues": [
+            "TRAIT: CHANNEL DEATH 0",
+            "TRAIT: COMMANDED THE SPIRIT 0",
+            "TRAIT: REMNANT LIGHT 0",
+            "BACKGROUND: WRONGED A DEITY 0"
+          ]
+        }
+      ]
+    },
+    "event": {
+      "name": "Event",
+      "description": "Deity-linked event cards (expansion variants)",
+      "cards": [
+        {
+          "primaryCues": ["0'S ARRIVAL"],
+          "secondaryCues": [
+            "CATALYST: CHASE 0",
+            "CATALYST: 0'S INFERNO",
+            "CATALYST: 0'S BARRIER",
+            "BACKGROUND: 0'S GAMBLE"
+          ]
+        },
+        {
+          "primaryCues": ["0'S REAPING"],
+          "secondaryCues": [
+            "CATALYST: DAWN OF 0",
+            "CATALYST: MUTINY 0",
+            "CATALYST: AUTHORITY 0",
+            "BACKGROUND: 0'S PESTILENCE"
+          ]
+        },
+        {
+          "primaryCues": ["TURNING OF 0"],
+          "secondaryCues": [
+            "CATALYST: 0'S BARRIER",
+            "CATALYST: 0 FALL OF 0",
+            "CATALYST: INTERVENTION",
+            "BACKGROUND: 0'S ASCENSION"
+          ]
+        },
+        {
+          "primaryCues": ["FUNERAL OF THE 0"],
+          "secondaryCues": [
+            "CATALYST: 0 RECKONING",
+            "CATALYST: WRATH OF 0",
+            "CATALYST: 0/0",
+            "BACKGROUND: FAVOR OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["BIRTH OR DEATH OF A DEITY 0"],
+          "secondaryCues": [
+            "CATALYST: BIRTH OCCURS AT/ THEIR MORTAL 0/0",
+            "CATALYST: SEPARATION/ REBIRTH OF 0 TO MORTALITY 0/0",
+            "CATALYST: ASCENSION 0/0",
+            "BACKGROUND: KEEPING OF DANGEROUS SECRETS"
+          ]
+        },
+        {
+          "primaryCues": ["DESCENT OF A DEITY 0"],
+          "secondaryCues": [
+            "CATALYST: APPARENCE OR DISAPPEARANCE IN A CELESTIAL BODY",
+            "CATALYST: HERETICAL CONFLICT 0",
+            "CATALYST: PROPHECY COMES TRUE/ THAT SHE AT BIRTH 0",
+            "BACKGROUND: ANIMAL OR DEITY GONE ROGUE 0/0"
+          ]
+        },
+        {
+          "primaryCues": ["DESTRUCTION OF RESURRECTION OR DEITY'S REBIRTH"],
+          "secondaryCues": [
+            "CATALYST: EFFORT 0/0/0",
+            "CATALYST: MORTAL CONFLICT 0",
+            "CATALYST: DIVINE TRANSFORMATION 0/0",
+            "BACKGROUND: RESTORATION OF ANCIENT ORDER 0/0/0"
+          ]
+        }
+      ]
+    },
+    "location": {
+      "name": "Location",
+      "description": "Deity-linked location cards (expansion variants)",
+      "cards": [
+        {
+          "primaryCues": ["CRADLE OF 0"],
+          "secondaryCues": [
+            "TRAIT: 0'S THRONE",
+            "TRAIT: 0 LIBRARY OF 0",
+            "TRAIT: 0 OF 0",
+            "BACKGROUND: TEMPLE OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["SEAT OF 0"],
+          "secondaryCues": [
+            "TRAIT: CRESCENT OF 0",
+            "TRAIT: 0'S CASTLE",
+            "TRAIT: 0 FLESH OF 0",
+            "BACKGROUND: TOMB OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["ROGUE OF 0"],
+          "secondaryCues": [
+            "TRAIT: 0 SHORELESS",
+            "TRAIT: 0'S BURROW",
+            "TRAIT: 0'S MAYON 0",
+            "BACKGROUND: HOUSE OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["0'S PARADISE"],
+          "secondaryCues": [
+            "TRAIT: 0'S GIFT 0",
+            "TRAIT: 0 OF 0",
+            "TRAIT: 0 CHAMBER OF 0",
+            "BACKGROUND: GATES OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["PIT OF 0"],
+          "secondaryCues": [
+            "TRAIT: 0'S HAUNT",
+            "TRAIT: 0'S KITCHEN",
+            "TRAIT: 0 BURROW 0",
+            "BACKGROUND: SHRINE OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["CONSECRATED MONUMENT OR HEALING SITE"],
+          "secondaryCues": [
+            "TRAIT: MONASTERY MONUMENT",
+            "TRAIT: BOOKLY RELIC ARTIFACT LOCATION",
+            "TRAIT: PROPHECY",
+            "BACKGROUND: CURSED BY A DEITY 0"
+          ]
+        },
+        {
+          "primaryCues": ["SHROUD OR HIDDEN MONUMENT/ ON THE INSIDE"],
+          "secondaryCues": [
+            "TRAIT: UNWISE PLACE OR MONUMENT",
+            "TRAIT: MONUMENT/ ON PATH FELT 0",
+            "TRAIT: HIDING/ ALWAYS OR MONUMENT/ OFTEN PATH FELT 0",
+            "BACKGROUND: DESCENDED FROM THE SKY"
+          ]
+        },
+        {
+          "primaryCues": ["REPOSITORY OF DREAMS/ OF OTHERS"],
+          "secondaryCues": [
+            "TRAIT: MOSTLY SACRED",
+            "TRAIT: PROTECTING/ BOTH FELT 0 ALWAYS OR MONUMENT",
+            "TRAIT: HOLISTIC",
+            "BACKGROUND: BUILT BY A DEITY 0"
+          ]
+        }
+      ]
+    },
+    "object": {
+      "name": "Object",
+      "description": "Deity-linked object cards (expansion variants)",
+      "cards": [
+        {
+          "primaryCues": ["0'S MEDALLION"],
+          "secondaryCues": [
+            "TRAIT: 0 ORB OF 0",
+            "TRAIT: LYRE OF 0",
+            "TRAIT: SEAL OF 0",
+            "BACKGROUND: BLADE OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["BAG (S) OF 0"],
+          "secondaryCues": [
+            "TRAIT: SPIKE OF 0",
+            "TRAIT: TOOL OF 0",
+            "TRAIT: LOOM OF 0",
+            "BACKGROUND: 0'S ARROW"
+          ]
+        },
+        {
+          "primaryCues": ["GLOVES OF 0"],
+          "secondaryCues": [
+            "TRAIT: 0'S SEAL",
+            "TRAIT: TOME OF 0",
+            "TRAIT: SEAL OF 0",
+            "BACKGROUND: 0'S RAZOR"
+          ]
+        },
+        {
+          "primaryCues": ["NEEDS TO COMPLETE A SHELL OR TRIBUTE"],
+          "secondaryCues": [
+            "TRAIT: ALLOWS THE WEARER TO CONTACT THEM 0",
+            "TRAIT: MESSAGES RECOVERED 0",
+            "TRAIT: THE MISFORTUNES OR DESIRES 0 AND MASTERY OF 0/0",
+            "BACKGROUND: GIVEN AS A GIFT BY OR TO A DEITY 0"
+          ]
+        },
+        {
+          "primaryCues": ["ALLOWS THE BORDER HUMAN SPIRITS"],
+          "secondaryCues": [
+            "TRAIT: TRANSCENDENT STORIES/ THE LOST SPIRIT 0/0",
+            "TRAIT: MASTERY OF DISASTERS 0/0/0",
+            "TRAIT: NONSPECIFIC LOCATION",
+            "BACKGROUND: RESPONSIBLE FOR THE DEATH OF A DEITY 0"
+          ]
+        },
+        {
+          "primaryCues": ["A SHELL OR COMPLETE A SHELL OR TRIBUTE"],
+          "secondaryCues": [
+            "TRAIT: TRANSCENDENT 0/0 MASTERY OF RITUALS",
+            "TRAIT: MASTERY OF GOD 0 OF 0 CREATES 0",
+            "TRAIT: GUARDING OF 0",
+            "BACKGROUND: FROM ANOTHER PLANE OR DIMENSION"
+          ]
+        },
+        {
+          "primaryCues": ["APPEARS IN TIMES OF GREAT NEED"],
+          "secondaryCues": [
+            "TRAIT: ALLOWS COMMUNICATION WITH 0",
+            "TRAIT: HOLD OR BIND A DEITY 0",
+            "TRAIT: MENTIONED IN RUMORS",
+            "BACKGROUND: CREATED FROM A DEITY'S BODY 0"
+          ]
+        }
+      ]
+    },
+    "material": {
+      "name": "Material",
+      "description": "Deity-linked material cards (expansion variants)",
+      "cards": [
+        {
+          "primaryCues": ["0'S ALLOY"],
+          "secondaryCues": [
+            "TRAIT: 0 CARD OF 0",
+            "TRAIT: SHARDS OF 0",
+            "TRAIT: 0 GRID 0",
+            "BACKGROUND: NECTAR OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["0'S MARBLE"],
+          "secondaryCues": [
+            "TRAIT: 0 GRAVE",
+            "TRAIT: 0'S SILVER",
+            "TRAIT: 0 OF 0",
+            "BACKGROUND: WINE OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["0'S CEMENT"],
+          "secondaryCues": [
+            "TRAIT: BREATH OF 0",
+            "TRAIT: 0 CLOTH OF 0",
+            "TRAIT: DYE 0",
+            "BACKGROUND: BLOOD OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["0'S SUNNED"],
+          "secondaryCues": [
+            "TRAIT: MUD OF 0",
+            "TRAIT: BONE OF 0",
+            "TRAIT: 0/0",
+            "BACKGROUND: 0'S SALT"
+          ]
+        },
+        {
+          "primaryCues": ["PEACE OR WAGERS/ EARTH 0/0/0"],
+          "secondaryCues": [
+            "TRAIT: PESPERTIES",
+            "TRAIT: CONQUEST OR DESIRE",
+            "TRAIT: SCARED BY DENTS",
+            "BACKGROUND: FABRICATED BY A DEITY 0"
+          ]
+        },
+        {
+          "primaryCues": ["GROWS ON A DEITY 0"],
+          "secondaryCues": [
+            "TRAIT: HARNESS ESSENTIAL STORY OR ANEW PERIL",
+            "TRAIT: CONQUERED BY DENTS 0",
+            "TRAIT: SCARED OR CONQUEST ONLY SPACE FOUND BY DENTS 0",
+            "BACKGROUND: THE ONLY SUBSTANCE THAT CAN WOUND OR HEAL A DEITY 0"
+          ]
+        },
+        {
+          "primaryCues": ["USED AS BAIT FOR A CREATURE 0/ A CREATURE 0"],
+          "secondaryCues": [
+            "TRAIT: IMPROVED THE COLLAR",
+            "TRAIT: SLAYED BY DEITY'S 0",
+            "TRAIT: IMPOSSIBLE THE CONQUER 0/0",
+            "BACKGROUND: USED IN THE WELCOME RITUAL OF A LOCATION 0/0"
+          ]
+        },
+        {
+          "primaryCues": ["BEQUEST OUT/ ON HOLY DAYS"],
+          "secondaryCues": [
+            "TRAIT: ALLOWS MEDITATION/ ROOTS OR STONE 0",
+            "TRAIT: FOUND ON DEITY'S ALTAR OR WITH DEITY'S FOLLOWERS 0/0",
+            "TRAIT: MELD FORTH OR DIVINE BODY 0 LIGHT",
+            "BACKGROUND: USED TO ANOINT OR TEST A DEITY'S FOLLOWERS 0/0"
+          ]
+        }
+      ]
+    },
+    "creature": {
+      "name": "Creature",
+      "description": "Deity-linked creature cards (expansion variants)",
+      "cards": [
+        {
+          "primaryCues": ["0'S ROSE"],
+          "secondaryCues": [
+            "TRAIT: 0'S NEWT",
+            "TRAIT: 0'S ALBATROSS",
+            "TRAIT: 0 SPAWN 0",
+            "BACKGROUND: WINGS OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["0'S AUTOMATON"],
+          "secondaryCues": [
+            "TRAIT: 0'S SERVON 0",
+            "TRAIT: 0'S WHALE",
+            "TRAIT: 0'S BADGER",
+            "BACKGROUND: HOUND OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["0'S MOSS"],
+          "secondaryCues": [
+            "TRAIT: 0 JACKAL 0",
+            "TRAIT: 0'S LIZARD",
+            "TRAIT: COW OF 0",
+            "BACKGROUND: ANGEL OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["GUARDIAN OF 0"],
+          "secondaryCues": [
+            "TRAIT: 0'S HAWK",
+            "TRAIT: 0'S CAT",
+            "TRAIT: 0'S BADGER",
+            "BACKGROUND: SPRITE OF 0"
+          ]
+        },
+        {
+          "primaryCues": ["COMMUNAL BOUND/ IN SHRINES"],
+          "secondaryCues": [
+            "TRAIT: ALLOWS THE WEARER/ TO CONNECT THEM 0",
+            "TRAIT: STORY OF 0 AND MORTALS",
+            "TRAIT: SYMBOL OF DIVINE SACRIFICE",
+            "BACKGROUND: RESPONSIBLE FOR THE DEATH OF A DEITY 0"
+          ]
+        },
+        {
+          "primaryCues": ["STRIKE OR MESSENGER"],
+          "secondaryCues": [
+            "TRAIT: SPIRAL STORIES/ SPOKE OR CHANTED",
+            "TRAIT: MADE UP BY A MORTAL",
+            "TRAIT: SPOKEN OR CHANTED",
+            "BACKGROUND: PROVIDED BY A DEITY 0"
+          ]
+        },
+        {
+          "primaryCues": ["ON HOLY DAYS"],
+          "secondaryCues": [
+            "TRAIT: ABOUT DEITY'S ORIGIN/ SOUGHT OR DOUBTED",
+            "TRAIT: USED IN RITUALS FORBIDDEN BY A FACTION 0",
+            "TRAIT: ROOTS OR STONE 0",
+            "BACKGROUND: USED TO ANOINT OR TEST A DEITY'S FOLLOWERS 0/0"
+          ]
+        },
+        {
+          "primaryCues": ["CHILDREN OR PETS/ OF A DEITY 0"],
+          "secondaryCues": [
+            "TRAIT: MATERIALS SACRED/ SPOKE OR CHANTED",
+            "TRAIT: MORTAL FORM",
+            "TRAIT: SEEDS OF A DEITY 0",
+            "BACKGROUND: FROM ANOTHER DIVINE REALM"
+          ]
+        },
+        {
+          "primaryCues": ["COVERED IN EYES"],
+          "secondaryCues": [
+            "TRAIT: SHARP OR DULL/ PHRASE OR PAIN",
+            "TRAIT: DIVINE OR PROFANE",
+            "TRAIT: PACK HUNTERS",
+            "BACKGROUND: PREFERRED SACRIFICE OR FOOD OF A DEITY 0/0"
+          ]
+        },
+        {
+          "primaryCues": ["DRAWN TO MUSIC/ OR LAUGHTER"],
+          "secondaryCues": [
+            "TRAIT: GUARDIANS OR COLLECTORS OF SEEDS 0",
+            "TRAIT: SONG OR LAUGHTER",
+            "TRAIT: GUARDIANS SEEK DELIGHTS 0/0",
+            "BACKGROUND: DEITY'S FIRST ATTEMPT AT CREATING LIFE 0/0"
+          ]
+        }
+      ]
+    }
+  }
+}

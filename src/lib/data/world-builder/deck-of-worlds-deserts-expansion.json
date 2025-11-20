@@ -1,0 +1,173 @@
+{
+  "deck": "Deck of Worlds Cartography Expansion - Worlds of Sun & Sand (Deserts)",
+  "cardTypes": {
+    "region": {
+      "name": "Region",
+      "description": "Desert-themed main terrain types for microsettings",
+      "cueCount": 4,
+      "cards": [
+        {"cues": ["DESERT", "DUNE(S)", "CANYON(S)", "WASTE(S)"]},
+        {"cues": ["SAND(S)", "MESA", "BADLAND(S)", "CITY"]},
+        {"cues": ["SISUO", "STEPPE", "CRAG", "MIRAGE"]},
+        {"cues": ["CAMP", "GULCH", "VILLAGE", "TOWN"]},
+        {"cues": ["DESERT", "DUNE(S)", "CANYON(S)", "WASTE(S)"]},
+        {"cues": ["SAND(S)", "MESA", "BADLAND(S)", "CITY"]},
+        {"cues": ["SISUO", "STEPPE", "CRAG", "MIRAGE"]},
+        {"cues": ["CAMP", "GULCH", "VILLAGE", "TOWN"]}
+      ]
+    },
+    "landmark": {
+      "name": "Landmark",
+      "description": "Desert-themed geographical sites and points of interest",
+      "cueCount": 4,
+      "cards": [
+        {"cues": ["HOODOO(S)", "CITY", "OUTPOST", "MINE"]},
+        {"cues": ["FLAT", "CREEK", "ROAD", "MOUNTAIN"]},
+        {"cues": ["RIBAT", "FAULT", "RANCH", "CRAG"]},
+        {"cues": ["SILT", "AQUEDUCT", "RIVER", "SETTLEMENT"]},
+        {"cues": ["HOODOO(S)", "CITY", "OUTPOST", "MINE"]},
+        {"cues": ["FLAT", "CREEK", "ROAD", "MOUNTAIN"]},
+        {"cues": ["RIBAT", "FAULT", "RANCH", "CRAG"]},
+        {"cues": ["SILT", "AQUEDUCT", "RIVER", "SETTLEMENT"]},
+        {"cues": ["HOODOO(S)", "CITY", "OUTPOST", "MINE"]},
+        {"cues": ["FLAT", "CREEK", "ROAD", "MOUNTAIN"]},
+        {"cues": ["RIBAT", "FAULT", "RANCH", "CRAG"]},
+        {"cues": ["SILT", "AQUEDUCT", "RIVER", "SETTLEMENT"]}
+      ]
+    },
+    "namesake": {
+      "name": "Namesake",
+      "description": "Desert-themed prefixes and suffixes for naming locations",
+      "cueCount": 4,
+      "cards": [
+        {"cues": ["DRIEST", "WHERE NO FOOT TREADS", "OF CLOUDS", "OF REFLECTIONS"]},
+        {"cues": ["WINDWARD", "THAT DRINKS", "OF SCARABS", "BRIGHT"]},
+        {"cues": ["TESSELLATED", "OF THE LAST OASIS", "OF WAYFARERS", "OF LIGHT"]},
+        {"cues": ["OF TRUE MIRAGES", "SMOOTH", "OF GRAINS", "OF SNAKES"]},
+        {"cues": ["IMPASSABLE", "OF THE DECAYED SPRING", "OF DROUGHT", "OF NOMADS"]},
+        {"cues": ["DUST DEVIL", "WHERE VULTURES WAIT", "OF SOLACE", "OF SAND"]},
+        {"cues": ["OF PAIN", "BEYOND THE SUNSET", "WAS ONCE AN OASIS", "OF HORSES"]},
+        {"cues": ["LEEWARD", "LOST TO", "OF CLEAR SKIES", "SHIMMERING"]},
+        {"cues": ["DEATH RATTLE", "COBBLED", "IN THE SHADOW", "OF FLOODS"]},
+        {"cues": ["OF SHEPHERDS", "SMOOTH", "OF SCORPIONS", "OF SECRET WATERS"]},
+        {"cues": ["OF BLOODS", "OF GRAVEL", "OF FOUNDERS", "SCOURED"]},
+        {"cues": ["WINDWARD", "SCOURING PLACE", "WHERE VULTURES WAIT", "OF SCHOLARS"]}
+      ]
+    },
+    "origin": {
+      "name": "Origin",
+      "description": "Desert-themed significant historical events",
+      "cueCount": 4,
+      "cards": [
+        {"cues": ["WAS ONCE AN OASIS", "WATER SPIRITS AWAIT", "ORIGINALLY NOT BEEN TREASURED IN LIVING MEMORY", "ORIGIN OF A WATER-HARVESTING METHOD"]},
+        {"cues": ["WAS ONCE A BATTLEGROUND", "LOCATION OF A TRIBAL OUTPUT", "LOST OUTLYING TRIBAL OUTPUT", "ORIGIN OF AN ICONIC TEXTILE"]},
+        {"cues": ["WAS ONCE AN ICEMAKER", "BUILT FROM DERELICT CARAVANS", "ORIGINALLY A QUARRY", "ORIGIN OF A SOLAR ENERGY INNOVATION"]},
+        {"cues": ["(SHAPED BY A) LOCUST CRISIS", "OF A FLASH FLOOD(S)", "ORIGINALLY A QUARRY", "ORIGIN OF A GARDENING METHOD"]},
+        {"cues": ["FORMERLY A OASES", "SITE OF A FOSSIL", "FORMED BY A LOCUST CRISIS", "ORIGIN OF A SCHOOL OF MATHEMATICS"]},
+        {"cues": ["WAS ONCE A MERCHANT SECRET", "SHAPED BY A LOCUST CRISIS", "HABITAT OF AN UNUSUAL REPTILE", "SITE OF ANCIENT SEED VAULT"]},
+        {"cues": ["SITE OF A HISTORIC STAMPEDE", "KNOWN FOR TRIBAL ENDURANCE", "SHAPED BY A LOCUST CRISIS", "ORIGIN OF A SCHOOL OF PHILOSOPHY"]},
+        {"cues": ["SHAPED BY A WIND EROSION", "KNOWN BY A LOCUST", "FORMED BY A WIND", "ORIGIN OF A POPULAR CARD GAME"]}
+      ]
+    },
+    "attribute": {
+      "name": "Attribute",
+      "description": "Desert-themed present-day features and characteristics",
+      "cueCount": 4,
+      "cards": [
+        {"cues": ["DISTINCTIVE SAND", "MONUMENTAL RUINS", "DISTINCTIVE POTTERY", "RENOWNED FOR HERDING ANIMALS"]},
+        {"cues": ["REGIONIALLY SPECIFIC HERD ANIMAL", "DISTINCTIVE SAND", "UNDERGROUND DWELLINGS", "DISTINCTIVE POTTERY"]},
+        {"cues": ["KNOWN FOR COOL ARCHITECTURE", "DISTINCTIVE SAND", "AGRICULTURAL INNOVATORS", "BIO-ADAPTATION"]},
+        {"cues": ["FAMOUS FOR SCORCHED(S)", "DISTINCTIVE SAND", "KNOWN FOR SURVIVING ON MINIMAL WATER", "ELABORATE MOSAIC(S)"]},
+        {"cues": ["KNOWN FOR PORTABLE STORES", "SPARSELY POPULATED", "INNOVATIVE AIR CONDITIONING", "VALUES RESILIENCE"]},
+        {"cues": ["KNOWN FOR MILKING VENOM", "UNUSUALLY WELCOMING", "CULTURALLY SPECIFIC HERD ANIMAL", "KNOWN FOR BARBEQUE"]},
+        {"cues": ["NEUTRAL TERRAIN OF A CURRENT", "SOURCE OF RARE SALT", "LIFESTYLE INTEGRATED WITH NATURE", "AVOIDED BY TRADERS"]},
+        {"cues": ["ONLY TRAVERSABLE IN WINTER", "SCORCHING PLACE IN MICROCLIMATE", "UNUSUAL SOURCE OF SHADE", "AN IMPORTANT WAY-MARKER HAS VANISHED OVERNIGHT"]},
+        {"cues": ["KNOWN FOR SUNLIGHT-WEAVING", "KNOWN FOR SUNLIGHT ENGINEERING", "UNUSUAL SOURCE OF SHADE", "NOT TRAVERSABLE ON FOOT"]},
+        {"cues": ["HARSH FOR SUNLIGHT ENGINEERING", "SOURCE OF A SCULPTING MEDIUM", "AVOIDED BY TRADERS", "STUNNING SUNRISES"]},
+        {"cues": ["AN IMPORTANT WAY-MARKER HAS VANISHED OVERNIGHT", "HARSH FOR WATER STORE", "KNOWN FOR CULTURE OF SUSTAINABILITY", "ONLY TRAVERSABLE ONLY SEASONABLY"]},
+        {"cues": ["AN IMPORTANT WAY-MARKER HAS BEEN SCORCHING IN MICROCLIMATE", "KNOWN FOR SCULPTING IN MICROCLIMATE", "HAS UNUSUAL COURTSHIP RITUALS", "A CRITICAL CULTURAL SITE IS IN A SINKHOLE"]}
+      ]
+    },
+    "advent": {
+      "name": "Advent",
+      "description": "Desert-themed events that may change the area's future",
+      "cards": [
+        {
+          "cue": "A CRUCIAL SHARED WATER SOURCE IS DRYING UP:",
+          "interpretations": ["DUE TO DROUGHT, HUMAN INFESTATION, OR OVERUSE BY ONE COMMUNITY"]
+        },
+        {
+          "cue": "THOSE BANISHED FROM OTHER SETTLEMENTS ARE STARTING ONE OF THEIR OWN:",
+          "interpretations": ["MOTIVATED BY REDEMPTION, INDEPENDENCE, OR REVENGE"]
+        },
+        {
+          "cue": "STRANGE FRUITS ARE OPENING IN THE EARTH:",
+          "interpretations": ["CAUSED BY ECOLOGICAL RIVALRY, HUMAN GREED, OR COLOSSAL CREATURES"]
+        },
+        {
+          "cue": "A MASSIVE DUNE IS GROWING:",
+          "interpretations": ["MAGIC, OR THE ADDITION OF SOMETHING THAT IS ON SAND"]
+        },
+        {
+          "cue": "DECADES OF LOST WAYFARERS HAVE BEGUN TO RETURN:",
+          "interpretations": ["THEY ARE IN A DAZE, UNDER A SPELL, OR UNTOUCHED BY TIME"]
+        },
+        {
+          "cue": "PEOPLE REPORT HEARING VOICES IN DUST DEVILS:",
+          "interpretations": ["THEY ARE SINGING, WEEPING, OR WHISPERING"]
+        },
+        {
+          "cue": "A SANDSTORM HAS UNCOVERED SOMETHING LONG GONE BURIED:",
+          "interpretations": ["A RUIN, RELIC, OR PASSAGE"]
+        },
+        {
+          "cue": "TRADERS HAVE STOPPED SUPPLYING:",
+          "interpretations": ["SUSPECTED TRADE EMBARGO, ECOLOGICAL BARRIER, OR A BETTER ROUTE OPENED UP ELSEWHERE, BANDITS"]
+        },
+        {
+          "cue": "A MASS EXODUS IS UNDERWAY:",
+          "interpretations": ["DUE TO DROUGHT, PERSECUTION, OR A COLOSSAL SANDSTORM"]
+        },
+        {
+          "cue": "A MYSTERIOUS MONOLITH HAS APPEARED OUT IN THE WILDERNESS:",
+          "interpretations": ["A SCULPTURE, SPIKE, OR STONE"]
+        },
+        {
+          "cue": "REPORTS OF MINERAL DEPOSITS HAVE BROUGHT A PROSPECTING RUSH:",
+          "interpretations": ["FOR PRECIOUS STONES, RARE ORE, OR VALUABLE SALTS"]
+        },
+        {
+          "cue": "PEOPLE HAVE DISCOVERED THEY ARE LIVING ON UNSTABLE GROUND:",
+          "interpretations": ["ON TOP OF A FAULT, LOOSENING SAND, OR BURROWING CREATURES"]}
+      ]
+    }
+  },
+  "usage": {
+    "description": "A 60-card deserts expansion with biome-focused cards for creating arid and desert worlds. Contains both brand-new cues and themed variants of standard cards.",
+    "integration": [
+      "Create a monoclimate setting - Use only this expansion to create a world of up to 8 microsettings with a single climate focus",
+      "Develop specific biomes in a larger world - Use the main deck to create your world and switch to the expansion to develop desert areas",
+      "Mix expansion cards into the main deck - Although some cues may be harder to interpret outside the specific biome, they are largely cross-compatible",
+      "Mix cards and use a sideboard - Draw from a set of faceup cards for less random and more intentional worldbuilding"
+    ],
+    "composition": {
+      "regions": 8,
+      "landmarks": 12,
+      "namesakes": 12,
+      "origins": 8,
+      "attributes": 12,
+      "advents": 8
+    }
+  },
+  "credits": {
+    "design": "Peter Chiykowski",
+    "production": "Miroki Tong, Zach Schuster",
+    "writing": "Akira Keith, Athar Fikry, A. Z. Louise, Brendon Alekseii, Cae Hawksmoor, J. D. Harlock, Juliet Kemp, Michael Barker, Sarah Loch, Zach Schuster",
+    "sensitivity_review": "A. Z. Louise, Sonya Ballantyne, Yasmine Fahmy",
+    "curriculum_review": "Kendra Harrison",
+    "proofreading": "Eric Weiss, Leigh Teetzel, Tyson Pink",
+    "box_images": "Grant Ritchie, James Donaldson",
+    "region_images": "Grant Ritchie, Heidi Fin, Ishan Seefromthesky, James Donaldson, John Lockwood, Qijin Xu, Tim Patch, USGS",
+    "landmark_images": "Alex Antoniadis, Alistair Mackenzie, Anton Sharov, Bence Balla Schottner, Birger Strahl, Chris Henry, Curioso Photography, Dong Xie, Fabian Quintero, Geran de Klerk, Guillaume Marques, Hamza Erbay, Ishan Seefromthesky, James Eades, Josh Eaton, Luis Eusebio, Matthew Feeney, Milica Spasojevic, Nour Betar, Oliver Sjostrom, Polina Rytova, Ryan Porter, Shifaaz Shamoon"
+  }
+}

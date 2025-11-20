@@ -1,0 +1,121 @@
+{
+  "deck": "Lore Master's Deck - Main Deck",
+  "cardTypes": {
+    "faction": {
+      "name": "Faction",
+      "description": "Organized groups of people, from druid circles and political parties to military units and artisan guilds",
+      "primaryCueCount": 4,
+      "secondaryCueCount": 4,
+      "cards": [
+        {
+          "primaryCues": ["CITY", "COLLEGE", "NATION", "UNION"],
+          "secondaryCues": [
+            "TRAIT: BACKS UP RELIGIOUS DOCTRINE",
+            "TRAIT: NOTABLE HEADQUARTERS ⚪",
+            "TRAIT: VAST STOCKPILES OF A MATERIAL ⚪",
+            "BACKGROUND: CAUSED THE DEATH OF A NOTABLE FIGURE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["PARLIAMENT", "WORKFORCE", "BATTALION", "FAITH"],
+          "secondaryCues": [
+            "TRAIT: KEEP A PROJECT IN DIRECT OR SUBSTANTIAL SECRECY ⚫",
+            "TRAIT: PYRAMID SCHEME",
+            "TRAIT: STRONG COMMUNITY OR GRASSROOTS SUPPORT",
+            "BACKGROUND: CHANGED NAMES"
+          ]
+        },
+        {
+          "primaryCues": ["REPUBLIC", "SCHOOL", "TOOCRACY", "COVEN"],
+          "secondaryCues": [
+            "TRAIT: PROFIT OR HISTORIC REVENUE",
+            "TRAIT: PIOUS OR DUTIOUS",
+            "TRAIT: LIKELY TO JOIN IN RIOT OR PROTEST",
+            "BACKGROUND: CAUSED THE RUIN OF A FACTION OR FIGURE ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["BOROUGH", "GUILD", "MILITIA", "TEMPLE"],
+          "secondaryCues": [
+            "TRAIT: VULNERABLE PERSON ⚫",
+            "TRAIT: CONTROL OR DOMINATES OF LOCATIONS",
+            "TRAIT: NOTED OR DOMINANT",
+            "BACKGROUND: CAUSED A CREATURE'S EXTINCTION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["CAUCUS", "ESTATE", "CAST", "CREED"],
+          "secondaryCues": [
+            "TRAIT: PIONEERING SPHERE",
+            "TRAIT: PAUPERS IN DELIBERATE STATE ⚫",
+            "TRAIT: ENGAGING RISING RITUAL ENDORSEMENT",
+            "BACKGROUND: RECENTLY LOST SUPPORT OF A MAJOR FIGURE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["PARTY", "CAST", "LEGION", "HERESY"],
+          "secondaryCues": [
+            "TRAIT: WEAPON ⚪/⚫",
+            "TRAIT: SECRETIVE ON",
+            "TRAIT: PROTECTED OR HISTORIC REVENGE",
+            "BACKGROUND: ORIGINS FORGOTTEN TO HISTORY"
+          ]
+        },
+        {
+          "primaryCues": ["MINISTRY", "GANG", "ALLIANCE", "CHORUS"],
+          "secondaryCues": [
+            "TRAIT: VERB ⚫/⚪",
+            "TRAIT: SOCIALLY SIMULTANEOUS",
+            "TRAIT: THRILLS OR NAMES, WORDS, OR TITLES OF NAMES",
+            "BACKGROUND: DOCTRINE OR FOUNDING PRINCIPLES CREATED BY A CREATURE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["COMMONWEALTH", "COMBINE", "SECT"],
+          "secondaryCues": [
+            "TRAIT: RINGSIDE LOYALIST",
+            "TRAIT: ANCESTRY OVER",
+            "TRAIT: IDEAL SUPPLIED LABELED DETAIL ⚪/⚫",
+            "BACKGROUND: LOST CONTROL OF THEIR FORMER HEADQUARTERS ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["ENTOURAGE", "BRIGADE", "DIRECTORATE", "INQUISITION"],
+          "secondaryCues": [
+            "TRAIT: THRIVES OF NAMES, WORDS, OR IDENTITIES",
+            "TRAIT: SOCIALLY SIMULTANEOUS",
+            "TRAIT: ⚫/⚪ MISHANDLING",
+            "BACKGROUND: CAUSED THE DESTRUCTION OF A LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["FEDERATION", "STUDIO", "REBELLION", "FELLOWSHIP"],
+          "secondaryCues": [
+            "TRAIT: ⚫/⚪ MATERIAL ⚫/⚪",
+            "TRAIT: KNOWN FOR CRAFTING OR CREATING WITH A MATERIAL ⚪/⚫",
+            "TRAIT: HISTORIC GRAND",
+            "BACKGROUND: UNDULY CREDITED WITH SOLVING OR CAUSING A CRISIS ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["BOARD", "ORDER", "FLEET", "CHARITY"],
+          "secondaryCues": [
+            "TRAIT: ⚪/⚫ A CREATURE ⚪",
+            "TRAIT: RESTRICTIVE INSPIRED OR STRUCTURE ⚫/⚪",
+            "TRAIT: BIOGRAPHICAL CITY",
+            "BACKGROUND: CONNECTED TO A CREATION STORY"
+          ]
+        },
+        {
+          "primaryCues": ["CLIQUE", "COMMITTEE", "CAMP", "THEOCRACY"],
+          "secondaryCues": [
+            "TRAIT: TAKE DOOM A FIGURE ⚪",
+            "TRAIT: COLLECTS OR NAMES",
+            "TRAIT: SECRETLY OR NAMES",
+            "BACKGROUND: EMBARRASSING SCANDAL ⚪"
+          ]
+        }
+      ]
+    }
+  }
+}

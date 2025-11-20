@@ -1,0 +1,636 @@
+{
+  "name": "World & Lore Bridge Expansion",
+  "description": "60 cards designed to enhance Deck of Worlds™ prompts using cards from Lore Master's Deck, and vice versa.",
+  "cards": [
+    {
+      "type": "origin",
+      "cue": "ORIGIN OF A RALLYING CRY OR CATCHPHRASE",
+      "links": ["region", "landmark"],
+      "details": {
+        "top_left": "LINKED TO A LOST NAMESAKE",
+        "top_right": "ORIGIN OF A RALLYING CRY OR CATCHPHRASE",
+        "bottom": "ORIGIN OF A PRIZED BREED OF CREATURE"
+      }
+    },
+    {
+      "type": "origin",
+      "cue": "LOST-KNOWN LAIR OF A LEGENDARY CREATURE",
+      "links": ["region", "landmark"],
+      "details": {
+        "top_left": "ORIGIN OF A LOST MONUMENT OR ANCIENT MONUMENT",
+        "top_right": "LANDMARK OR PLACE OF A LEGENDARY CREATURE",
+        "bottom": "BIRTHPLACE OF A NOTABLE FIGURE"
+      }
+    },
+    {
+      "type": "origin",
+      "cue": "PERN SITE OF A DECISIVE FUTURE",
+      "links": ["region", "landmark"],
+      "details": {
+        "top_left": "LINKED TO A DIVINE ORIGIN",
+        "top_right": "ORIGIN OF A RALLYING CRY OR CHANT",
+        "bottom": "CREATION SITE OF A LEGENDARY ARTIFACT"
+      }
+    },
+    {
+      "type": "origin",
+      "cue": "FOSSIL SITE OR AN EXTINCT SPECIES",
+      "links": ["creature"],
+      "details": {
+        "top_left": "ANCIENT LAIR OF OR A PASTRY",
+        "top_right": "ORIGIN OF A PASTRY",
+        "bottom": "GROUND ZERO OF AN ANCIENT CALAMITY"
+      }
+    },
+    {
+      "type": "origin",
+      "cue": "ANCIENT SACRED SITE OF A FACTION",
+      "links": ["faction"],
+      "details": {
+        "top_left": "BIRTHPLACE OF AN ANCIENT OR LOST FACTION",
+        "top_right": "ORIGIN OF A FACTION",
+        "bottom": "SITE OF A LEGENDARY RUSE"
+      }
+    },
+    {
+      "type": "origin",
+      "cue": "ORIGIN OF A FORGOTTEN NICKNAME",
+      "links": ["creature", "figure"],
+      "details": {
+        "top_left": "ORIGIN OF AN UNUSUAL NICKNAME",
+        "top_right": "SITE OF AN UNUSUAL NAMESAKE",
+        "bottom": "THE LAST VESTIGES OF A SHATTERED KINGDOM"
+      }
+    },
+    {
+      "type": "origin",
+      "cue": "DEEP HISTORICAL CONNECTION WITH ANOTHER LOCATION",
+      "links": ["location"],
+      "details": {
+        "top_left": "ORIGIN OF AN ANCIENT LEGEND",
+        "top_right": "ORIGIN OF A RELIC",
+        "bottom": "SITE OF AN HISTORIC BATTLE BETWEEN FACTIONS"
+      }
+    },
+    {
+      "type": "origin",
+      "cue": "SITE OF AN HISTORIC EVENT",
+      "links": ["event"],
+      "details": {
+        "top_left": "ORIGIN OF A LANDMARK OR MONUMENT",
+        "top_right": "SITE OF AN HISTORIC EVENT",
+        "bottom": "SITE OF A DEEP PERSONAL GRIEF"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "SITE OF AN ANNUAL EVENT",
+      "links": ["event"],
+      "details": {
+        "top_left": "NOMINAL CO-DESTINATION TO GO PLAY OR GAME",
+        "top_right": "HIDING SPOT OF A NOTABLE CREATURE",
+        "bottom": "UNUSUAL VOTING OR DECISION-MAKING SYSTEM"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "HABITAT OF A CREATURE",
+      "links": ["creature"],
+      "details": {
+        "top_left": "NATURAL HABITAT OF CREATURES",
+        "top_right": "NOMINAL OR A NOTABLE CREATURE",
+        "bottom": "ECONOMY MOSTLY BASED ON ONE RESOURCE"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "CONSPIRACY PLACE FOR REST OR RECOVERY",
+      "links": ["material", "object"],
+      "details": {
+        "top_left": "DYNAMIC LOCATION FOR TRADE",
+        "top_right": "KNOWN FOR AN UNUSUAL OR LOST ART",
+        "bottom": "MASTERS OF A SPECIFIC TOOL OR WEAPON"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "KNOWN FOR A PETTY LOCAL GOD",
+      "links": ["deity", "figure"],
+      "details": {
+        "top_left": "KNOWN FOR A PETTY LOCAL GOD",
+        "top_right": "RECRUITMENT SITE FOR A FACTION",
+        "bottom": "RECRUITMENT SITE FOR A FACTION"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "KNOWN FOR A SPECIFIC EXPORT",
+      "links": ["material", "object"],
+      "details": {
+        "top_left": "KNOWN FOR EXPORTING A CREATURE OR LIVESTOCK",
+        "top_right": "KNOWN FOR A SPECIFIC EXPORT",
+        "bottom": "KNOWN FOR A SPECIFIC EXPORT"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "DECORATED WITH A FACTION'S BANNERS OR EMBLEMS",
+      "links": ["faction"],
+      "details": {
+        "top_left": "HOME OR A NOTABLE CREATURE OR CREATURE KEEPER",
+        "top_right": "KNOWN FOR BEAUTIFUL",
+        "bottom": "DECORATED WITH A FACTION'S BANNERS OR EMBLEMS"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "KNOWN FOR BEING SANCTUM OF AN IMMORTAL",
+      "links": ["figure"],
+      "details": {
+        "top_left": "KNOWN FOR BEING",
+        "top_right": "KNOWN FOR BEING WITH A FIGURE",
+        "bottom": "KNOWN FOR BEING SANCTUM OF AN IMMORTAL"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "SITE OF AN RITUAL",
+      "links": ["event"],
+      "details": {
+        "top_left": "SITE OF AN RITUAL",
+        "top_right": "SITE OF AN RITUAL",
+        "bottom": "SITE OF AN RITUAL"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "HOME OF A GADGET TO ANOTHER WORLD",
+      "links": ["object", "creature"],
+      "details": {
+        "top_left": "SUPPOSED SITE OR A GATEWAY TO ANOTHER WORLD",
+        "top_right": "HOME OF A GADGET",
+        "bottom": "HOME OF A GADGET TO ANOTHER WORLD"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "HABITAT OF A COD-BEAST",
+      "links": ["creature", "material"],
+      "details": {
+        "top_left": "EFFECTIVE MONK SANCTUARY",
+        "top_right": "HABITAT OF A STRANGE OR RARE CREATURE",
+        "bottom": "HABITAT OF A COD-BEAST"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "HOME OF A SITE OR AN ANCIENT RELIC",
+      "links": ["object"],
+      "details": {
+        "top_left": "SITE OF A SITE OR RARE",
+        "top_right": "HOME OF A SITE",
+        "bottom": "HOME OF A SITE OR AN ANCIENT RELIC"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "UNIQUE MEDIUM OF ARTISTIC EXPRESSION",
+      "links": ["material", "object"],
+      "details": {
+        "top_left": "UNIQUE MEDIUM OF ARTISTIC EXPRESSION",
+        "top_right": "EFFECTIVE MONKS GATHER HERE",
+        "bottom": "UNIQUE MEDIUM OF ARTISTIC EXPRESSION"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "LOCALLY INFLATED PRICES ON A TRADE GOOD",
+      "links": ["material", "object"],
+      "details": {
+        "top_left": "HOME OFTEN OF MOST EXPENSIVE TRADE GOOD",
+        "top_right": "NORMALLY",
+        "bottom": "LOCALLY INFLATED PRICES ON A TRADE GOOD"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "HOME TO A TRUE MASTER OF THEIR PROFESSION",
+      "links": ["figure"],
+      "details": {
+        "top_left": "SITE OF A SITE",
+        "top_right": "HOME TO A TRUE MASTER OF THEIR PROFESSION",
+        "bottom": "HOME TO A TRUE MASTER OF THEIR PROFESSION"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "PUNISHMENT OR DESTINATION FOR A FACTION",
+      "links": ["faction"],
+      "details": {
+        "top_left": "PUNISHMENT",
+        "top_right": "ONE ACCESS IS BY FACTION",
+        "bottom": "PUNISHMENT OR DESTINATION FOR A FACTION"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "HOME TO SPECTRAL CREATURES",
+      "links": ["creature", "material"],
+      "details": {
+        "top_left": "HOME TO SPECTRAL",
+        "top_right": "HIBERNATION SITE OF",
+        "bottom": "HOME TO SPECTRAL CREATURES"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "HOME TO A MASTER OF A TOOL OR WEAPON",
+      "links": ["object", "material"],
+      "details": {
+        "top_left": "HOME TO A WEAPON MASTER",
+        "top_right": "ORIGIN SMITH OR MATERIAL",
+        "bottom": "HOME TO A MASTER OF A TOOL OR WEAPON"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "KNOWN FOR SOUP OR SAUCE WITH A NOTABLE INGREDIENT",
+      "links": ["material", "creature"],
+      "details": {
+        "top_left": "CONTAINS KNOWLEDGE IN A FORM OTHER THAN BOOKS",
+        "top_right": "GAINED FROM READING",
+        "bottom": "KNOWN FOR SOUP OR SAUCE WITH A NOTABLE INGREDIENT"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "INHABITED BY PEOPLE OF A SPECIFIC SOCIAL ROLE",
+      "links": ["figure"],
+      "details": {
+        "top_left": "INHABITED BY",
+        "top_right": "KNOWN FOR MAKING MASTERS OR A SPECIFIC TRAIT",
+        "bottom": "INHABITED BY PEOPLE OF A SPECIFIC SOCIAL ROLE"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "MADE OF A SPECIFIC MATERIAL",
+      "links": ["material"],
+      "details": {
+        "top_left": "MADE OF",
+        "top_right": "KNOWN FOR A MATERIAL",
+        "bottom": "MADE OF A SPECIFIC MATERIAL"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "HOME OF A CATACLYSMIC LEGEND HYBRID",
+      "links": ["creature", "figure"],
+      "details": {
+        "top_left": "HOME OF A GUARDIAN OR LEGEND",
+        "top_right": "SMALL TEMPLE",
+        "bottom": "HOME OF A CATACLYSMIC LEGEND HYBRID"
+      }
+    },
+    {
+      "type": "advent",
+      "cue": "A POWER GRAB IS BEING PLANNED, EXECUTED, OR MAINTAINED BY A FACTION OR FIGURE"
+    },
+    {
+      "type": "advent",
+      "cue": "LIFESTYLE OR INDUSTRY IS SUFFERING DUE TO A SEVERE SHORTAGE OF SOMETHING"
+    },
+    {
+      "type": "advent",
+      "cue": "BOUNTIES HAVE BEEN PLACED ON MEMBERS OF A SPECIFIC FACTION"
+    },
+    {
+      "type": "advent",
+      "cue": "A GRIM TITHE TO A POWERFUL ENTITY HAS COME DUE"
+    },
+    {
+      "type": "advent",
+      "cue": "THE LOCAL LEADER OR OWNER HAS SHARED THE LOCATION IN A PACT WITH SOMEONE"
+    },
+    {
+      "type": "advent",
+      "cue": "A HERO, FOOL, OR TROVE OF SOMETHING HAS BEGUN"
+    },
+    {
+      "type": "advent",
+      "cue": "TO GROW"
+    },
+    {
+      "type": "advent",
+      "cue": "A HARMONIOUSLY EXPERIMENTAL SUBSTANCE OR PROHIBITED HAS BEEN DISCOVERED OR HAS BEEN DISCOVERED"
+    },
+    {
+      "type": "advent",
+      "cue": "A LOCAL GOT BACK PROHIBITED TO POPULATED HEADS"
+    },
+    {
+      "type": "advent",
+      "cue": "AN EXCAVATION HAS TURNED UP SIGNS OF A MYTHICAL RELIC"
+    },
+    {
+      "type": "advent",
+      "cue": "A LOCAL HAS SUDDENLY AND IMPROBABLY COME TO POWER AND IS IN A STATE OF PANIC"
+    },
+    {
+      "type": "advent",
+      "cue": "A FACTION IS PREPARING TO CARRY OUT A LONG-STANDING PLAN OR RITUAL"
+    },
+    {
+      "type": "advent",
+      "cue": "A LOCAL FIGURE IS SUSPECTED TO BE A DOPPELGANGER, BUT THE COUNCIL PERSON IS MISSING OR INDISTINGUISHABLE"
+    },
+    {
+      "type": "advent",
+      "cue": "A BEGIN LOCAL SPACES HAS SUDDENLY BECOME AGGRESSIVE OR TROUBLESOME WITHOUT EXPLANATION"
+    },
+    {
+      "type": "advent",
+      "cue": "TWO FACTIONS ARE WARRING OVER JURISDICTION"
+    },
+    {
+      "type": "faction",
+      "cue": "HERALDS OF THE",
+      "nickname_links": ["region", "landmark", "event"],
+      "details": {
+        "top_left": "SCOUTS",
+        "top_right": "CULTIVARS",
+        "bottom": "HERALDS OF THE"
+      }
+    },
+    {
+      "type": "faction",
+      "cue": "DANCERS OF THE",
+      "nickname_links": ["region", "landmark", "event"],
+      "details": {
+        "top_left": "ANCIENTS",
+        "top_right": "BORN",
+        "bottom": "DANCERS OF THE"
+      }
+    },
+    {
+      "type": "faction",
+      "cue": "EYES OF THE",
+      "nickname_links": ["region", "landmark", "creature"],
+      "details": {
+        "top_left": "THE SHIELD OF THE",
+        "top_right": "WOLVES",
+        "bottom": "EYES OF THE"
+      }
+    },
+    {
+      "type": "faction",
+      "cue": "PRIDE OF THE",
+      "nickname_links": ["region", "landmark", "event"],
+      "details": {
+        "top_left": "THE SIDES OF THE",
+        "top_right": "TOUCHED",
+        "bottom": "SAGES OF THE"
+      }
+    },
+    {
+      "type": "figure",
+      "cue": "BUILDER OF THE",
+      "nickname_links": ["region", "landmark"],
+      "details": {
+        "top_left": "SHATTERER OF THE",
+        "top_right": "OUTCAST OF THE",
+        "bottom": "CHILD OF THE"
+      }
+    },
+    {
+      "type": "figure",
+      "cue": "BREAKER",
+      "nickname_links": ["region", "landmark", "material"],
+      "details": {
+        "top_left": "SWORD OF THE",
+        "top_right": "WITCH OF THE",
+        "bottom": "CHAMPION OF THE"
+      }
+    },
+    {
+      "type": "event",
+      "cue": "EXODUS",
+      "nickname_links": ["region", "landmark", "creature"],
+      "details": {
+        "top_left": "INSTANT",
+        "top_right": "FIRE",
+        "bottom": "BATTLE OF THE"
+      }
+    },
+    {
+      "type": "event",
+      "cue": "KILLINGS",
+      "nickname_links": ["region", "landmark", "creature"],
+      "details": {
+        "top_left": "PARTY",
+        "top_right": "MORTAL",
+        "bottom": "CONCORD"
+      }
+    },
+    {
+      "type": "event",
+      "cue": "RECORDS",
+      "nickname_links": ["region", "landmark", "creature"],
+      "details": {
+        "top_left": "RACK",
+        "top_right": "SMOOTH",
+        "bottom": "PURGE(S)"
+      }
+    },
+    {
+      "type": "event",
+      "cue": "TRIALS",
+      "nickname_links": ["region", "landmark", "material"],
+      "details": {
+        "top_left": "THROUGH",
+        "top_right": "BINDING OF THE",
+        "bottom": "FEAST"
+      }
+    },
+    {
+      "type": "location",
+      "cue": "GROVE",
+      "nickname_links": ["event", "creature", "material"],
+      "details": {
+        "top_left": "GROVE",
+        "top_right": "FORCE",
+        "bottom": "HALL"
+      }
+    },
+    {
+      "type": "location",
+      "cue": "SPIKE OF THE",
+      "nickname_links": ["region", "landmark", "material"],
+      "details": {
+        "top_left": "HOLD",
+        "top_right": "RUINS",
+        "bottom": "STATION"
+      }
+    },
+    {
+      "type": "location",
+      "cue": "KEEP",
+      "nickname_links": ["region", "landmark", "material"],
+      "details": {
+        "top_left": "ARCANA",
+        "top_right": "WOOD",
+        "bottom": "SHRINE"
+      }
+    },
+    {
+      "type": "location",
+      "cue": "HEART OF THE",
+      "nickname_links": ["region", "landmark", "creature"],
+      "details": {
+        "top_left": "PEAK",
+        "top_right": "VALE",
+        "bottom": "BASE"
+      }
+    },
+    {
+      "type": "object",
+      "cue": "FIST OF THE",
+      "nickname_links": ["material", "creature", "event"],
+      "details": {
+        "top_left": "GUARD",
+        "top_right": "ALLURE OF THE",
+        "bottom": "BITE OF THE"
+      }
+    },
+    {
+      "type": "object",
+      "cue": "HAMMER OF THE",
+      "nickname_links": ["region", "landmark", "material"],
+      "details": {
+        "top_left": "ATLAS",
+        "top_right": "SPLENDOR",
+        "bottom": "HAMMER"
+      }
+    },
+    {
+      "type": "object",
+      "cue": "TRABES",
+      "nickname_links": ["region", "landmark", "material"],
+      "details": {
+        "top_left": "BOW OF THE",
+        "top_right": "COMPASS OF THE",
+        "bottom": "BOW OF THE"
+      }
+    },
+    {
+      "type": "object",
+      "cue": "CLOAK OF THE",
+      "nickname_links": ["region", "landmark", "event"],
+      "details": {
+        "top_left": "CUP OF THE",
+        "top_right": "KEY OF THE",
+        "bottom": "AXE OF THE"
+      }
+    },
+    {
+      "type": "material",
+      "cue": "GRAVEL",
+      "nickname_links": ["region", "landmark", "creature"],
+      "details": {
+        "top_left": "LEATHER",
+        "top_right": "ORE",
+        "bottom": "ROOT"
+      }
+    },
+    {
+      "type": "material",
+      "cue": "ROCK",
+      "nickname_links": ["region", "landmark", "material"],
+      "details": {
+        "top_left": "PAINT",
+        "top_right": "CLAY",
+        "bottom": "CHEESE"
+      }
+    },
+    {
+      "type": "material",
+      "cue": "BRICK",
+      "nickname_links": ["region", "landmark", "creature"],
+      "details": {
+        "top_left": "SILK",
+        "top_right": "GLASS",
+        "bottom": "CANDY"
+      }
+    },
+    {
+      "type": "material",
+      "cue": "SLATE",
+      "nickname_links": ["region", "landmark", "creature"],
+      "details": {
+        "top_left": "PEARL",
+        "top_right": "METAL",
+        "bottom": "NUT"
+      }
+    },
+    {
+      "type": "creature",
+      "cue": "VINE",
+      "nickname_links": ["material", "landmark"],
+      "details": {
+        "top_left": "LIZARD",
+        "top_right": "HARSH",
+        "bottom": "WOLF"
+      }
+    },
+    {
+      "type": "creature",
+      "cue": "MUSHROOM",
+      "nickname_links": ["material"],
+      "details": {
+        "top_left": "BACKYARD OF A",
+        "top_right": "DEER",
+        "bottom": "GULL"
+      }
+    },
+    {
+      "type": "creature",
+      "cue": "DRAKE",
+      "nickname_links": ["material", "bat"],
+      "details": {
+        "top_left": "STALKER",
+        "top_right": "BAT",
+        "bottom": "OWL"
+      }
+    },
+    {
+      "type": "creature",
+      "cue": "DEVIL",
+      "nickname_links": ["material", "creature"],
+      "details": {
+        "top_left": "VULTURE",
+        "top_right": "FOX",
+        "bottom": "HIPPO"
+      }
+    },
+    {
+      "type": "deity",
+      "cue": "STRIDER",
+      "nickname_links": ["region", "landmark", "material"],
+      "details": {
+        "top_left": "SPIRIT OF THE",
+        "top_right": "EMPEROR OF THE",
+        "bottom": "SHAPER"
+      }
+    },
+    {
+      "type": "deity",
+      "cue": "WRATH OF THE",
+      "nickname_links": ["region", "landmark"],
+      "details": {
+        "top_left": "SHAKER",
+        "top_right": "SHEPHERD OF THE",
+        "bottom": "SOUL OF THE"
+      }
+    }
+  ]
+}

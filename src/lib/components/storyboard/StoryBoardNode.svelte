@@ -11,7 +11,10 @@
 	import { getDisplayCue, detectBridgeLinks, hasBridgeLinks } from '$lib/utils/linkIconParser';
 	import type { DetectedBridgeLink } from '$lib/types/bridge';
 	import { getRandomCard as getRandomLoreMasterCard } from '$lib/data/loreMasterLoader';
-	import { getRandomCard as getRandomWorldBuilderCard } from '$lib/data/worldBuilderLoader';
+	import { getRandomCard as getRandomWorldBuilderCard, generateMicrosetting } from '$lib/data/worldBuilderLoader';
+	import { generateStorySeed, getRandomCard as getRandomStoryEngineCard } from '$lib/data/storyEngineLoader';
+	import type { StoryEngineCard } from '$lib/types/storyEngine';
+	import type { WorldBuilderCard } from '$lib/types/worldBuilder';
 
 	interface Props {
 		node: StoryBoardNode;
@@ -38,6 +41,8 @@
 	// Context menu for generated cards
 	let showContextMenu = $state(false);
 	let contextMenuPos = $state({ x: 0, y: 0 });
+	let contextMenuOpenedAt = 0;
+	let contextMenuElement: HTMLDivElement | null = null;
 
 	function handleMouseDown(e: MouseEvent) {
 		if (node.locked) return;
@@ -101,19 +106,127 @@
 	}
 
 	function handleContextMenu(e: MouseEvent) {
-		// Show context menu for generated cards OR grouped nodes
-		if (!isGenerated && !node.groupId) return;
+		// Show context menu for:
+		// - Generated cards
+		// - Grouped nodes
+		// - Story Engine cards (not in a group) - can generate story seed
+		// - World Builder cards (not in a group) - can generate mini setting
+		const hasStoryEngineCard = node.storyEngineCard && !node.groupId;
+		const hasWorldBuilderCard = node.worldBuilderCard && !node.groupId;
+
+		// Check if we should show the context menu
+		const shouldShowMenu = isGenerated || node.groupId || hasStoryEngineCard || hasWorldBuilderCard;
+
+		if (!shouldShowMenu) return;
 
 		e.preventDefault();
 		e.stopPropagation();
 
+		// Use client coordinates directly - they're relative to the viewport
 		contextMenuPos = { x: e.clientX, y: e.clientY };
+		contextMenuOpenedAt = Date.now();
 		showContextMenu = true;
 	}
 
 	function closeContextMenu() {
 		showContextMenu = false;
+		if (contextMenuElement) {
+			contextMenuElement.remove();
+			contextMenuElement = null;
+		}
 	}
+
+	// Create and position context menu in document.body
+	$effect(() => {
+		if (showContextMenu) {
+			// Clean up old menu if it exists
+			if (contextMenuElement) {
+				contextMenuElement.remove();
+			}
+
+			// Create menu element
+			const menu = document.createElement('div');
+			menu.className = 'storyboard-context-menu';
+			menu.style.cssText = `
+				position: fixed;
+				left: ${contextMenuPos.x}px;
+				top: ${contextMenuPos.y}px;
+				z-index: 99999;
+				background: white;
+				border: 2px solid #333;
+				border-radius: 8px;
+				padding: 4px;
+				box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+				min-width: 200px;
+			`;
+
+			menu.onclick = (e) => e.stopPropagation();
+			menu.oncontextmenu = (e) => e.preventDefault();
+
+			// Build menu content
+			let menuHTML = '';
+
+			if (isGenerated) {
+				menuHTML += `<button class="ctx-btn" data-action="promote">⭐ Promote to Entity</button>`;
+			}
+
+			if (node.storyEngineCard && !node.groupId) {
+				menuHTML += `<button class="ctx-btn" data-action="generate-seed">🎲 Generate Story Seed</button>`;
+			}
+
+			if (node.worldBuilderCard && !node.groupId) {
+				menuHTML += `<button class="ctx-btn" data-action="generate-setting">🗺️ Generate Mini Setting</button>`;
+			}
+
+			if (node.groupId) {
+				menuHTML += `<button class="ctx-btn" data-action="ungroup-one">🔓 Ungroup This Card</button>`;
+				menuHTML += `<button class="ctx-btn" data-action="ungroup-all">💥 Ungroup All Cards</button>`;
+			}
+
+			menuHTML += `<button class="ctx-btn" data-action="cancel">✕ Cancel</button>`;
+
+			menu.innerHTML = menuHTML;
+
+			// Add click handlers
+			menu.querySelectorAll('.ctx-btn').forEach(btn => {
+				const button = btn as HTMLButtonElement;
+				button.onclick = (e) => {
+					e.stopPropagation();
+					const action = button.getAttribute('data-action');
+
+					switch (action) {
+						case 'promote':
+							promoteToEntity();
+							break;
+						case 'generate-seed':
+							generateStorySeedFromCard();
+							break;
+						case 'generate-setting':
+							generateMiniSettingFromCard();
+							break;
+						case 'ungroup-one':
+							ungroupNode();
+							break;
+						case 'ungroup-all':
+							ungroupAll();
+							break;
+						case 'cancel':
+							closeContextMenu();
+							break;
+					}
+				};
+			});
+
+			document.body.appendChild(menu);
+			contextMenuElement = menu;
+		} else {
+			// Clean up when hiding
+			if (contextMenuElement) {
+				contextMenuElement.remove();
+				contextMenuElement = null;
+			}
+		}
+	});
 
 	function promoteToEntity() {
 		if (!$activeBoard || !isGenerated) return;
@@ -169,6 +282,226 @@
 		const nodeIds = groupedNodes.map((n) => n.id);
 		storyboardStore.ungroupNodes($activeBoard.id, nodeIds);
 		closeContextMenu();
+	}
+
+	async function generateStorySeedFromCard() {
+		if (!$activeBoard || !node.storyEngineCard) return;
+
+		closeContextMenu();
+
+		try {
+			// Generate a complete story seed (5 cards)
+			const storySeed = await generateStorySeed();
+
+			// Determine which card types we need to generate
+			// Story seed is: [Agent, Engine, Anchor, Conflict, Aspect]
+			const currentType = node.storyEngineCard.type;
+			const typeOrder = ['agent', 'engine', 'anchor', 'conflict', 'aspect'];
+			const currentIndex = typeOrder.indexOf(currentType);
+
+			// Create a new groupId for all cards
+			const groupId = `group-${Date.now()}`;
+
+			// Update the current node to be part of the group
+			storyboardStore.updateNode($activeBoard.id, node.id, { groupId });
+
+			// Calculate positioning
+			const cardWidth = 400;
+			const gap = 20;
+			const cardSpacing = cardWidth + gap; // 420px
+
+			// Position cards relative to the current node
+			// Current node stays in place, other cards are added around it
+			let offsetMultiplier = 0 - currentIndex; // Offset so current card is at correct position
+
+			// Add all cards from story seed
+			storySeed.forEach((card: StoryEngineCard, index: number) => {
+				if (index === currentIndex) {
+					// Skip - this is the current card's position
+					offsetMultiplier++;
+					return;
+				}
+
+				const xOffset = offsetMultiplier * cardSpacing;
+				const finalX = node.x + xOffset;
+				const finalY = node.y;
+
+				const typeInfo = STORY_ENGINE_CARD_TYPES[card.type];
+
+				storyboardStore.addNode(
+					$activeBoard.id,
+					{
+						x: finalX,
+						y: finalY,
+						width: 400,
+						height: 400,
+						groupId: groupId,
+						storyEngineCard: {
+							type: card.type,
+							cues: Array.from(card.cues),
+							activeCueIndex: 0,
+							expansion: card.expansion
+						}
+					},
+					`Generate Story Seed: ${typeInfo.name}`
+				);
+
+				offsetMultiplier++;
+			});
+		} catch (error) {
+			console.error('Failed to generate story seed:', error);
+			alert('Failed to generate story seed. Please try again.');
+		}
+	}
+
+	async function generateMiniSettingFromCard() {
+		if (!$activeBoard || !node.worldBuilderCard) return;
+
+		closeContextMenu();
+
+		try {
+			// Generate a complete microsetting
+			const microsetting = await generateMicrosetting();
+
+			// Determine which card type we have and what we need to generate
+			const currentType = node.worldBuilderCard.type;
+
+			// Microsetting structure: region, 3 landmarks, namesake, origin, attribute, advent (8 total cards)
+			const typeOrder = ['region', 'landmark', 'landmark', 'landmark', 'namesake', 'origin', 'attribute', 'advent'];
+
+			// Find the position of current type in the sequence
+			// For landmarks, we'll use the first landmark position
+			let currentIndex = typeOrder.indexOf(currentType);
+
+			// Create a new groupId for all cards
+			const groupId = `group-${Date.now()}`;
+
+			// Update the current node to be part of the group
+			storyboardStore.updateNode($activeBoard.id, node.id, { groupId });
+
+			// Calculate positioning
+			const cardWidth = 400;
+			const gap = 20;
+			const cardSpacing = cardWidth + gap;
+
+			// Position cards relative to the current node
+			let offsetMultiplier = 0 - currentIndex;
+
+			// Add region card
+			if (currentType !== 'region') {
+				const card = microsetting.region;
+				const xOffset = offsetMultiplier * cardSpacing;
+				const typeInfo = WORLD_BUILDER_CARD_TYPES[card.type];
+
+				storyboardStore.addNode(
+					$activeBoard.id,
+					{
+						x: node.x + xOffset,
+						y: node.y,
+						width: 400,
+						height: 400,
+						groupId: groupId,
+						worldBuilderCard: {
+							type: card.type,
+							cues: card.cues ? Array.from(card.cues) : undefined,
+							cue: card.cue,
+							interpretations: card.interpretations,
+							title: card.title,
+							summary: card.summary,
+							questions: card.questions ? Array.from(card.questions) : undefined,
+							activeCueIndex: 0,
+							expansion: card.expansion
+						}
+					},
+					`Generate Mini Setting: ${typeInfo.name}`
+				);
+			}
+			offsetMultiplier++;
+
+			// Add landmark cards
+			microsetting.landmarks.forEach((card: WorldBuilderCard, landmarkIndex: number) => {
+				if (currentType === 'landmark' && landmarkIndex === 0) {
+					// Skip first landmark if current card is a landmark
+					offsetMultiplier++;
+					return;
+				}
+
+				const xOffset = offsetMultiplier * cardSpacing;
+				const typeInfo = WORLD_BUILDER_CARD_TYPES[card.type];
+
+				storyboardStore.addNode(
+					$activeBoard.id,
+					{
+						x: node.x + xOffset,
+						y: node.y,
+						width: 400,
+						height: 400,
+						groupId: groupId,
+						worldBuilderCard: {
+							type: card.type,
+							cues: card.cues ? Array.from(card.cues) : undefined,
+							cue: card.cue,
+							interpretations: card.interpretations,
+							title: card.title,
+							summary: card.summary,
+							questions: card.questions ? Array.from(card.questions) : undefined,
+							activeCueIndex: 0,
+							expansion: card.expansion
+						}
+					},
+					`Generate Mini Setting: ${typeInfo.name}`
+				);
+
+				offsetMultiplier++;
+			});
+
+			// Add remaining cards (namesake, origin, attribute, advent)
+			const remainingCards = [
+				microsetting.namesake,
+				microsetting.origin,
+				microsetting.attribute,
+				microsetting.advent
+			];
+
+			remainingCards.forEach((card: WorldBuilderCard) => {
+				if (currentType === card.type) {
+					// Skip if this is the current card type
+					offsetMultiplier++;
+					return;
+				}
+
+				const xOffset = offsetMultiplier * cardSpacing;
+				const typeInfo = WORLD_BUILDER_CARD_TYPES[card.type];
+
+				storyboardStore.addNode(
+					$activeBoard.id,
+					{
+						x: node.x + xOffset,
+						y: node.y,
+						width: 400,
+						height: 400,
+						groupId: groupId,
+						worldBuilderCard: {
+							type: card.type,
+							cues: card.cues ? Array.from(card.cues) : undefined,
+							cue: card.cue,
+							interpretations: card.interpretations,
+							title: card.title,
+							summary: card.summary,
+							questions: card.questions ? Array.from(card.questions) : undefined,
+							activeCueIndex: 0,
+							expansion: card.expansion
+						}
+					},
+					`Generate Mini Setting: ${typeInfo.name}`
+				);
+
+				offsetMultiplier++;
+			});
+		} catch (error) {
+			console.error('Failed to generate mini setting:', error);
+			alert('Failed to generate mini setting. Please try again.');
+		}
 	}
 
 	function handleLabelInput(e: Event) {
@@ -386,6 +719,17 @@
 
 	// Handle window click for context menu
 	function handleWindowClick(e: MouseEvent) {
+		// Ignore right-clicks (button 2)
+		if (e.button === 2) {
+			return;
+		}
+
+		// Prevent closing immediately after opening (within 100ms)
+		const timeSinceOpened = Date.now() - contextMenuOpenedAt;
+		if (timeSinceOpened < 100) {
+			return;
+		}
+
 		if (showContextMenu) {
 			closeContextMenu();
 		}
@@ -898,40 +1242,6 @@
 				{/if}
 			{/if}
 		</div>
-
-
-		<!-- Context menu for generated cards and grouped nodes -->
-		{#if showContextMenu}
-			<div
-				class="context-menu"
-				style="position: fixed; left: {contextMenuPos.x}px; top: {contextMenuPos.y}px; z-index: 1000;"
-				onclick={(e) => e.stopPropagation()}
-				onkeydown={(e) => { if (e.key === 'Escape') closeContextMenu(); }}
-				role="menu"
-				tabindex="0"
-			>
-				{#if isGenerated}
-					<button class="context-menu-item" onclick={promoteToEntity}>
-						<span class="context-icon">⭐</span>
-						<span>Promote to Entity</span>
-					</button>
-				{/if}
-				{#if node.groupId}
-					<button class="context-menu-item" onclick={ungroupNode}>
-						<span class="context-icon">🔓</span>
-						<span>Ungroup This Card</span>
-					</button>
-					<button class="context-menu-item" onclick={ungroupAll}>
-						<span class="context-icon">💥</span>
-						<span>Ungroup All Cards</span>
-					</button>
-				{/if}
-				<button class="context-menu-item" onclick={closeContextMenu}>
-					<span class="context-icon">✕</span>
-					<span>Cancel</span>
-				</button>
-			</div>
-		{/if}
 	</div>
 </foreignObject>
 
@@ -2021,5 +2331,29 @@
 	.bridge-link-arrow {
 		font-size: 0.875rem;
 		opacity: 0.7;
+	}
+
+	/* Context menu button styles (global since menu is added to body) */
+	:global(.ctx-btn) {
+		display: block;
+		width: 100%;
+		padding: 8px 12px;
+		text-align: left;
+		background: white;
+		border: none;
+		margin-bottom: 2px;
+		cursor: pointer;
+		border-radius: 4px;
+		font-size: 14px;
+		color: #333;
+		transition: background 0.2s;
+	}
+
+	:global(.ctx-btn:hover) {
+		background: #f0f0f0;
+	}
+
+	:global(.ctx-btn:active) {
+		background: #e0e0e0;
 	}
 </style>

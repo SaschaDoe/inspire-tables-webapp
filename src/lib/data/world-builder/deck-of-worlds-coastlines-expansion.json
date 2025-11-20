@@ -1,0 +1,158 @@
+{
+  "deck": "Deck of Worlds Cartography Expansion - Worlds of Tide & Tidings (Coastlines)",
+  "cardTypes": {
+    "region": {
+      "name": "Region",
+      "description": "Coastline-themed main terrain types for microsettings",
+      "cueCount": 4,
+      "cards": [
+        {"cues": ["ISLAND(S)", "COAST", "PORT", "FJORD(S)"]},
+        {"cues": ["PENINSULA", "BAY", "SEA", "OCEAN"]},
+        {"cues": ["LIGHTHOUSE", "ARCHIPELAGO", "MARINA", "WHARF"]},
+        {"cues": ["PIER", "SALT MARSH", "MANGROVE", "ATOLL"]},
+        {"cues": ["ISLAND(S)", "COAST", "PORT", "FJORD(S)"]},
+        {"cues": ["PENINSULA", "BAY", "SEA", "OCEAN"]},
+        {"cues": ["LIGHTHOUSE", "ARCHIPELAGO", "MARINA", "WHARF"]},
+        {"cues": ["PIER", "SALT MARSH", "MANGROVE", "ATOLL"]}
+      ]
+    },
+    "landmark": {
+      "name": "Landmark",
+      "description": "Coastline-themed geographical sites and points of interest",
+      "cueCount": 4,
+      "cards": [
+        {"cues": ["WRECK", "WHIRLPOOL", "BLOCKADE", "STRAIT"]},
+        {"cues": ["SANDBAR", "TOWN", "LAGOON", "ESTUARY"]},
+        {"cues": ["QUAY", "DOCK", "COVE", "SHOAL"]},
+        {"cues": ["CAUSEWAY", "REEF", "LANDING", "BRIDGE"]},
+        {"cues": ["WRECK", "WHIRLPOOL", "BLOCKADE", "STRAIT"]},
+        {"cues": ["SANDBAR", "TOWN", "LAGOON", "ESTUARY"]},
+        {"cues": ["QUAY", "DOCK", "COVE", "SHOAL"]},
+        {"cues": ["CAUSEWAY", "REEF", "LANDING", "BRIDGE"]},
+        {"cues": ["WRECK", "WHIRLPOOL", "BLOCKADE", "STRAIT"]},
+        {"cues": ["SANDBAR", "TOWN", "LAGOON", "ESTUARY"]},
+        {"cues": ["QUAY", "DOCK", "COVE", "SHOAL"]},
+        {"cues": ["CAUSEWAY", "REEF", "LANDING", "BRIDGE"]}
+      ]
+    },
+    "namesake": {
+      "name": "Namesake",
+      "description": "Coastline-themed prefixes and suffixes for naming locations",
+      "cueCount": 4,
+      "cards": [
+        {"cues": ["BRINY", "OF THE LOST", "OF SAILS", "SAILOR'S"]},
+        {"cues": ["OF THE DEPTHS", "CAPTAIN'S", "OF NO RUDDER", "OF BRIBES"]},
+        {"cues": ["WIND-TOSSED", "AT LANDS END", "OF THE ICON MAINS", "OF HULLS"]},
+        {"cues": ["OF SHARKS", "OF REEFS", "OF GULLS", "SCURVY"]},
+        {"cues": ["BLACK POWDER", "UNMOORED", "OF NO COMPASS", "OF THE FIFTH WIND"]},
+        {"cues": ["WITH NO BOTTOM", "OF BRIDGES", "OF SHANTIES", "OF CANINES"]},
+        {"cues": ["OF EELS", "SEABIRD'S", "IN THE EYE", "OF CASTAWAYS"]},
+        {"cues": ["OF FLOTSAM", "OF COASTAL SAILORS", "FOGGY", "WHALER'S"]},
+        {"cues": ["OF SHIPS", "OF LANTERNS", "OF CLAMS", "OF KELP"]},
+        {"cues": ["DRIFTWOOD", "WHALER'S", "OF SMUGGLERS", "OF WRECKS"]},
+        {"cues": ["OF THE WAVES", "SEA MONSTER", "SHIPWRECK", "LEEWARD"]},
+        {"cues": ["OF SALT", "OF CLEAR SKIES", "SHIMMERING", "DEATH RATTLE"]}
+      ]
+    },
+    "origin": {
+      "name": "Origin",
+      "description": "Coastline-themed significant historical events",
+      "cueCount": 4,
+      "cards": [
+        {"cues": ["ORIGINALLY MISIDENTIFIED BY ITS DISCOVERER", "RECLAIMED FROM THE SEA BY", "REGARDING FROM", "SITE OF A HISTORIC SEA BATTLE"]},
+        {"cues": ["LAST KNOWN LOCATION OF A SEA MONSTER", "SHIPWRECK", "MEETING SPOT", "SHARED BY TRADERS"]},
+        {"cues": ["ORIGIN OF A POPULAR SEA SHANTY", "LANDED BY COMMERCE", "FOUNDED BY SHIPWRIGHTS", "SHAPED BY PIRATES"]},
+        {"cues": ["SITE OF A FAMOUS RECORD", "WAS ONCE A MERCHANT SECRET", "LAST KNOWN", "SITE OF THE WARMEST SUMMER ON RECORD"]},
+        {"cues": ["LANDING SITE OF A FAMOUS EXPLORER", "SITE OF A NOTORIOUS SHIPWRECK", "ORIGIN OF A FLOOD MYTH", "FORMED BY TRADERS"]},
+        {"cues": ["SHIPWRECK", "MISIDENTIFIED KELP FOREST", "FORAYED OUT OF ICE", "FORMED BY TREASURE"]},
+        {"cues": ["PORT OF AN ILL-FATED SEA VOYAGE", "ORIGIN OF A WIDELY USED KNOT", "BIRTHPLACE OF A FAMOUS PIRATE", "BUILT FROM THE ORPHANS OF A BACKFIRED LEVIATHAN"]},
+        {"cues": ["MAPPED BY DIVERSE", "WAS ONCE A TRADING POST", "SITE OF A HISTORIC SEA BATTLE", "FORMED BY CORAL"]}
+      ]
+    },
+    "attribute": {
+      "name": "Attribute",
+      "description": "Coastline-themed present-day features and characteristics",
+      "cueCount": 4,
+      "cards": [
+        {"cues": ["HARSH TARIFFS", "KNOWN FOR EXCELLING PIRATES", "RENOWNED SHIPWRIGHTS", "HABITAT OR UNUSUAL HUE OF WATER"]},
+        {"cues": ["ADAPTING OR EXILED CONSTRUCTION", "SELL-PROTECTIVE OR KNOWN FOR CONTROLLING", "PIRATE HIDEOUT", "TOURIST TRAP"]},
+        {"cues": ["KNOWN FOR BLACK POWDER WEAPONRY", "UNUSUAL FORTIFICATION(S)", "LOCAL CUSTOMS CHANGE WITH THE WIND OR TIDE", "CRUSTACEAN CUISINE"]},
+        {"cues": ["GOOD FISHING SPOT", "FREQUENT DOLDRUMS", "SHARK-INFESTED WATERS", "SITE OF AN ILLICIT NET"]},
+        {"cues": ["GOVERNED BY PIRATES", "UNUSUAL FISHING METHOD", "KNOWN FOR SKILL WITH SMALL BOATS", "USED AS A NAVIGATIONAL POINT"]},
+        {"cues": ["SITE OF UNDERWATER MINING", "SIGNATURE WATERCRAFT", "GOOD FISHING SPOT", "STUD IS PROVIDED FISHERMAN"]},
+        {"cues": ["KNOWN FOR UNUSUAL FISHING METHOD", "SOURCE OF PRIZED PEARLS", "KNOWN FOR NAVIGATION IS IMPOSSIBLE", "SHARK-INFESTED WATERS"]},
+        {"cues": ["MARINE NAVIGATION IMPOSSIBLE", "A STRANGE PHENOMENON IS MARKING NAVIGATION IMPOSSIBLE", "DISTINCTIVE SAIL OR ICONIC RIGGING", "GOOD FISHING SPOT"]},
+        {"cues": ["FREQUENT DOLDRUMS", "ONLY TRIBUTABLE ACCESSIBLE BY", "SITE OF SMUGGLING", "KNOWN FOR SKILL WITH SMALL BOATS"]},
+        {"cues": ["SOURCE OF NAVIGATION", "GOVERNING PIRATES", "SIGNATURE WATERCRAFT", "USED AS A NAV"]},
+        {"cues": ["AN ALGAE BLOOM IS DISRUPTING THE COASTLINE IS DISRUPTING ECOSYSTEMS", "ON LIFE, ENTANGLING SHIPS", "OR ATTRACTING SOMETHING HUNGRY", "SHARK-INFESTED WATERS"]},
+        {"cues": ["AN IMPORTANT WAY-TRADER HAS VANISHED OVERNIGHT", "A SIMILAR SHIP LANDMARKS, OR BREAKING", "AN IN A STORM WAY-TRADER"]}
+      ]
+    },
+    "advent": {
+      "name": "Advent",
+      "description": "Coastline-themed events that may change the area's future",
+      "cards": [
+        {
+          "cue": "PIRATES ARE CONDUCTING FREQUENT RAIDS:",
+          "interpretations": ["TARGETING PIRATES, ENDANGERED SPECIES, OR MERCHANT VESSELS"]
+        },
+        {
+          "cue": "THERE HAS BEEN A SUDDEN SPIKE IN SHIPWRECK INCIDENTS:",
+          "interpretations": ["DUE TO UNKNOWN DANGERS, SHIFTING COASTLINE, OR SEA CREATURES"]
+        },
+        {
+          "cue": "SOMETHING WASHED UP ON SHORE:",
+          "interpretations": ["A STRANGER, AN ARTIFACT, OR A CREATURE"]
+        },
+        {
+          "cue": "HAS VANISHED: MYSTERIOUS PHENOMENON HAS BEGUN TO RETURN:",
+          "interpretations": ["STRANGE FISH, OR RETURNING HAUNT, OR RETUNING HAUNT, OR RETUNING FISH"]
+        },
+        {
+          "cue": "AN UNUSUAL SHIP HAS APPEARED JUST OFFSHORE:",
+          "interpretations": ["PLAGUE SHIP, LONG-LOST SHIP, OR SUNKEN SHIP"]
+        },
+        {
+          "cue": "NEW BLOCKADES ARE STOPPING ALL SUPPLIES GOING IN OR OUT:",
+          "interpretations": ["BLOCKADES BY A PIRATE LORD, FOREIGN NAVY, OR MAGICAL LIFE"]
+        },
+        {
+          "cue": "THE STORM OF THE CENTURY IS ABOUT TO ARRIVE:",
+          "interpretations": ["IT IS A FREAK BREWING CRISIS, OR SENTINEL OR SUMMONED"]
+        },
+        {
+          "cue": "A DOCK OR PORT INFESTATION IS GETTING OUT OF HAND:",
+          "interpretations": ["CRUSTACEANS, VERMIN, OR FUNGUS"]
+        }
+      ]
+    }
+  },
+  "usage": {
+    "description": "A 60-card coastlines expansion with biome-focused cards for creating coastal and maritime worlds. Contains both brand-new cues and themed variants of standard cards.",
+    "integration": [
+      "Create a monoclimate setting - Use only this expansion to create a world of up to 8 microsettings with a single climate focus",
+      "Develop specific biomes in a larger world - Use the main deck to create your world and switch to the expansion to develop coastal areas",
+      "Mix expansion cards into the main deck - Although some cues may be harder to interpret outside the specific biome, they are largely cross-compatible",
+      "Mix cards and use a sideboard - Draw from a set of faceup cards for less random and more intentional worldbuilding"
+    ],
+    "composition": {
+      "regions": 8,
+      "landmarks": 12,
+      "namesakes": 12,
+      "origins": 8,
+      "attributes": 12,
+      "advents": 8
+    }
+  },
+  "credits": {
+    "design": "Peter Chiykowski",
+    "production": "Miroki Tong, Zach Schuster",
+    "writing": "Akira Keith, Athar Fikry, A. Z. Louise, Brendon Alekseii, Cae Hawksmoor, J. D. Harlock, Juliet Kemp, Michael Barker, Sarah Loch, Zach Schuster",
+    "sensitivity_review": "A. Z. Louise, Sonya Ballantyne, Yasmine Fahmy",
+    "curriculum_review": "Kendra Harrison",
+    "proofreading": "Eric Weiss, Leigh Teetzel, Tyson Pink",
+    "box_images": "Grant Ritchie, James Donaldson",
+    "region_images": "Grant Ritchie, Heidi Fin, Ishan Seefromthesky, James Donaldson, John Lockwood, Qijin Xu, Tim Patch, USGS",
+    "landmark_images": "Alex Antoniadis, Alistair Mackenzie, Anton Sharov, Bence Balla Schottner, Birger Strahl, Chris Henry, Curioso Photography, Dong Xie, Fabian Quintero, Geran de Klerk, Guillaume Marques, Hamza Erbay, Ishan Seefromthesky, James Eades, Josh Eaton, Luis Eusebio, Matthew Feeney, Milica Spasojevic, Nour Betar, Oliver Sjostrom, Polina Rytova, Ryan Porter, Shifaaz Shamoon"
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "deck": "Lore Master's Deck - Main Deck",
+  "cardTypes": {
+    "modifier": {
+      "name": "Modifier",
+      "description": "Descriptive traits and characteristics to modify other elements",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["DYSTOPIAN", "DEGRADING", "STYLISH", "HYPNOTIC"]
+        },
+        {
+          "cues": ["INCOMPARABLE", "MAIMING", "NOVICE", "ATTENTIVE"]
+        },
+        {
+          "cues": ["MYSTICAL", "PROGRESSIVE", "SENSUAL", "CLUMSY"]
+        },
+        {
+          "cues": ["FESTIVE", "HOLOGRAPHIC", "SHORT", "RESOURCEFUL"]
+        },
+        {
+          "cues": ["FILTHY", "FASHIONABLE", "NARCISSISTIC", "LEARNED"]
+        },
+        {
+          "cues": ["STURDY", "HEARTLESS", "CHEERFUL", "STREAMLINED"]
+        },
+        {
+          "cues": ["SPACIOUS", "FINE", "EASYGOING", "DARING"]
+        },
+        {
+          "cues": ["DELIGHTFUL", "SHARP", "POLITE", "EFFICIENT"]
+        },
+        {
+          "cues": ["BLIND", "HOSPITABLE", "EMPATHETIC", "POISONOUS"]
+        },
+        {
+          "cues": ["ENCHANTING", "GULLIBLE", "BLEEDING", "EXCLUSIVE"]
+        },
+        {
+          "cues": ["INDUSTRIAL", "POROUS", "REMORSEFUL", "IMPARTIAL"]
+        },
+        {
+          "cues": ["DULL", "ACADEMIC", "SUAVE", "BROODING"]
+        },
+        {
+          "cues": ["MALICIOUS", "ETHEREAL", "GLAZED", "MEDDLESOME"]
+        },
+        {
+          "cues": ["PIERCING", "CRISP", "INORGANIC", "JUVENILE"]
+        },
+        {
+          "cues": ["PREDESTINED", "STEALTHY", "DIAPHANOUS", "SHRIVELED"]
+        },
+        {
+          "cues": ["UNWELCOME", "ACCURSED", "TRANSPARENT", "SCARRED"]
+        },
+        {
+          "cues": ["RAUCOUS", "MULTI-FACETED", "WAXY", "FRUITFUL"]
+        },
+        {
+          "cues": ["FUNNY", "CREATIVE", "HEAVY", "VENOMOUS"]
+        },
+        {
+          "cues": ["THEATRICAL", "DECAYING", "DENSE", "RAMPANT"]
+        },
+        {
+          "cues": ["ANTICLIMACTIC", "COLLAGE", "FLEXIBLE", "PHOTOMOSAIC"]
+        },
+        {
+          "cues": ["GLITZY", "BURROWING", "MOLDABLE", "SCULPTURAL"]
+        },
+        {
+          "cues": ["PEACEFUL", "LETHAL", "FIRM", "ENERGIZED"]
+        },
+        {
+          "cues": ["SPONTANEOUS", "BRAIDED", "GELATINOUS", "SPECKLED"]
+        },
+        {
+          "cues": ["DYNAMIC", "SLENDER", "SMELLY", "FIBROUS"]
+        }
+      ]
+    }
+  }
+}

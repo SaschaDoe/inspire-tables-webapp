@@ -1,0 +1,181 @@
+{
+  "deck": "Deck of Worlds Cartography Expansion - Worlds of Ice & Snow (Arctic)",
+  "cardTypes": {
+    "region": {
+      "name": "Region",
+      "description": "Arctic-themed main terrain types for microsettings",
+      "cueCount": 4,
+      "cards": [
+        {"cues": ["TAIGA", "MOUNTAIN(S)", "TUNDRA", "CITY"]},
+        {"cues": ["SEA", "ICE", "FOOTHILL(S)", "SNOW(S)"]},
+        {"cues": ["NMOL", "GLACIER", "POLE", "SHELTER"]},
+        {"cues": ["RIVER", "VILLAGE", "ICEBERG", "TOWN"]},
+        {"cues": ["TAIGA", "MOUNTAIN(S)", "TUNDRA", "CITY"]},
+        {"cues": ["SEA", "ICE", "FOOTHILL(S)", "SNOW(S)"]},
+        {"cues": ["NMOL", "GLACIER", "POLE", "SHELTER"]},
+        {"cues": ["RIVER", "VILLAGE", "ICEBERG", "TOWN"]}
+      ]
+    },
+    "landmark": {
+      "name": "Landmark",
+      "description": "Arctic-themed geographical sites and points of interest",
+      "cueCount": 4,
+      "cards": [
+        {"cues": ["CHASM", "LAKE", "PASS", "MINE"]},
+        {"cues": ["CAMP", "AERIE", "FIELD", "SPRING"]},
+        {"cues": ["COPSE", "ROAD", "HALL", "SPA"]},
+        {"cues": ["COTTAGE", "FJORD", "VENT", "PORT"]},
+        {"cues": ["MELTWATER", "STEEP", "CHASM", "LAKE"]},
+        {"cues": ["PASS", "MINE", "CAMP", "AERIE"]},
+        {"cues": ["FIELD", "SPRING", "COPSE", "ROAD"]},
+        {"cues": ["HALL", "SPA", "COTTAGE", "FJORD"]},
+        {"cues": ["VENT", "PORT", "MELTWATER", "STEEP"]},
+        {"cues": ["CHASM", "LAKE", "PASS", "MINE"]},
+        {"cues": ["CAMP", "AERIE", "FIELD", "SPRING"]},
+        {"cues": ["COPSE", "ROAD", "HALL", "SPA"]}
+      ]
+    },
+    "namesake": {
+      "name": "Namesake",
+      "description": "Arctic-themed prefixes and suffixes for naming locations",
+      "cueCount": 4,
+      "cards": [
+        {"cues": ["HIGHEST", "THAT SHIVERS", "OF SNOWS", "OF WOLVES"]},
+        {"cues": ["LOWEST", "OF NO ICE", "OF LICHENS", "OF CRACKS"]},
+        {"cues": ["THAT ROAMS", "OF GLACIERS", "OF FURS", "OF BEARS"]},
+        {"cues": ["TRAPPER'S", "OF THE LAST THAW", "OF ICICLES", "OF ELK"]},
+        {"cues": ["DIZZY", "OF BROKEN ICE", "OF CLIMBERS", "RESOLUTE"]},
+        {"cues": ["BONECHILL", "OF THE DARKEST RECOIL", "OF RESPITE", "OF TERNS"]},
+        {"cues": ["AVALANCHE", "OF THE FIRST FROST", "OF MINES", "OF FOXES"]},
+        {"cues": ["HARROWING", "WHERE NO SNOWS FALL", "OF HIBERNATION", "OF STEAM"]},
+        {"cues": ["REGRETFUL", "OF SLEET", "OF THE COLDEST NIGHT", "OF CHASMS"]},
+        {"cues": ["FROZEN", "THAT ROARS", "OF ENDLESS TRACKS", "OF COAL"]},
+        {"cues": ["OF HEARTHS", "WHERE NO SNOW FALLS", "WINTER ON RECORD", "OF STEAM"]},
+        {"cues": ["SITE OF THE COLDEST", "SHAPED BY A MASSIVE", "ORIGINALLY A CAMP", "OF THE FISHING CAMP"]}
+      ]
+    },
+    "origin": {
+      "name": "Origin",
+      "description": "Arctic-themed significant historical events",
+      "cueCount": 4,
+      "cards": [
+        {"cues": ["SITE OF THE COLDEST WINTER ON RECORD", "SHAPED BY A MASSIVE BLIZZARD", "ORIGINALLY A CAMP", "ORIGIN OF THE OLDEST CARVING TRADITION"]},
+        {"cues": ["RESTING PLACE OF A FAMOUS EXPLORER", "INCONVENIENT BY AN AVALANCHE", "WAS ONCE A SEASONAL SHELTER", "LINKED TO AN ANCIENT HEROIC SAGA"]},
+        {"cues": ["REACHED BY A NOW-FORGOTTEN ROUTE", "SHAPED BY ANNUAL FREEZE-THAW CYCLES", "ORIGINALLY A SEASONAL SHELTER", "SITE OF THE LONGEST-BURNING HEARTH"]},
+        {"cues": ["SITE OF A MYSTERIOUS FROZEN BOW", "FOUNDED BY RAIDERS", "DISCOVERED BY AN ACCIDENTAL EXPEDITION", "ORIGIN OF AN ORIENTEERING TECHNIQUE"]},
+        {"cues": ["LAST SIGHTING OF ANCIENT MOUNTAIN GUARDIAN", "SHAPED BY A MASSIVE BLIZZARD", "FORMED BY TRAPPERS", "ORIGIN OF A SNOW OR ICE SPORT"]},
+        {"cues": ["SITE OF THE WARMEST SUMMER ON RECORD", "FORAYED OUT OF ICE", "ORIGINALLY A VAST FOOD STORAGE VAULT", "SITE OF THE WORST AVALANCHE IN HISTORY"]},
+        {"cues": ["SUPPLY CACHE", "SHAPED BY A MASSIVE BLIZZARD", "ORIGINALLY A VAST FOOD STORAGE VAULT", "END POINT OF A FAILED MILITARY CAMPAIGN"]},
+        {"cues": ["LINKED TO THE LEGEND OF A FROST CREATURE", "BURIED IN AN AVALANCHE", "KNOWN AS A HISTORIC WAYPOINT", "TERMINUS OF A DEAD TRADE ROUTE"]}
+      ]
+    },
+    "attribute": {
+      "name": "Attribute",
+      "description": "Arctic-themed present-day features and characteristics",
+      "cueCount": 4,
+      "cards": [
+        {"cues": ["UNIQUE PACKED BY GLACIERS", "CULTURALLY PERMAFROST", "KNOWN FOR A SPECIAL BEAST OF BURDEN", "ONLY TRAVERSABLE BY SKI OR SNOWSHOE"]},
+        {"cues": ["KNOWN FOR SHOW ENDURANCE", "SNOW BLINDNESS", "RENOWNED DOG BREEDERS OR TRAINERS", "SHOWN ENDURANCE"]},
+        {"cues": ["KNOWN FOR MINIMAL GOODS", "NOT A HEARTH RESOURCE", "FEASTING CULTURE", "KNOWN FOR STEW(S)"]},
+        {"cues": ["KNOWN FOR BATHING PRACTICES", "CULTURALLY SPECIFIC BATHING PRACTICES", "ONLY ACCESSIBLE BY VERTICAL CLIMB/DROP", "GOOD SOURCE OF FURS"]},
+        {"cues": ["KNOWN FOR FEUDING", "USED FOR RITES", "KNOWN FOR MINIMALIST CULTURE", "BRIEF, GLORIOUS SUMMERS"]},
+        {"cues": ["IMPRESSIVE STARS", "REGIONALLY SPECIFIC STYLE OF SLED", "PHYSICALLY AFFECTIONATE CULTURE", "POPULAR SPOT FOR TRAPPERS"]},
+        {"cues": ["SPECTACULAR SKIN TRADE", "ONLY TRAVERSABLE BY SKI OR SNOWSHOE", "KNOWN FOR GUIDE(S)", "LOCATED ON PERMAFROST"]},
+        {"cues": ["SIGNATURE SLED(S) OR SLEIGH", "DISTINCTIVE FROST PATTERNS", "LOCATED ON THE TREE LINE", "SITE OF A SOLSTICE CELEBRATION"]},
+        {"cues": ["DISTINCTIVE FROST PATTERNS", "UNIQUE WARHEAD ESCAPE", "KNOWN FOR SKY WORSHIP", "A GEOLOGICAL SITE IS CAUSING CONCERN"]},
+        {"cues": ["ONLY TRAVERSABLE BY SKI OR SNOWSHOE", "SPECTACULAR SKIN TRADE", "USED FOR SNOW OR ICE WORSHIP", "LOCATED ON PERMAFROST"]},
+        {"cues": ["KNOWN FOR SKY WORSHIP", "A GEOLOGICAL SITE IS CAUSING CONCERN", "KNOWN FOR GUIDE(S)", "LOCATED ON THE TREE LINE"]},
+        {"cues": ["A PERPETUATING ICE SHEET IS CAUSING A GEOLOGICAL CATASTROPHE", "UNIQUE WARHEAD ESCAPE", "KNOWN FOR GUIDE(S)", "LOCATED ON PERMAFROST"]}
+      ]
+    },
+    "advent": {
+      "name": "Advent",
+      "description": "Arctic-themed events that may change the area's future",
+      "cards": [
+        {
+          "cue": "TWO EXPLORERS ARE RACING TO BE THE FIRST TO REACH A REMOTE AREA:",
+          "interpretations": ["OR TOP OF A PEAK, BOTTOM OF A CAVE, OR END OF A FROZEN WATERWAY"]
+        },
+        {
+          "cue": "PEOPLE ARE SETTLING IN FOR A HUNGRY WINTER:",
+          "interpretations": ["DUE TO OVERHUNTING, A LEAN HARVEST, OR A MINI ICE AGE"]
+        },
+        {
+          "cue": "ALL MAIL AND DELIVERIES IN AND OUT HAVE STOPPED:",
+          "interpretations": ["DUE TO IMPASSABLE TERRAIN, AN EMBARGO, OR A TERRIBLE INCIDENT"]
+        },
+        {
+          "cue": "SOMETHING FROZEN IN ICE LONG AGO HAS BEGUN TO THAW:",
+          "interpretations": ["A PLAGUE, TREASURE, OR CREATURE"]
+        },
+        {
+          "cue": "THE MAGNETIC POLE IS SHIFTING UNEXPECTEDLY:",
+          "interpretations": ["IT IS SLOW-JARRING, SETTLING INTO MULTIPLE POINTS, OR MOVING WITH PURPOSE"]
+        },
+        {
+          "cue": "THE SKY'S AURORA EFFECT IS BEGINNING TO BEHAVE IN A STRANGE WAY:",
+          "interpretations": ["CHANGING BRIGHTNESS, DISTURBING PATTERNS, OR HYPNOTIC PATTERNS"]
+        },
+        {
+          "cue": "A HUGE AVALANCHE HAS BURIED THE AREA:",
+          "interpretations": ["RESULTING IN WILDLIFE MIGRATION, TRAPPED SURVIVORS, OR ROUTE CLOSURES"]
+        },
+        {
+          "cue": "CAIRNS ARE POPPING UP WITHOUT EXPLANATION:",
+          "interpretations": ["SUSPECTED TO WARD THE AREA, CURSE THE AREA, OR MARK A PATH"]
+        },
+        {
+          "cue": "RECENT SNOWFALL HAS LED TO AN IMPROMPTU COMPETITION:",
+          "interpretations": ["OF SNOW SCULPTING, SNOWBALL FIGHTING, OR SLEDDING"]
+        },
+        {
+          "cue": "A MASSIVE BLIZZARD IS BEGINNING STRENGTH:",
+          "interpretations": ["IF IT WET MED IN AND BRING CONTROLLED, OR BRUISES LIKE IT IS ALIVE"]
+        },
+        {
+          "cue": "HIGH WINDS HAVE EXPOSED SOMETHING LONG BURIED IN THE SNOW:",
+          "interpretations": ["A HOSTILE, ARTIFACT, OR LOST EXPEDITION"]
+        },
+        {
+          "cue": "THE WINTER FOOD SUPPLY HAS STARTED SPOILING:",
+          "interpretations": ["DUE TO FUNGUS, INSECTS, OR SABOTAGE"]
+        },
+        {
+          "cue": "THE SEASONAL THAW IS CAUSING A MAJOR PROBLEM:",
+          "interpretations": ["A FLOOD, FEEDING FRENZY, OR SECRET UNCOVERED BY RECEDING SNOW"]
+        },
+        {
+          "cue": "SOMEONE IS LOOKING FOR VOLUNTEERS TO TEST A NEW SLEDDING INVENTION:",
+          "interpretations": ["POWERED BY ENGINE, WIND, OR PEDALS"]}
+      ]
+    }
+  },
+  "usage": {
+    "description": "A 60-card arctic expansion with biome-focused cards for creating frozen and polar worlds. Contains both brand-new cues and themed variants of standard cards.",
+    "integration": [
+      "Create a monoclimate setting - Use only this expansion to create a world of up to 8 microsettings with a single climate focus",
+      "Develop specific biomes in a larger world - Use the main deck to create your world and switch to the expansion to develop arctic areas",
+      "Mix expansion cards into the main deck - Although some cues may be harder to interpret outside the specific biome, they are largely cross-compatible",
+      "Mix cards and use a sideboard - Draw from a set of faceup cards for less random and more intentional worldbuilding"
+    ],
+    "composition": {
+      "regions": 8,
+      "landmarks": 12,
+      "namesakes": 12,
+      "origins": 8,
+      "attributes": 12,
+      "advents": 8
+    }
+  },
+  "credits": {
+    "design": "Peter Chiykowski",
+    "production": "Miroki Tong, Zach Schuster",
+    "writing": "Akira Keith, Athar Fikry, A. Z. Louise, Brendon Alekseii, Cae Hawksmoor, J. D. Harlock, Juliet Kemp, Michael Barker, Sarah Loch, Zach Schuster",
+    "sensitivity_review": "A. Z. Louise, Sonya Ballantyne, Yasmine Fahmy",
+    "curriculum_review": "Kendra Harrison",
+    "proofreading": "Eric Weiss, Leigh Teetzel, Tyson Pink",
+    "box_images": "Grant Ritchie, James Donaldson",
+    "region_images": "Grant Ritchie, Heidi Fin, Ishan Seefromthesky, James Donaldson, John Lockwood, Qijin Xu, Tim Patch, USGS",
+    "landmark_images": "Alex Antoniadis, Alistair Mackenzie, Anton Sharov, Bence Balla Schottner, Birger Strahl, Chris Henry, Curioso Photography, Dong Xie, Fabian Quintero, Geran de Klerk, Guillaume Marques, Hamza Erbay, Ishan Seefromthesky, James Eades, Josh Eaton, Luis Eusebio, Matthew Feeney, Milica Spasojevic, Nour Betar, Oliver Sjostrom, Polina Rytova, Ryan Porter, Shifaaz Shamoon"
+  }
+}

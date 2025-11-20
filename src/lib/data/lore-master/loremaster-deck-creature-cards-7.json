@@ -1,0 +1,463 @@
+{
+  "deck": "Lore Master's Deck - Main Deck",
+  "cardTypes": {
+    "creature": {
+      "name": "Creature",
+      "description": "Living beings and beasts that inhabit the world",
+      "primaryCueCount": 4,
+      "secondaryCueCount": 4,
+      "cards": [
+        {
+          "primaryCues": ["DRAKE", "ELK", "RAPTOR", "OTTER"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPES, TRICKS OR MIMICRIES",
+            "PROPERTIES: CLAIMS, MARKS OR HOARDS",
+            "TRAIT: CUE BUT ADAPT",
+            "BACKGROUND: PACK HUNTER OR HERD DWELLER"
+          ]
+        },
+        {
+          "primaryCues": ["PLANT", "ARMADILLO", "ANT", "LION"],
+          "secondaryCues": [
+            "PROPERTIES: SYMBIOTIC WITH ANOTHER CREATURE ⚪",
+            "PROPERTIES: POSSESSES GILLS OR TOOLS",
+            "TRAIT: BIOLUMINESCENT",
+            "BACKGROUND: ASSOCIATED WITH A CULTURAL VALUE OR PERSONAL QUALITY"
+          ]
+        },
+        {
+          "primaryCues": ["FUNGUS", "ANKLEFISH", "BEAR", "FALCON"],
+          "secondaryCues": [
+            "PROPERTIES: HUNTING OR TRACKING",
+            "PROPERTIES: ICON, SHELL, SPINES OR ARMOR",
+            "TRAIT: POLLINATOR",
+            "BACKGROUND: SACRED OR PROFANE TO A CULTURE (OR FACTION ⚪)"
+          ]
+        },
+        {
+          "primaryCues": ["ALGAE", "BADGER", "DEER", "BASILISK"],
+          "secondaryCues": [
+            "PROPERTIES: BODY SHAPE OR FEATURE RESEMBLES AN OBJECT ⚪/⚫",
+            "PROPERTIES: EXTRA LIMBS OR APPENDAGES",
+            "TRAIT: BLUBBER OR MANA OR VENOM",
+            "BACKGROUND: HUNTED AS A RITE OF PASSAGE (BY A FACTION ⚪)"
+          ]
+        },
+        {
+          "primaryCues": ["MOSS", "BEE", "FELINE", "ALLIGATOR"],
+          "secondaryCues": [
+            "PROPERTIES: PLAYFUL OR CAPRICIOUS",
+            "PROPERTIES: UNDEAD OR TRACKLESS",
+            "TRAIT: NUMBER OR TRACKLESS",
+            "BACKGROUND: KILLED A HISTORIC FIGURE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["VINE", "RAY", "REPTILE", "LYNX"],
+          "secondaryCues": [
+            "PROPERTIES: VIRAL, LOVING, OR INFECTIOUS",
+            "PROPERTIES: INSECT COVERED OR INFESTED OR VIRAL",
+            "TRAIT: OR TRACKLESS",
+            "BACKGROUND: LARGE COLONY AT A NOTABLE LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["PEGASUS", "DRAGONFLY", "RODENT", "CROCODILE"],
+          "secondaryCues": [
+            "PROPERTIES: TOTALLY SOLITARY OR MANLY SOCIAL",
+            "PROPERTIES: UNUSUALLY ALONE OR WEIGHTY, ALONE OR",
+            "TRAIT: HUNKS OR",
+            "BACKGROUND: NO LONGER FOUND IN ITS ORIGINAL HABITAT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["ORCHID", "LEOBARD", "MARSUPIAL", "CANINE"],
+          "secondaryCues": [
+            "PROPERTIES: SORTS, PRECIOUS STONES, OR CHEMICALS",
+            "PROPERTIES: GETS NESTS OR USE",
+            "TRAIT: POSSESSES OR",
+            "BACKGROUND: SYMBOL OF A FACTION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["SIREN", "BOAR", "CEPHALOPOD", "WEASEL"],
+          "secondaryCues": [
+            "PROPERTIES: COMMUNICATES VIA SCENTS, PRECIOUS STONES, OR CHEMICALS",
+            "PROPERTIES: COMMUNICATES VIA",
+            "TRAIT: GETS NESTS OR USE",
+            "BACKGROUND: SYMBOL OF A FACTION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["CORAL", "HUMMINGBIRD", "DINOSAUR", "BISON"],
+          "secondaryCues": [
+            "PROPERTIES: HIGHLY INTELLIGENT OR HIGHLY UNINTELLIGENT",
+            "PROPERTIES: BANKING OR",
+            "TRAIT: UNUSUALLY ALONE OR",
+            "BACKGROUND: TOTALLY SOLITARY OR MANLY SOCIAL"
+          ]
+        },
+        {
+          "primaryCues": ["FLOWER", "DOLPHIN", "ARACHNID", "POLARIAN"],
+          "secondaryCues": [
+            "PROPERTIES: SLEEPING OR",
+            "PROPERTIES: OR WEIGHING",
+            "TRAIT: FOR WEIGHING OR",
+            "BACKGROUND: ORIGINATED IN ANOTHER DIMENSION OR REALM"
+          ]
+        },
+        {
+          "primaryCues": ["SEA STAR", "CAMEL", "BIRD", "PYTHON"],
+          "secondaryCues": [
+            "PROPERTIES: SURVIVES OR",
+            "PROPERTIES: SHELL OR ARMOR",
+            "TRAIT: SHELL OR",
+            "BACKGROUND: OMEN OF A PROPHESIED EVENT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["TREE", "ELEPHANT", "BAT", "PENGUIN"],
+          "secondaryCues": [
+            "PROPERTIES: GROWS ALGAE, LICHEN, OR SPORES",
+            "PROPERTIES: CRYSTALLINE OR MINERAL ⚫",
+            "TRAIT: EXTRA LEGS OR SCHOLARS",
+            "BACKGROUND: HUNTED OR FARMED FOR A MATERIAL ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["CACTUS", "GRACE", "FISH", "GHOUL"],
+          "secondaryCues": [
+            "PROPERTIES: VERY SLOW",
+            "PROPERTIES: KEPT AS A SLOW",
+            "TRAIT: ANOTHER CREATURE ⚪",
+            "BACKGROUND: PRODUCED OF ANOTHER CREATURE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["CHIMERA", "JAY", "HORSE", "SCORPION"],
+          "secondaryCues": [
+            "PROPERTIES: FORMS INTERCONNECTED NETWORKS OF STRUCTURES OR ⚪/⚫",
+            "PROPERTIES: RAD SIMILAR TO NATURE",
+            "TRAIT: FEEDS ON A LOCATION ⚪/⚫",
+            "BACKGROUND: LACKS MANY NAMES"
+          ]
+        },
+        {
+          "primaryCues": ["IMP", "SKUNK", "INSECT", "HIPPOPOTAMUS"],
+          "secondaryCues": [
+            "PROPERTIES: LEAVES OR TRAIL",
+            "PROPERTIES: RAD SIMILAR OR NATURE",
+            "TRAIT: FEEDS OR TRAIL",
+            "BACKGROUND: GUARDIANS OF A LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["SNAIL", "PANTHER", "GOAT", "RHINOCEROS"],
+          "secondaryCues": [
+            "PROPERTIES: FOSSILS OR",
+            "PROPERTIES: SLOTH",
+            "TRAIT: LIKE A JEWEL ⚪",
+            "BACKGROUND: ABUNDANT IN A SPECIFIC LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["SHELLFISH", "SLOTHS", "BUG", "HYENA"],
+          "secondaryCues": [
+            "PROPERTIES: DARK JEWEL LATER",
+            "PROPERTIES: LIKE A JEWEL",
+            "TRAIT: TICK OR HOUSE LATER",
+            "BACKGROUND: BRIBE, GIFT, OR PAYMENT IN AN EVENT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["BACTERIA", "RABBIT", "TURTLE", "VULTURE"],
+          "secondaryCues": [
+            "PROPERTIES: LIKE A JEWEL OR HOUSE LATER",
+            "PROPERTIES: TICK OR HOUSE LATER",
+            "TRAIT: TICK",
+            "BACKGROUND: PROVIDED CRAFTING MATERIALS FOR AN ARTIFACT ⚪+⚫"
+          ]
+        },
+        {
+          "primaryCues": ["LOTUS", "TIGER", "MOSQUITO", "KANGAROO"],
+          "secondaryCues": [
+            "PROPERTIES: CONSUMING OR",
+            "PROPERTIES: SHAPING MATERIALS OR STRUCTURES",
+            "TRAIT: TICK OR HOUSE LATER",
+            "BACKGROUND: USED IN A LOCATION'S INITIATION RITUAL ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["SLOTH", "CHICKEN", "MONKEY", "WALRUS"],
+          "secondaryCues": [
+            "PROPERTIES: SLOW OR ESSENTIALLY",
+            "PROPERTIES: UNCOMFIRED OR",
+            "TRAIT: OR FOSSILS",
+            "BACKGROUND: GUARDIANS OF AN ARTIFACT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["BOVINE", "SEAL", "GOAT", "SALLIMANDER"],
+          "secondaryCues": [
+            "PROPERTIES: UNCOMFIRED OR ESSENTIALLY LATER",
+            "PROPERTIES: UNCOMFIRED",
+            "TRAIT: UNCOMFIRED",
+            "BACKGROUND: CAME OR FEED-OCEAN DWELLER"
+          ]
+        },
+        {
+          "primaryCues": ["DRAGON", "TICK", "CANINE", "MASTODON"],
+          "secondaryCues": [
+            "PROPERTIES: COLLECTS OR NESTS IN OF TYPE OR ⚪/⚫",
+            "PROPERTIES: POSSESSED",
+            "TRAIT: POSSESSED",
+            "BACKGROUND: REGENERATION"
+          ]
+        },
+        {
+          "primaryCues": ["PARASITIC", "WOLVERINE", "JELLYFISH", "EEL"],
+          "secondaryCues": [
+            "PROPERTIES: PARASITIC",
+            "PROPERTIES: POSSESSED",
+            "TRAIT: POSSESSED",
+            "BACKGROUND: CAME OR FEED-OCEAN"
+          ]
+        },
+        {
+          "primaryCues": ["ELEMENTAL", "SAUROPOD", "WOLF", "INSIVOROUS"],
+          "secondaryCues": [
+            "PROPERTIES: ELEMENTAL",
+            "PROPERTIES: POSSESSED",
+            "TRAIT: POSSESSED",
+            "BACKGROUND: CAME"
+          ]
+        },
+        {
+          "primaryCues": ["CLAM", "PARROT", "PIG", "LOT"],
+          "secondaryCues": [
+            "PROPERTIES: CLAM",
+            "PROPERTIES: POSSESSED",
+            "TRAIT: POSSESSED",
+            "BACKGROUND: CAME"
+          ]
+        },
+        {
+          "primaryCues": ["FERN", "LEMUR", "SNAKE", "OCTOPUS"],
+          "secondaryCues": [
+            "PROPERTIES: FERN",
+            "PROPERTIES: POSSESSED",
+            "TRAIT: POSSESSED",
+            "BACKGROUND: CAME"
+          ]
+        },
+        {
+          "primaryCues": ["OOZE", "PELICAN", "MOTH", "GECKO"],
+          "secondaryCues": [
+            "PROPERTIES: OOZE",
+            "PROPERTIES: POSSESSED",
+            "TRAIT: POSSESSED",
+            "BACKGROUND: CAME"
+          ]
+        },
+        {
+          "primaryCues": ["SHRUB", "SQUID", "SHEEP", "GRIFFIN"],
+          "secondaryCues": [
+            "PROPERTIES: SHRUB",
+            "PROPERTIES: POSSESSED",
+            "TRAIT: POSSESSED",
+            "BACKGROUND: CAME"
+          ]
+        },
+        {
+          "primaryCues": ["HYDRA", "HAWK", "APE", "SEAHORSE"],
+          "secondaryCues": [
+            "PROPERTIES: HYDRA",
+            "PROPERTIES: POSSESSED",
+            "TRAIT: POSSESSED",
+            "BACKGROUND: CAME"
+          ]
+        },
+        {
+          "primaryCues": ["UNICORN", "SPIDER", "AMPHIB IAN", "OSTRICH"],
+          "secondaryCues": [
+            "PROPERTIES: UNICORN",
+            "PROPERTIES: POSSESSED",
+            "TRAIT: POSSESSED",
+            "BACKGROUND: CAME"
+          ]
+        },
+        {
+          "primaryCues": ["WORM", "DUCK", "WHALE", "COYOTE"],
+          "secondaryCues": [
+            "PROPERTIES: WORM",
+            "PROPERTIES: POSSESSED",
+            "TRAIT: POSSESSED",
+            "BACKGROUND: CAME"
+          ]
+        },
+        {
+          "primaryCues": ["MOOSE", "SONGBIRD", "SLUG", "FROG"],
+          "secondaryCues": [
+            "PROPERTIES: MOOSE",
+            "PROPERTIES: POSSESSED",
+            "TRAIT: POSSESSED",
+            "BACKGROUND: CAME"
+          ]
+        },
+        {
+          "primaryCues": ["KELP", "CRAB", "TORTOISE", "SHARK"],
+          "secondaryCues": [
+            "PROPERTIES: KELP",
+            "PROPERTIES: POSSESSED",
+            "TRAIT: POSSESSED",
+            "BACKGROUND: CAME"
+          ]
+        },
+        {
+          "primaryCues": ["GARGOYLE", "CONSTRUCTOR", "CORVID", "FROG"],
+          "secondaryCues": [
+            "PROPERTIES: GARGOYLE",
+            "PROPERTIES: POSSESSED",
+            "TRAIT: POSSESSED",
+            "BACKGROUND: CAME"
+          ]
+        },
+        {
+          "primaryCues": ["LEAVES GLITTERS OR LITTERS"],
+          "secondaryCues": [
+            "PROPERTIES: SPAWNING OVERTIME",
+            "PROPERTIES: LEAVES GLITTERS OR LITTERS",
+            "TRAIT: PRODUCES MATERIAL ⚫",
+            "BACKGROUND: LEAVES GLITTERS OR LITTERS"
+          ]
+        },
+        {
+          "primaryCues": ["TRAINED TO BE KEPT IN A TYPE OF EVENT ⚪/⚫"],
+          "secondaryCues": [
+            "PROPERTIES: LIVING LINK",
+            "PROPERTIES: LIVE LIMB OR",
+            "TRAIT: ⚫/⚪ OR ARTIFACT",
+            "BACKGROUND: ABLE TO DETECT A VALUABLE MATERIAL ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["BORDERS RING CLOUD, OR FIELD"],
+          "secondaryCues": [
+            "PROPERTIES: SPAWNING OVERTIME",
+            "PROPERTIES: ALL",
+            "TRAIT: ALL",
+            "BACKGROUND: NICKNAMED AFTER ITS DISCOVERER OR MAKER ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["BUILDS HIVES, VERBS, OR NESTS FROM A"],
+          "secondaryCues": [
+            "PROPERTIES: POSSITIVE EGGS OR",
+            "PROPERTIES: ON WEAKENS",
+            "TRAIT: ON WEAKENS",
+            "BACKGROUND: CAUSE OF A PLAGUE OR CALAMITY ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["TALENTED MIMIC OR MIRRORSEER"],
+          "secondaryCues": [
+            "PROPERTIES: TALENTED",
+            "PROPERTIES: SHAPESHIFTING OR METHODOLOGY",
+            "TRAIT: SHAPESHIFTING",
+            "BACKGROUND: ASSOCIATED WITH A SPIRIT OR GOD"
+          ]
+        },
+        {
+          "primaryCues": ["DISEASE CARRIER"],
+          "secondaryCues": [
+            "PROPERTIES: TOOL USER ⚪",
+            "PROPERTIES: TOOL USER",
+            "TRAIT: TOOL USER",
+            "BACKGROUND: DISEASE CARRIER"
+          ]
+        },
+        {
+          "primaryCues": ["MAGICAL ENERGY"],
+          "secondaryCues": [
+            "PROPERTIES: FEEDS ON HEAT, SOUND, MAGICAL ENERGY",
+            "PROPERTIES: FEEDS ON HEAT",
+            "TRAIT: PHOTOSYNTHETIC OR CHEMOSYNTHETIC",
+            "BACKGROUND: FEEDS ON HEAT, SOUND, MAGICAL ENERGY"
+          ]
+        },
+        {
+          "primaryCues": ["MADE FROM AN ENDANGERED, MADE FROM AN"],
+          "secondaryCues": [
+            "PROPERTIES: CAN COLLECT OR BORROW",
+            "PROPERTIES: CAN COLLECT OR BORROW IN FLIGHT",
+            "TRAIT: OR MIDNIGHT IN FLIGHT",
+            "BACKGROUND: USED AS MOUNTS OR WORSHIPERS (BY A FACTION ⚪)"
+          ]
+        },
+        {
+          "primaryCues": ["HIBERNATOR"],
+          "secondaryCues": [
+            "PROPERTIES: HIBERNATOR",
+            "PROPERTIES: FEEDS OR",
+            "TRAIT: FEEDS OR ALIVE OR",
+            "BACKGROUND: ASSOCIATED WITH DREAMS, NIGHTMARES, OR VISIONS"
+          ]
+        },
+        {
+          "primaryCues": ["CAPABLE OF SPEECH OR SCRIPT"],
+          "secondaryCues": [
+            "PROPERTIES: CAPABLE OF SPEECH",
+            "PROPERTIES: TELEPATHIC",
+            "TRAIT: TELEPATHIC",
+            "BACKGROUND: HARVESTED OR HUNTED BY A FACTION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["MINI-TOOTHED FILTER FEEDER OR"],
+          "secondaryCues": [
+            "PROPERTIES: THIS BEAST OF A",
+            "PROPERTIES: UNUSUALLY SIZE",
+            "TRAIT: UNUSUALLY SIZE",
+            "BACKGROUND: MINI-TOOTHED FILTER FEEDER OR"
+          ]
+        },
+        {
+          "primaryCues": ["FEEDS ON WASTE OR DECOMPOSITION"],
+          "secondaryCues": [
+            "PROPERTIES: FEEDS ON",
+            "PROPERTIES: FEEDS OR",
+            "TRAIT: MOUNT OR GUILTY",
+            "BACKGROUND: NOTABLE SUBSPECIES AT A SPECIFIC LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["OSSIFIES, CRYSTALLIZES, OR SPECIFIC"],
+          "secondaryCues": [
+            "PROPERTIES: SHAPESHIFTING, COMING",
+            "PROPERTIES: MICROSCOPIC OR MINUSCULE",
+            "TRAIT: MICROSCOPIC OR",
+            "BACKGROUND: USED IN THE BUILDING OF A LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["ON DEATH"],
+          "secondaryCues": [
+            "PROPERTIES: OSSIFIES, CRYSTALLIZES, OR SPECIFIC ON DEATH",
+            "PROPERTIES: OSSIFIES",
+            "TRAIT: OSSIFIES",
+            "BACKGROUND: ON DEATH"
+          ]
+        },
+        {
+          "primaryCues": ["EXCEPTIONALLY LONG OR SHORT LIFESPAN"],
+          "secondaryCues": [
+            "PROPERTIES: EXCEPTIONALLY",
+            "PROPERTIES: EXCEPTIONALLY LONG",
+            "TRAIT: MOUNT OR GUILTY",
+            "BACKGROUND: STEED OF A NOTABLE FIGURE ⚪"
+          ]
+        }
+      ]
+    }
+  }
+}

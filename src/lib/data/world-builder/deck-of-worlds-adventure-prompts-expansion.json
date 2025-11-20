@@ -1,0 +1,331 @@
+{
+  "deck": "Deck of Worlds Creative Expansion - Adventure Prompts (Heroes' Quests & Fools' Errands)",
+  "cardTypes": {
+    "adventure": {
+      "name": "Adventure",
+      "description": "Reusable quest hooks with customizable story elements",
+      "cards": [
+        {
+          "title": "VET EMERGENCY",
+          "summary": "A local pet needs urgent care at a distant vet. The owner will reward anyone who can get them there quickly.",
+          "cues": ["WHERE IS THE VET?"]
+        },
+        {
+          "title": "GOING DOWN SWINGING",
+          "summary": "A dread mage is dying and wants help taking down their mentor — to atone for the damage they have done.",
+          "cues": ["WHERE IS THE MENTOR?"]
+        },
+        {
+          "title": "EXHIBIT BOO",
+          "summary": "The local historical society believes one of their items is haunted. They need help persuading the spirit to move on.",
+          "cues": ["WHO IS THE GHOST?"]
+        },
+        {
+          "title": "DYING BREED",
+          "summary": "An artist needs guides to bring them to see the last member of an endangered species for a portrait.",
+          "cues": ["WHERE WAS THE ANIMAL LAST SEEN?"]
+        },
+        {
+          "title": "DEAD LETTERS",
+          "summary": "A local's pen pal has gone silent and they suspect outside interference. They need someone to check on them.",
+          "cues": ["WHERE IS THE PEN PAL?"]
+        },
+        {
+          "title": "SLEEPING WITH THE FISHES",
+          "summary": "An excitable aquarist needs help tracking down a rare companion for their aquarium.",
+          "cues": ["WHAT ARE TWO POSSIBLE SOURCES?"]
+        },
+        {
+          "title": "WHO LEFT THE DOOR OPEN?",
+          "summary": "A researcher has opened a portal they cannot close. They need help to venture in and close it from the other side.",
+          "cues": ["WHERE DOES THE PORTAL LEAD?"]
+        },
+        {
+          "title": "POSSESSION AND THE LAW",
+          "summary": "A spirit claims their upcoming exorcism counts as wrongful eviction. They need help defending themselves in court.",
+          "cues": ["WHO OR WHAT IS THE SPIRIT HAUNTING?"]
+        },
+        {
+          "title": "THE SONGBIRD",
+          "summary": "A composer needs to capture a live specimen of a bird with a unique song. They claim it is for inspiration.",
+          "cues": ["WHERE IS THE BIRD'S NEST?"]
+        },
+        {
+          "title": "LATE FEES",
+          "summary": "A librarian needs help tracking down an unreturnable book that was stolen and swapped with a decoy.",
+          "cues": ["WHAT IS THE SUSPECT'S TRUE MOTIVE?"]
+        },
+        {
+          "title": "LOST IN TRANSLATION",
+          "summary": "An ambassador is locked in tense negotiations but their translator has been delayed or abducted. They need help finding them.",
+          "cues": ["WHO DELAYED THE TRANSLATOR AND WHY?"]
+        },
+        {
+          "title": "FIELD TEST",
+          "summary": "An inventor needs help testing a dangerous prototype in the field. They are offering danger pay.",
+          "cues": ["WHY DID THE INVENTOR CREATE THE PROTOTYPE?"]
+        },
+        {
+          "title": "MISSING EVIDENCE",
+          "summary": "A grieving local needs help locating missing evidence in the case of a murdered loved one. The trial is already underway.",
+          "cues": ["WHO HAS (OR WHERE IS) THE EVIDENCE?"]
+        },
+        {
+          "title": "MAPPING THE PAST",
+          "summary": "A researcher is offering a big reward for help mapping the ruins of a nearby area. They say not to believe the stories.",
+          "cues": ["WHAT MIGHT THE RUINS CONTAIN?"]
+        },
+        {
+          "title": "AUCTION HERO",
+          "summary": "An stolen item is up for auction and the owner needs it back by any means necessary.",
+          "cues": ["WHO IS THE OWNER?"]
+        },
+        {
+          "title": "EARWORM",
+          "summary": "Everyone has the same strange song stuck in their heads and they want to know why.",
+          "cues": ["WHO MIGHT KNOW SOMETHING?"]
+        },
+        {
+          "title": "TROUBLE BREWING",
+          "summary": "A recluse needs a rare herb for a special blend of tea. They seem desperate to have it as soon as possible.",
+          "cues": ["WHAT IS THE RECLUSE'S MOTIVATION?"]
+        },
+        {
+          "title": "PRISONER TRANSFER",
+          "summary": "A high-profile prisoner needs to be escorted to a new facility. There has been a tip-off that someone plans to abduct them en route.",
+          "cues": ["WHERE IS THE FACILITY LOCATED?"]
+        },
+        {
+          "title": "SPELLING PROBLEM",
+          "summary": "A well-reputed mage needs help sourcing a spell component of their missing.",
+          "cues": ["WHY DOES THE MAGE NEED THE COMPONENT?"]
+        },
+        {
+          "title": "BOTTOMS UP",
+          "summary": "A god of wine and chaos is holding a drinking contest. The prize is their most treasured possession.",
+          "cues": ["WHAT IS THE TREASURED POSSESSION?"]
+        },
+        {
+          "title": "UNDER THE TABLE",
+          "summary": "A chef needs an ingredient to perfect a recipe. Unfortunately, the ingredient is illegal and hard to source.",
+          "cues": ["WHAT ARE TWO POSSIBLE SOURCES?"]
+        },
+        {
+          "title": "RELIC RESCUE",
+          "summary": "An activist plans to recover a misappropriated artifact from a local museum. They need help with a heist or negotiation.",
+          "cues": ["WHAT IS THE ARTIFACT?"]
+        },
+        {
+          "title": "TRUTH TO POWER",
+          "summary": "A protester plans to give a speech against a powerful person and needs to hire protection.",
+          "cues": ["WHO IS THE PROTESTER SPEAKING AGAINST?"]
+        },
+        {
+          "title": "THE COLDEST CASE",
+          "summary": "An amateur historian thinks they solved a centuries-old murder. They just need help digging up the body.",
+          "cues": ["WHERE IS THE BODY BURIED?"]
+        },
+        {
+          "title": "MISSING CHILD",
+          "summary": "A child has gone missing. They were last seen searching a nearby area, but no one knows why.",
+          "cues": ["WHO IS LOOKING FOR THE CHILD?"]
+        },
+        {
+          "title": "RIDDLE MASTER",
+          "summary": "A mysterious vagabond is offering a reward to whoever can answer their riddle.",
+          "cues": ["WHAT IS THE VAGABOND'S MOTIVATION?"]
+        },
+        {
+          "title": "GARDEN VARIETY PEST",
+          "summary": "Pests are destroying a garden and beloved flowers and they need help saving their garden.",
+          "cues": ["WHAT COULD REPEL OR REMOVE THE PESTS?"]
+        },
+        {
+          "title": "SURVEILLANCE",
+          "summary": "A local merchant suspects their business partner of dirty dealings. They want them tailed until they have evidence.",
+          "cues": ["WHAT IS THE PARTNER'S MOTIVATION?"]
+        },
+        {
+          "title": "ARTIFACT CHECK",
+          "summary": "A biographer needs someone to mark a detailed sketch or description of a historical figure's private possession.",
+          "cues": ["WHAT IS THE POSSESSION?"]
+        },
+        {
+          "title": "HATE MAIL",
+          "summary": "A local has been receiving anonymous threatening letters. They need help investigating the source.",
+          "cues": ["WHO ARE THREE SUSPECTS?"]
+        },
+        {
+          "title": "AMONG US",
+          "summary": "A local claims that someone has been replaced with a shape-shifter or impostor. They need help determining who.",
+          "cues": ["WHO ARE THREE POTENTIAL IMPOSTORS?"]
+        },
+        {
+          "title": "DO NO HARM",
+          "summary": "A spy in the local healers' guild is leaking private patient information. The guild leader needs the leak plugged quickly and quietly.",
+          "cues": ["WHAT IS THE LEAKER'S MOTIVATION?"]
+        },
+        {
+          "title": "A CROOKED GAME",
+          "summary": "A local was scammed into betting their home on a rigged game of chance. They need help winning it back or exposing the scam.",
+          "cues": ["WHO IS THE SCAMMER?"]
+        },
+        {
+          "title": "FORMER GLORY",
+          "summary": "A disgraced hero needs help with a task that could help restore their reputation.",
+          "cues": ["DESCRIBE THE HERO."]
+        },
+        {
+          "title": "ONLY SLEEPING",
+          "summary": "A necromancer is gathering a band of heroes to resurrect a benevolent god who died long ago.",
+          "cues": ["WHERE IS THE GOD BURIED?"]
+        },
+        {
+          "title": "UP IN FLAMES",
+          "summary": "A custodian believes that a rogue pyromancer is preparing an attack on their building.",
+          "cues": ["WHAT MAGIC FOCUS DOES THE PYROMANCER USE?"]
+        },
+        {
+          "title": "THE DEUCE",
+          "summary": "An inventor needs help recovering a stolen device of incredible power. They worry what it could do in the wrong hands.",
+          "cues": ["WHO ARE THE SUSPECTS?"]
+        },
+        {
+          "title": "LOVE AND WAR",
+          "summary": "A heartbroken general wants to rescue their lover from behind enemy lines.",
+          "cues": ["WHO IS THE LOVER?"]
+        },
+        {
+          "title": "LOOSE CANON",
+          "summary": "A trickster god was set free from prison and needs to be recaptured.",
+          "cues": ["WHERE IS THE GOD HIDING OR GOING?"]
+        },
+        {
+          "title": "GROUND ZERO",
+          "summary": "A scholar needs help retrieving an artifact. They believe it could explain the origins of a cataclysm.",
+          "cues": ["WHERE IS THE ARTIFACT LOCATED?"]
+        },
+        {
+          "title": "EXILE EXPRESS",
+          "summary": "An exile needs an urgent letter delivered to someone in their homeland.",
+          "cues": ["WHERE IS THE RECIPIENT?"]
+        },
+        {
+          "title": "CRASH LANDING",
+          "summary": "Something fell from the sky and crashed nearby. Locals claim it sits undamaged in the middle of the impact crater.",
+          "cues": ["DESCRIBE THE CRASH OR CRATER."]
+        },
+        {
+          "title": "GRAVE MISDEEDS",
+          "summary": "A gravedigger needs help catching someone who has been defacing graves.",
+          "cues": ["WHO ARE THREE SUSPECTS?"]
+        },
+        {
+          "title": "GET OUT OF TOWN",
+          "summary": "A reformed crime boss needs help reaching them. A safe house outside the area. Someone wants them dead, but they are not sure who or why.",
+          "cues": ["WHO WANTS THE CRIME BOSS DEAD AND WHY?"]
+        },
+        {
+          "title": "A DANGEROUS GAME",
+          "summary": "A local trapper has accidentally caught and needs help releasing it safely.",
+          "cues": ["DESCRIBE THE BEAST."]
+        },
+        {
+          "title": "SEANCE FRICTION",
+          "summary": "A medium is planning to hold a dangerous public seance and a family member needs help sabotaging it.",
+          "cues": ["WHAT IS THE MEDIUM'S MOTIVATION?"]
+        },
+        {
+          "title": "SHARED DREAMS",
+          "summary": "Everyone is having dreams about the same mysterious figure. An occultist needs help investigating the phenomenon.",
+          "cues": ["WHO IS THE FIGURE?"]
+        },
+        {
+          "title": "THE LAST STAND",
+          "summary": "Industrial activity is threatening the last grove or an endangered tree or plant. A conservationist needs help saving the area.",
+          "cues": ["WHERE IS THE GROVE?"]
+        },
+        {
+          "title": "GRIEF RUNS DEEP",
+          "summary": "A grieving parent is building a memorial for their late child. They need help gathering supplies and donations.",
+          "cues": ["WHAT FORM WILL THE MEMORIAL TAKE?"]
+        },
+        {
+          "title": "WITNESS PROTECTION",
+          "summary": "A witness is due to give testimony. The court is hiring muscle to keep them safe in a hidden location.",
+          "cues": ["WHERE IS THE HIDDEN LOCATION?"]
+        },
+        {
+          "title": "NOT FROM AROUND HERE",
+          "summary": "Visitors from another realm have appeared in the area. A local leader needs a task force to investigate and discern their intentions.",
+          "cues": ["DESCRIBE THE VISITORS."]
+        },
+        {
+          "title": "NOT WITH A TEN-FOOT POLE",
+          "summary": "A cursed object has appeared in the middle of town and no one will touch it. They need someone to remove the curse or object.",
+          "cues": ["WHAT HAPPENS IF SOMEONE TOUCHES THE OBJECT?"]
+        },
+        {
+          "title": "ANYTHING FOR LOVE",
+          "summary": "A loving couple wants parental blessing to marry. They need help completing a task to persuade a disapproving parent.",
+          "cues": ["WHO IS THE PARENT?"]
+        },
+        {
+          "title": "SEEING STARS",
+          "summary": "An astronomer needs help getting to a remote or restricted area to observe a one-in-a-lifetime celestial phenomenon.",
+          "cues": ["DESCRIBE THE PHENOMENON."]
+        },
+        {
+          "title": "EXPEDITED EXPEDITION",
+          "summary": "An explorer plans to set a new record for quickly completing a challenging route. They are assembling an expedition.",
+          "cues": ["DESCRIBE THE ROUTE."]
+        },
+        {
+          "title": "TRAIL TO TRIAL",
+          "summary": "A legendary outlaw leader has been captured. Local law enforcement needs to escort them to trial before their gang closes in.",
+          "cues": ["WHO ELSE IS LOOKING FOR THE OUTLAW AND WHY?"]
+        },
+        {
+          "title": "LOOSE LIPS",
+          "summary": "A ruler needs to know who has been sharing their secrets and spreading gossip in their court.",
+          "cues": ["WHO ARE THREE SUSPECTS?"]
+        },
+        {
+          "title": "ARTIFACTS OF WAR",
+          "summary": "An ancient bomb has been discovered in or under an important cultural site. The local leader needs it defused immediately.",
+          "cues": ["WHAT IS THE CULTURAL SITE?"]
+        },
+        {
+          "title": "WHERE THE BLOW LANDS",
+          "summary": "A local guardian is preparing for an attack from a cult leader. They need help learning where the cult plans to strike.",
+          "cues": ["WHAT ARE THREE POTENTIAL TARGETS FOR THE ATTACK?"]
+        },
+        {
+          "title": "BROKER OR BREAK-IN",
+          "summary": "A collector needs a one-of-a-kind item, but their rival will not trade with them. They need help brokering a deal or planning a break-in.",
+          "cues": ["WHERE IS THE COLLECTION KEPT?"]
+        }
+      ]
+    }
+  },
+  "usage": {
+    "description": "A 60-card expansion featuring reusable quest hooks with customizable story elements. Each Adventure card has a title, summary, and 3 cues (story elements) that integrate with Story Engine Deck icons for creating personalized quests.",
+    "integration": [
+      "Flashcards - Draw adventure cards for quest inspiration during worldbuilding or gameplay",
+      "Quest Menu - Lay out multiple adventure cards and let players choose which quest to pursue",
+      "Location-Based Quests - Place adventure cards on microsettings to create location-specific quests",
+      "Story Engine Integration - Use Agent, Anchor, and Engine cards to customize the adventure cues"
+    ],
+    "composition": {
+      "adventure_cards": 60
+    }
+  },
+  "credits": {
+    "design": "Peter Chiykowski",
+    "production": "Miroki Tong, Zach Schuster",
+    "writing": "Akira Keith, Athar Fikry, A. Z. Louise, Brendon Alekseii, Cae Hawksmoor, J. D. Harlock, Juliet Kemp, Michael Barker, Sarah Loch, Zach Schuster",
+    "sensitivity_review": "A. Z. Louise, Sonya Ballantyne, Yasmine Fahmy",
+    "curriculum_review": "Kendra Harrison",
+    "proofreading": "Leigh Teetzel, Tyson Pink"
+  }
+}

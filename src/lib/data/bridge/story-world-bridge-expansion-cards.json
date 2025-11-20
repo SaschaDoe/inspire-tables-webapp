@@ -1,0 +1,605 @@
+{
+  "name": "Story & World Bridge Expansion",
+  "description": "60 cards designed to enhance The Story Engine® Deck prompts using cards from Deck of Worlds, and vice versa.",
+  "cards": [
+    {
+      "type": "engine",
+      "cue": "WANTS TO WIN THE RESPECT OF THE PEOPLE OF",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO FREE AN UNRESOLVED FEAR IN",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO DISMANTLE",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO LAY WASTE TO",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO RULE",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO EXPOSE THE TRUE ORIGINS OF",
+      "links": ["region", "landmark", "region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO BECOME FAMOUS IN",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO END THE REIGN OF TERROR OVER",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO GET MARRIED IN",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO UNDERSTAND THE NAMESAKE OF",
+      "links": ["region", "landmark", "namesake", "namesake"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO RETURN TO THEIR HOMELAND OF",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO CONQUER",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO COMPLETE A PILGRIMAGE TO",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO CHANGE THE REPUTATION OR STATUS QUO OF",
+      "links": ["attribute", "attribute", "region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO BRING A SWEEPING CHANGE TO",
+      "links": ["attribute", "attribute", "region", "landmark", "region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO CONSTRUCT",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO PRESERVE",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO COMPLETE A DANGEROUS QUEST IN/TO",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO SAY GOODBYE TO SOMETHING IN/FROM",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO RETURN FROM EXILE IN/ TO",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO FIND A LOST ARTIFACT IN",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO GET EVEN WITH",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO DEFEND",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "engine",
+      "cue": "WANTS TO COMMUNE WITH THE SPIRITS OF",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "WANTS TO COMPLETE A RITUAL IN",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "WANTS TO BURY (OR UNEARTH) SOMETHING IN",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "WANTS TO ESTABLISH A TRUST IN",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "WANTS TO EXPOSE THE FLAWS IN",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "WANTS TO CONFRONT THE GHOSTS OF",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "WANTS TO RESOLVE THE CRISIS OF",
+      "links": ["region", "landmark", "attribute", "attribute"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL HAVE TO GIVE UP THEIR CLAIM TO AN IMPORTANT PLACE",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT A WICKED THING WILL GAIN ENTRY TO A SACRED PLACE",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT IT WILL LEAD THEM TO A PLACE THEY HAVE BEEN AFRAID TO RETURN TO",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT A CORE ATTRIBUTE OF A PLACE THEY LOVE WILL BE FOREVER CHANGED",
+      "links": ["region", "landmark", "attribute"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL BE BANISHED FROM THE PLACE THEY LOVE MOST",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT HOME WILL NO LONGER FEEL LIKE HOME",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL HAVE TO GIVE UP THEIR VISION FOR IMPROVING A PLACE",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT IT WILL SHATTER THE MYTH OF THE PLACE THEY CALL HOME",
+      "links": ["region", "landmark", "region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL HAVE TO BETRAY THEIR HOME OR COMMUNITY",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL LOSE THEIR MEMORIES OF THE PLACE THAT MATTERED MOST",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY MUST RETRIEVE SOMETHING FROM A PLACE THEY ABANDONED",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL HAVE TO GENERAL THE SPIRITS OF A PARTICULAR PLACE",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT AN IMPORTANT PLACE WILL LOSE ITS NAMESAKE",
+      "links": ["namesake", "namesake", "region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THE PLACE THEY LIVE WILL NEVER BE THE SAME",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT A ONCE-BUSTLING PLACE WILL BECOME EMPTY FOREVER",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT SOMETHING TERRIBLE WILL BE RELEASED FROM ITS PRISON",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL HAVE TO FACE THE DEMONS OF A SPECIFIC PLACE",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL LOSE THEIR HAPPY PLACE",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT AN OLD ENEMY WILL EMERGE FROM THEIR HIDING PLACE",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY MUST WANDER FOREVER IN SEARCH OF AN IMPORTANT PLACE",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL BECOME A PARIAH IN A PLACE THEY CANNOT AVOID",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL SEE THE TRUE FACE OF A PLACE THEY WERE IN DENIAL ABOUT",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL BE FOREVER TRAPPED IN THE SAME PLACE",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL HAVE TO RETURN TO A TERRIBLE PLACE",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THEY WILL HAVE TO LET DARK FORCES INTO THEIR SANCTUM",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THE MAGIC OF A SPECIAL PLACE WILL BE LOST",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT SILENCE OR DARKNESS WILL FALL OVER AN IMPORTANT PLACE",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT THE KEEPER OF A SACRED PLACE WILL PERISH",
+      "links": ["region", "landmark"]
+    },
+    {
+      "type": "conflict",
+      "cue": "BUT STRIFE WILL COME TO THE PLACE THEY CALL HOME",
+      "links": ["region", "landmark", "attribute", "attribute"]
+    },
+    {
+      "type": "origin",
+      "cue": "LINKED TO A FAMOUS OF A NOUN",
+      "details": {
+        "top_left": "COMMEMORATING A CONFLICT",
+        "top_right": "ORIGIN OF A NOUN",
+        "bottom": "ORIGIN OF A FAMOUS SONG ON A SPECIFIC TOPIC"
+      }
+    },
+    {
+      "type": "origin",
+      "cue": "ETYMOLOGICAL ORIGIN",
+      "details": {
+        "top_left": "LINKED TO A MORTAL CONFLICT",
+        "top_right": "ORIGIN OF A WORD CONNECTED TO A SPECIFIC TOPIC",
+        "bottom": "ORIGIN OF A WORD CONNECTED TO A SPECIFIC CHARACTERISTIC"
+      }
+    },
+    {
+      "type": "origin",
+      "cue": "DISCOVERED OR FOUNDED BY SOMEONE",
+      "details": {
+        "top_left": "SEEKING SOLITUDE",
+        "top_right": "ORIGIN OF AN IDIOM",
+        "bottom": "FOUNDED BY A GROUP OF LIKE-MINDED PEOPLE"
+      }
+    },
+    {
+      "type": "origin",
+      "cue": "SITE OF A PROPHECY ABOUT A SPECIFIC PERSON",
+      "details": {
+        "top_left": "COMMEMORATING A DISASTER",
+        "top_right": "SITE OF A PROPHECY",
+        "bottom": "SITE OF A CENTURIES-LONG CURSE"
+      }
+    },
+    {
+      "type": "origin",
+      "cue": "ORIGIN INVOLVING A SPECIFIC NOUN",
+      "details": {
+        "top_left": "FOUNDED BY A COLLECTIVE",
+        "top_right": "ORIGIN OF A MORTAL CONNECTION TO/WITH",
+        "bottom": "BIRTHPLACE OF A HERO OR VILLAIN"
+      }
+    },
+    {
+      "type": "origin",
+      "cue": "ORIGIN OF AN IDIOM INVOLVING A SPECIFIC NOUN",
+      "details": {
+        "top_left": "IDIOM INVOLVING A SPECIFIC NOUN",
+        "top_right": "ORIGIN OF A TRUTH WITH DEEP PERSONAL MEANING",
+        "bottom": "ORIGIN OF A SONG ABOUT A FOLK HERO"
+      }
+    },
+    {
+      "type": "origin",
+      "cue": "LINKED TO A NUMBER OF A NOUN",
+      "details": {
+        "top_left": "ETYMOLOGICAL ORIGIN",
+        "top_right": "ORIGIN OF A MORTAL CONFLICT",
+        "bottom": "ORIGIN OF AN OBJECTIVE"
+      }
+    },
+    {
+      "type": "origin",
+      "cue": "SITE OF A PROPHECY",
+      "details": {
+        "top_left": "SITE OF A PROPHECY",
+        "top_right": "ORIGIN OF A PUZZLE THAT TAKES A PARTICULAR FORM",
+        "bottom": "SITE OF A PROPHECY ABOUT THE FATE OF TRESPASSERS"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "SPECIFIC TOURIST ATTRACTION",
+      "details": {
+        "top_left": "SCENIC ROUTE",
+        "top_right": "SPECIFIC TOURIST ATTRACTION",
+        "bottom": "HOME OF A FAMOUS COUPLE"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "ALWAYS DESCRIBED WITH A SPECIFIC ADJECTIVE",
+      "details": {
+        "top_left": "ALWAYS DESCRIBED",
+        "top_right": "SPECIFIC ADJECTIVE",
+        "bottom": "INTERNATIONAL TRAVEL HUB"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "KNOWN FOR A SUSTAINABLE OR RENEWABLE ENERGY",
+      "details": {
+        "top_left": "SUSTAINABLE OR RENEWABLE ENERGY",
+        "top_right": "KNOWN FOR",
+        "bottom": "SITE OF A GOOD-LUCK CHARM OR SHRINE"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "POPULAR WITH A CERTAIN KIND OF PERSON",
+      "details": {
+        "top_left": "SPECIFIC PERSON",
+        "top_right": "DESTINATION FOR THOSE WITH A SPECIFIC CHARACTERISTIC",
+        "bottom": "POPULAR WITH A CERTAIN KIND OF PERSON"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "KNOWN FOR A TERRIBLE QUALITY OR VALUE",
+      "details": {
+        "top_left": "SPECIFIC OR NOTABLE QUALITY",
+        "top_right": "KNOWN FOR BEING AS THE EPITOME OF QUALITY",
+        "bottom": "KNOWN FOR A TERRIBLE QUALITY OR VALUE"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "IRONICALLY DESCRIBED WITH A SPECIFIC ADJECTIVE",
+      "details": {
+        "top_left": "PARADOXICAL CHARACTERISTIC",
+        "top_right": "KNOWN FOR BEING WITH A SPECIFIC ADJECTIVE",
+        "bottom": "IRONICALLY DESCRIBED WITH A SPECIFIC ADJECTIVE"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "LED BY SOMEONE WHO DEMANDS WORSHIP",
+      "details": {
+        "top_left": "PARADOXICAL CHARACTERISTIC",
+        "top_right": "IMPROBABLE SYMBOL OR CLAIM",
+        "bottom": "LED BY SOMEONE WHO DEMANDS WORSHIP"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "LOCAL MOTTO INVOLVING A CERTAIN TYPE OF PERSON",
+      "details": {
+        "top_left": "SPECIFIC COLLECTIVE",
+        "top_right": "FANATICAL ATTACHMENT TO FAILURE",
+        "bottom": "LOCAL MOTTO INVOLVING A CERTAIN TYPE OF PERSON"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "KNOWN FOR A SUPERLATIVE",
+      "details": {
+        "top_left": "MOST SUPERLATIVE",
+        "top_right": "SPECIFIC EXTREME",
+        "bottom": "KNOWN FOR A SUPERLATIVE"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "HOME OF A RELIC OR SAINT'S SHRINE",
+      "details": {
+        "top_left": "HOME TO AN UNUSUAL SAINT'S SHRINE",
+        "top_right": "TREASURE OR SOUGHT AFTER",
+        "bottom": "HOME OF A RELIC OR SAINT'S SHRINE"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "HOME OF A NOTORIOUS GROUCH",
+      "details": {
+        "top_left": "SPECIFIC PERSON",
+        "top_right": "CANTANKEROUS OR GRUMPY ONE WHO STAYS IN YEAR-ROUND",
+        "bottom": "HOME OF A NOTORIOUS GROUCH"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "LOCAL MOTTO INVOKING A SPECIFIC NOUN",
+      "details": {
+        "top_left": "SPECIFIC NOUN",
+        "top_right": "REGIONAL HARVEST TRADITION",
+        "bottom": "LOCAL MOTTO INVOKING A SPECIFIC NOUN"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "HOME TO A FACTION OF A CERTAIN TYPE OF PEOPLE",
+      "details": {
+        "top_left": "INHABITED BY SPECIFIC SETTLERS",
+        "top_right": "TREASURE OR SOUGHT AFTER",
+        "bottom": "HOME TO A FACTION OF A CERTAIN TYPE OF PEOPLE"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "KNOWN FOR A STUNNINGLY BEAUTIFUL OBJECT OR SITE",
+      "details": {
+        "top_left": "NATURAL WONDER",
+        "top_right": "KNOWN FOR A BEAUTIFUL OBJECT OR SITE",
+        "bottom": "KNOWN FOR A STUNNINGLY BEAUTIFUL OBJECT OR SITE"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "KNOWN FOR A CURSED THING OR PLACE",
+      "details": {
+        "top_left": "REGIONAL MYTH",
+        "top_right": "KNOWN FOR A CURSED THING OR PLACE",
+        "bottom": "KNOWN FOR A CURSED THING OR PLACE"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "KNOWN FOR A SACRED OR TABOO THING",
+      "details": {
+        "top_left": "SACRED OR TABOO",
+        "top_right": "KNOWN FOR",
+        "bottom": "KNOWN FOR A SACRED OR TABOO THING"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "GATHERING PLACE FOR COMMUNITY MUSIC",
+      "details": {
+        "top_left": "GATHERING PLACE FOR",
+        "top_right": "COMMUNITY MUSIC",
+        "bottom": "GATHERING PLACE FOR COMMUNITY MUSIC"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "REGIONAL HARVEST TRADITION",
+      "details": {
+        "top_left": "REGIONAL HARVEST",
+        "top_right": "TRADITION",
+        "bottom": "REGIONAL HARVEST TRADITION"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "KNOWN FOR A PRESERVED OR DESERVED NAMED THING",
+      "details": {
+        "top_left": "PRESERVED OR DESERVED",
+        "top_right": "NAMED THING",
+        "bottom": "KNOWN FOR A PRESERVED OR DESERVED NAMED THING"
+      }
+    },
+    {
+      "type": "attribute",
+      "cue": "UNDERAPPRECIATED LOCAL HERO",
+      "details": {
+        "top_left": "HERO",
+        "top_right": "WELL-KNOWN OR LOCAL HARVEST",
+        "bottom": "UNDERAPPRECIATED LOCAL HERO"
+      }
+    },
+    {
+      "type": "advent",
+      "cue": "THE LOCAL LEADER OR OWNER IS ABOUT TO ENTER INTO A DISASTROUS MARRIAGE OR PARTNERSHIP"
+    },
+    {
+      "type": "advent",
+      "cue": "SOMEONE IS ABOUT TO PUT ON A SPECTACLE BREAKING A RECORD OR PERFORMING A STUNT"
+    },
+    {
+      "type": "advent",
+      "cue": "A LOCAL ATTRACTION HAS BEEN STOLEN OR BARRED"
+    },
+    {
+      "type": "advent",
+      "cue": "A HUNT IS ON FOR A PUBLIC ENEMY WHO ALLEGEDLY HAS TERRIBLE INTENTIONS FOR THE COMMUNITY"
+    },
+    {
+      "type": "advent",
+      "cue": "A GOD HAS COME TO RESHAPE THE AREA IN THE NAME OF THEIR DEIFIC DOMAIN"
+    },
+    {
+      "type": "advent",
+      "cue": "A LOCAL LEADER'S TRUE INTENTIONS ARE ABOUT TO BE EXPOSED"
+    },
+    {
+      "type": "advent",
+      "cue": "A FOREIGN TRAVELER HAS COME TO AWAKEN AN ENTITY CONTAINED WITHIN SOMETHING"
+    },
+    {
+      "type": "advent",
+      "cue": "A MYSTERIOUS STRANGER HAS COME TO THE AREA SEEKING A LOCAL FOR REASONS THEY HAVE YET TO REVEAL"
+    },
+    {
+      "type": "advent",
+      "cue": "A PROSPECT TO CREATE THE \"WORLD'S BIGGEST\" SOMETHING"
+    },
+    {
+      "type": "advent",
+      "cue": "A STRANGE PORTAL ANCHORED TO SOMETHING SPECIFIC HAS OPENED"
+    },
+    {
+      "type": "advent",
+      "cue": "A RIVALRY BETWEEN TWO LOCALS HAS GOTTEN ENTIRELY OUT OF HAND"
+    },
+    {
+      "type": "advent",
+      "cue": "A MYSTERIOUS CULT LEADER NOW HOLDS POWER OVER THE ENTIRE AREA"
+    },
+    {
+      "type": "advent",
+      "cue": "A BELOVED LOCAL IS ABOUT TO ACHIEVE A LIFELONG GOAL, AND THE WHOLE COMMUNITY IS RALLYING AROUND THEM"
+    }
+  ]
+}

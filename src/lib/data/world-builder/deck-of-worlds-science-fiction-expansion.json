@@ -1,0 +1,261 @@
+{
+  "deck": "Deck of Worlds Science Fiction Expansion - Worlds of Chrome & Starlight",
+  "cardTypes": {
+    "region": {
+      "name": "Region",
+      "description": "Science fiction-themed main terrain types for microsettings",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["CAPITAL", "METROPOLIS", "HIGHWAY", "CITY"]
+        },
+        {
+          "cues": ["DUMP", "CITY", "FLOE(S)", "CRATER(S)"]
+        },
+        {
+          "cues": ["FALLOUT", "VENT", "LABORATORY", "SKYSCRAPER"]
+        },
+        {
+          "cues": ["HANGAR", "NIGHTCLUB", "REFINERY", "RESTAURANT"]
+        },
+        {
+          "cues": ["LAUNCHPAD", "HIVE", "CITY", "FOUNDRY"]
+        },
+        {
+          "cues": ["SPACEPORT", "DEPOSIT", "DISTILLERY", "CITY"]
+        },
+        {
+          "cues": ["BASE", "FACTORY", "HEADQUARTERS", "COLONY"]
+        },
+        {
+          "cues": ["GENERATOR", "HUB", "CISTERN", "OBSERVATORY"]
+        }
+      ]
+    },
+    "landmark": {
+      "name": "Landmark",
+      "description": "Science fiction-themed geographical sites and points of interest",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["CAPITAL", "METROPOLIS", "HIGHWAY", "REFINERY"]
+        },
+        {
+          "cues": ["RESTAURANT", "LAUNCHPAD", "NIGHTCLUB", "HANGAR"]
+        },
+        {
+          "cues": ["SKYSCRAPER", "FOUNDRY", "SPACEPORT", "DISTILLERY"]
+        },
+        {
+          "cues": ["CITY", "OBSERVATORY", "ANOMALY", "HEADQUARTERS"]
+        },
+        {
+          "cues": ["BASE", "FACTORY", "HEADQUARTERS", "COLONY"]
+        },
+        {
+          "cues": ["CISTERN", "GENERATOR", "HUB", "CRYO-CHAMBER"]
+        },
+        {
+          "cues": ["DUMP", "FALLOUT", "CRATER(S)", "FLOE(S)"]
+        },
+        {
+          "cues": ["LABORATORY", "VENT", "CITY", "HIVE"]
+        },
+        {
+          "cues": ["DEPOSIT", "ALLY", "CITY", "OBSERVATORY"]
+        },
+        {
+          "cues": ["ANOMALY", "HEADQUARTERS", "BASE", "FACTORY"]
+        },
+        {
+          "cues": ["GENERATOR", "HUB", "COLONY", "CISTERN"]
+        },
+        {
+          "cues": ["CRYO-CHAMBER", "SPACEPORT", "FOUNDRY", "DISTILLERY"]
+        }
+      ]
+    },
+    "namesake": {
+      "name": "Namesake",
+      "description": "Science fiction-themed prefixes and suffixes for naming locations",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["CRYO-", "OF INSURGENTS", "OF WARS", "OF PODS"]
+        },
+        {
+          "cues": ["BIO-", "IN THE CRATER", "OF CAMERAS", "OF BREAKTHROUGHS"]
+        },
+        {
+          "cues": ["NEO-", "THAT SINKS", "OF PARADOX", "OF SCREENS"]
+        },
+        {
+          "cues": ["CHRONO-", "THAT BECAME AWARE", "OF PODS", "OF BREAKTHROUGHS"]
+        },
+        {
+          "cues": ["DIGITAL", "THAT INDUCTED", "OF FIXES", "OF FIRST CONTACT"]
+        },
+        {
+          "cues": ["PRIME", "THAT WARPS", "OF DATA", "OF DRILLS"]
+        },
+        {
+          "cues": ["ARACHNO-", "THAT RECORDS EVERYTHING", "OF PLASMA", "OF MACHINES"]
+        },
+        {
+          "cues": ["SOLAR", "THAT OWNS ITSELF", "OF GRIDS", "OF BULLETS"]
+        },
+        {
+          "cues": ["LUNAR", "THAT REBUILDS ITSELF", "OF FRACTALS", "OF ANDROIDS"]
+        },
+        {
+          "cues": ["AUTO-", "WITHOUT PRIVACY", "OF FRACTALS", "OF DEBTS"]
+        },
+        {
+          "cues": ["NUCLEAR", "THAT SOAKS BUILT", "OF EVERYTHING", "OF CRYSTALS"]
+        },
+        {
+          "cues": ["SELF-SUSTAINING", "THAT BROADCASTS", "OF JAWS", "OF MINES"]
+        }
+      ]
+    },
+    "origin": {
+      "name": "Origin",
+      "description": "Science fiction-themed significant historical events",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["SITE OF A TENUOUS GALACTIC TREATY", "SITE OF AN ORBITAL STRIKE", "CREATED BY ASTEROID COLLISION", "CREATED THROUGH TIME TRAVEL"]
+        },
+        {
+          "cues": ["ORIGIN OF A BIO-ENGINEERED SPECIES", "BIRTHPLACE OF A FAMOUS SCIENTIST", "SITE WHERE HUMANS FIRST LANDED", "MADE WITH ANCIENT TECHNOLOGY"]
+        },
+        {
+          "cues": ["SITE OF AN EPIC TEST STAND", "SITE WHERE THE FIRST WAR WAS FIRED", "SPOT OF THE GREAT WAR", "BIRTHPLACE OF AN INFAMOUS CRIME BOSS"]
+        },
+        {
+          "cues": ["ORIGIN OF A NOTORIOUS CORPORATION", "PROTECTED BY ENERGY SHIELD", "SITE OF A HALO OF CHAINS", "FOUNDED BY REFUGEES"]
+        },
+        {
+          "cues": ["CREATED BY ROGUE MACHINES", "SHAPED BY AN INTERSTELLAR BASE", "FOUNDED BY HACKERS", "TERRAFORMING INCIDENT"]
+        },
+        {
+          "cues": ["NEVER RECOVERED FROM AN ECONOMIC CRASH", "BIRTHPLACE OF AN INFAMOUS CRIME BOSS", "BIODVERSE REGION", "SITE OF A HALO OF CHAINS"]
+        },
+        {
+          "cues": ["ORIGIN OF A POWERFUL A.I.", "FOUNDED BY A ROGUE SECT", "CREATED BY ROGUE MACHINES", "SUBJECT OF AN ANCIENT PROPHECY"]
+        },
+        {
+          "cues": ["SITE OF A BIO-ENGINEERED SPECIES", "CREATED BY ROGUE MACHINES", "BIRTHPLACE OF A RENOWNED MAGE", "BIRTHPLACE OF A LEGENDARY GLADIATOR"]
+        }
+      ]
+    },
+    "attribute": {
+      "name": "Attribute",
+      "description": "Science fiction-themed present-day features and characteristics",
+      "cueCount": 4,
+      "cards": [
+        {
+          "cues": ["ANTI-TECHNOLOGY MINDSET", "TOURIST ENTERTAINMENT COMPLEX", "BREAKING BIOBANKING BLOC", "AUTOCRATIC REGIME"]
+        },
+        {
+          "cues": ["KNOWN FOR INCUBATORS", "GREAT SALVAGE SPOT", "BLACK MARKET HUB", "PRODUCTION CENTER"]
+        },
+        {
+          "cues": ["FAMED WEAPONS MANUFACTURERS", "LIBERAL IMMIGRATION LAWS", "GRAND SALVAGE SPOT", "LOCATED BENEATH A CORPORATE FRONT"]
+        },
+        {
+          "cues": ["HEADQUARTERS OF A MEGA-CORPORATION", "IRRADIATED LANDSCAPE", "KNOWN FOR STREET CUISINE", "MILITARY-RUN GOVERNMENT"]
+        },
+        {
+          "cues": ["KNOWN FOR DATA-VAULT(S)", "RAPID EVOLUTION", "SOLAR BREAD ZONE", "INCOMPARABLE LEGANTS"]
+        },
+        {
+          "cues": ["WIRED DIRECTLY INTO THE SOURCE", "KNOWN FOR OR AGAINST CONSCRIPTION", "ENGINEERING FOR ANOMALIES", "GOVERNED BY A.I."]
+        },
+        {
+          "cues": ["CORRUPT GOVERNMENT", "INCONCEIVABLE LEGANTS", "KNOWN FOR STREET MANUFACTURE", "SIGNAL DEAD ZONE"]
+        },
+        {
+          "cues": ["BLEND OF ALIEN AND LOCAL CUSTOMS", "GOVERNED BY A.I.", "FAMED FOR COSMIC ORGANIC", "HOME FOR A PRIMAL"]
+        },
+        {
+          "cues": ["CAPITAL OF A GALACTIC EMPIRE", "IRREGULAR GRAVITY", "COMPOSED OF ORBITAL STRUCTURES", "HOME FOR A RECLUSE"]
+        },
+        {
+          "cues": ["HACKER HAVEN", "SOURCE OF PRECIOUS FUEL", "UNDER CONSTANT SURVEILLANCE", "POLLUTANT"]
+        },
+        {
+          "cues": ["KNOWN FOR INCARCERATION BROKERING", "SONICS OF A NATURAL HABITABLE MATERIAL", "UNUSUAL POLLUTANT", "SONICS OF A NATURAL HABITABLE MATERIAL"]
+        },
+        {
+          "cues": ["VISIBLE FROM SPACE", "HOME FOR A FIRST", "USE OF A RARE TECH", "GOVERNED BY COUNCILS"]
+        }
+      ]
+    },
+    "advent": {
+      "name": "Advent",
+      "description": "Science fiction-themed events that may change the area's future",
+      "cards": [
+        {
+          "cue": "LIFE SUPPORT TECH IS FAILING AND NO ONE CAN FIX IT:",
+          "interpretations": ["DUE TO LOST MAPS", "LOST TECHNICAL KNOWLEDGE", "OR A SABOTEUR"]
+        },
+        {
+          "cue": "AN ANTI-TECH MOVEMENT IS RAPIDLY GAINING GROUND:",
+          "interpretations": ["DUE TO A DISASTER, DATA LEAK", "OR FAKE STUDY"]
+        },
+        {
+          "cue": "A DANGEROUS EXPERIMENT IS MISSING FROM A LAB:",
+          "interpretations": ["A VIRUS, SUPERWEAPON, OR ARTIFICIAL INTELLIGENCE"]
+        },
+        {
+          "cue": "AN ALIEN SPECIES IS RUNNING RAMPANT THROUGH THE ECOSYSTEM:",
+          "interpretations": ["REPRODUCING THROUGH THE ECOSYSTEM", "IT IS HUNT-LIKE, TECHNOLOGY-LIKE, OR BIO-LIKE"]
+        },
+        {
+          "cue": "A SILO OF SOMETHING DANGEROUS IS STARTING TO LEAK:",
+          "interpretations": ["DANGEROUS TO PEOPLE, THE CONTAINS ARE BIOLOGICAL, CHEMICAL, UNSTABLE, OR BLUE"]
+        },
+        {
+          "cue": "THE STATE IS LAUNCHING NEW CONTROL MEASURES ON THE POPULATION:",
+          "interpretations": ["SURVEILLANCE, POLICE POWERS, OR PSYCHOLOGICAL CONDITIONING"]
+        },
+        {
+          "cue": "AN IMPORTANT POWER SOURCE IS RUNNING OUT:",
+          "interpretations": ["AN ANCIENT RELIC, IS RUNNING OUT; OR A RELIGIOUS SYMBOL, OR ORGANISM"]
+        },
+        {
+          "cue": "THEY HAVE JUST CREATED A NEW FORM OF LIFE:",
+          "interpretations": ["AN EXTINCT CLONE, GENETIC HYBRID, OR CYBORG"]
+        }
+      ]
+    }
+  },
+  "usage": {
+    "description": "A 60-card science fiction expansion with genre-focused cards for creating futuristic worlds and settings",
+    "integration": [
+      "Use only expansion cards - Create a world of up to 8 microsettings with cohesive sci-fi focus",
+      "Mix expansion cards into the main deck - Add sci-fi embellishments without restricting to single genre",
+      "Mix cards and use a sideboard - Less random, more intentional worldbuilding when mixing multiple expansions"
+    ],
+    "composition": {
+      "regions": 8,
+      "landmarks": 12,
+      "namesakes": 12,
+      "origins": 8,
+      "attributes": 12,
+      "advents": 8
+    }
+  },
+  "credits": {
+    "design": "Peter Chiykowski",
+    "production": "Miroki Tong, Zach Schuster",
+    "writing": "Akira Keith, Athar Fikry, A. Z. Louise, Brendon Alekseii, Cae Hawksmoor, J. D. Harlock, Juliet Kemp, Michael Barker, Sarah Loch, Zach Schuster",
+    "sensitivity_review": "A. Z. Louise, Sonya Ballantyne, Yasmine Fahmy",
+    "curriculum_review": "Kendra Harrison",
+    "proofreading": "Eric Weiss, Leigh Teetzel, Tyson Pink",
+    "box_images": "Yu Siang-Teo, Peter Nguyen",
+    "region_images": "Dan Meyers, Denys Nevozhai, Ivan Bandura, Peter Nguyen, Sergio Souza, USGS",
+    "landmark_images": "Abdullah Oguk, Alexander Ant, Andrea Leopardi, Carles Rabada, Chuttersnap, Denys Nevozhai, Filip Filkovic Philatz, Ivan Bandura, Jeanson Wong, Jimmy Chang, Leslie Wong, Marjan Blan, Michael Marais, Nazarizal Mohammad, Nour Betar, Rafael Banha, Raphael Renter, Sergio Souza, Tadeu JNR, Umit Yildirim, v2osk, Zac Zhou"
+  }
+}

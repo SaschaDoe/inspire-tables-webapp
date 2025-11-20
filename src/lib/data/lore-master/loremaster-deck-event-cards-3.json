@@ -1,0 +1,364 @@
+{
+  "deck": "Lore Master's Deck - Main Deck",
+  "cardTypes": {
+    "event": {
+      "name": "Event",
+      "description": "Important historical moments, from bloody battles and fractious rebellions to magical cataclysms and powerful storms",
+      "primaryCueCount": 4,
+      "secondaryCueCount": 4,
+      "cards": [
+        {
+          "primaryCues": ["BATTLE", "ANNIHILATION", "STAMPEDE", "ACCORD"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: STABLE GOOD, NOTABLE GOOD SPECIES DEFLECTED ⚫/⚪",
+            "CATALYST/AFTERMATH: NOTABLE LAST",
+            "CATALYST/AFTERMATH: ⚫ ENDS ⚪ AFTERSHOCK",
+            "CATALYST: BELIEF IN A FALSE PREDICTION ⚪/⚫ OR PROPHET ⚫/⚪"
+          ]
+        },
+        {
+          "primaryCues": ["DECREE", "RECKONING", "SCHISMOSIS", "INHERITANCE"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: CONSTRUCTION OR ENDINGS OF ICE OR DARKNESS",
+            "CATALYST/AFTERMATH: LOYALIST OR DISLOYAL HOSTORY",
+            "CATALYST/AFTERMATH: ⚫ SIGNAL OR MONUMENT OR THEFT ⚪/⚫",
+            "CATALYST: JURISDICTION DISAGREEMENT OVER A LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["SURRENDER", "DECLARATION", "SCHISMOSIS", "CONTROVERSY"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: ATONEMENT OR DESTRUCTION OR ABANDONMENT OF A LOCATION ⚪",
+            "CATALYST/AFTERMATH: INVOLVED A LOST OR BROKEN ARTIFACT ⚪",
+            "CATALYST/AFTERMATH: THRONE OR LOST OBJECT",
+            "CATALYST: UNPAID DEBT OF A FIGURE OR FACTION ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["OATH", "TEST", "EARTHQUAKE", "COMPETITION"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: ⚫/⚪ ⚪ FIGURE ⚫/⚪",
+            "CATALYST/AFTERMATH: ⚪/⚫ FACTIOUS RISE OR FACTION ⚫",
+            "CATALYST/AFTERMATH: INVOLVED AS INTERRUPTION OR DESTRUCTION",
+            "CATALYST: SUDDEN WHIM"
+          ]
+        },
+        {
+          "primaryCues": ["CORRUPTION", "ARMING", "INCIDENT", "WAGER"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: OF DARKNESS",
+            "CATALYST/AFTERMATH: SPECIAL OR RITUAL",
+            "CATALYST/AFTERMATH: SPECIAL SUMMIT OR OF OBJECT ⚪/⚫",
+            "CATALYST: LATE DELIVERY OF SOMETHING ⚫/⚪"
+          ]
+        },
+        {
+          "primaryCues": ["JUDGMENT", "CARNIVOL", "SACRIFICE", "RACE"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: OF FIGURE ⚫/⚪",
+            "CATALYST/AFTERMATH: CITY OR RULE NOMINATION",
+            "CATALYST/AFTERMATH: SUDDEN SUMMIT OR RESOURCE OR THE OBJECT ⚪/⚫",
+            "CATALYST: GREED OF A NOTABLE FIGURE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["ABDICATION", "WAKE", "HARVEST", "RECONCILIATION"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: ⚪+⚫ ⚪ FIGURE ⚫/⚪ OR FACTION ⚫/⚪",
+            "CATALYST/AFTERMATH: LONG-AWAITED LONG-AWAITED",
+            "CATALYST/AFTERMATH: IMPROVED OR UNDERMINED THE FIGURE ⚪ OR FACTION ⚫",
+            "CATALYST: ACT OF BLASPHEMY OR WORSHIP"
+          ]
+        },
+        {
+          "primaryCues": ["CORONATION", "EXPLOSION", "HIBERNATION", "SUCCESSION"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: RESTORATION ⚫/⚪",
+            "CATALYST/AFTERMATH: REMOVAL OR CONTROL IN ⚪/⚪",
+            "CATALYST/AFTERMATH: REUNION ⚫/⚪",
+            "CATALYST: STRAW THAT BROKE THE CAMEL'S BACK"
+          ]
+        },
+        {
+          "primaryCues": ["SURGERY", "CENSUS", "ERUPTIONS", "FUNERAL"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: ⚫/⚪ ⚪/⚫ ⚪",
+            "CATALYST/AFTERMATH: TWO FIGURES ⚫ TWO FIGURES ⚫",
+            "CATALYST/AFTERMATH: STILL UNEXPLAINED OR MYSTERIOUS ⚫/⚫ OR CONTRACT",
+            "CATALYST: AMBIGUOUS REQUEST, INSTRUCTIONS, OR CONTRACT"
+          ]
+        },
+        {
+          "primaryCues": ["EXODUS", "VORTEX", "FAMINE", "VICTORY"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: CREATION OR RESOLUTION",
+            "CATALYST/AFTERMATH: OCCUPATION OF A LOCATION ⚫/⚪ FACTION ⚫/⚪",
+            "CATALYST/AFTERMATH: DISCOVERY OF A MATERIAL ⚪",
+            "CATALYST: ONE IMPROPERLY PREPARED DISH"
+          ]
+        },
+        {
+          "primaryCues": ["CRASH", "BINDING", "DROUGHT", "CONTEST"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: EXPOSURE OF A FIGURE'S DIRTY ⚪",
+            "CATALYST/AFTERMATH: MORAL SHIFT",
+            "CATALYST/AFTERMATH: TRANSFORMATION TO A MATERIAL ⚪",
+            "CATALYST: ONE FLAGRANT DISPLAY OF POWER"
+          ]
+        },
+        {
+          "primaryCues": ["SCHISM", "COLLAPSE", "DELIVERANCE", "SPECTACLE"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: FUMBLE",
+            "CATALYST/AFTERMATH: OBJECT IN A MATERIAL ⚪",
+            "CATALYST/AFTERMATH: NORMALLY EXCLUSIVE",
+            "CATALYST: ONE PARENT'S DISAPPOINTMENT OR CHILD'S CURIOSITY"
+          ]
+        },
+        {
+          "primaryCues": ["CRISIS", "DEADLOCK", "EXTINCTION", "INVASION"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: EASY DEIFYING WITHIN",
+            "CATALYST/AFTERMATH: NEW PATHOGEN ⚪",
+            "CATALYST/AFTERMATH: NEXT CRITERION",
+            "CATALYST: RECKLESS USE OF AN OBJECT OR ARTIFACT ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["CONCERT", "DENOUEMENT", "EVOLVING", "AMBUSH"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: INTENSE EYES OR GAZE",
+            "CATALYST/AFTERMATH: SPOOLING TO OF NATURALLY OCCURRED",
+            "CATALYST/AFTERMATH: NO WITNESSES",
+            "CATALYST: ROGUE ELEMENT WITHIN A FACTION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["MASTERSTROKE", "SYMBIOSIS", "DANCE", "EMANCIPATION"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: FIRST",
+            "CATALYST/AFTERMATH: UNLISTED BY AN MATERIAL ⚪ THE OBJECT ⚪",
+            "CATALYST/AFTERMATH: UNLISTED BY THE MATERIAL ⚪",
+            "CATALYST: DISCOVERY OF A LOST OBJECT ⚪ LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["RIOT(S)", "DRAKNESS", "PLAGUE", "DUEL"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: ARTISTRY OR ARCHITECTURAL MASTERPIECE ⚪",
+            "CATALYST/AFTERMATH: PATRIOT OR RECRUITMENT",
+            "CATALYST/AFTERMATH: A MATERIAL ⚪",
+            "CATALYST: GRIEF OR MISGUIDED VENGEANCE"
+          ]
+        },
+        {
+          "primaryCues": ["PROPHECY", "RUSH", "EPIDEMIC", "LIBERATION"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: NEW UNDERSTANDING OR INCONSISTENCY THE OBJECT ⚪",
+            "CATALYST/AFTERMATH: MOST FOCUSED ON LOCATION ⚪",
+            "CATALYST/AFTERMATH: HISTORICAL MATERIAL ON THE FACTION ⚪",
+            "CATALYST: TRUSTING THE WRONG PERSON OR GROUP ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["TRIAL(S)", "PANDEMIC", "DESECRATION", "TRAGEDY"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: PERMANENT STILL ON THE FACTION ⚪",
+            "CATALYST/AFTERMATH: NEW MATERIAL ART NATURE STATE",
+            "CATALYST/AFTERMATH: SOLSTICE",
+            "CATALYST: RED TAPE OR LACK OF POLITICAL WILL"
+          ]
+        },
+        {
+          "primaryCues": ["REVOLT", "ASSASSINATION", "HEIST", "RENAISSANCE"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: RAPID CHANGES OR USE OF A MATERIAL ⚪",
+            "CATALYST/AFTERMATH: MILITINY",
+            "CATALYST/AFTERMATH: CONFIRMATION",
+            "CATALYST: DEPARTURE OR RETURN OF A LEGENDARY FIGURE ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["ASSAULT", "THAW", "RECESSION", "REVELRY"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: PUBLIC SENTIMENT IN A LOCATION ⚪ A FACTION ⚪ OR FIGURES ⚪",
+            "CATALYST/AFTERMATH: BROUGHT THE BEGINNING",
+            "CATALYST/AFTERMATH: ARROGEE",
+            "CATALYST: END OF A BLOODLINE"
+          ]
+        },
+        {
+          "primaryCues": ["STALEMATE", "SHIPPING", "MASSACRE", "TOURNAMENT"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: A MATERIAL ⚪ LOST OR AGONIUM TO A LOCATION ⚪",
+            "CATALYST/AFTERMATH: LOST A SYMBOL",
+            "CATALYST/AFTERMATH: UNVEILING",
+            "CATALYST: ILL-TIMED JOKE OR LAUGH"
+          ]
+        },
+        {
+          "primaryCues": ["COUP", "ARRIVAL", "SIEGE", "CRIME"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: WILL CONCLUSION BY ⚫ OR FACTION ⚪",
+            "CATALYST/AFTERMATH: FLEETING OR A LEADING",
+            "CATALYST/AFTERMATH: LOST",
+            "CATALYST: PRESSURE OF ANCESTRAL EXPECTATION"
+          ]
+        },
+        {
+          "primaryCues": ["REVOLUTION", "BALCONY", "CALAMITY", "ANNEXATION"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: EXISTING UNIMPERIAL",
+            "CATALYST/AFTERMATH: ESCALATING WANTING",
+            "CATALYST/AFTERMATH: ONLY KNOWN TO MORTALS OR ⚪ LOCATION ⚫/⚪",
+            "CATALYST: BOTCHED ASSASSINATION ATTEMPT ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["ELECTION", "REUNION", "CHARTIST", "FEAST"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: A DEED LANGUAGE",
+            "CATALYST/AFTERMATH: LOSS OF SYNCHRONIZE A LOCATION ⚪",
+            "CATALYST/AFTERMATH: BOMBARDMENT(S)",
+            "CATALYST: MASS MIGRATION TO OR FROM A LOCATION ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["EXECUTION", "APOCALYPSE", "AWAKENING", "ARMISTICE"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: DISAPPEARANCE OR DISRUPTION OF CHANCE IN INHERITANCE",
+            "CATALYST/AFTERMATH: ASCENSION",
+            "CATALYST/AFTERMATH: TILL",
+            "CATALYST: COIN FLIP OR DICE ROLL"
+          ]
+        },
+        {
+          "primaryCues": ["SCANDAL", "IMMOLATION", "SCOURGE", "HOAX"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: OBJECT ⚪/⚫",
+            "CATALYST/AFTERMATH: TEMPEST",
+            "CATALYST/AFTERMATH: PROCLAMATION",
+            "CATALYST: THREAT ISSUED BY OR TO A FIGURE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["REGIME", "UNLEASHING", "DETONATION", "BLASPHEMY"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: RAPID CHANGES USE OF A MATERIAL ⚪",
+            "CATALYST/AFTERMATH: SECESSION",
+            "CATALYST/AFTERMATH: UNVEILING",
+            "CATALYST: PRANK OR MISTAKE THAT GOT OUT OF HAND"
+          ]
+        },
+        {
+          "primaryCues": ["SHRINKDOWN", "FREEZE", "COMET", "APOLOGY"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: TRUTH",
+            "CATALYST/AFTERMATH: OF A CREATING AQUISITION",
+            "CATALYST/AFTERMATH: BAN OF A TYPE OF OBJECT ⚫/⚪",
+            "CATALYST: CENTURIES-LONG GRUDGE"
+          ]
+        },
+        {
+          "primaryCues": ["PROCLAMATION", "CHANGE", "DERACINATION", "REVENGE"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: FINAL MAY HAVE BEEN",
+            "CATALYST/AFTERMATH: NEW LOCATIONS BY THE TEST",
+            "CATALYST/AFTERMATH: SUDDEN",
+            "CATALYST: CLASH OF TWO POWERFUL FACTIONS ⚫/⚪+⚫/⚪"
+          ]
+        },
+        {
+          "primaryCues": ["BETRAYAL", "BOOM", "WATER", "REBIRTH"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: OR LOCATION OF A CRIME",
+            "CATALYST/AFTERMATH: INAUGURATION",
+            "CATALYST/AFTERMATH: INITIATED AT FIRST FACTION ⚪ OR LOCATION ⚫/⚪",
+            "CATALYST: ONE MOMENT OF INATTENTION"
+          ]
+        },
+        {
+          "primaryCues": ["GAMBIT", "DELUGE", "RETURN", "HUNT"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: EXPERIMENTAL",
+            "CATALYST/AFTERMATH: INAUGURATION OR EXECUTION OF A FIGURE ⚪/⚫",
+            "CATALYST/AFTERMATH: INITIATED AT FIRST LOCATION ⚫/⚪",
+            "CATALYST: INDECISION OR HESITATION"
+          ]
+        },
+        {
+          "primaryCues": ["PLOT", "ECLIPSE", "RIFT", "PURGE"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: SELL INVOLVED COLLAPSE OF A ONCE-GREAT POWER ⚫/⚪",
+            "CATALYST/AFTERMATH: EXTRACTION OR MIGRATION",
+            "CATALYST/AFTERMATH: INAUGURATION CONSEQUENCE",
+            "CATALYST: MISHEARD/TRANSLATED SENTENCE FROM A FIGURE ⚪/⚫"
+          ]
+        },
+        {
+          "primaryCues": ["IN INHERITANCE", "DISINTEGRANCE OR"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: THEREFORE TO MIGHT OR SLIGHT TO MODERATE ⚪ OR LOCATION ⚫/⚪",
+            "CATALYST/AFTERMATH: EXPERIMENTAL NEW FISHERIAL ⚪",
+            "CATALYST/AFTERMATH: DISMISSIBLE OR PERMITTED AT THE",
+            "CATALYST: HURT FEELINGS OR MINOR SNUB"
+          ]
+        },
+        {
+          "primaryCues": ["EXPLOSIVE NEW MATERIAL ⚪", "TRAIT"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: ONE FIGURE'S PERSONAL DEMONS ⚪",
+            "CATALYST/AFTERMATH: OR DISMISSED BY FACTION ⚪",
+            "CATALYST/AFTERMATH: A DESCRIBED OR POTENTIAL",
+            "CATALYST: THE FIGHT ABOUT IN THE WRONG EAR"
+          ]
+        },
+        {
+          "primaryCues": ["DESTRUCTION OF AN ARTIFACT ⚪", "TRAIT"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: NEW TECHNOLOGY PIVOTED BY A ⚫/⚪ MATERIAL ⚫/⚪",
+            "CATALYST/AFTERMATH: CREATURE ENTERING HIBERNATION ⚫/⚪",
+            "CATALYST/AFTERMATH: CREATED AT EXTREME",
+            "CATALYST: LOST GAME OR BET"
+          ]
+        },
+        {
+          "primaryCues": ["AN ARTIFACT ⚪", "TRAIT"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: ILLNESS TRANSMITTED BY A SPECIES ⚪",
+            "CATALYST/AFTERMATH: RADICAL CHANGE OF A ONCE-HELD",
+            "CATALYST/AFTERMATH: PROMOTED AT FIRST FACTION ⚪ OR FIGURE ⚪",
+            "CATALYST: A SECRET TOLD OR A PROMISE BROKEN"
+          ]
+        },
+        {
+          "primaryCues": ["GOING MISSING ⚪", "TRAIT"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: IMPORTANT OBJECT GOING MISSING ⚪",
+            "CATALYST/AFTERMATH: MONUMENT HELD IF ON ASSAULT",
+            "CATALYST/AFTERMATH: PROMPTED OR FIGURE ⚪",
+            "CATALYST: CONFLICT OF VALUES"
+          ]
+        },
+        {
+          "primaryCues": ["TWO FIGURES ⚫", "TRAIT"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: ROMANCE AND/OR TWO FIGURES ⚫+⚫",
+            "CATALYST/AFTERMATH: COLLIDED OR A ONCE- SELF-INVOLVED",
+            "CATALYST/AFTERMATH: INAUGURATED AT FIRST FACTION ⚪ OR SWORN OR DISMISSED AT FACTION ⚫/⚪",
+            "CATALYST: EXTRACTION OR MIGRATION OF A CREATURE ⚪"
+          ]
+        },
+        {
+          "primaryCues": ["A CREATURE ⚪", "TRAIT"],
+          "secondaryCues": [
+            "CATALYST/AFTERMATH: PERMANENT CHANGE TO SPECIFIC SEED OR MAGIC",
+            "CATALYST/AFTERMATH: INAUGURATION",
+            "CATALYST/AFTERMATH: INAUGURATION OF A LOCATION ⚫/⚪",
+            "CATALYST: MISHEARD/TRANSLATED SENTENCE FROM A FIGURE ⚪/⚫"
+          ]
+        }
+      ]
+    }
+  }
+}

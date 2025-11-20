@@ -1,0 +1,509 @@
+{
+  "deck": "Deck of Worlds Creative Expansion - Culture Keyholes (Shared Hearths & Common Creeds)",
+  "cardTypes": {
+    "keyhole": {
+      "name": "Keyhole",
+      "description": "Open-ended questions about culture and beliefs for worldbuilding",
+      "questionCount": 4,
+      "cards": [
+        {
+          "questions": [
+            "WHAT ARE THEIR BELIEFS IN LIFE AFTER DEATH?",
+            "HOW DO THEY SAY GOODBYE TO THEIR DEAD?",
+            "WHAT KIND OF INSULTS DO THEY USE?",
+            "WHAT DO THEY CONSIDER TO BRING GOOD LUCK?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT DO THEY NOT HAVE A WORD FOR?",
+            "WHAT ARE THEIR USUAL GREETINGS OR CONCLUSIONS?",
+            "WHAT KIND OF COMPLEMENTS DO THEY GIVE?",
+            "WHAT DO THEY KEEP?"
+          ]
+        },
+        {
+          "questions": [
+            "HOW ARE THEIR FAMILY UNITS STRUCTURED?",
+            "WHAT SKILLS DOES THEIR CULTURE VALUE THAT OTHER CULTURES MIGHT NOT?",
+            "WHAT HAPPENS IF SOMEONE GOES BACK ON THEIR WORD?",
+            "HOW DO THEY TREAT THEIR ELDERS?"
+          ]
+        },
+        {
+          "questions": [
+            "HOW DO THEY RECREATE THEIR RECORD?",
+            "WHAT KIND OF CALENDAR DO THEY USE?",
+            "WHAT KIND OF COMPLEMENTS DO THEY GIVE?",
+            "IF A SHARED BUILDING NEEDED REPAIRING"
+          ]
+        },
+        {
+          "questions": [
+            "HOW DO THEY PREPARE FOR OR RESPOND TO NATURAL DISASTERS?",
+            "WHO ARE THEIR HEROES?",
+            "WHAT IS IMPORTANT TO THEM?",
+            "WHAT WELCOME RITUALS DO THEY HAVE?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS IMPORTANT TO THEM FOR ESTABLISHING TRUST?",
+            "WHAT DO THEY DO THAT MARKS THE START OF A RITUAL?",
+            "HOW DO THEY MARK THE CHANGING OF THE SEASONS?",
+            "WHAT IS THEIR MOST POPULAR DRINK?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT DO THEY WRITE SONGS ABOUT?",
+            "HOW AND WHY WOULD THEY MAKE A PILGRIMAGE?",
+            "HOW LONG DO THEY LIVE?",
+            "WHAT MIGHT PUT STRAIN ON DOMESTIC RELATIONSHIPS?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS THEIR BIGGEST SOURCE OF MISINFORMATION?",
+            "WHAT PLACES ARE CONSIDERED SACRED?",
+            "WHAT IS THEIR MOST RELIABLE?",
+            "HOW DO THEY RESPOND TO SHAMING?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT ARE THEIR BELIEFS ABOUT DISABILITY?",
+            "WHAT IS THEIR MOST IMPORTANT HOLIDAY?",
+            "HOW DO THEY ACCOMMODATE DISABILITY?",
+            "WHAT CONCEPT DO THEY FIND DIFFICULT TO TRANSLATE?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT PLACES ARE CONSIDERED SACRED?",
+            "WHAT ARE COMMUNAL SPACES?",
+            "WHAT IS THEIR MOST POPULAR DRINK?",
+            "WHAT IS THEIR RELATIONSHIP WITH THE SUPERNATURAL?"
+          ]
+        },
+        {
+          "questions": [
+            "HOW DO THEY SHOW INTIMACY?",
+            "HOW AND WHY WOULD THEY MAKE A PILGRIMAGE?",
+            "WHEN DO THEY APPROVE OF VIOLENCE?",
+            "HOW DO THEY MEET THEIR MATES?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT DO THEIR GRAVES OR MEMORIALS LOOK LIKE?",
+            "WHAT IS A COMMON TERM?",
+            "FOR WHAT REASONS DO THEY TRAVEL?",
+            "WHAT ARE THEIR BELIEFS ABOUT WORK AND REST?"
+          ]
+        },
+        {
+          "questions": [
+            "WHERE DO THEY SEEK MORAL OR SPIRITUAL GUIDANCE?",
+            "HOW IS THEIR RICH AND POOR COMPLEX?",
+            "WHAT WOULD THEY COME BEHIND A LEADER?",
+            "HOW ARE THEIR FAMILY UNITS STRUCTURED?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS THEIR PERSPECTIVE ON DISEASE?",
+            "WHAT CULTURAL SIGNIFICANCE DO THEY PLACE ON EYE CONTACT?",
+            "WHAT DOES THEIR LANGUAGE HAVE A SPECIAL WORD FOR?",
+            "WHAT DO THEY CONSIDER TO BRING BAD LUCK?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT HAPPENS IF THEY BREAK A SPECIAL?",
+            "WHAT DO THEY HAVE DREAMS OR NIGHTMARES ABOUT?",
+            "HOW DOES THEIR LANGUAGE HAVE SPECIAL WORDS?",
+            "WHAT IS THEIR RELATIONSHIP WITH DEATH?"
+          ]
+        },
+        {
+          "questions": [
+            "AT WHAT TIMES DO THEY SLEEP AND WAKE?",
+            "WHAT DOES THEIR LANGUAGE HAVE A SPECIAL WORD FOR?",
+            "WHAT HAPPENS IF THEY BREAK?",
+            "WHAT IS IMPOLITE?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT PUBLIC ART DO THEY HAVE?",
+            "HOW DO THEY FEEL ABOUT LENDING AND BORROWING?",
+            "HOW MANY RELIGIONS DO THEY HAVE?",
+            "WHAT ARE THEIR BELIEFS ABOUT FATE?"
+          ]
+        },
+        {
+          "questions": [
+            "HOW MUCH DO THEY VALUE TRADITION?",
+            "WHAT IS THEIR RELATIONSHIP WITH LAND AND/OR WATER?",
+            "WHO IS THEIR BIGGEST HERO?",
+            "WHAT TABOOS OR SUPERSTITIONS ARE LIKELY TO KEEP?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT ARE THEIR BELIEFS OR SUPERSTITIONS?",
+            "WHAT ROLE DOES ART PLAY IN THEIR CULTURE?",
+            "WHAT DISEASES ARE COMMON?",
+            "WHAT ARE THE USUAL MISCONCEPTIONS ABOUT THEIR CULTURE?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS THEIR MOST POPULAR STORY OR BOOK?",
+            "HOW DO THEY LIGHT THEIR HOMES?",
+            "WHAT IS A COMMON SUPERSTITION?",
+            "WHAT ARE THEIR COURTSHIP RITUALS?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS THEIR BELIEF?",
+            "WHAT MAKES THEM ASHAMED?",
+            "WHAT IS THEIR RITUAL IN HISTORY?",
+            "WHAT DO THEY NEVER JOKE ABOUT?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS THEIR MOST POPULAR STORY?",
+            "HOW DO THEY WORSHIP?",
+            "WHAT WOULD THEY WANT SAID AT THEIR FUNERAL?",
+            "WHAT DO THEY MAKE JOKES ABOUT?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS THEIR SYMBOL?",
+            "WHAT DO THEY TURN TO IN A CRISIS?",
+            "WHO ARE THEIR AUTHORITY FIGURES?",
+            "WHAT PRACTICES ARE CLOSED TO OUTSIDERS?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT ARE THEIR BELIEFS ABOUT?",
+            "WHO DO THEY TURN TO IN A CRISIS?",
+            "WHAT MATERIALS DO THEY USE?",
+            "WHO ARE THEY MOST LIKELY TO BE PREJUDICED AGAINST?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT COULD THEY MAKE FROM METAL?",
+            "WHAT DO THEY MAKE FROM METAL?",
+            "WHAT ARE THEIR COMMON PHYSICAL FEATURES?",
+            "WHO IS THEIR ENEMY?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS THEIR GREATEST SHARED TRAGEDY?",
+            "WHAT DO THEY CONSIDER?",
+            "WHAT IS THEIR BELIEF IN THE INFLUENCE OF CELESTIAL BODIES?",
+            "WHAT DO THEY SEE AS IMPORTANT MARKERS OF IDENTITY?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT EATING UTENSILS DO THEY USE?",
+            "WHAT QUALITIES DO THEY ASCRIBE TO THEIR GODS?",
+            "WHAT IS THEIR MOST POPULAR FORM OF ENTERTAINMENT?",
+            "WHAT ARE THE SYMBOLS OF CULTURAL PRIDE OR IDENTITY?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT ARE THEIR RESOURCES TO THE INSIDER?",
+            "WHAT IS THEIR CLOSEST TRADITION?",
+            "WHERE DO THEY WORSHIP?",
+            "WHERE DO THEY KEEP?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT OFFENDS THEM?",
+            "WHAT SONG DOES?",
+            "WHAT IS THEIR BELIEF ABOUT OUTSIDERS?",
+            "WHAT CULTURAL SIGNIFICANCE DO THE SEASONS HAVE?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT DO THEY INSCRIBE OR PROVOKE?",
+            "HOW ARE THEIR STABLE?",
+            "WHAT LOANWORDS DO THEY USE FROM OTHER LANGUAGES?",
+            "WHAT DO THEY CONSIDER OLD-FASHIONED?"
+          ]
+        },
+        {
+          "questions": [
+            "HOW DO THEY THINK OF OR PLAN FOR FUTURE GENERATIONS?",
+            "WHAT IS A COMMONPLACE?",
+            "WHAT ROLE DOES ART PLAY IN THEIR CULTURE?",
+            "WHAT IS THEIR STABLE RECORD?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS THEIR PERSPECTIVE ON DISEASE?",
+            "WHAT CULTURAL SIGNIFICANCE DO THEY PLACE ON EYE CONTACT?",
+            "WHAT DO THEY CONSIDER TO BRING BAD LUCK?",
+            "WHAT SIGNIFICANCE DO THEY PLACE ON EYE CONTACT?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT DO THEY HAVE DREAMS OR NIGHTMARES ABOUT?",
+            "WHAT OBLIGATIONS DO PEOPLE HAVE TO THEIR COMMUNITY?",
+            "AT WHAT TIMES DO THEY SLEEP AND WAKE?",
+            "WHAT WOULD SOMEONE NEED TO ACCOMPLISH BEFORE THEY COULD PROPERLY COME OF AGE ELSE?"
+          ]
+        },
+        {
+          "questions": [
+            "HOW DOES THE QUALITY OF LIFE FOR THE RICH AND POOR COMPARE?",
+            "WHAT COULD THEY MAKE FROM METAL?",
+            "WHAT IS THEIR RELATIONSHIP WITH DEATH?",
+            "WHAT IS THEIR PERSPECTIVE ON BIRTH?"
+          ]
+        },
+        {
+          "questions": [
+            "HOW MANY RELIGIONS DO THEY HAVE?",
+            "HOW DO THEY FEEL ABOUT LENDING AND BORROWING?",
+            "WHAT ARE THEIR BELIEFS ABOUT FATE?",
+            "WHAT PUBLIC ART DO THEY HAVE?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT ROLE DOES ART PLAY IN THEIR CULTURE?",
+            "WHAT IS THEIR RELATIONSHIP WITH LAND AND/OR WATER?",
+            "WHO IS THEIR BIGGEST HERO?",
+            "WHAT ARE THE USUAL MISCONCEPTIONS ABOUT THEIR CULTURE?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS THEIR MOST POPULAR DRINK?",
+            "WHAT IS THEIR RELATIONSHIP WITH THE SUPERNATURAL?",
+            "WHAT DOES THEIR LANGUAGE HAVE A SPECIAL WORD FOR?",
+            "HOW DO THEY RESPOND TO SHAMING?"
+          ]
+        },
+        {
+          "questions": [
+            "WHEN DO THEY APPROVE OF VIOLENCE?",
+            "HOW AND WHY WOULD THEY MAKE A PILGRIMAGE?",
+            "HOW DO THEY MEET THEIR MATES?",
+            "HOW DO THEY SHOW INTIMACY?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT DO THEIR GRAVES OR MEMORIALS LOOK LIKE?",
+            "WHAT IS A COMMON TERM?",
+            "WHAT ARE THEIR BELIEFS ABOUT WORK AND REST?",
+            "FOR WHAT REASONS DO THEY TRAVEL?"
+          ]
+        },
+        {
+          "questions": [
+            "HOW DO THEY MARK THE CHANGING OF THE SEASONS?",
+            "WHAT IS THEIR MOST POPULAR FORM OF ENTERTAINMENT?",
+            "WHAT IS THEIR?",
+            "WHAT DO THEY TURN TO IN THEIR MOST HOUR?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT ARE THEIR BELIEFS ABOUT THE END OF THE WORLD?",
+            "WHAT IS THEIR MOST DIVISIVE ISSUE?",
+            "HOW DO THEY ACCOMMODATE DISABILITY?",
+            "WHAT ARE THEIR BELIEFS ABOUT SLEEP AND DREAMS?"
+          ]
+        },
+        {
+          "questions": [
+            "HOW DO THEY WRITE SONGS ABOUT?",
+            "HOW DO THEY SHOW INTIMACY?",
+            "WHAT IS THEIR BIGGEST SOURCE OF MISINFORMATION?",
+            "WHAT DO THEY MAKE COMING OF AGE MARK?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS THEIR RELATIONSHIP WITH DEATH?",
+            "WHAT IS THEIR MOST POPULAR DRINK?",
+            "HOW DO THEY PREPARE OR RESPOND TO NATURAL DISASTERS?",
+            "WHAT PLACES ARE CONSIDERED SACRED?"
+          ]
+        },
+        {
+          "questions": [
+            "WHO ARE THEIR AUTHORITY FIGURES?",
+            "WHAT DO THEY TURN TO IN A CRISIS?",
+            "WHAT PRACTICES ARE CLOSED TO OUTSIDERS?",
+            "WHAT IS THEIR SYMBOL?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT DO THEY NEVER JOKE ABOUT?",
+            "WHAT DO THEY MAKE JOKES ABOUT?",
+            "HOW DO THEY WORSHIP?",
+            "WHAT WOULD THEY WANT SAID AT THEIR FUNERAL?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS A COMMON SUPERSTITION?",
+            "WHAT MAKES THEM ASHAMED?",
+            "HOW DO THEY LIGHT THEIR HOMES?",
+            "WHAT ARE THEIR COURTSHIP RITUALS?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT ARE THEIR COMMON MISCONCEPTIONS ABOUT THEIR CULTURE?",
+            "WHAT ARE COMMON PHYSICAL FEATURES THAT THEY FEATURE?",
+            "WHAT IS THEIR MOST POPULAR STORY OR BOOK?",
+            "WHAT DISEASES ARE COMMON?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT MYTHICAL CREATURES DO THEY BELIEVE IN?",
+            "WHAT WOULD SOMEONE COME OF AGE?",
+            "HOW DO THEY LIGHT THEIR HOMES?",
+            "WHO OR WHAT DO THEY WORSHIP?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS A COMMON SUPERSTITION?",
+            "HOW DO THEY WORSHIP?",
+            "WHAT ARE THEIR COURTSHIP RITUALS?",
+            "WHAT DO THEY NEVER JOKE ABOUT?"
+          ]
+        },
+        {
+          "questions": [
+            "WHO ARE THEY MOST LIKELY TO BE PREJUDICED AGAINST?",
+            "WHAT CULTURAL PRACTICES ARE CLOSED TO OUTSIDERS?",
+            "WHAT DO THEY MAKE JOKES ABOUT?",
+            "WHAT MATERIALS DO THEY USE?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS THEIR BELIEF IN THE INFLUENCE OF CELESTIAL BODIES?",
+            "WHAT ARE THEIR COMMON PHYSICAL FEATURES?",
+            "WHO IS THEIR ENEMY?",
+            "WHAT IS THEIR GREATEST SHARED TRAGEDY?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT DO THEY SEE AS IMPORTANT MARKERS OF IDENTITY?",
+            "WHAT QUALITIES DO THEY ASCRIBE TO THEIR GODS?",
+            "WHAT EATING UTENSILS OR COOKING UTENSILS DO THEY USE?",
+            "WHAT ARE THE SYMBOLS OF CULTURAL PRIDE OR IDENTITY?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT OFFENDS THEM?",
+            "WHAT ARE THEIR RESOURCES TO THE FOREIGNER INSIDE?",
+            "WHAT ARE THEIR SYMBOLS OF CULTURAL PRIDE OR IDENTITY?",
+            "WHAT IS THEIR BELIEF ABOUT OUTSIDERS?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS THEIR MOST POPULAR FORM OF ENTERTAINMENT?",
+            "WHAT DO THEY CONSIDER BEAUTIFUL?",
+            "WHAT OFFENDS THEM?",
+            "WHAT ARE THEIR SYMBOLS OF CULTURAL PRIDE OR IDENTITY?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT CULTURAL SIGNIFICANCE DO THE SEASONS HAVE?",
+            "WHAT DO THEY CONSIDER BEAUTIFUL?",
+            "WHERE DO THEY WORSHIP?",
+            "WHAT IS THEIR GREATEST SHARED TRAGEDY?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT IS THEIR BELIEF ABOUT CREATION?",
+            "WHAT ARE THEIR BELIEFS ABOUT SLEEP AND DREAMS?",
+            "WHAT ARE PEOPLE?",
+            "WHAT LOANWORDS DO THEY USE FROM OTHER LANGUAGES?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT DO THEY CONSIDER OLD-FASHIONED?",
+            "HOW DO THEY THINK OF OR PLAN FOR FUTURE GENERATIONS?",
+            "WHAT IS A COMMONPLACE NARRATIVE?",
+            "WHAT IS A COMMONLY HELD MYTH ABOUT THEIR ORIGIN?"
+          ]
+        },
+        {
+          "questions": [
+            "WHAT ARE THEIR BELIEFS ABOUT SLEEP AND DREAMS?",
+            "WHAT IS A COMMONPLACE NARRATIVE?",
+            "HOW DO THEY CELEBRATE THEIR BIRTHDAYS?",
+            "WHAT IS A COMMONLY HELD MYTH ABOUT THEIR ORIGIN?"
+          ]
+        },
+        {
+          "questions": [
+            "HOW DO THEY THINK OF OR PLAN FOR FUTURE GENERATIONS?",
+            "WHAT LOANWORDS DO THEY USE FROM OTHER LANGUAGES?",
+            "WHAT DO THEY CONSIDER OLD-FASHIONED?",
+            "WHAT IS A COMMONLY HELD MYTH ABOUT THEIR ORIGIN?"
+          ]
+        },
+        {
+          "questions": [
+            "WHICH PLANTS AND/OR ANIMALS ARE SACRED TO THEM?",
+            "WHAT SONG DOES?",
+            "WHAT ARE PEOPLE?",
+            "HOW ARE PEOPLE?"
+          ]
+        }
+      ]
+    }
+  },
+  "usage": {
+    "description": "A 60-card expansion featuring worldbuilding questions about culture and beliefs. Each Keyhole card has 4 questions exploring different aspects of cultural practices, customs, and values.",
+    "integration": [
+      "Per-Microsetting - Place one Keyhole card on each microsetting to define its unique cultural identity",
+      "After Map Complete - Draw Keyhole cards after finishing your world map to add cultural depth",
+      "Challenge Assumptions - Use questions to push beyond stereotypes and create nuanced cultures",
+      "Mix with Other Decks - Combine with Story Engine or other expansions for richer worldbuilding"
+    ],
+    "composition": {
+      "keyhole_cards": 60
+    },
+    "notes": [
+      "Each card has 4 questions - you can answer all 4 or just pick one that interests you",
+      "Questions are designed to be open-ended and encourage creative thinking",
+      "Works with any genre or setting - fantasy, sci-fi, historical, or contemporary"
+    ]
+  }
+}
