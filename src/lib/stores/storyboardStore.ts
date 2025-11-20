@@ -160,7 +160,9 @@ function createStoryBoardStore() {
 		},
 
 		// Node operations
-		addNode(boardId: string, node: Partial<StoryBoardNode>, action = 'Add card') {
+		addNode(boardId: string, node: Partial<StoryBoardNode>, action = 'Add card'): StoryBoardNode | null {
+			let createdNode: StoryBoardNode | null = null;
+
 			update((state) => {
 				const board = state.boards.get(boardId);
 				if (!board) return state;
@@ -186,7 +188,10 @@ function createStoryBoardStore() {
 					collapsed: false,
 					layer: node.layer ?? 5,
 					groupId: node.groupId, // Group ID for moving nodes together
+				bridgeLinksSpawned: node.bridgeLinksSpawned, // Track spawned bridge links
 					storyEngineCard: node.storyEngineCard, // Story Engine card data
+				worldBuilderCard: node.worldBuilderCard, // World Builder card data
+					loreCluster: node.loreCluster, // Lore Master's Deck cluster data
 					metadata: {
 						createdAt: new Date(),
 						updatedAt: new Date()
@@ -196,8 +201,11 @@ function createStoryBoardStore() {
 				board.nodes.push(newNode);
 				board.metadata.updatedAt = new Date();
 				saveToStorage(state);
+				createdNode = newNode;
 				return state;
 			});
+
+			return createdNode;
 		},
 
 		updateNode(boardId: string, nodeId: string, updates: Partial<StoryBoardNode>) {
@@ -206,12 +214,14 @@ function createStoryBoardStore() {
 				if (!board) return state;
 
 				const node = board.nodes.find((n) => n.id === nodeId);
-				if (node) {
-					Object.assign(node, updates);
-					node.metadata.updatedAt = new Date();
-					board.metadata.updatedAt = new Date();
-					saveToStorage(state);
-				}
+			if (node) {
+				console.log('[Store] updateNode BEFORE:', { nodeId, bridgeLinksSpawned: node.bridgeLinksSpawned, updates });
+				Object.assign(node, updates);
+				console.log('[Store] updateNode AFTER:', { nodeId, bridgeLinksSpawned: node.bridgeLinksSpawned });
+				node.metadata.updatedAt = new Date();
+				board.metadata.updatedAt = new Date();
+				saveToStorage(state);
+			}
 				return state;
 			});
 		},
@@ -720,7 +730,11 @@ function createStoryBoardStore() {
 					newIndex = newIndex <= 0 ? maxIndex : newIndex - 1;
 				}
 
-				node.storyEngineCard.activeCueIndex = newIndex;
+				// Create new object reference to trigger reactivity
+				node.storyEngineCard = {
+					...node.storyEngineCard,
+					activeCueIndex: newIndex
+				};
 				node.metadata.updatedAt = new Date();
 				board.metadata.updatedAt = new Date();
 				saveToStorage(state);
@@ -741,7 +755,133 @@ function createStoryBoardStore() {
 					return state;
 				}
 
-				node.storyEngineCard.activeCueIndex = cueIndex;
+				// Create new object reference to trigger reactivity
+				node.storyEngineCard = {
+					...node.storyEngineCard,
+					activeCueIndex: cueIndex
+				};
+				node.metadata.updatedAt = new Date();
+				board.metadata.updatedAt = new Date();
+				saveToStorage(state);
+				return state;
+			});
+		},
+
+		// World Builder card operations
+		rotateWorldBuilderCard(boardId: string, nodeId: string, direction: 'next' | 'prev') {
+			update((state) => {
+				const board = state.boards.get(boardId);
+				if (!board) return state;
+
+				const node = board.nodes.find((n) => n.id === nodeId);
+				if (!node || !node.worldBuilderCard || !node.worldBuilderCard.cues) return state;
+
+				const maxIndex = node.worldBuilderCard.cues.length - 1;
+				let newIndex = node.worldBuilderCard.activeCueIndex;
+
+				if (direction === 'next') {
+					newIndex = newIndex >= maxIndex ? 0 : newIndex + 1;
+				} else {
+					newIndex = newIndex <= 0 ? maxIndex : newIndex - 1;
+				}
+
+				// Create new object reference to trigger reactivity
+				node.worldBuilderCard = {
+					...node.worldBuilderCard,
+					activeCueIndex: newIndex
+				};
+				node.metadata.updatedAt = new Date();
+				board.metadata.updatedAt = new Date();
+				saveToStorage(state);
+				return state;
+			});
+		},
+
+		setWorldBuilderCue(boardId: string, nodeId: string, cueIndex: number) {
+			update((state) => {
+				const board = state.boards.get(boardId);
+				if (!board) return state;
+
+				const node = board.nodes.find((n) => n.id === nodeId);
+				if (!node || !node.worldBuilderCard || !node.worldBuilderCard.cues) return state;
+
+				// Validate index
+				if (cueIndex < 0 || cueIndex >= node.worldBuilderCard.cues.length) {
+					return state;
+				}
+
+				// Create new object reference to trigger reactivity
+				node.worldBuilderCard = {
+					...node.worldBuilderCard,
+					activeCueIndex: cueIndex
+				};
+				node.metadata.updatedAt = new Date();
+				board.metadata.updatedAt = new Date();
+				saveToStorage(state);
+				return state;
+			});
+		},
+
+		// Lore Master card operations
+		rotateLoreMasterCard(
+			boardId: string,
+			nodeId: string,
+			position: 'primary' | 'top' | 'right' | 'bottom' | 'left',
+			direction: 'next' | 'prev'
+		) {
+			update((state) => {
+				const board = state.boards.get(boardId);
+				if (!board) return state;
+
+				const node = board.nodes.find((n) => n.id === nodeId);
+				if (!node || !node.loreCluster) return state;
+
+				const cluster = node.loreCluster;
+
+				if (position === 'primary') {
+					// Rotate primary card's primary cues
+					const maxIndex = cluster.primaryCard.card.primaryCues.length - 1;
+					let newIndex = cluster.primaryCard.activeCueIndex;
+
+					if (direction === 'next') {
+						newIndex = newIndex >= maxIndex ? 0 : newIndex + 1;
+					} else {
+						newIndex = newIndex <= 0 ? maxIndex : newIndex - 1;
+					}
+
+					// Create new object reference to trigger reactivity
+					node.loreCluster = {
+						...cluster,
+						primaryCard: {
+							...cluster.primaryCard,
+							activeCueIndex: newIndex
+						}
+					};
+				} else {
+					// Rotate secondary card's secondary cues
+					const cardKey = `${position}Card` as 'topCard' | 'rightCard' | 'bottomCard' | 'leftCard';
+					const secondaryCard = cluster[cardKey];
+					if (!secondaryCard) return state;
+
+					const maxIndex = secondaryCard.card.secondaryCues.length - 1;
+					let newIndex = secondaryCard.activeCueIndex;
+
+					if (direction === 'next') {
+						newIndex = newIndex >= maxIndex ? 0 : newIndex + 1;
+					} else {
+						newIndex = newIndex <= 0 ? maxIndex : newIndex - 1;
+					}
+
+					// Create new object reference to trigger reactivity
+					node.loreCluster = {
+						...cluster,
+						[cardKey]: {
+							...secondaryCard,
+							activeCueIndex: newIndex
+						}
+					};
+				}
+
 				node.metadata.updatedAt = new Date();
 				board.metadata.updatedAt = new Date();
 				saveToStorage(state);

@@ -4,7 +4,6 @@
 	import StoryBoardCanvas from './StoryBoardCanvas.svelte';
 	import StoryBoardDrawingTools from './StoryBoardDrawingTools.svelte';
 	import StoryBoardSearch from './StoryBoardSearch.svelte';
-	import StoryBoardSidebar from './StoryBoardSidebar.svelte';
 
 	interface Props {
 		adventureId: string;
@@ -183,7 +182,6 @@
 		<StoryBoardDrawingTools />
 		<StoryBoardCanvas />
 		<StoryBoardSearch />
-		<StoryBoardSidebar {adventureId} />
 	{:else}
 		<div class="loading">
 			<p>Loading story board...</p>

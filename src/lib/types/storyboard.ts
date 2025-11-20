@@ -1,5 +1,7 @@
 import type { EntityType } from './entity';
 import type { StoryEngineCardType } from './storyEngine';
+import type { WorldBuilderCardType } from './worldBuilder';
+import type { LoreMasterCard, LoreMasterCardType } from './loreMaster';
 
 export interface StoryBoardNode {
 	id: string;
@@ -30,12 +32,84 @@ export interface StoryBoardNode {
 	// Entity sync
 	entityError?: 'deleted' | 'not-found'; // Track broken references
 
+	// Bridge link tracking - maps link text to spawned node info
+	bridgeLinksSpawned?: Record<string, { nodeId: string; displayName: string }>; // e.g., { "a Region": { nodeId: "node-123", displayName: "Mountain Range" } }
+
 	// Story Engine card data
 	storyEngineCard?: {
 		type: StoryEngineCardType;
 		cues: string[];
 		activeCueIndex: number; // Which cue is currently visible (0-3 for agents/anchors/aspects, 0-1 for engines/conflicts)
 		expansion?: string;
+	};
+
+	// World Builder card data
+	worldBuilderCard?: {
+		type: WorldBuilderCardType;
+		cues?: string[]; // 4 cues for most types (region, landmark, namesake, origin, attribute, adventure)
+		cue?: string; // Single cue for advent cards
+		interpretations?: string[]; // For advent cards
+		title?: string; // For adventure cards - quest title
+		summary?: string; // For adventure cards - quest description
+		questions?: string[]; // For keyhole cards - 4 cultural questions
+		activeCueIndex: number; // Which cue is currently visible (0-3)
+		expansion?: string;
+	};
+
+	// Lore Master's Deck cluster data
+	loreCluster?: {
+		// Primary card (center of cluster)
+		primaryCard: {
+			card: LoreMasterCard;
+			activeCueIndex: number; // 0-3 for which primary cue is active
+			pairedDeity?: {
+				card: LoreMasterCard; // The deity card paired with this card
+				deityName: string; // The deity name extracted from the deity card (e.g., "THE LION")
+			};
+		};
+		// Secondary cards tucked on each edge (top, right, bottom, left)
+		topCard: {
+			card: LoreMasterCard;
+			activeCueIndex: number; // 0-3 (or 0-7 for modifier cards)
+			position: 'top';
+			pairedDeity?: {
+				card: LoreMasterCard;
+				deityName: string;
+			};
+		} | null;
+		rightCard: {
+			card: LoreMasterCard;
+			activeCueIndex: number;
+			position: 'right';
+			pairedDeity?: {
+				card: LoreMasterCard;
+				deityName: string;
+			};
+		} | null;
+		bottomCard: {
+			card: LoreMasterCard;
+			activeCueIndex: number;
+			position: 'bottom';
+			pairedDeity?: {
+				card: LoreMasterCard;
+				deityName: string;
+			};
+		} | null;
+		leftCard: {
+			card: LoreMasterCard;
+			activeCueIndex: number;
+			position: 'left';
+			pairedDeity?: {
+				card: LoreMasterCard;
+				deityName: string;
+			};
+		} | null;
+		// Modifier card if this cluster was expanded from another
+		modifierCard?: {
+			card: LoreMasterCard; // Must be type 'modifier'
+			activeCueIndex: number; // 0-7
+		};
+		expandedFromNodeId?: string; // ID of the node this was expanded from
 	};
 
 	metadata: {
