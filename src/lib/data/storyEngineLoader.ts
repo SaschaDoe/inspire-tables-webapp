@@ -334,10 +334,28 @@ export async function getRandomCard(type?: StoryEngineCardType): Promise<StoryEn
 /**
  * Generate a Story Seed (5-card prompt)
  * Returns: [Agent, Engine, Anchor, Conflict, Aspect]
+ *
+ * Has a 40% chance to include bridge cards (engine/conflict types) that have cross-deck links
  */
 export async function generateStorySeed(): Promise<
 	[StoryEngineCard, StoryEngineCard, StoryEngineCard, StoryEngineCard, StoryEngineCard]
 > {
+	// 40% chance to use bridge cards
+	const useBridge = Math.random() < 0.4;
+
+	if (useBridge) {
+		// Import bridge loader dynamically to avoid circular dependencies
+		const { getRandomBridgeStoryEngineCard } = await import('./bridgeLoader');
+
+		return [
+			await getRandomCard('agent'),
+			await getRandomBridgeStoryEngineCard('engine'), // Bridge engine (links to world/lore)
+			await getRandomCard('anchor'),
+			await getRandomBridgeStoryEngineCard('conflict'), // Bridge conflict (links to world/lore)
+			await getRandomCard('aspect')
+		];
+	}
+
 	return [
 		await getRandomCard('agent'),
 		await getRandomCard('engine'),

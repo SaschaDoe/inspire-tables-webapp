@@ -273,6 +273,8 @@ export async function getRandomCard(type?: WorldBuilderCardType): Promise<WorldB
 /**
  * Generate a Microsetting (complete worldbuilding prompt)
  * Returns: { region, landmarks, namesake, origin, attribute, advent }
+ *
+ * Has a 40% chance to include bridge cards (region/origin/attribute types) that have cross-deck links
  */
 export async function generateMicrosetting(): Promise<{
 	region: WorldBuilderCard;
@@ -282,6 +284,27 @@ export async function generateMicrosetting(): Promise<{
 	attribute: WorldBuilderCard;
 	advent: WorldBuilderCard;
 }> {
+	// 40% chance to use bridge cards
+	const useBridge = Math.random() < 0.4;
+
+	if (useBridge) {
+		// Import bridge loader dynamically to avoid circular dependencies
+		const { getRandomBridgeWorldBuilderCard } = await import('./bridgeLoader');
+
+		return {
+			region: await getRandomBridgeWorldBuilderCard('region'), // Bridge region (links to lore)
+			landmarks: [
+				await getRandomBridgeWorldBuilderCard('landmark'), // Bridge landmark (links to lore)
+				await getRandomCard('landmark'),
+				await getRandomCard('landmark')
+			],
+			namesake: await getRandomCard('namesake'),
+			origin: await getRandomBridgeWorldBuilderCard('origin'), // Bridge origin (links to lore)
+			attribute: await getRandomBridgeWorldBuilderCard('attribute'), // Bridge attribute (links to lore)
+			advent: await getRandomCard('advent')
+		};
+	}
+
 	return {
 		region: await getRandomCard('region'),
 		landmarks: [
