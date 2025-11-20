@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import TabBar from '$lib/components/TabBar.svelte';
 	import { tabStore, activeTab, canGoBack, canGoForward } from '$lib/stores/tabStore';
-	import { entityStore } from '$lib/stores/entityStore';
+	import { entityStore, adventureEntities } from '$lib/stores/entityStore'; // Phase 2: Import adventureEntities derived store
 	import CampaignCard from '$lib/components/entities/CampaignCard.svelte';
 	import AdventureCard from '$lib/components/entities/AdventureCard.svelte';
 	import StoryBoard from '$lib/components/storyboard/StoryBoard.svelte';
@@ -19,68 +19,35 @@
 	let sidebarCollapsed = $state(false);
 	let searchQuery = $state('');
 	let campaigns = $state<Campaign[]>([]);
-	let adventures = $state(new Map<string, AdventureEntity>());
-	let allOtherEntities = $state<Map<string, Entity[]>>(new Map());
+	// Phase 2: Removed `adventures` and `allOtherEntities` - using derived stores instead
 	let isEntityModalOpen = $state(false);
+	let isLoadingEntities = $state(true); // Phase 1: Track loading state
 
 	onMount(() => {
-		// Load campaigns from entity store
-		campaigns = entityStore.getCampaigns();
-		loadAllEntities();
+		// Phase 1: Defer data loading to next tick so UI renders immediately
+		setTimeout(() => {
+			// Load campaigns from entity store
+			campaigns = entityStore.getCampaigns();
+			// Phase 2: Removed loadAllEntities() - derived stores update automatically
 
-		// Check if there's an entity ID in the URL
-		const urlParams = new URLSearchParams(window.location.search);
-		const entityId = urlParams.get('entity');
-		if (entityId) {
-			const entity = entityStore.getEntity(entityId);
-			if (entity) {
-				tabStore.openTab(entity);
+			// Check if there's an entity ID in the URL
+			const urlParams = new URLSearchParams(window.location.search);
+			const entityId = urlParams.get('entity');
+			if (entityId) {
+				const entity = entityStore.getEntity(entityId);
+				if (entity) {
+					tabStore.openTab(entity);
+				}
 			}
-		}
 
-		// Listen for entity creation events from child components
-		const handleEntityCreated = () => {
-			loadAllEntities();
-		};
-		window.addEventListener('entity-created', handleEntityCreated);
+			// Mark loading as complete
+			isLoadingEntities = false;
+		}, 0);
 
-		// Cleanup
-		return () => {
-			window.removeEventListener('entity-created', handleEntityCreated);
-		};
+		// Phase 2: Removed entity-created event listener - derived stores update automatically via Svelte reactivity
 	});
 
-	function loadAllEntities() {
-		const allEntities = entityStore.searchEntities('');
-
-		// Load adventures
-		adventures = new Map(
-			allEntities
-				.filter(e => e.type === 'adventure')
-				.map(e => [e.id, e as AdventureEntity])
-		);
-
-		// Group other entities by type
-		const groupedEntities = new Map<string, Entity[]>();
-		allEntities
-			.filter(e => {
-				// Exclude adventures
-				if (e.type === 'adventure') return false;
-				// Exclude old-style campaigns (those without generatedEntity in customFields)
-				if (e.type === 'campaign' && !e.customFields?.generatedEntity) return false;
-				// Include everything else (including generated campaigns)
-				return true;
-			})
-			.forEach(entity => {
-				const type = entity.type as string;
-				if (!groupedEntities.has(type)) {
-					groupedEntities.set(type, []);
-				}
-				groupedEntities.get(type)!.push(entity);
-			});
-
-		allOtherEntities = groupedEntities;
-	}
+	// Phase 2: Removed loadAllEntities() function - redundant with derived stores
 
 	function toggleSidebar() {
 		sidebarCollapsed = !sidebarCollapsed;
@@ -121,14 +88,13 @@
 			tabStore.closeTabByEntityId(deletedId);
 		}
 
-		// Reload entities to update UI
-		loadAllEntities();
+		// Phase 2: Removed loadAllEntities() - derived stores update automatically
 
 		console.log(`[workspace] Deleted ${result.deletedEntityIds.length} entities, updated ${result.updatedParentIds.length} parents`);
 	}
 
 	function openStoryBoard(adventureId: string) {
-		const adventure = adventures.get(adventureId);
+		const adventure = $adventureEntities.find(a => a.id === adventureId); // Phase 2: Use derived store
 		if (!adventure) return;
 
 		// Create a special tab for the story board
@@ -153,7 +119,7 @@
 		const campaign = campaigns.find(c => c.id === campaignId);
 		if (!campaign) return;
 
-		const adventureCount = Array.from(adventures.values()).filter(a => a.campaignId === campaignId).length;
+		const adventureCount = $adventureEntities.filter(a => a.campaignId === campaignId).length; // Phase 2: Use derived store
 
 		const newAdventure: AdventureEntity = {
 			id: crypto.randomUUID(),
@@ -181,7 +147,7 @@
 		};
 
 		entityStore.createEntity(newAdventure);
-		loadAdventures();
+		// Phase 2: Removed loadAdventures() - derived stores update automatically
 		openAdventure(newAdventure);
 	}
 
@@ -210,66 +176,40 @@
 		for (const deletedId of result.deletedEntityIds) {
 			tabStore.closeTabByEntityId(deletedId);
 		}
-		loadAdventures();
+		// Phase 2: Removed loadAdventures() - derived stores update automatically
 		tabStore.closeTabByEntityId(id);
 	}
 
 	function updateAdventureName(id: string, name: string) {
 		entityStore.updateEntity(id, { name });
-		loadAdventures();
+		// Phase 2: Removed loadAdventures() - derived stores update automatically
 	}
 
 	function updateAdventureStatus(id: string, status: string) {
-		const adventure = adventures.get(id);
+		const adventure = $adventureEntities.find(a => a.id === id); // Phase 2: Use derived store
 		if (adventure) {
 			adventure.status = status as any;
 			entityStore.updateEntity(id, { status } as any);
-			loadAdventures();
+			// Phase 2: Removed loadAdventures() - derived stores update automatically
 		}
 	}
 
-	// Use $derived for computed values instead of $effect to avoid infinite loops
+	// Phase 2: Simplified using entityStore directly instead of local state
 	let currentGenericEntity = $derived.by(() => {
 		const tab = $activeTab;
-		if (!tab) return null;
+		if (!tab || tab.entityType === 'storyboard') return null;
 
-		// Check if this is a generic generated entity (not storyboard)
-		if (tab.entityType !== 'storyboard') {
-			// For campaigns, check if it's a generated entity (has customFields.generatedEntity)
-			if (tab.entityType === 'campaign') {
-				// Look in allOtherEntities for generated campaigns
-				const entitiesOfType = allOtherEntities.get(tab.entityType as EntityType);
-				const entity = entitiesOfType?.find(e => e.id === tab.entityId);
-				// Only return if it's a generated campaign (has generatedEntity in customFields)
-				if (entity?.customFields?.generatedEntity) {
-					return entity;
-				}
-				// Otherwise let it fall through to old-style campaign handling
-				return null;
-			}
+		// Get entity directly from store
+		const entity = entityStore.getEntity(tab.entityId);
+		if (!entity) return null;
 
-			// For adventures, check both new entities and old adventures Map
-			if (tab.entityType === 'adventure') {
-				// First try allOtherEntities for new generated adventures
-				const entitiesOfType = allOtherEntities.get(tab.entityType as EntityType);
-				const entity = entitiesOfType?.find(e => e.id === tab.entityId);
-				if (entity) return entity;
-
-				// Otherwise check old adventures Map
-				const oldAdventure = adventures.get(tab.entityId);
-				if (oldAdventure) {
-					// Return it as-is, it already has customFields structure
-					return oldAdventure;
-				}
-				return null;
-			}
-
-			// For other entity types, look up from allOtherEntities
-			const entitiesOfType = allOtherEntities.get(tab.entityType as EntityType);
-			const entity = entitiesOfType?.find(e => e.id === tab.entityId);
-			return entity || null;
+		// For campaigns, only return if it's a generated entity (has customFields.generatedEntity)
+		if (tab.entityType === 'campaign') {
+			return entity?.customFields?.generatedEntity ? entity : null;
 		}
-		return null;
+
+		// For other entity types, return the entity
+		return entity;
 	});
 
 	let currentCampaign = $derived.by(() => {
@@ -300,7 +240,7 @@
 			const campaign = campaigns.find(c => c.id === tab.entityId);
 			return campaign ? [{ id: campaign.id, name: campaign.name, type: 'campaign' }] : [];
 		} else if (tab.entityType === 'adventure') {
-			const adventure = adventures.get(tab.entityId);
+			const adventure = $adventureEntities.find(a => a.id === tab.entityId); // Phase 2: Use derived store
 			if (!adventure) return [];
 
 			const campaign = campaigns.find(c => c.id === adventure.campaignId);
@@ -319,7 +259,7 @@
 			const campaign = campaigns.find(c => c.id === item.id);
 			if (campaign) openCampaign(campaign);
 		} else if (item.type === 'adventure') {
-			const adventure = adventures.get(item.id);
+			const adventure = $adventureEntities.find(a => a.id === item.id); // Phase 2: Use derived store
 			if (adventure) openAdventure(adventure);
 		}
 	}
@@ -559,6 +499,7 @@
 					selectedEntityId={$activeTab?.entityId}
 					onselectEntity={handleNavigatorSelectEntity}
 					oncreateEntity={handleNavigatorCreateEntity}
+					isLoading={isLoadingEntities}
 				/>
 			{:else}
 				<div class="sidebar-header">

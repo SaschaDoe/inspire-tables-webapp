@@ -28,9 +28,10 @@
 		selectedEntityId?: string;
 		onselectEntity?: (event: CustomEvent<{ entity: Entity }>) => void;
 		oncreateEntity?: (event: CustomEvent<{ type: EntityType }>) => void;
+		isLoading?: boolean; // Phase 1: Loading state
 	}
 
-	let { selectedEntityId, onselectEntity, oncreateEntity }: Props = $props();
+	let { selectedEntityId, onselectEntity, oncreateEntity, isLoading = false }: Props = $props();
 
 	// Navigation categories organized by domain
 	const categories = [
@@ -226,7 +227,23 @@
 	</div>
 
 	<div class="navigator-content">
-		{#each categories as category (category.name)}
+		{#if isLoading}
+			<!-- Phase 1: Loading skeleton UI -->
+			<div class="loading-skeleton">
+				<div class="skeleton-category">
+					<div class="skeleton-header"></div>
+					<div class="skeleton-section"></div>
+					<div class="skeleton-section"></div>
+				</div>
+				<div class="skeleton-category">
+					<div class="skeleton-header"></div>
+					<div class="skeleton-section"></div>
+					<div class="skeleton-section"></div>
+					<div class="skeleton-section"></div>
+				</div>
+			</div>
+		{:else}
+			{#each categories as category (category.name)}
 			<div class="category">
 				<button
 					class="category-header"
@@ -291,6 +308,7 @@
 				{/if}
 			</div>
 		{/each}
+		{/if}
 	</div>
 </div>
 
@@ -508,5 +526,42 @@
 
 	.navigator-content::-webkit-scrollbar-thumb:hover {
 		background: var(--surface-5, #555);
+	}
+
+	/* Phase 1: Skeleton loading styles */
+	.loading-skeleton {
+		padding: 1rem;
+	}
+
+	.skeleton-category {
+		margin-bottom: 1.5rem;
+	}
+
+	.skeleton-header {
+		height: 2rem;
+		background: linear-gradient(90deg, #2a2a2a 25%, #333 50%, #2a2a2a 75%);
+		background-size: 200% 100%;
+		animation: skeleton-loading 1.5s ease-in-out infinite;
+		border-radius: 4px;
+		margin-bottom: 0.5rem;
+	}
+
+	.skeleton-section {
+		height: 1.5rem;
+		background: linear-gradient(90deg, #222 25%, #2a2a2a 50%, #222 75%);
+		background-size: 200% 100%;
+		animation: skeleton-loading 1.5s ease-in-out infinite;
+		border-radius: 4px;
+		margin-bottom: 0.5rem;
+		margin-left: 1rem;
+	}
+
+	@keyframes skeleton-loading {
+		0% {
+			background-position: 200% 0;
+		}
+		100% {
+			background-position: -200% 0;
+		}
 	}
 </style>

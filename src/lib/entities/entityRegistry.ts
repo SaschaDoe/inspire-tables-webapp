@@ -1,3 +1,18 @@
+/**
+ * ⚠️ ADDING A NEW ENTITY TYPE? READ THIS CHECKLIST:
+ *
+ * 1. Create your entity creator class (extends Creator from './base/creator')
+ * 2. Import it at the top of this file
+ * 3. Add entry to entityRegistry below with: name, displayName, icon, description, creator, category
+ * 4. Add TypeScript type to EntityType union in src/lib/types/entity.ts (if not already there)
+ * 5. (Optional) Add derived store in src/lib/stores/entityStore.ts:
+ *    export const yourEntityEntities = derived(allEntities, $all => $all.filter(e => e.type === 'yourEntity'));
+ * 6. (Optional) Add section in src/lib/components/EntityNavigator.svelte to show in sidebar
+ *
+ * ✅ THAT'S IT! The store's type index (when implemented) handles new types automatically.
+ * No manual updates needed to entityStore mutation functions.
+ */
+
 import type { Creator } from './base/creator';
 import { CharacterCreator } from './character/characterCreator';
 import { VillainCreator } from './character/villainCreator';
