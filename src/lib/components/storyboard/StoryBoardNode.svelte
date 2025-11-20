@@ -108,14 +108,16 @@
 	function handleContextMenu(e: MouseEvent) {
 		// Show context menu for:
 		// - Generated cards
-		// - Grouped nodes
+		// - Grouped nodes (generic ungroup options)
 		// - Story Engine cards (not in a group) - can generate story seed
 		// - World Builder cards (not in a group) - can generate mini setting
+		// - World Builder cards (in a group) - can complete mini setting
 		const hasStoryEngineCard = node.storyEngineCard && !node.groupId;
 		const hasWorldBuilderCard = node.worldBuilderCard && !node.groupId;
+		const hasGroupedWorldBuilderCard = node.worldBuilderCard && node.groupId;
 
 		// Check if we should show the context menu
-		const shouldShowMenu = isGenerated || node.groupId || hasStoryEngineCard || hasWorldBuilderCard;
+		const shouldShowMenu = isGenerated || node.groupId || hasStoryEngineCard || hasWorldBuilderCard || hasGroupedWorldBuilderCard;
 
 		if (!shouldShowMenu) return;
 
@@ -178,6 +180,10 @@
 				menuHTML += `<button class="ctx-btn" data-action="generate-setting">🗺️ Generate Mini Setting</button>`;
 			}
 
+			if (node.worldBuilderCard && node.groupId) {
+				menuHTML += `<button class="ctx-btn" data-action="complete-setting">✨ Complete Mini Setting</button>`;
+			}
+
 			if (node.groupId) {
 				menuHTML += `<button class="ctx-btn" data-action="ungroup-one">🔓 Ungroup This Card</button>`;
 				menuHTML += `<button class="ctx-btn" data-action="ungroup-all">💥 Ungroup All Cards</button>`;
@@ -203,6 +209,9 @@
 							break;
 						case 'generate-setting':
 							generateMiniSettingFromCard();
+							break;
+						case 'complete-setting':
+							completeMiniSettingFromGroupedCard();
 							break;
 						case 'ungroup-one':
 							ungroupNode();
@@ -501,6 +510,112 @@
 		} catch (error) {
 			console.error('Failed to generate mini setting:', error);
 			alert('Failed to generate mini setting. Please try again.');
+		}
+	}
+
+	async function completeMiniSettingFromGroupedCard() {
+		if (!$activeBoard || !node.worldBuilderCard || !node.groupId) return;
+
+		closeContextMenu();
+
+		try {
+			// Find all nodes in the same group
+			const groupedNodes = $activeBoard.nodes.filter((n) => n.groupId === node.groupId);
+
+			// Count what card types we already have
+			const existingTypes = new Map<string, number>();
+			groupedNodes.forEach((n) => {
+				if (n.worldBuilderCard) {
+					const type = n.worldBuilderCard.type;
+					existingTypes.set(type, (existingTypes.get(type) || 0) + 1);
+				}
+			});
+
+			// A complete mini setting needs:
+			// 1 region, 3 landmarks, 1 namesake, 1 origin, 1 attribute, 1 advent
+			const neededTypes: Array<{ type: string; count: number }> = [
+				{ type: 'region', count: 1 },
+				{ type: 'landmark', count: 3 },
+				{ type: 'namesake', count: 1 },
+				{ type: 'origin', count: 1 },
+				{ type: 'attribute', count: 1 },
+				{ type: 'advent', count: 1 }
+			];
+
+			// Generate a complete microsetting
+			const microsetting = await generateMicrosetting();
+
+			// Calculate positioning - find rightmost card in group
+			let maxX = node.x;
+			groupedNodes.forEach((n) => {
+				if (n.x > maxX) {
+					maxX = n.x;
+				}
+			});
+
+			const cardWidth = 400;
+			const gap = 20;
+			const cardSpacing = cardWidth + gap;
+			let currentX = maxX + cardSpacing;
+
+			// Generate missing cards
+			for (const needed of neededTypes) {
+				const existing = existingTypes.get(needed.type) || 0;
+				const toGenerate = needed.count - existing;
+
+				if (toGenerate > 0) {
+					// Generate the missing cards
+					for (let i = 0; i < toGenerate; i++) {
+						let card: WorldBuilderCard;
+
+						if (needed.type === 'region') {
+							card = microsetting.region;
+						} else if (needed.type === 'landmark') {
+							card = microsetting.landmarks[i];
+						} else if (needed.type === 'namesake') {
+							card = microsetting.namesake;
+						} else if (needed.type === 'origin') {
+							card = microsetting.origin;
+						} else if (needed.type === 'attribute') {
+							card = microsetting.attribute;
+						} else if (needed.type === 'advent') {
+							card = microsetting.advent;
+						} else {
+							continue;
+						}
+
+						const typeInfo = WORLD_BUILDER_CARD_TYPES[card.type];
+
+						storyboardStore.addNode(
+							$activeBoard.id,
+							{
+								x: currentX,
+								y: node.y,
+								width: 400,
+								height: 400,
+								groupId: node.groupId,
+								worldBuilderCard: {
+									type: card.type,
+									cues: card.cues ? Array.from(card.cues) : undefined,
+									cue: card.cue,
+									interpretations: card.interpretations,
+									title: card.title,
+									summary: card.summary,
+									questions: card.questions ? Array.from(card.questions) : undefined,
+									activeCueIndex: 0,
+									expansion: card.expansion
+								}
+							},
+							`Complete Mini Setting: ${typeInfo.name}`
+						);
+
+						currentX += cardSpacing;
+					}
+				}
+			}
+		} catch (error) {
+			console.error('Failed to complete mini setting:', error);
+			alert('Failed to complete mini setting. Please try again.');
 		}
 	}
 
