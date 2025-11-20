@@ -108,14 +108,20 @@
 	<div
 		class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
 		onclick={handleClose}
-		role="presentation"
+		onkeydown={(e) => e.key === 'Escape' && handleClose()}
+		role="button"
+		tabindex="0"
+		aria-label="Close dialog"
 	>
 		<!-- Modal Content -->
 		<div
 			class="bg-gray-900 rounded-lg shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden border border-orange-500/30 flex flex-col"
 			onclick={(e) => e.stopPropagation()}
+			onkeydown={(e) => e.stopPropagation()}
 			role="dialog"
+			aria-modal="true"
 			aria-labelledby="session-history-title"
+			tabindex="-1"
 		>
 			<!-- Header -->
 			<div class="bg-gradient-to-r from-orange-600 to-red-600 p-6">

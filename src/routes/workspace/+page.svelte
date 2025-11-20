@@ -868,14 +868,6 @@
 		border-bottom: 1px solid rgb(168 85 247 / 0.1);
 	}
 
-	.sidebar-title {
-		font-size: 0.875rem;
-		font-weight: 600;
-		color: rgb(216 180 254);
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
 	.collapse-btn {
 		padding: 0.25rem 0.5rem;
 		background: transparent;
@@ -889,110 +881,6 @@
 	.collapse-btn:hover {
 		background: rgb(168 85 247 / 0.2);
 		color: white;
-	}
-
-	.sidebar-content {
-		flex: 1;
-		overflow-y: auto;
-		padding: 1rem;
-	}
-
-	.sidebar-section {
-		margin-bottom: 1.5rem;
-	}
-
-	.section-title {
-		font-size: 0.75rem;
-		font-weight: 600;
-		color: rgb(216 180 254);
-		margin-bottom: 0.5rem;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
-	.entity-list {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	.entity-item {
-		margin-bottom: 0.25rem;
-	}
-
-	.entity-item.active .entity-button {
-		background: rgb(168 85 247 / 0.2);
-		color: white;
-	}
-
-	.entity-button {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.5rem 0.75rem;
-		background: transparent;
-		border: none;
-		border-radius: 0.375rem;
-		color: rgb(216 180 254);
-		font-size: 0.875rem;
-		cursor: pointer;
-		transition: all 0.2s;
-		text-align: left;
-	}
-
-	.entity-button:hover {
-		background: rgb(168 85 247 / 0.1);
-		color: white;
-	}
-
-	.entity-icon {
-		flex-shrink: 0;
-	}
-
-	.entity-name {
-		flex: 1;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
-	.entity-tag {
-		flex-shrink: 0;
-		font-size: 0.65rem;
-		padding: 0.125rem 0.375rem;
-		background: rgb(168 85 247 / 0.2);
-		color: rgb(216 180 254 / 0.7);
-		border-radius: 0.25rem;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		max-width: 80px;
-	}
-
-	.pin-icon {
-		flex-shrink: 0;
-		font-size: 0.75rem;
-	}
-
-	.empty-message {
-		color: rgb(216 180 254 / 0.5);
-		font-size: 0.75rem;
-		font-style: italic;
-		padding: 0.5rem 0.75rem;
-	}
-
-	.create-link {
-		display: block;
-		color: rgb(168 85 247);
-		font-size: 0.75rem;
-		padding: 0.5rem 0.75rem;
-		text-decoration: none;
-		transition: color 0.2s;
-	}
-
-	.create-link:hover {
-		color: rgb(192 132 252);
 	}
 
 	/* Content Area */
@@ -1093,21 +981,6 @@
 		background: rgb(220 38 38 / 0.3);
 		color: white;
 		border-color: rgb(220 38 38 / 0.5);
-	}
-
-	.entity-description {
-		padding: 1rem;
-		background: rgb(30 27 75 / 0.3);
-		border-left: 4px solid rgb(168 85 247);
-		border-radius: 0.5rem;
-		margin-bottom: 2rem;
-	}
-
-	.entity-description p {
-		color: rgb(216 180 254);
-		font-size: 0.875rem;
-		line-height: 1.6;
-		margin: 0;
 	}
 
 	.entity-viewer-container {

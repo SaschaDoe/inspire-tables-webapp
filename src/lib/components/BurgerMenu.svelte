@@ -49,7 +49,14 @@
 
 	<!-- Menu Overlay -->
 	{#if isOpen}
-		<div class="menu-overlay" onclick={toggleMenu}></div>
+		<div
+			class="menu-overlay"
+			onclick={toggleMenu}
+			onkeydown={(e) => e.key === 'Escape' && toggleMenu()}
+			role="button"
+			tabindex="0"
+			aria-label="Close menu"
+		></div>
 	{/if}
 
 	<!-- Slide-out Menu -->

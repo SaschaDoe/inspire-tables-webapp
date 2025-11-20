@@ -180,36 +180,6 @@
 		padding: 0;
 	}
 
-	.overview-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-		gap: 1rem;
-	}
-
-	.info-item {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		padding: 0.75rem;
-		background: rgb(30 27 75 / 0.3);
-		border-radius: 0.5rem;
-		border: 1px solid rgb(168 85 247 / 0.2);
-	}
-
-	.label {
-		color: rgb(192 132 252);
-		font-size: 0.75rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
-	.value {
-		color: rgb(226 232 240);
-		font-size: 1rem;
-		font-weight: 500;
-	}
-
 	.genre-block {
 		margin-top: 1.5rem;
 	}

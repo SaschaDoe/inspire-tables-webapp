@@ -276,8 +276,9 @@
 
 		<div class="genre-row">
 			<div class="field-group">
-				<label class="field-label">Main Genre</label>
+				<label for="primary-main-genre" class="field-label">Main Genre</label>
 				<select
+					id="primary-main-genre"
 					class="genre-select"
 					value={genreMix?.primaryGenre?.name || 'fantasy'}
 					onchange={(e) => updatePrimaryGenre(e.currentTarget.value)}
@@ -290,8 +291,9 @@
 
 			{#if genreMix?.primaryGenre && getSubGenres(genreMix.primaryGenre.name).length > 0}
 				<div class="field-group">
-					<label class="field-label">Sub-Genre</label>
+					<label for="primary-sub-genre" class="field-label">Sub-Genre</label>
 					<select
+						id="primary-sub-genre"
 						class="genre-select"
 						value={genreMix.primaryGenre.subGenreName || ''}
 						onchange={(e) => updatePrimarySubGenre(e.currentTarget.value)}
@@ -305,8 +307,8 @@
 			{/if}
 
 			<div class="field-group weight-field">
-				<label class="field-label">Weight</label>
-				<div class="weight-display">
+				<label for="primary-weight" class="field-label">Weight</label>
+				<div id="primary-weight" class="weight-display">
 					{genreMix?.primaryGenre
 						? genreMix.genreWeights[
 								getGenreFullName(genreMix.primaryGenre.name, genreMix.primaryGenre.subGenreName)
@@ -325,8 +327,9 @@
 			{#each genreMix.subGenres as subGenre, index (subGenre.id)}
 				<div class="genre-row additional-genre-row">
 					<div class="field-group">
-						<label class="field-label">Main Genre</label>
+						<label for="additional-main-genre-{index}" class="field-label">Main Genre</label>
 						<select
+							id="additional-main-genre-{index}"
 							class="genre-select"
 							value={subGenre.name}
 							onchange={(e) => updateAdditionalGenre(index, e.currentTarget.value)}
@@ -339,8 +342,9 @@
 
 					{#if getSubGenres(subGenre.name).length > 0}
 						<div class="field-group">
-							<label class="field-label">Sub-Genre</label>
+							<label for="additional-sub-genre-{index}" class="field-label">Sub-Genre</label>
 							<select
+								id="additional-sub-genre-{index}"
 								class="genre-select"
 								value={subGenre.subGenreName || ''}
 								onchange={(e) => updateAdditionalSubGenre(index, e.currentTarget.value)}
@@ -354,8 +358,8 @@
 					{/if}
 
 					<div class="field-group weight-field">
-						<label class="field-label">Weight</label>
-						<div class="weight-display">
+						<label for="additional-weight-{index}" class="field-label">Weight</label>
+						<div id="additional-weight-{index}" class="weight-display">
 							{genreMix.genreWeights[getGenreFullName(subGenre.name, subGenre.subGenreName)] || 0}%
 						</div>
 					</div>

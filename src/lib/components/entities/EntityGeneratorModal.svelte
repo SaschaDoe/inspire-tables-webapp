@@ -122,8 +122,15 @@
 </script>
 
 {#if isOpen}
-	<div class="modal-overlay" onclick={closeModal}>
-		<div class="modal" onclick={(e) => e.stopPropagation()}>
+	<div
+		class="modal-overlay"
+		onclick={closeModal}
+		onkeydown={(e) => e.key === 'Escape' && closeModal()}
+		role="button"
+		tabindex="0"
+		aria-label="Close modal"
+	>
+		<div class="modal" role="dialog" aria-modal="true">
 			{#if currentStep === 'select'}
 				<div class="modal-header">
 					<h2 class="modal-title">Generate New Entity</h2>
@@ -449,42 +456,6 @@
 		color: white;
 	}
 
-	.name-input-section {
-		padding: 1.5rem;
-		background: rgb(30 27 75 / 0.3);
-		border-bottom: 1px solid rgb(168 85 247 / 0.2);
-		margin-bottom: 0;
-	}
-
-	.name-label {
-		display: block;
-		color: rgb(216 180 254);
-		font-size: 0.875rem;
-		font-weight: 600;
-		margin-bottom: 0.5rem;
-	}
-
-	.name-input {
-		width: 100%;
-		padding: 0.75rem;
-		background: rgb(30 27 75 / 0.5);
-		border: 1px solid rgb(168 85 247 / 0.3);
-		border-radius: 0.5rem;
-		color: white;
-		font-size: 1rem;
-		outline: none;
-		transition: all 0.2s;
-	}
-
-	.name-input:focus {
-		border-color: rgb(168 85 247);
-		background: rgb(30 27 75 / 0.7);
-	}
-
-	.name-input::placeholder {
-		color: rgb(216 180 254 / 0.5);
-	}
-
 	/* Editable Properties Section */
 	.editable-properties-section {
 		padding: 1.5rem;
@@ -494,15 +465,6 @@
 
 	.entity-viewer-section {
 		padding: 1.5rem;
-	}
-
-	.section-title {
-		color: rgb(216 180 254);
-		font-size: 0.875rem;
-		font-weight: 600;
-		margin: 0 0 1rem 0;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
 	}
 
 	.properties-grid {

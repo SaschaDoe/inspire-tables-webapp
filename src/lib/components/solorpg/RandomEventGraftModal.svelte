@@ -101,14 +101,20 @@
 	<div
 		class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
 		onclick={resetAndClose}
-		role="presentation"
+		onkeydown={(e) => e.key === 'Escape' && resetAndClose()}
+		role="button"
+		tabindex="0"
+		aria-label="Close dialog"
 	>
 		<!-- Modal Content -->
 		<div
 			class="bg-gray-900 rounded-lg shadow-2xl max-w-2xl w-full border border-purple-500/30 max-h-[90vh] overflow-y-auto"
 			onclick={(e) => e.stopPropagation()}
+			onkeydown={(e) => e.stopPropagation()}
 			role="dialog"
+			aria-modal="true"
 			aria-labelledby="graft-title"
+			tabindex="-1"
 		>
 			<!-- Header -->
 			<div class="bg-gradient-to-r from-purple-600 to-pink-600 p-6 rounded-t-lg">

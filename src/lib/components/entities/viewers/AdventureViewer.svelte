@@ -465,17 +465,6 @@
 		opacity: 1;
 	}
 
-	.description-text {
-		padding: 1rem;
-		background: rgb(30 27 75 / 0.3);
-		border-left: 3px solid rgb(168 85 247);
-		border-radius: 0.5rem;
-		color: rgb(216 180 254);
-		font-size: 0.875rem;
-		line-height: 1.6;
-		margin: 0;
-		white-space: pre-wrap;
-	}
 
 	/* Rising Action Entity Links */
 	.event-text {

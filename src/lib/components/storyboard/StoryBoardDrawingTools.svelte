@@ -49,7 +49,7 @@
 						onclick={() => setColor(color.value)}
 						title={color.name}
 						aria-label="Select {color.name}"
-					/>
+					></button>
 				{/each}
 			</div>
 		</div>

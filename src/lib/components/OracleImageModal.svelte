@@ -71,8 +71,15 @@
 </script>
 
 {#if isOpen}
-	<div class="modal-overlay" onclick={closeModal}>
-		<div class="modal" onclick={(e) => e.stopPropagation()}>
+	<div
+		class="modal-overlay"
+		onclick={closeModal}
+		onkeydown={(e) => e.key === 'Escape' && closeModal()}
+		role="button"
+		tabindex="0"
+		aria-label="Close modal"
+	>
+		<div class="modal" role="dialog" aria-modal="true">
 			<div class="modal-header">
 				<h2 class="modal-title">🔮 Oracle Image</h2>
 				<button onclick={closeModal} class="close-btn">✕</button>

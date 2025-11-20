@@ -70,11 +70,23 @@
 <svelte:window onkeydown={handleKeyDown} />
 
 {#if isSearchOpen}
-	<div class="search-overlay" onclick={() => {
-		isSearchOpen = false;
-		searchQuery = '';
-	}}>
-		<div class="search-container" onclick={(e) => e.stopPropagation()}>
+	<div
+		class="search-overlay"
+		onclick={() => {
+			isSearchOpen = false;
+			searchQuery = '';
+		}}
+		onkeydown={(e) => {
+			if (e.key === 'Escape') {
+				isSearchOpen = false;
+				searchQuery = '';
+			}
+		}}
+		role="button"
+		tabindex="0"
+		aria-label="Close search"
+	>
+		<div class="search-container" role="dialog" aria-modal="true">
 			<div class="search-header">
 				<input
 					id="storyboard-search-input"

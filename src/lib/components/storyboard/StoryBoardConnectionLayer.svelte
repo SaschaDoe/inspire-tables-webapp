@@ -186,7 +186,10 @@
 					marker-end={connection.endMarker === 'arrow' ? 'url(#arrowhead)' : connection.endMarker === 'circle' ? 'url(#circle-marker)' : 'none'}
 					class="connection-path {isSelected ? 'selected' : ''}"
 					onclick={(e) => handleConnectionClick(e, connection.id)}
+					onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleConnectionClick(e, connection.id); }}
 					oncontextmenu={(e) => handleConnectionClick(e, connection.id)}
+					role="button"
+					tabindex="0"
 				/>
 
 				<!-- Invisible wider path for easier clicking -->
@@ -197,7 +200,10 @@
 					fill="none"
 					class="connection-hitbox"
 					onclick={(e) => handleConnectionClick(e, connection.id)}
+					onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleConnectionClick(e, connection.id); }}
 					oncontextmenu={(e) => handleConnectionClick(e, connection.id)}
+					role="button"
+					tabindex="-1"
 				/>
 
 				<!-- Connection label or edit input -->
@@ -210,6 +216,7 @@
 							height="30"
 						>
 							<div class="label-editor">
+								<!-- svelte-ignore a11y_autofocus -->
 								<input
 									type="text"
 									bind:value={editingLabel}

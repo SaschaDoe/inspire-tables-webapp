@@ -27,14 +27,20 @@
 	<div
 		class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
 		onclick={onClose}
-		role="presentation"
+		onkeydown={(e) => e.key === 'Escape' && onClose()}
+		role="button"
+		tabindex="0"
+		aria-label="Close dialog"
 	>
 		<!-- Modal Content -->
 		<div
 			class="bg-slate-900 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-emerald-500/30"
 			onclick={(e) => e.stopPropagation()}
+			onkeydown={(e) => e.stopPropagation()}
 			role="dialog"
+			aria-modal="true"
 			aria-labelledby="help-title"
+			tabindex="-1"
 		>
 			<!-- Header -->
 			<div class="sticky top-0 bg-gradient-to-r from-emerald-600 to-teal-600 p-6 z-10">

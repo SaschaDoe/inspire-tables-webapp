@@ -141,12 +141,6 @@
 		border: 1px solid var(--border-color, #333);
 	}
 
-	.nested-entities-container h3 {
-		margin: 0 0 1.5rem 0;
-		font-size: 1.25rem;
-		font-weight: 600;
-		color: var(--text-1, #e0e0e0);
-	}
 
 	.relationship-section {
 		margin-bottom: 2rem;

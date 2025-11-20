@@ -269,6 +269,7 @@
 								stroke-width={getHexStrokeWidth(hexTile)}
 								class="hex-tile"
 								onclick={() => handleHexClick(hexTile)}
+								onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleHexClick(hexTile); }}
 								onmouseenter={() => handleHexHover(hexTile)}
 								onmouseleave={handleHexLeave}
 								role="button"

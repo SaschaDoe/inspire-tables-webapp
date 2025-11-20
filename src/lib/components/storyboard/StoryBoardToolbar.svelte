@@ -207,8 +207,15 @@
 
 <!-- Help Modal -->
 {#if showHelp}
-	<div class="help-overlay" onclick={() => (showHelp = false)}>
-		<div class="help-modal" onclick={(e) => e.stopPropagation()}>
+	<div
+		class="help-overlay"
+		onclick={() => (showHelp = false)}
+		onkeydown={(e) => e.key === 'Escape' && (showHelp = false)}
+		role="button"
+		tabindex="0"
+		aria-label="Close help"
+	>
+		<div class="help-modal" role="dialog" aria-modal="true">
 			<div class="help-header">
 				<h2>Keyboard Shortcuts & Tips</h2>
 				<button class="close-btn" onclick={() => (showHelp = false)}>✕</button>

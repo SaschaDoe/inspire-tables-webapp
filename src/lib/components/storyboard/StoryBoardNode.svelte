@@ -6,6 +6,12 @@
 	import type { Entity } from '$lib/types/entity';
 	import { getEntityTypesList } from '$lib/entities/entityRegistry';
 	import { STORY_ENGINE_CARD_TYPES } from '$lib/types/storyEngine';
+	import { WORLD_BUILDER_CARD_TYPES } from '$lib/types/worldBuilder';
+	import { LORE_MASTER_CARD_TYPES } from '$lib/types/loreMaster';
+	import { getDisplayCue, detectBridgeLinks, hasBridgeLinks } from '$lib/utils/linkIconParser';
+	import type { DetectedBridgeLink } from '$lib/types/bridge';
+	import { getRandomCard as getRandomLoreMasterCard } from '$lib/data/loreMasterLoader';
+	import { getRandomCard as getRandomWorldBuilderCard } from '$lib/data/worldBuilderLoader';
 
 	interface Props {
 		node: StoryBoardNode;
@@ -277,16 +283,49 @@
 	let gradientColor = $derived(
 		node.storyEngineCard
 			? STORY_ENGINE_CARD_TYPES[node.storyEngineCard.type].color
-			: node.entityType && colorMap[node.entityType]
-				? colorMap[node.entityType]
-				: 'from-purple-500 to-pink-500'
+			: node.worldBuilderCard
+				? WORLD_BUILDER_CARD_TYPES[node.worldBuilderCard.type].color
+				: node.loreCluster
+					? LORE_MASTER_CARD_TYPES[node.loreCluster.primaryCard.card.type].color
+					: node.entityType && colorMap[node.entityType]
+						? colorMap[node.entityType]
+						: 'from-purple-500 to-pink-500'
 	);
 	let iconEmoji = $derived(
 		node.storyEngineCard
 			? STORY_ENGINE_CARD_TYPES[node.storyEngineCard.type].icon
-			: entityTypeInfo?.icon || node.icon || '📝'
+			: node.worldBuilderCard
+				? WORLD_BUILDER_CARD_TYPES[node.worldBuilderCard.type].icon
+				: node.loreCluster
+					? LORE_MASTER_CARD_TYPES[node.loreCluster.primaryCard.card.type].emoji
+					: entityTypeInfo?.icon || node.icon || '📝'
 	);
 	let isGenerated = $derived(node.entityType === 'generated');
+
+	// Bridge link detection for current card
+	let currentBridgeLinks = $derived(() => {
+		// Story Engine card
+		if (node.storyEngineCard) {
+			const activeCue = node.storyEngineCard.cues[node.storyEngineCard.activeCueIndex];
+			return detectBridgeLinks(activeCue);
+		}
+		// World Builder card
+		if (node.worldBuilderCard) {
+			let activeCue = '';
+			if (node.worldBuilderCard.cues) {
+				activeCue = node.worldBuilderCard.cues[node.worldBuilderCard.activeCueIndex];
+			} else if (node.worldBuilderCard.cue) {
+				activeCue = node.worldBuilderCard.cue;
+			}
+			return detectBridgeLinks(activeCue);
+		}
+		// Lore Cluster
+		if (node.loreCluster) {
+			const primaryCue = node.loreCluster.primaryCard.card.primaryCues[node.loreCluster.primaryCard.activeCueIndex];
+			return detectBridgeLinks(primaryCue);
+		}
+		return [];
+	});
 
 	// Story Engine rotation handlers
 	function handleRotateNext(e: MouseEvent) {
@@ -309,10 +348,171 @@
 		storyboardStore.setStoryEngineCue($activeBoard.id, node.id, cueIndex);
 	}
 
+	// World Builder rotation handlers
+	function handleWorldBuilderRotateNext(e: MouseEvent) {
+		e.stopPropagation();
+		if (!$activeBoard || !node.worldBuilderCard) return;
+
+		storyboardStore.rotateWorldBuilderCard($activeBoard.id, node.id, 'next');
+	}
+
+	function handleWorldBuilderRotatePrev(e: MouseEvent) {
+		e.stopPropagation();
+		if (!$activeBoard || !node.worldBuilderCard) return;
+
+		storyboardStore.rotateWorldBuilderCard($activeBoard.id, node.id, 'prev');
+	}
+
+	function handleWorldBuilderSelectCue(cueIndex: number) {
+		if (!$activeBoard || !node.worldBuilderCard) return;
+
+		storyboardStore.setWorldBuilderCue($activeBoard.id, node.id, cueIndex);
+	}
+
+	// Lore Master rotation handlers
+	function handleLoreMasterRotatePrimary(e: MouseEvent, direction: 'next' | 'prev') {
+		e.stopPropagation();
+		if (!$activeBoard || !node.loreCluster) return;
+
+		storyboardStore.rotateLoreMasterCard($activeBoard.id, node.id, 'primary', direction);
+	}
+
+	function handleLoreMasterRotateSecondary(e: MouseEvent, position: 'top' | 'right' | 'bottom' | 'left', direction: 'next' | 'prev') {
+		e.stopPropagation();
+		if (!$activeBoard || !node.loreCluster) return;
+
+		storyboardStore.rotateLoreMasterCard($activeBoard.id, node.id, position, direction);
+	}
+
 	// Handle window click for context menu
 	function handleWindowClick(e: MouseEvent) {
 		if (showContextMenu) {
 			closeContextMenu();
+		}
+	}
+
+	// Bridge Link Handlers
+	async function handleSpawnBridgeLink(e: MouseEvent, link: DetectedBridgeLink) {
+		e.stopPropagation();
+		if (!$activeBoard) return;
+
+		try {
+		// Get fresh node data from store (prop may be stale)
+		const currentNode = $activeBoard.nodes.find(n => n.id === node.id);
+		if (!currentNode) return;
+
+		// Check if this link was already used - if so, navigate to existing node
+		console.log('[Bridge Link] Check:', { linkText: link.linkText, tracking: currentNode.bridgeLinksSpawned });
+		if (currentNode.bridgeLinksSpawned?.[link.linkText]) {
+			const existingNodeId = currentNode.bridgeLinksSpawned[link.linkText].nodeId;
+			console.log('[Bridge Link] Found existing:', existingNodeId);
+			const existingNode = $activeBoard.nodes.find(n => n.id === existingNodeId);
+			if (existingNode) {
+				console.log('[Bridge Link] Selecting existing node');
+				// Select the existing node instead of spawning a new one
+				storyboardStore.selectNode($activeBoard.id, existingNodeId, false);
+				return;
+			}
+			// If node was deleted, remove from tracking and continue to spawn new one
+			const updatedTracking = { ...currentNode.bridgeLinksSpawned };
+			delete updatedTracking[link.linkText];
+			storyboardStore.updateNode($activeBoard.id, node.id, { bridgeLinksSpawned: updatedTracking });
+		}
+
+			// Generate a card from the linked deck/type
+			if (link.targetDeck === 'lore-master') {
+				const loreMasterCard = await getRandomLoreMasterCard(link.targetCardType as any);
+
+				// Add as a lore cluster near this node
+				const offsetX = node.width + 50; // Place to the right
+				const offsetY = 0;
+
+				const nodeData = {
+					x: node.x + offsetX,
+					y: node.y + offsetY,
+					width: 500,
+					height: 600,
+					label: link.linkText, // Use link text as label
+					notes: `Spawned from bridge link: ${link.linkText}`,
+					layer: node.layer,
+					loreCluster: {
+						primaryCard: {
+							card: loreMasterCard,
+							activeCueIndex: 0
+						},
+						topCard: null,
+						rightCard: null,
+						bottomCard: null,
+						leftCard: null
+					}
+				};
+
+				const newNode = storyboardStore.addNode($activeBoard.id, nodeData, `Spawn bridge link: ${link.linkText}`);
+
+				console.log('[Bridge Link] Spawning new node for:', link.linkText);
+				// Track this spawned link with the actual cue text as display name
+				if (newNode) {
+					const displayName = loreMasterCard.primaryCues[0]; // Use the first primary cue as display name
+					const updatedTracking = {
+						...currentNode.bridgeLinksSpawned,
+						[link.linkText]: { nodeId: newNode.id, displayName }
+					};
+					storyboardStore.updateNode($activeBoard.id, node.id, { bridgeLinksSpawned: updatedTracking });
+				}
+
+				// Create connection between cards (no label on line)
+				if (newNode) {
+					storyboardStore.addConnection($activeBoard.id, node.id, newNode.id);
+				}
+			} else if (link.targetDeck === 'world-builder') {
+				const worldBuilderCard = await getRandomWorldBuilderCard(link.targetCardType as any);
+
+				// Add as a world builder card near this node
+				const offsetX = node.width + 50;
+				const offsetY = 0;
+
+				const typeInfo = WORLD_BUILDER_CARD_TYPES[worldBuilderCard.type];
+
+				const nodeData = {
+					x: node.x + offsetX,
+					y: node.y + offsetY,
+					width: 400,
+					height: 400,
+					label: link.linkText, // Use link text as label
+					notes: `Spawned from bridge link: ${link.linkText}`,
+					icon: typeInfo.icon,
+					layer: node.layer,
+					worldBuilderCard: {
+						type: worldBuilderCard.type,
+						cues: worldBuilderCard.cues ? Array.from(worldBuilderCard.cues) : undefined,
+						cue: worldBuilderCard.cue,
+						interpretations: worldBuilderCard.interpretations,
+						activeCueIndex: 0,
+						expansion: worldBuilderCard.expansion
+					}
+				};
+
+				const newNode = storyboardStore.addNode($activeBoard.id, nodeData, `Spawn bridge link: ${link.linkText}`);
+
+
+				// Track this spawned link with the actual cue text as display name
+				if (newNode) {
+					const displayName = worldBuilderCard.cues ? worldBuilderCard.cues[0] : (worldBuilderCard.cue || link.linkText);
+					const updatedTracking = {
+						...currentNode.bridgeLinksSpawned,
+						[link.linkText]: { nodeId: newNode.id, displayName }
+					};
+					storyboardStore.updateNode($activeBoard.id, node.id, { bridgeLinksSpawned: updatedTracking });
+				}
+
+
+				// Create connection (no label on line)
+				if (newNode) {
+					storyboardStore.addConnection($activeBoard.id, node.id, newNode.id);
+				}
+			}
+		} catch (error) {
+			console.error('Failed to spawn bridge link:', error);
 		}
 	}
 </script>
@@ -325,6 +525,7 @@
 		data-generated={isGenerated}
 		onmousedown={handleMouseDown}
 		onclick={handleClick}
+		onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick(e); }}
 		oncontextmenu={handleContextMenu}
 		onmouseenter={handleMouseEnter}
 		onmouseleave={handleMouseLeave}
@@ -357,6 +558,9 @@
 						<span class="se-icon">{typeInfo.icon}</span>
 						<span class="se-type">{typeInfo.name.toUpperCase()}</span>
 						<span class="se-cue-count">{seCard.activeCueIndex + 1}/{seCard.cues.length}</span>
+						{#if node.storyEngineCard.expansion?.startsWith('bridge-')}
+							<span class="bridge-badge" title="Bridge Expansion Card">🌉</span>
+						{/if}
 					</div>
 					<div class="se-controls">
 						<button class="se-rotate-btn" onclick={handleRotatePrev} title="Previous cue">◄</button>
@@ -366,6 +570,22 @@
 
 				<!-- Active Cue Display -->
 				<div class="se-active-cue">{seCard.cues[seCard.activeCueIndex]}</div>
+
+				<!-- Bridge Links (if any) -->
+				{#if currentBridgeLinks().length > 0}
+					<div class="bridge-links">
+						<div class="bridge-links-label">🌉 Bridge Links:</div>
+						{#each currentBridgeLinks() as link}
+							{@const spawnedLink = node.bridgeLinksSpawned?.[link.linkText]}
+							{@const displayText = spawnedLink?.displayName || link.linkText}
+							<button class="bridge-link-btn" onclick={(e) => handleSpawnBridgeLink(e, link)} title="Generate a {link.targetCardType} from {link.targetDeck}">
+								<span class="bridge-link-icon">🔗</span>
+								<span class="bridge-link-text">{displayText}</span>
+								<span class="bridge-link-arrow">→</span>
+							</button>
+						{/each}
+					</div>
+				{/if}
 
 				<!-- All Cues List (shown when selected) -->
 				{#if node.selected && !node.collapsed}
@@ -382,6 +602,259 @@
 						{/each}
 					</div>
 				{/if}
+			{:else if node.worldBuilderCard?.type}
+				{@const wbCard = node.worldBuilderCard}
+				{@const typeInfo = WORLD_BUILDER_CARD_TYPES[wbCard.type]}
+
+				<!-- World Builder Card Header -->
+				<div class="story-engine-header">
+					<div class="se-header-top">
+						<span class="se-icon">{typeInfo.icon}</span>
+						<span class="se-type">{typeInfo.name.toUpperCase()}</span>
+						{#if wbCard.cues}
+							<span class="se-cue-count">{wbCard.activeCueIndex + 1}/{wbCard.cues.length}</span>
+						{/if}
+						{#if wbCard.expansion?.startsWith('bridge-')}
+							<span class="bridge-badge" title="Bridge Expansion Card">🌉</span>
+						{/if}
+					</div>
+					{#if wbCard.cues && wbCard.cues.length > 1}
+						<div class="se-controls">
+							<button class="se-rotate-btn" onclick={handleWorldBuilderRotatePrev} title="Previous cue">◄</button>
+							<button class="se-rotate-btn" onclick={handleWorldBuilderRotateNext} title="Next cue">►</button>
+						</div>
+					{/if}
+				</div>
+
+				<!-- Active Cue Display -->
+				{#if wbCard.type === 'adventure'}
+					<!-- Adventure Card: Title, Summary, and Question Cues -->
+					{#if wbCard.title}
+						<div class="wb-adventure-title">{wbCard.title}</div>
+					{/if}
+					{#if wbCard.summary}
+						<div class="wb-adventure-summary">{wbCard.summary}</div>
+					{/if}
+					{#if wbCard.cues && wbCard.cues.length > 0}
+						<div class="wb-adventure-questions">
+							<div class="wb-questions-label">Questions:</div>
+							{#each wbCard.cues as cue, index}
+								<div class="wb-question-item">
+									<span class="wb-question-number">{index + 1}.</span>
+									<span class="wb-question-text">{cue}</span>
+								</div>
+							{/each}
+						</div>
+					{/if}
+				{:else if wbCard.type === 'keyhole'}
+					<!-- Keyhole Card: Cultural Questions -->
+					{#if wbCard.questions && wbCard.questions.length > 0}
+						<div class="wb-keyhole-questions">
+							<div class="wb-keyhole-label">Cultural Questions:</div>
+							{#each wbCard.questions as question, index}
+								<div class="wb-keyhole-item">
+									<span class="wb-keyhole-number">{index + 1}.</span>
+									<span class="wb-keyhole-text">{question}</span>
+								</div>
+							{/each}
+						</div>
+					{/if}
+				{:else if wbCard.cues}
+					<div class="se-active-cue">{wbCard.cues[wbCard.activeCueIndex]}</div>
+
+					<!-- Bridge Links (if any) -->
+					{#if currentBridgeLinks().length > 0}
+						<div class="bridge-links">
+							<div class="bridge-links-label">🌉 Bridge Links:</div>
+							{#each currentBridgeLinks() as link}
+								{@const spawnedLink = node.bridgeLinksSpawned?.[link.linkText]}
+								{@const displayText = spawnedLink?.displayName || link.linkText}
+								<button class="bridge-link-btn" onclick={(e) => handleSpawnBridgeLink(e, link)} title="Generate a {link.targetCardType} from {link.targetDeck}">
+									<span class="bridge-link-icon">🔗</span>
+									<span class="bridge-link-text">{displayText}</span>
+									<span class="bridge-link-arrow">→</span>
+								</button>
+							{/each}
+						</div>
+					{/if}
+
+					<!-- All Cues List (shown when selected) -->
+					{#if node.selected && !node.collapsed && wbCard.cues.length > 1}
+						<div class="se-cues-list">
+							<div class="se-list-title">All Cues:</div>
+							{#each wbCard.cues as cue, index (index)}
+								<button
+									class="se-cue-item {index === wbCard.activeCueIndex ? 'se-active' : ''}"
+									onclick={() => handleWorldBuilderSelectCue(index)}
+								>
+									<span class="se-bullet">{index === wbCard.activeCueIndex ? '►' : '•'}</span>
+									<span class="se-cue-text">{cue}</span>
+								</button>
+							{/each}
+						</div>
+					{/if}
+				{:else if wbCard.cue}
+					<!-- Advent card with single cue + interpretations -->
+					<div class="se-active-cue wb-advent-cue">{wbCard.cue}</div>
+
+					{#if wbCard.interpretations && wbCard.interpretations.length > 0}
+						<div class="wb-interpretations">
+							<div class="wb-interpretations-label">Interpretations:</div>
+							{#each wbCard.interpretations as interpretation}
+								<div class="wb-interpretation-item">• {interpretation}</div>
+							{/each}
+						</div>
+					{/if}
+				{/if}
+			{:else if node.loreCluster}
+				{@const loreCluster = node.loreCluster}
+				{@const primaryCard = loreCluster.primaryCard.card}
+				{@const primaryTypeInfo = LORE_MASTER_CARD_TYPES[primaryCard.type]}
+				{@const primaryActiveCueRaw = primaryCard.primaryCues[loreCluster.primaryCard.activeCueIndex]}
+				{@const primaryActiveCue = getDisplayCue(primaryActiveCueRaw, loreCluster.primaryCard.pairedDeity)}
+
+				<!-- Lore Cluster Layout -->
+				<div class="lore-cluster">
+					<!-- Primary Card (Center) -->
+					<div class="lore-primary-card">
+						<div class="lore-card-header">
+							<span class="lore-icon">{primaryTypeInfo.emoji}</span>
+							<span class="lore-type">{primaryTypeInfo.name.toUpperCase()}</span>
+							<span class="lore-cue-count">{loreCluster.primaryCard.activeCueIndex + 1}/{primaryCard.primaryCues.length}</span>
+							{#if primaryCard.expansion?.startsWith('bridge-')}
+								<span class="bridge-badge" title="Bridge Expansion Card">🌉</span>
+							{/if}
+							{#if loreCluster.primaryCard.pairedDeity}
+								<span class="deity-indicator" title="Paired with {loreCluster.primaryCard.pairedDeity.deityName}">🌟</span>
+							{/if}
+						</div>
+						<div class="lore-controls">
+							<button class="lore-rotate-btn" onclick={(e) => handleLoreMasterRotatePrimary(e, 'prev')} title="Previous cue">◄</button>
+							<button class="lore-rotate-btn" onclick={(e) => handleLoreMasterRotatePrimary(e, 'next')} title="Next cue">►</button>
+						</div>
+						<div class="lore-primary-cue">{primaryActiveCue}</div>
+						{#if loreCluster.primaryCard.pairedDeity}
+							<div class="deity-tag">✨ {loreCluster.primaryCard.pairedDeity.deityName}</div>
+						{/if}
+
+						<!-- Bridge Links (if any) -->
+						{#if currentBridgeLinks().length > 0}
+							<div class="bridge-links bridge-links-lore">
+								<div class="bridge-links-label">🌉 Bridge Links:</div>
+								{#each currentBridgeLinks() as link}
+									{@const spawnedLink = node.bridgeLinksSpawned?.[link.linkText]}
+									{@const displayText = spawnedLink?.displayName || link.linkText}
+									<button class="bridge-link-btn" onclick={(e) => handleSpawnBridgeLink(e, link)} title="Generate a {link.targetCardType} from {link.targetDeck}">
+										<span class="bridge-link-icon">🔗</span>
+										<span class="bridge-link-text">{displayText}</span>
+										<span class="bridge-link-arrow">→</span>
+									</button>
+								{/each}
+							</div>
+						{/if}
+					</div>
+
+					<!-- Secondary Cards (Tucked on Edges) -->
+					{#if loreCluster.topCard}
+						{@const topCard = loreCluster.topCard.card}
+						{@const topTypeInfo = LORE_MASTER_CARD_TYPES[topCard.type]}
+						{@const topActiveCueRaw = topCard.secondaryCues[loreCluster.topCard.activeCueIndex]}
+						{@const topActiveCue = getDisplayCue(topActiveCueRaw, loreCluster.topCard.pairedDeity)}
+						<div class="lore-secondary-card lore-top-card">
+							<div class="lore-secondary-header">
+								<span class="lore-secondary-icon">{topTypeInfo.emoji}</span>
+								<span class="lore-secondary-type">{topTypeInfo.name}</span>
+								{#if loreCluster.topCard.pairedDeity}
+									<span class="deity-indicator-small" title="{loreCluster.topCard.pairedDeity.deityName}">🌟</span>
+								{/if}
+							</div>
+							<div class="lore-secondary-cue">{topActiveCue}</div>
+							<div class="lore-secondary-controls">
+								<button class="lore-rotate-small" onclick={(e) => handleLoreMasterRotateSecondary(e, 'top', 'prev')}>◄</button>
+								<button class="lore-rotate-small" onclick={(e) => handleLoreMasterRotateSecondary(e, 'top', 'next')}>►</button>
+							</div>
+						</div>
+					{/if}
+
+					{#if loreCluster.rightCard}
+						{@const rightCard = loreCluster.rightCard.card}
+						{@const rightTypeInfo = LORE_MASTER_CARD_TYPES[rightCard.type]}
+						{@const rightActiveCueRaw = rightCard.secondaryCues[loreCluster.rightCard.activeCueIndex]}
+						{@const rightActiveCue = getDisplayCue(rightActiveCueRaw, loreCluster.rightCard.pairedDeity)}
+						<div class="lore-secondary-card lore-right-card">
+							<div class="lore-secondary-header">
+								<span class="lore-secondary-icon">{rightTypeInfo.emoji}</span>
+								<span class="lore-secondary-type">{rightTypeInfo.name}</span>
+								{#if loreCluster.rightCard.pairedDeity}
+									<span class="deity-indicator-small" title="{loreCluster.rightCard.pairedDeity.deityName}">🌟</span>
+								{/if}
+							</div>
+							<div class="lore-secondary-cue">{rightActiveCue}</div>
+							<div class="lore-secondary-controls">
+								<button class="lore-rotate-small" onclick={(e) => handleLoreMasterRotateSecondary(e, 'right', 'prev')}>◄</button>
+								<button class="lore-rotate-small" onclick={(e) => handleLoreMasterRotateSecondary(e, 'right', 'next')}>►</button>
+							</div>
+						</div>
+					{/if}
+
+					{#if loreCluster.bottomCard}
+						{@const bottomCard = loreCluster.bottomCard.card}
+						{@const bottomTypeInfo = LORE_MASTER_CARD_TYPES[bottomCard.type]}
+						{@const bottomActiveCueRaw = bottomCard.secondaryCues[loreCluster.bottomCard.activeCueIndex]}
+						{@const bottomActiveCue = getDisplayCue(bottomActiveCueRaw, loreCluster.bottomCard.pairedDeity)}
+						<div class="lore-secondary-card lore-bottom-card">
+							<div class="lore-secondary-header">
+								<span class="lore-secondary-icon">{bottomTypeInfo.emoji}</span>
+								<span class="lore-secondary-type">{bottomTypeInfo.name}</span>
+								{#if loreCluster.bottomCard.pairedDeity}
+									<span class="deity-indicator-small" title="{loreCluster.bottomCard.pairedDeity.deityName}">🌟</span>
+								{/if}
+							</div>
+							<div class="lore-secondary-cue">{bottomActiveCue}</div>
+							<div class="lore-secondary-controls">
+								<button class="lore-rotate-small" onclick={(e) => handleLoreMasterRotateSecondary(e, 'bottom', 'prev')}>◄</button>
+								<button class="lore-rotate-small" onclick={(e) => handleLoreMasterRotateSecondary(e, 'bottom', 'next')}>►</button>
+							</div>
+						</div>
+					{/if}
+
+					{#if loreCluster.leftCard}
+						{@const leftCard = loreCluster.leftCard.card}
+						{@const leftTypeInfo = LORE_MASTER_CARD_TYPES[leftCard.type]}
+						{@const leftActiveCueRaw = leftCard.secondaryCues[loreCluster.leftCard.activeCueIndex]}
+						{@const leftActiveCue = getDisplayCue(leftActiveCueRaw, loreCluster.leftCard.pairedDeity)}
+						<div class="lore-secondary-card lore-left-card">
+							<div class="lore-secondary-header">
+								<span class="lore-secondary-icon">{leftTypeInfo.emoji}</span>
+								<span class="lore-secondary-type">{leftTypeInfo.name}</span>
+								{#if loreCluster.leftCard.pairedDeity}
+									<span class="deity-indicator-small" title="{loreCluster.leftCard.pairedDeity.deityName}">🌟</span>
+								{/if}
+							</div>
+							<div class="lore-secondary-cue">{leftActiveCue}</div>
+							<div class="lore-secondary-controls">
+								<button class="lore-rotate-small" onclick={(e) => handleLoreMasterRotateSecondary(e, 'left', 'prev')}>◄</button>
+								<button class="lore-rotate-small" onclick={(e) => handleLoreMasterRotateSecondary(e, 'left', 'next')}>►</button>
+							</div>
+						</div>
+					{/if}
+
+					<!-- Modifier Card (if present) -->
+					{#if loreCluster.modifierCard}
+						{@const modifierCard = loreCluster.modifierCard.card}
+						{@const modifierCue = modifierCard.secondaryCues[loreCluster.modifierCard.activeCueIndex]}
+						<div class="lore-modifier-card">
+							<div class="modifier-header">
+								<span class="modifier-icon">⭕</span>
+								<span class="modifier-type">MODIFIER</span>
+							</div>
+							<div class="modifier-cue">{modifierCue}</div>
+							{#if loreCluster.expandedFromNodeId}
+								<div class="expansion-arrow">↗️ Expanded</div>
+							{/if}
+						</div>
+					{/if}
+				</div>
 			{:else}
 				<!-- Regular Card Layout -->
 				<div class="node-header">
@@ -433,6 +906,9 @@
 				class="context-menu"
 				style="position: fixed; left: {contextMenuPos.x}px; top: {contextMenuPos.y}px; z-index: 1000;"
 				onclick={(e) => e.stopPropagation()}
+				onkeydown={(e) => { if (e.key === 'Escape') closeContextMenu(); }}
+				role="menu"
+				tabindex="0"
 			>
 				{#if isGenerated}
 					<button class="context-menu-item" onclick={promoteToEntity}>
@@ -1025,5 +1501,525 @@
 	.group-icon {
 		font-size: 0.75rem;
 		filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+	}
+
+	/* World Builder Card Styles */
+	.wb-advent-cue {
+		font-size: 0.9375rem;
+		text-transform: none;
+		letter-spacing: 0.025em;
+	}
+
+	.wb-interpretations {
+		margin-top: 1rem;
+		padding: 0.875rem;
+		background: rgba(6, 182, 212, 0.1);
+		border-left: 3px solid rgb(6, 182, 212);
+		border-radius: 0.375rem;
+	}
+
+	.wb-interpretations-label {
+		font-size: 0.75rem;
+		font-weight: 700;
+		color: rgb(6, 182, 212);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		margin-bottom: 0.5rem;
+	}
+
+	.wb-interpretation-item {
+		font-size: 0.8125rem;
+		color: rgba(255, 255, 255, 0.85);
+		line-height: 1.5;
+		margin-bottom: 0.375rem;
+		padding-left: 0.5rem;
+	}
+
+	.wb-interpretation-item:last-child {
+		margin-bottom: 0;
+	}
+
+	/* Adventure Card Styles */
+	.wb-adventure-title {
+		font-size: 1.25rem;
+		font-weight: 800;
+		color: white;
+		line-height: 1.3;
+		margin-bottom: 0.75rem;
+		padding: 0.875rem;
+		background: rgba(239, 68, 68, 0.15);
+		border-left: 4px solid rgb(239, 68, 68);
+		border-radius: 0.375rem;
+		letter-spacing: 0.025em;
+	}
+
+	.wb-adventure-summary {
+		font-size: 0.9375rem;
+		color: rgba(255, 255, 255, 0.9);
+		line-height: 1.6;
+		margin-bottom: 0.875rem;
+		padding: 0.875rem;
+		background: rgba(249, 115, 22, 0.1);
+		border-left: 3px solid rgb(249, 115, 22);
+		border-radius: 0.375rem;
+	}
+
+	.wb-adventure-questions {
+		margin-top: 0.875rem;
+	}
+
+	.wb-questions-label {
+		font-size: 0.75rem;
+		font-weight: 700;
+		color: rgb(251, 146, 60);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		margin-bottom: 0.625rem;
+		padding-left: 0.25rem;
+	}
+
+	.wb-question-item {
+		display: flex;
+		gap: 0.5rem;
+		margin-bottom: 0.5rem;
+		padding: 0.625rem 0.75rem;
+		background: rgba(249, 115, 22, 0.08);
+		border-left: 2px solid rgba(251, 146, 60, 0.4);
+		border-radius: 0.25rem;
+		transition: all 0.2s;
+	}
+
+	.wb-question-item:hover {
+		background: rgba(249, 115, 22, 0.15);
+		border-left-color: rgb(251, 146, 60);
+	}
+
+	.wb-question-item:last-child {
+		margin-bottom: 0;
+	}
+
+	.wb-question-number {
+		font-size: 0.8125rem;
+		font-weight: 700;
+		color: rgb(251, 146, 60);
+		flex-shrink: 0;
+		min-width: 1.25rem;
+	}
+
+	.wb-question-text {
+		font-size: 0.875rem;
+		color: rgba(255, 255, 255, 0.9);
+		line-height: 1.5;
+		flex: 1;
+	}
+
+	/* Keyhole Card Styles */
+	.wb-keyhole-questions {
+		margin-top: 0.875rem;
+	}
+
+	.wb-keyhole-label {
+		font-size: 0.75rem;
+		font-weight: 700;
+		color: rgb(245, 158, 11);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		margin-bottom: 0.625rem;
+		padding-left: 0.25rem;
+	}
+
+	.wb-keyhole-item {
+		display: flex;
+		gap: 0.5rem;
+		margin-bottom: 0.5rem;
+		padding: 0.625rem 0.75rem;
+		background: rgba(245, 158, 11, 0.08);
+		border-left: 2px solid rgba(245, 158, 11, 0.4);
+		border-radius: 0.25rem;
+		transition: all 0.2s;
+	}
+
+	.wb-keyhole-item:hover {
+		background: rgba(245, 158, 11, 0.15);
+		border-left-color: rgb(245, 158, 11);
+	}
+
+	.wb-keyhole-item:last-child {
+		margin-bottom: 0;
+	}
+
+	.wb-keyhole-number {
+		font-size: 0.8125rem;
+		font-weight: 700;
+		color: rgb(245, 158, 11);
+		flex-shrink: 0;
+		min-width: 1.25rem;
+	}
+
+	.wb-keyhole-text {
+		font-size: 0.875rem;
+		color: rgba(255, 255, 255, 0.9);
+		line-height: 1.5;
+		flex: 1;
+	}
+
+	/* Lore Master's Deck Cluster Styles */
+	.lore-cluster {
+		position: relative;
+		width: 100%;
+		min-height: 500px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.lore-primary-card {
+		position: relative;
+		background: rgba(0, 0, 0, 0.3);
+		border: 2px solid rgba(255, 255, 255, 0.3);
+		border-radius: 0.75rem;
+		padding: 1rem;
+		min-width: 250px;
+		max-width: 300px;
+		z-index: 5;
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+	}
+
+	.lore-card-header {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-bottom: 0.75rem;
+		padding-bottom: 0.5rem;
+		border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+	}
+
+	.lore-icon {
+		font-size: 1.5rem;
+		flex-shrink: 0;
+	}
+
+	.lore-type {
+		font-size: 0.75rem;
+		font-weight: 800;
+		color: white;
+		letter-spacing: 0.1em;
+		flex: 1;
+	}
+
+	.lore-cue-count {
+		font-size: 0.75rem;
+		color: rgba(255, 255, 255, 0.8);
+		font-weight: 700;
+		background: rgba(0, 0, 0, 0.2);
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.375rem;
+	}
+
+	.lore-controls {
+		display: flex;
+		gap: 0.375rem;
+		justify-content: center;
+		margin-bottom: 0.75rem;
+	}
+
+	.lore-rotate-btn {
+		background: rgba(255, 255, 255, 0.15);
+		border: 1.5px solid rgba(255, 255, 255, 0.3);
+		border-radius: 0.375rem;
+		color: white;
+		width: 2rem;
+		height: 2rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.2s;
+		font-size: 0.875rem;
+		font-weight: bold;
+		padding: 0;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	}
+
+	.lore-rotate-btn:hover {
+		background: rgba(255, 255, 255, 0.25);
+		border-color: rgba(255, 255, 255, 0.5);
+		transform: scale(1.1);
+	}
+
+	.lore-primary-cue {
+		font-size: 1rem;
+		font-weight: 700;
+		color: white;
+		text-align: center;
+		padding: 1rem;
+		line-height: 1.4;
+		background: rgba(0, 0, 0, 0.15);
+		border-radius: 0.5rem;
+		min-height: 3rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	/* Bridge Badge */
+	.bridge-badge {
+		font-size: 0.875rem;
+		margin-left: 0.25rem;
+		opacity: 0.9;
+		cursor: help;
+		filter: drop-shadow(0 0 2px rgba(139, 92, 246, 0.5));
+	}
+
+	/* Deity Pairing Indicators */
+	.deity-indicator {
+		font-size: 1rem;
+		margin-left: auto;
+		animation: sparkle 2s infinite;
+		cursor: help;
+	}
+
+	.deity-indicator-small {
+		font-size: 0.75rem;
+		margin-left: auto;
+		animation: sparkle 2s infinite;
+		cursor: help;
+	}
+
+	.deity-tag {
+		margin-top: 0.5rem;
+		padding: 0.375rem 0.75rem;
+		background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(147, 51, 234, 0.3));
+		border: 1px solid rgba(147, 51, 234, 0.5);
+		border-radius: 0.375rem;
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: rgba(191, 219, 254, 1);
+		text-align: center;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	@keyframes sparkle {
+		0%, 100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+		50% {
+			opacity: 0.7;
+			transform: scale(1.1);
+		}
+	}
+
+	.lore-secondary-card {
+		position: absolute;
+		background: rgba(0, 0, 0, 0.4);
+		border: 2px solid rgba(255, 255, 255, 0.2);
+		border-radius: 0.5rem;
+		padding: 0.75rem;
+		width: 180px;
+		z-index: 4;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+		transition: all 0.2s;
+	}
+
+	.lore-secondary-card:hover {
+		border-color: rgba(255, 255, 255, 0.4);
+		transform: scale(1.05);
+		z-index: 6;
+	}
+
+	.lore-top-card {
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.lore-right-card {
+		right: 0;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	.lore-bottom-card {
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.lore-left-card {
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	.lore-secondary-header {
+		display: flex;
+		align-items: center;
+		gap: 0.375rem;
+		margin-bottom: 0.5rem;
+		padding-bottom: 0.375rem;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	.lore-secondary-icon {
+		font-size: 1.125rem;
+	}
+
+	.lore-secondary-type {
+		font-size: 0.6875rem;
+		font-weight: 700;
+		color: rgba(255, 255, 255, 0.9);
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+	}
+
+	.lore-secondary-cue {
+		font-size: 0.75rem;
+		color: rgba(255, 255, 255, 0.85);
+		line-height: 1.3;
+		margin-bottom: 0.5rem;
+		min-height: 2.5rem;
+		display: flex;
+		align-items: center;
+	}
+
+	.lore-secondary-controls {
+		display: flex;
+		gap: 0.25rem;
+		justify-content: center;
+	}
+
+	.lore-rotate-small {
+		background: rgba(255, 255, 255, 0.1);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: 0.25rem;
+		color: white;
+		width: 1.5rem;
+		height: 1.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.2s;
+		font-size: 0.75rem;
+		font-weight: bold;
+		padding: 0;
+	}
+
+	.lore-rotate-small:hover {
+		background: rgba(255, 255, 255, 0.2);
+		border-color: rgba(255, 255, 255, 0.4);
+		transform: scale(1.1);
+	}
+
+	.lore-modifier-card {
+		position: absolute;
+		bottom: -60px;
+		right: 10px;
+		background: rgba(100, 100, 100, 0.3);
+		border: 2px solid rgba(150, 150, 150, 0.4);
+		border-radius: 0.5rem;
+		padding: 0.625rem;
+		width: 150px;
+		z-index: 3;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+	}
+
+	.modifier-header {
+		display: flex;
+		align-items: center;
+		gap: 0.375rem;
+		margin-bottom: 0.375rem;
+	}
+
+	.modifier-icon {
+		font-size: 1rem;
+	}
+
+	.modifier-type {
+		font-size: 0.625rem;
+		font-weight: 700;
+		color: rgba(255, 255, 255, 0.8);
+		letter-spacing: 0.05em;
+	}
+
+	.modifier-cue {
+		font-size: 0.6875rem;
+		color: rgba(255, 255, 255, 0.75);
+		line-height: 1.3;
+		margin-bottom: 0.375rem;
+	}
+
+	.expansion-arrow {
+		font-size: 0.625rem;
+		color: rgba(255, 255, 255, 0.6);
+		text-align: center;
+		font-weight: 600;
+	}
+
+	/* Bridge Links Styles */
+	.bridge-links {
+		margin-top: 0.75rem;
+		padding: 0.75rem;
+		background: rgba(147, 51, 234, 0.1);
+		border: 1px solid rgba(147, 51, 234, 0.3);
+		border-radius: 0.5rem;
+	}
+
+	.bridge-links-lore {
+		background: rgba(14, 165, 233, 0.1);
+		border-color: rgba(14, 165, 233, 0.3);
+	}
+
+	.bridge-links-label {
+		font-size: 0.6875rem;
+		font-weight: 600;
+		color: rgba(255, 255, 255, 0.8);
+		margin-bottom: 0.5rem;
+		letter-spacing: 0.05em;
+	}
+
+	.bridge-link-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		width: 100%;
+		padding: 0.5rem 0.75rem;
+		margin-top: 0.375rem;
+		background: rgba(147, 51, 234, 0.2);
+		border: 1px solid rgba(147, 51, 234, 0.4);
+		border-radius: 0.375rem;
+		color: white;
+		font-size: 0.75rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.bridge-link-btn:hover {
+		background: rgba(147, 51, 234, 0.3);
+		border-color: rgba(147, 51, 234, 0.6);
+		transform: translateX(3px);
+		box-shadow: 0 0 10px rgba(147, 51, 234, 0.4);
+	}
+
+	.bridge-link-btn:active {
+		transform: scale(0.98) translateX(3px);
+	}
+
+	.bridge-link-icon {
+		font-size: 0.875rem;
+	}
+
+	.bridge-link-text {
+		flex: 1;
+		text-align: left;
+		font-size: 0.6875rem;
+	}
+
+	.bridge-link-arrow {
+		font-size: 0.875rem;
+		opacity: 0.7;
 	}
 </style>
