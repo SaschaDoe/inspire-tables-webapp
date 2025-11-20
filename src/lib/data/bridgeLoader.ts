@@ -229,19 +229,30 @@ export function bridgeCardToWorldBuilderCard(bridgeCard: BridgeCard): WorldBuild
 		expansion: `bridge-${(bridgeCard as any).bridgeDeck}`
 	};
 
+	// Format cue with links if present (for bridge link detection)
+	const links = 'links' in bridgeCard ? bridgeCard.links : undefined;
+	const baseCue = bridgeCard.cue;
+	const formattedCue = formatCueWithLinks(baseCue, links);
+
 	// Handle different card structures
 	if ('cues' in bridgeCard && bridgeCard.cues) {
 		card.cues = bridgeCard.cues;
 	} else if ('cue' in bridgeCard && bridgeCard.cue) {
 		if (bridgeCard.type === 'advent') {
-			card.cue = bridgeCard.cue;
+			card.cue = formattedCue; // Use formatted cue with links appended
 		} else {
 			// For origin/attribute, create 4 cues from details
 			const details = (bridgeCard as any).details;
 			if (details) {
-				card.cues = [details.top_left, details.top_right, bridgeCard.cue, details.bottom];
+				// Append links to each cue for proper bridge link detection
+				card.cues = [
+					formatCueWithLinks(details.top_left, links),
+					formatCueWithLinks(details.top_right, links),
+					formattedCue, // Main cue with links
+					formatCueWithLinks(details.bottom, links)
+				];
 			} else {
-				card.cues = [bridgeCard.cue, bridgeCard.cue, bridgeCard.cue, bridgeCard.cue];
+				card.cues = [formattedCue, formattedCue, formattedCue, formattedCue];
 			}
 		}
 	}
@@ -258,33 +269,39 @@ export function bridgeCardToLoreMasterCard(bridgeCard: BridgeCard): LoreMasterCa
 		throw new Error('Not a Lore Master bridge card');
 	}
 
+	// Format cues with links if present (for bridge link detection)
+	const nicknameLinks = 'nickname_links' in bridgeCard ? (bridgeCard as any).nickname_links : undefined;
+	const backgroundLinks = 'background_links' in bridgeCard ? (bridgeCard as any).background_links : undefined;
+
 	// Construct primary and secondary cues
 	const primaryCues: string[] = [];
 	const secondaryCues: string[] = [];
 
-	// Primary cue
-	primaryCues.push(bridgeCard.cue);
+	// Primary cue (with nickname links appended)
+	const formattedCue = formatCueWithLinks(bridgeCard.cue, nicknameLinks);
+	primaryCues.push(formattedCue);
 
 	// Add details as additional primary cues if available
 	if ('details' in bridgeCard && bridgeCard.details) {
-		primaryCues.push(bridgeCard.details.top_left);
-		primaryCues.push(bridgeCard.details.top_right);
-		primaryCues.push(bridgeCard.details.bottom);
+		primaryCues.push(formatCueWithLinks(bridgeCard.details.top_left, nicknameLinks));
+		primaryCues.push(formatCueWithLinks(bridgeCard.details.top_right, nicknameLinks));
+		primaryCues.push(formatCueWithLinks(bridgeCard.details.bottom, nicknameLinks));
 	} else {
 		// Fill to 4 primary cues
 		while (primaryCues.length < 4) {
-			primaryCues.push(bridgeCard.cue);
+			primaryCues.push(formattedCue);
 		}
 	}
 
-	// Secondary cue (background)
+	// Secondary cue (background with background links appended)
 	if ('background' in bridgeCard && bridgeCard.background) {
-		secondaryCues.push(bridgeCard.background);
+		const formattedBackground = formatCueWithLinks((bridgeCard as any).background, backgroundLinks);
+		secondaryCues.push(formattedBackground);
 	}
 
 	// Fill secondary cues to 4 (or 8 for modifiers)
 	while (secondaryCues.length < 4) {
-		secondaryCues.push(bridgeCard.cue);
+		secondaryCues.push(formattedCue);
 	}
 
 	return {
