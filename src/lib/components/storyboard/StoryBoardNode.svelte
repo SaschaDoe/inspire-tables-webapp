@@ -338,12 +338,8 @@
 				// No existing children - position above the parent card
 				yPosition = node.y - (cardHeight + gap);
 			} else if (existingAspects.length === 0 && existingConflicts.length > 0) {
-				// No aspects but there are conflicts - position between parent and conflicts
-				const topmostConflict = existingConflicts.reduce((top, current) =>
-					current.y < top.y ? current : top
-				);
-				// Position below the topmost conflict (between conflict and parent)
-				yPosition = topmostConflict.y + cardHeight + gap;
+				// No aspects but there are conflicts - position directly above parent (below conflicts)
+				yPosition = node.y - (cardHeight + gap);
 			} else {
 				// Find the topmost aspect (lowest y value)
 				const topmostAspect = existingAspects.reduce((top, current) =>
