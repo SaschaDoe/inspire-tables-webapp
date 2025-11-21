@@ -658,9 +658,9 @@
 			const viewportCenterY =
 				(-$activeBoard.viewport.y + window.innerHeight / 2) / $activeBoard.viewport.zoom;
 
-			const radius = 200; // Distance from center
-			const cardWidth = 150;
-			const cardHeight = 150;
+			const radius = 450; // Distance from center (increased for larger cards)
+			const cardWidth = 400; // Same as normal Story Engine cards
+			const cardHeight = 400; // Same as normal Story Engine cards
 
 			// Create a group ID for all cards in this pattern
 			const patternGroupId = crypto.randomUUID();
