@@ -181,6 +181,12 @@
 				menuHTML += `<button class="ctx-btn" data-action="add-aspect">🟢 Add Aspect</button>`;
 			}
 
+			// Add Aspect and Conflict options for engines
+			if (node.storyEngineCard && node.storyEngineCard.type === 'engine') {
+				menuHTML += `<button class="ctx-btn" data-action="add-aspect">🟢 Add Aspect</button>`;
+				menuHTML += `<button class="ctx-btn" data-action="add-conflict">🔴 Add Conflict</button>`;
+			}
+
 			if (node.worldBuilderCard && !node.groupId) {
 				menuHTML += `<button class="ctx-btn" data-action="generate-setting">🗺️ Generate Mini Setting</button>`;
 			}
@@ -214,6 +220,9 @@
 							break;
 					case 'add-aspect':
 						addAspectCard();
+						break;
+					case 'add-conflict':
+						addConflictCard();
 						break;
 					case 'generate-setting':
 							generateMiniSettingFromCard();
@@ -310,23 +319,34 @@
 			// Generate a random aspect card
 			const aspectCard = await getRandomStoryEngineCard('aspect');
 
-			// Find all existing aspect cards that are children of this node
+			// Find all existing child cards of this node
 			const existingAspects = $activeBoard.nodes.filter(
 				(n) => n.parentNodeId === node.id && n.storyEngineCard?.type === 'aspect'
 			);
+			const existingConflicts = $activeBoard.nodes.filter(
+				(n) => n.parentNodeId === node.id && n.storyEngineCard?.type === 'conflict'
+			);
 
 			// Calculate position: stack above the parent or above the topmost existing aspect
+			// But always below conflicts
 			const cardHeight = 150; // Default card height
 			const gap = 10; // Gap between stacked cards
 
 			let yPosition: number;
 
-			if (existingAspects.length === 0) {
-				// No existing aspects - position above the parent card
+			if (existingAspects.length === 0 && existingConflicts.length === 0) {
+				// No existing children - position above the parent card
 				yPosition = node.y - (cardHeight + gap);
+			} else if (existingAspects.length === 0 && existingConflicts.length > 0) {
+				// No aspects but there are conflicts - position between parent and conflicts
+				const topmostConflict = existingConflicts.reduce((top, current) =>
+					current.y < top.y ? current : top
+				);
+				// Position below the topmost conflict (between conflict and parent)
+				yPosition = topmostConflict.y + cardHeight + gap;
 			} else {
 				// Find the topmost aspect (lowest y value)
-				const topmostAspect = existingAspects.reduce((top, current) => 
+				const topmostAspect = existingAspects.reduce((top, current) =>
 					current.y < top.y ? current : top
 				);
 				// Position above the topmost aspect
@@ -356,6 +376,75 @@
 		} catch (error) {
 			console.error('Failed to add aspect card:', error);
 			alert('Failed to add aspect card. Please try again.');
+		}
+	}
+
+	async function addConflictCard() {
+		if (!$activeBoard) return;
+
+		closeContextMenu();
+
+		try {
+			// Generate a random conflict card
+			const conflictCard = await getRandomStoryEngineCard('conflict');
+
+			// Find all existing child cards of this node
+			const existingAspects = $activeBoard.nodes.filter(
+				(n) => n.parentNodeId === node.id && n.storyEngineCard?.type === 'aspect'
+			);
+			const existingConflicts = $activeBoard.nodes.filter(
+				(n) => n.parentNodeId === node.id && n.storyEngineCard?.type === 'conflict'
+			);
+
+			// Calculate position: conflicts always stack at the top (above aspects and parent)
+			const cardHeight = 150; // Default card height
+			const gap = 10; // Gap between stacked cards
+
+			let yPosition: number;
+
+			if (existingConflicts.length === 0) {
+				// No existing conflicts
+				if (existingAspects.length === 0) {
+					// No aspects either - position above the parent card
+					yPosition = node.y - (cardHeight + gap);
+				} else {
+					// Stack above the topmost aspect
+					const topmostAspect = existingAspects.reduce((top, current) =>
+						current.y < top.y ? current : top
+					);
+					yPosition = topmostAspect.y - (cardHeight + gap);
+				}
+			} else {
+				// Find the topmost conflict (lowest y value) and stack above it
+				const topmostConflict = existingConflicts.reduce((top, current) =>
+					current.y < top.y ? current : top
+				);
+				yPosition = topmostConflict.y - (cardHeight + gap);
+			}
+
+			const typeInfo = STORY_ENGINE_CARD_TYPES['conflict'];
+
+			// Add the new conflict node
+			storyboardStore.addNode(
+				$activeBoard.id,
+				{
+					x: node.x, // Same x as parent
+					y: yPosition,
+					width: node.width, // Same width as parent
+					height: cardHeight,
+					parentNodeId: node.id, // Track parent relationship
+					storyEngineCard: {
+						type: 'conflict',
+						cues: Array.from(conflictCard.cues),
+						activeCueIndex: 0,
+						expansion: conflictCard.expansion
+					}
+				},
+				`Add Conflict to ${STORY_ENGINE_CARD_TYPES[node.storyEngineCard!.type].name}`
+			);
+		} catch (error) {
+			console.error('Failed to add conflict card:', error);
+			alert('Failed to add conflict card. Please try again.');
 		}
 	}
 
