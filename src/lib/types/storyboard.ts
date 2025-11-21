@@ -35,6 +35,9 @@ export interface StoryBoardNode {
 	// Bridge link tracking - maps link text to spawned node info
 	bridgeLinksSpawned?: Record<string, { nodeId: string; displayName: string }>; // e.g., { "a Region": { nodeId: "node-123", displayName: "Mountain Range" } }
 
+	// Parent node tracking - for aspects linked to agents/anchors
+	parentNodeId?: string; // ID of the parent node (for aspect cards stacked on agents/anchors)
+
 	// Story Engine card data
 	storyEngineCard?: {
 		type: StoryEngineCardType;

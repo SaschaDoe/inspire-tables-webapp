@@ -189,6 +189,7 @@ function createStoryBoardStore() {
 					layer: node.layer ?? 5,
 					groupId: node.groupId, // Group ID for moving nodes together
 				bridgeLinksSpawned: node.bridgeLinksSpawned, // Track spawned bridge links
+				parentNodeId: node.parentNodeId, // Track parent node for aspects
 					storyEngineCard: node.storyEngineCard, // Story Engine card data
 				worldBuilderCard: node.worldBuilderCard, // World Builder card data
 					loreCluster: node.loreCluster, // Lore Master's Deck cluster data
