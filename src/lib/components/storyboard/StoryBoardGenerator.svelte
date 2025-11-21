@@ -84,6 +84,15 @@
 		]
 	};
 
+	const complexPatternsCategory: CategoryInfo = {
+		type: 'complex-patterns' as any,
+		name: 'Complex Patterns',
+		icon: '🔄',
+		metadata: [
+			{ name: 'Circle of Fate', type: 'complex-patterns' }
+		]
+	};
+
 
 	// Bridge card availability by type
 	const BRIDGE_AVAILABLE_TYPES = {
@@ -153,6 +162,11 @@
 	let selectedCompoundType = $state<'settlement' | 'faction-territory' | 'divine-domain' | 'adventure-site' | null>(null);
 	let generatedCompound = $state<CompoundGeneration | null>(null);
 	let isGeneratingCompound = $state(false);
+
+	// Complex Patterns specific state
+	let isComplexPatternsMode = $state(false);
+	let selectedPatternType = $state<'circle-of-fate' | null>(null);
+	let isGeneratingPattern = $state(false);
 
 	// Load tables when category changes
 	$effect(() => {
@@ -625,6 +639,145 @@
 		generatedCompound = null;
 	}
 
+	async function generateCircleOfFate() {
+		if (!$activeBoard) return;
+
+		isGeneratingPattern = true;
+		try {
+			// Generate 2 agents and 2 engines
+			const agent1 = await getRandomCard('agent');
+			const agent2 = await getRandomCard('agent');
+			const engine1 = await getRandomCard('engine');
+			const engine2 = await getRandomCard('engine');
+
+			// Calculate center position (viewport center)
+			const viewportCenterX =
+				(-$activeBoard.viewport.x + window.innerWidth / 2) / $activeBoard.viewport.zoom;
+			const viewportCenterY =
+				(-$activeBoard.viewport.y + window.innerHeight / 2) / $activeBoard.viewport.zoom;
+
+			const radius = 200; // Distance from center
+			const cardWidth = 150;
+			const cardHeight = 150;
+
+			// Position cards in a circle
+			// Agent 1 - Left
+			const agent1Node = storyboardStore.addNode(
+				$activeBoard.id,
+				{
+					x: viewportCenterX - radius,
+					y: viewportCenterY,
+					width: cardWidth,
+					height: cardHeight,
+					storyEngineCard: {
+						type: 'agent',
+						cues: Array.from(agent1.cues),
+						activeCueIndex: 0,
+						expansion: agent1.expansion
+					}
+				},
+				'Generate Circle of Fate'
+			);
+
+			// Engine 1 - Top
+			const engine1Node = storyboardStore.addNode(
+				$activeBoard.id,
+				{
+					x: viewportCenterX,
+					y: viewportCenterY - radius,
+					width: cardWidth,
+					height: cardHeight,
+					storyEngineCard: {
+						type: 'engine',
+						cues: Array.from(engine1.cues),
+						activeCueIndex: 0,
+						expansion: engine1.expansion
+					}
+				},
+				'Generate Circle of Fate'
+			);
+
+			// Agent 2 - Right
+			const agent2Node = storyboardStore.addNode(
+				$activeBoard.id,
+				{
+					x: viewportCenterX + radius,
+					y: viewportCenterY,
+					width: cardWidth,
+					height: cardHeight,
+					storyEngineCard: {
+						type: 'agent',
+						cues: Array.from(agent2.cues),
+						activeCueIndex: 0,
+						expansion: agent2.expansion
+					}
+				},
+				'Generate Circle of Fate'
+			);
+
+			// Engine 2 - Bottom
+			const engine2Node = storyboardStore.addNode(
+				$activeBoard.id,
+				{
+					x: viewportCenterX,
+					y: viewportCenterY + radius,
+					width: cardWidth,
+					height: cardHeight,
+					storyEngineCard: {
+						type: 'engine',
+						cues: Array.from(engine2.cues),
+						activeCueIndex: 0,
+						expansion: engine2.expansion
+					}
+				},
+				'Generate Circle of Fate'
+			);
+
+			// Add connections in circular pattern
+			if (agent1Node && engine1Node && agent2Node && engine2Node) {
+				// Agent 1 → Engine 1
+				storyboardStore.addConnection($activeBoard.id, {
+					fromNodeId: agent1Node.id,
+					toNodeId: engine1Node.id,
+					lineType: 'solid',
+					endMarker: 'arrow'
+				});
+
+				// Engine 1 → Agent 2
+				storyboardStore.addConnection($activeBoard.id, {
+					fromNodeId: engine1Node.id,
+					toNodeId: agent2Node.id,
+					lineType: 'solid',
+					endMarker: 'arrow'
+				});
+
+				// Agent 2 → Engine 2
+				storyboardStore.addConnection($activeBoard.id, {
+					fromNodeId: agent2Node.id,
+					toNodeId: engine2Node.id,
+					lineType: 'solid',
+					endMarker: 'arrow'
+				});
+
+				// Engine 2 → Agent 1
+				storyboardStore.addConnection($activeBoard.id, {
+					fromNodeId: engine2Node.id,
+					toNodeId: agent1Node.id,
+					lineType: 'solid',
+					endMarker: 'arrow'
+				});
+			}
+
+			// Close the generator panel
+			onClose();
+		} catch (error) {
+			console.error('Failed to generate Circle of Fate:', error);
+		} finally {
+			isGeneratingPattern = false;
+		}
+	}
+
+
 	// Handle escape to close
 	function handleKeyDown(e: KeyboardEvent) {
 		if (e.key === 'Escape' && show) {
@@ -775,9 +928,38 @@
 						<span class="category-name">{bridgeCompoundsCategory.name}</span>
 						<span class="category-count">4</span>
 					</button>
+			<!-- Complex Patterns Category -->
+			<button
+				class="category-btn complex-patterns-btn {isComplexPatternsMode ? 'active' : ''}"
+				onclick={() => {
+					isComplexPatternsMode = true;
+					isBridgeCompoundsMode = false;
+					isLoreMasterMode = false;
+					isStoryEngineMode = false;
+					isWorldBuilderMode = false;
+					selectedTable = null;
+					searchQuery = '';
+					generatedText = '';
+					generatedLoreCluster = null;
+					selectedLoreMasterType = null;
+					generatedWorldBuilderCard = null;
+					generatedMicrosetting = null;
+					selectedWorldBuilderType = null;
+					generatedStoryEngineCard = null;
+					generatedStorySeed = null;
+					selectedStoryEngineType = null;
+					generatedCompound = null;
+					selectedCompoundType = null;
+					selectedPatternType = null;
+				}}
+			>
+				<span class="category-icon">{complexPatternsCategory.icon}</span>
+				<span class="category-name">{complexPatternsCategory.name}</span>
+				<span class="category-count">1</span>
+			</button>
 				</div>
 
-				{#if !isStoryEngineMode && !isWorldBuilderMode && !isLoreMasterMode && !isBridgeCompoundsMode}
+				{#if !isStoryEngineMode && !isWorldBuilderMode && !isLoreMasterMode && !isBridgeCompoundsMode && !isComplexPatternsMode}
 					<!-- Search bar -->
 					<div class="search-bar">
 						<span class="search-icon">🔍</span>
@@ -975,6 +1157,25 @@
 							</div>
 						</button>
 					</div>
+t		{:else if isComplexPatternsMode}
+				<!-- Complex Patterns type selector -->
+				<div class="story-engine-header">
+					<h3 class="story-engine-title">Select Pattern Type</h3>
+				</div>
+				<div class="story-engine-types pattern-types">
+					<button
+						class="story-engine-type-btn pattern-type-btn {selectedPatternType === 'circle-of-fate' ? 'selected' : ''}"
+						onclick={() => {
+							selectedPatternType = 'circle-of-fate';
+						}}
+					>
+						<span class="type-icon">🔄</span>
+						<div class="type-info">
+							<span class="type-name">Circle of Fate</span>
+							<span class="type-desc">2 Agents + 2 Engines in circular relationship</span>
+						</div>
+					</button>
+				</div>
 				{:else}
 					<!-- Story Engine card type selector -->
 					<div class="story-engine-header">
@@ -1532,11 +1733,29 @@
 							</div>
 						{/if}
 					</div>
+t		{:else if isComplexPatternsMode && selectedPatternType}
+				<!-- Complex Patterns generation -->
+				<div class="roll-section story-engine-roll">
+					{#if !isGeneratingPattern}
+						<button class="roll-btn pattern-btn" onclick={generateCircleOfFate} disabled={isGeneratingPattern}>
+							{#if isGeneratingPattern}
+								<span class="rolling">✨ Generating...</span>
+							{:else}
+								<span>🔄 Generate Circle of Fate</span>
+							{/if}
+						</button>
+					{:else}
+						<div class="pattern-generating">
+							<span class="generating-icon">✨</span>
+							<span class="generating-text">Generating Circle of Fate pattern...</span>
+						</div>
+					{/if}
+				</div>
 				{:else}
 					<div class="placeholder">
-						<p class="placeholder-icon">{isBridgeCompoundsMode ? '🌉' : isLoreMasterMode ? '📜' : isWorldBuilderMode ? '🌍' : isStoryEngineMode ? '📖' : selectedCategory.icon}</p>
+						<p class="placeholder-icon">{isComplexPatternsMode ? '🔄' : isBridgeCompoundsMode ? '🌉' : isLoreMasterMode ? '📜' : isWorldBuilderMode ? '🌍' : isStoryEngineMode ? '📖' : selectedCategory.icon}</p>
 						<p class="placeholder-text">
-							{isBridgeCompoundsMode ? 'Select a compound type to generate' : isLoreMasterMode ? 'Select a card type to generate' : isWorldBuilderMode ? 'Select a card type to generate' : isStoryEngineMode ? 'Select a card type to generate' : 'Select a table to generate content'}
+							{isComplexPatternsMode ? 'Select a pattern type to generate' : isBridgeCompoundsMode ? 'Select a compound type to generate' : isLoreMasterMode ? 'Select a card type to generate' : isWorldBuilderMode ? 'Select a card type to generate' : isStoryEngineMode ? 'Select a card type to generate' : 'Select a table to generate content'}
 						</p>
 					</div>
 				{/if}
