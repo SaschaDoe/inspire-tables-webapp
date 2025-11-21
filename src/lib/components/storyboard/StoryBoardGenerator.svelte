@@ -661,6 +661,7 @@
 			const radius = 450; // Distance from center (increased for larger cards)
 			const cardWidth = 400; // Same as normal Story Engine cards
 			const cardHeight = 400; // Same as normal Story Engine cards
+			const conflictCardHeight = 150; // Stacked conflict cards are smaller
 
 			// Create a group ID for all cards in this pattern
 			const patternGroupId = crypto.randomUUID();
@@ -743,7 +744,7 @@
 			);
 
 			// Add conflict cards stacked above each engine
-			const gap = 5; // Small gap for tight stacking
+			const gap = 10; // Gap between stacked cards (same as manual add)
 
 			// Conflict 1 - Above Engine 1 (Top)
 			if (engine1Node) {
@@ -751,9 +752,9 @@
 					$activeBoard.id,
 					{
 						x: engine1Node.x,
-						y: engine1Node.y - cardHeight - gap,
+						y: engine1Node.y - conflictCardHeight - gap,
 						width: cardWidth,
-						height: cardHeight,
+						height: conflictCardHeight,
 						groupId: patternGroupId,
 						parentNodeId: engine1Node.id,
 						storyEngineCard: {
@@ -773,9 +774,9 @@
 					$activeBoard.id,
 					{
 						x: engine2Node.x,
-						y: engine2Node.y - cardHeight - gap,
+						y: engine2Node.y - conflictCardHeight - gap,
 						width: cardWidth,
-						height: cardHeight,
+						height: conflictCardHeight,
 						groupId: patternGroupId,
 						parentNodeId: engine2Node.id,
 						storyEngineCard: {
