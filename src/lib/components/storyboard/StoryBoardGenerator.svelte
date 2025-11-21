@@ -743,7 +743,7 @@
 			);
 
 			// Add conflict cards stacked above each engine
-			const gap = 10;
+			const gap = 5; // Small gap for tight stacking
 
 			// Conflict 1 - Above Engine 1 (Top)
 			if (engine1Node) {
