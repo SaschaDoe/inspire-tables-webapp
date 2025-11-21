@@ -660,6 +660,9 @@
 			const cardWidth = 150;
 			const cardHeight = 150;
 
+			// Create a group ID for all cards in this pattern
+			const patternGroupId = crypto.randomUUID();
+
 			// Position cards in a circle
 			// Agent 1 - Left
 			const agent1Node = storyboardStore.addNode(
@@ -669,6 +672,7 @@
 					y: viewportCenterY,
 					width: cardWidth,
 					height: cardHeight,
+					groupId: patternGroupId,
 					storyEngineCard: {
 						type: 'agent',
 						cues: Array.from(agent1.cues),
@@ -687,6 +691,7 @@
 					y: viewportCenterY - radius,
 					width: cardWidth,
 					height: cardHeight,
+					groupId: patternGroupId,
 					storyEngineCard: {
 						type: 'engine',
 						cues: Array.from(engine1.cues),
@@ -705,6 +710,7 @@
 					y: viewportCenterY,
 					width: cardWidth,
 					height: cardHeight,
+					groupId: patternGroupId,
 					storyEngineCard: {
 						type: 'agent',
 						cues: Array.from(agent2.cues),
@@ -723,6 +729,7 @@
 					y: viewportCenterY + radius,
 					width: cardWidth,
 					height: cardHeight,
+					groupId: patternGroupId,
 					storyEngineCard: {
 						type: 'engine',
 						cues: Array.from(engine2.cues),
@@ -736,36 +743,16 @@
 			// Add connections in circular pattern
 			if (agent1Node && engine1Node && agent2Node && engine2Node) {
 				// Agent 1 → Engine 1
-				storyboardStore.addConnection($activeBoard.id, {
-					fromNodeId: agent1Node.id,
-					toNodeId: engine1Node.id,
-					lineType: 'solid',
-					endMarker: 'arrow'
-				});
+				storyboardStore.addConnection($activeBoard.id, agent1Node.id, engine1Node.id);
 
 				// Engine 1 → Agent 2
-				storyboardStore.addConnection($activeBoard.id, {
-					fromNodeId: engine1Node.id,
-					toNodeId: agent2Node.id,
-					lineType: 'solid',
-					endMarker: 'arrow'
-				});
+				storyboardStore.addConnection($activeBoard.id, engine1Node.id, agent2Node.id);
 
 				// Agent 2 → Engine 2
-				storyboardStore.addConnection($activeBoard.id, {
-					fromNodeId: agent2Node.id,
-					toNodeId: engine2Node.id,
-					lineType: 'solid',
-					endMarker: 'arrow'
-				});
+				storyboardStore.addConnection($activeBoard.id, agent2Node.id, engine2Node.id);
 
 				// Engine 2 → Agent 1
-				storyboardStore.addConnection($activeBoard.id, {
-					fromNodeId: engine2Node.id,
-					toNodeId: agent1Node.id,
-					lineType: 'solid',
-					endMarker: 'arrow'
-				});
+				storyboardStore.addConnection($activeBoard.id, engine2Node.id, agent1Node.id);
 			}
 
 			// Close the generator panel
