@@ -644,11 +644,13 @@
 
 		isGeneratingPattern = true;
 		try {
-			// Generate 2 agents and 2 engines
+			// Generate 2 agents, 2 engines, and 2 conflicts
 			const agent1 = await getRandomCard('agent');
 			const agent2 = await getRandomCard('agent');
 			const engine1 = await getRandomCard('engine');
 			const engine2 = await getRandomCard('engine');
+			const conflict1 = await getRandomCard('conflict');
+			const conflict2 = await getRandomCard('conflict');
 
 			// Calculate center position (viewport center)
 			const viewportCenterX =
@@ -739,6 +741,53 @@
 				},
 				'Generate Circle of Fate'
 			);
+
+			// Add conflict cards stacked above each engine
+			const gap = 10;
+
+			// Conflict 1 - Above Engine 1 (Top)
+			if (engine1Node) {
+				storyboardStore.addNode(
+					$activeBoard.id,
+					{
+						x: viewportCenterX,
+						y: viewportCenterY - radius - cardHeight - gap,
+						width: cardWidth,
+						height: cardHeight,
+						groupId: patternGroupId,
+						parentNodeId: engine1Node.id,
+						storyEngineCard: {
+							type: 'conflict',
+							cues: Array.from(conflict1.cues),
+							activeCueIndex: 0,
+							expansion: conflict1.expansion
+						}
+					},
+					'Generate Circle of Fate'
+				);
+			}
+
+			// Conflict 2 - Above Engine 2 (Bottom)
+			if (engine2Node) {
+				storyboardStore.addNode(
+					$activeBoard.id,
+					{
+						x: viewportCenterX,
+						y: viewportCenterY + radius - cardHeight - gap,
+						width: cardWidth,
+						height: cardHeight,
+						groupId: patternGroupId,
+						parentNodeId: engine2Node.id,
+						storyEngineCard: {
+							type: 'conflict',
+							cues: Array.from(conflict2.cues),
+							activeCueIndex: 0,
+							expansion: conflict2.expansion
+						}
+					},
+					'Generate Circle of Fate'
+				);
+			}
 
 			// Add connections in circular pattern
 			if (agent1Node && engine1Node && agent2Node && engine2Node) {
