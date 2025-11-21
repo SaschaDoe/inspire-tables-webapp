@@ -750,8 +750,8 @@
 				storyboardStore.addNode(
 					$activeBoard.id,
 					{
-						x: viewportCenterX,
-						y: viewportCenterY - radius - cardHeight - gap,
+						x: engine1Node.x,
+						y: engine1Node.y - cardHeight - gap,
 						width: cardWidth,
 						height: cardHeight,
 						groupId: patternGroupId,
@@ -772,8 +772,8 @@
 				storyboardStore.addNode(
 					$activeBoard.id,
 					{
-						x: viewportCenterX,
-						y: viewportCenterY + radius - cardHeight - gap,
+						x: engine2Node.x,
+						y: engine2Node.y - cardHeight - gap,
 						width: cardWidth,
 						height: cardHeight,
 						groupId: patternGroupId,
