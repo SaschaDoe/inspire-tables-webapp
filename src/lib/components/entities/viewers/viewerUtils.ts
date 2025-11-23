@@ -57,20 +57,149 @@ export function createAddEntityHandler<T extends Record<string, any>>(
 	parentObject: T,
 	arrayKey: keyof T,
 	parentEntity: any,
-	dispatch: EventDispatcher<any>
+	dispatch: EventDispatcher<any>,
+	entityType?: string
 ) {
 	return (entity: any) => {
+		// Save the nested entity to the entity store so it can be navigated to
+		if (entityType && entity && entity.id) {
+			const existingNestedEntity = entityStore.getEntity(entity.id);
+			if (!existingNestedEntity) {
+				const wrapperEntity: Entity = {
+					id: entity.id,
+					type: entityType as any,
+					name: entity.name || `${entityType} ${entity.id.slice(0, 8)}`,
+					description: entity.description || '',
+					tags: [],
+					metadata: {
+						createdAt: new Date(),
+						updatedAt: new Date()
+					},
+					relationships: [],
+					customFields: { generatedEntity: entity }
+				};
+				entityStore.createEntity(wrapperEntity);
+			}
+		}
+
 		parentObject[arrayKey] = [...parentObject[arrayKey], entity] as T[keyof T];
 
 		if (parentEntity) {
 			// Update the parent entity in the store with the modified object
 			const existingEntity = entityStore.getEntity(parentEntity.id);
 			if (existingEntity) {
+				// Create a deep copy to ensure reactivity
+				const updatedGeneratedEntity = JSON.parse(JSON.stringify(parentObject));
+
 				entityStore.updateEntity(parentEntity.id, {
 					...existingEntity,
 					customFields: {
 						...existingEntity.customFields,
-						generatedEntity: parentObject
+						generatedEntity: updatedGeneratedEntity
+					},
+					metadata: {
+						...existingEntity.metadata,
+						updatedAt: new Date()
+					}
+				});
+			}
+
+			dispatch('entityUpdated', { entity: parentEntity });
+		}
+	};
+}
+
+/**
+ * Creates a handler function for adding a single nested entity.
+ * Replaces the array with a single-item array containing the new entity.
+ */
+export function createAddSingleEntityHandler<T extends Record<string, any>>(
+	parentObject: T,
+	arrayKey: keyof T,
+	parentEntity: any,
+	dispatch: EventDispatcher<any>,
+	entityType: string
+) {
+	return (entity: any) => {
+		// Save the nested entity to the entity store so it can be navigated to
+		if (entity && entity.id) {
+			const existingNestedEntity = entityStore.getEntity(entity.id);
+			if (!existingNestedEntity) {
+				const wrapperEntity: Entity = {
+					id: entity.id,
+					type: entityType as any,
+					name: entity.name || `${entityType} ${entity.id.slice(0, 8)}`,
+					description: entity.description || '',
+					tags: [],
+					metadata: {
+						createdAt: new Date(),
+						updatedAt: new Date()
+					},
+					relationships: [],
+					customFields: { generatedEntity: entity }
+				};
+				entityStore.createEntity(wrapperEntity);
+			}
+		}
+
+		// Replace array with single-item array
+		parentObject[arrayKey] = [entity] as T[keyof T];
+
+		if (parentEntity) {
+			// Update the parent entity in the store with the modified object
+			const existingEntity = entityStore.getEntity(parentEntity.id);
+			if (existingEntity) {
+				// Create a deep copy to ensure reactivity
+				const updatedGeneratedEntity = JSON.parse(JSON.stringify(parentObject));
+
+				entityStore.updateEntity(parentEntity.id, {
+					...existingEntity,
+					customFields: {
+						...existingEntity.customFields,
+						generatedEntity: updatedGeneratedEntity
+					},
+					metadata: {
+						...existingEntity.metadata,
+						updatedAt: new Date()
+					}
+				});
+
+				// Get the freshly updated entity from the store
+				const freshEntity = entityStore.getEntity(parentEntity.id);
+				if (freshEntity) {
+					dispatch('entityUpdated', { entity: freshEntity });
+				}
+			}
+		}
+	};
+}
+
+/**
+ * Creates a handler function for removing a single nested entity.
+ * Clears the array.
+ */
+export function createRemoveSingleEntityHandler<T extends Record<string, any>>(
+	parentObject: T,
+	arrayKey: keyof T,
+	parentEntity: any,
+	dispatch: EventDispatcher<any>
+) {
+	return () => {
+		// Clear the array
+		parentObject[arrayKey] = [] as T[keyof T];
+
+		if (parentEntity) {
+			// Update the parent entity in the store with the modified object
+			const existingEntity = entityStore.getEntity(parentEntity.id);
+			if (existingEntity) {
+				// Create a deep copy to ensure reactivity
+				const updatedGeneratedEntity = JSON.parse(JSON.stringify(parentObject));
+
+				entityStore.updateEntity(parentEntity.id, {
+					...existingEntity,
+					customFields: {
+						...existingEntity.customFields,
+						generatedEntity: updatedGeneratedEntity
 					},
 					metadata: {
 						...existingEntity.metadata,

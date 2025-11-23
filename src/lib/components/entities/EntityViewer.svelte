@@ -116,6 +116,7 @@
 
 	/**
 	 * Get the appropriate props for the viewer component
+	 * Make entity and parentEntity reactive by wrapping in $derived
 	 */
 	const viewerProps = $derived.by(() => {
 		const baseProps: any = { entity };
@@ -168,45 +169,45 @@
 
 <div class="entity-viewer">
 	{#if entityType === 'campaign'}
-		<CampaignViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<CampaignViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'character'}
-		<CharacterViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<CharacterViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'villain'}
-		<VillainViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<VillainViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'monster'}
-		<MonsterViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<MonsterViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'dungeon'}
-		<DungeonViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<DungeonViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'room'}
-		<RoomViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<RoomViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'entrance'}
-		<EntranceViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<EntranceViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'scene'}
-		<SceneViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<SceneViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'artefact'}
-		<ArtefactViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<ArtefactViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'adventure'}
-		<AdventureViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<AdventureViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'quest'}
-		<QuestViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<QuestViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'faction'}
-		<FactionViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<FactionViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'settlement'}
-		<SettlementViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<SettlementViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'universe'}
-		<UniverseViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<UniverseViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'sphere'}
-		<SphereViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<SphereViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'sphereConnection'}
-		<SphereConnectionViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<SphereConnectionViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'galaxy'}
-		<GalaxyViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<GalaxyViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'solarSystem'}
-		<SolarSystemViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<SolarSystemViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'planet'}
-		<PlanetViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<PlanetViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else}
-		<GenericEntityViewer {...viewerProps} onopenEntity={handleOpenEntity} onentityUpdated={handleEntityUpdated} />
+		<GenericEntityViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{/if}
 </div>
 

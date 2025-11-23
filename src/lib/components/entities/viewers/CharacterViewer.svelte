@@ -62,7 +62,7 @@
 	const talentRules = CharacterCreator.NESTED_ENTITY_RULES.talents;
 
 	const { handleOpenEntity, handleEntityUpdated } = createEventForwarders(dispatch);
-	const handleAddTalent = createAddEntityHandler(character, 'talents', parentEntity, dispatch);
+	const handleAddTalent = createAddEntityHandler(character, 'talents', parentEntity, dispatch, talentRules.entityType);
 </script>
 
 <div class="character-viewer">

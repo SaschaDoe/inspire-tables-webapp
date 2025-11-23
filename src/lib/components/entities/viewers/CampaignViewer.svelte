@@ -34,8 +34,8 @@
 	const universeRules = CampaignCreator.NESTED_ENTITY_RULES.universes;
 
 	const { handleOpenEntity, handleEntityUpdated } = createEventForwarders(dispatch);
-	const handleAddAdventure = createAddEntityHandler(campaign, 'adventures', parentEntity, dispatch);
-	const handleAddUniverse = createAddEntityHandler(campaign, 'universes', parentEntity, dispatch);
+	const handleAddAdventure = createAddEntityHandler(campaign, 'adventures', parentEntity, dispatch, adventureRules.entityType);
+	const handleAddUniverse = createAddEntityHandler(campaign, 'universes', parentEntity, dispatch, universeRules.entityType);
 
 	// Campaign Information
 	const campaignInfo = $derived([

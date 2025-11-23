@@ -195,12 +195,13 @@
 	}
 
 	// Phase 2: Simplified using entityStore directly instead of local state
+	// Use Svelte 4 store auto-subscription with $ prefix
 	let currentGenericEntity = $derived.by(() => {
 		const tab = $activeTab;
 		if (!tab || tab.entityType === 'storyboard') return null;
 
-		// Get entity directly from store
-		const entity = entityStore.getEntity(tab.entityId);
+		// Access the store reactively using $ auto-subscription
+		const entity = $entityStore.entities.get(tab.entityId);
 		if (!entity) return null;
 
 		// For campaigns, only return if it's a generated entity (has customFields.generatedEntity)
@@ -343,9 +344,12 @@
 	function handleNestedEntityOpen(event: CustomEvent<{ entity: any }>) {
 		const clickedEntity = event.detail.entity;
 
+		console.log('[workspace] handleNestedEntityOpen called for:', clickedEntity.name, 'id:', clickedEntity.id, 'has type:', !!clickedEntity.type, 'has metadata:', !!clickedEntity.metadata);
+
 		// Check if this is already a workspace Entity or just a nested object
 		if (clickedEntity.type && clickedEntity.metadata) {
 			// Already a workspace entity, just open it
+			console.log('[workspace] Opening as workspace entity');
 			openGenericEntity(clickedEntity as Entity);
 		} else {
 			// This is a nested entity object (like a Sphere from Universe)
@@ -403,16 +407,8 @@
 	// Phase 2: Removed handleNestedRefresh - derived stores update automatically
 
 	function handleEntityUpdated(event: CustomEvent<{ entity: Entity }>) {
-		const updatedEntity = event.detail.entity;
-		// Update the entire entity in the store, including the generatedEntity with all nested entities
-		// Deep clone the generatedEntity to ensure Svelte detects the change
-		entityStore.updateEntity(updatedEntity.id, {
-			customFields: {
-				...updatedEntity.customFields,
-				generatedEntity: JSON.parse(JSON.stringify(updatedEntity.customFields?.generatedEntity))
-			}
-		});
-		// Phase 2: Derived stores update automatically - no need to reload
+		// The entity has already been updated in the store by the viewer handler
+		// The reactive store subscription will handle the update automatically
 	}
 </script>
 
