@@ -117,11 +117,14 @@
 	let panY = $state(0);
 	let isDragging = $state(false);
 	let dragStart = $state({ x: 0, y: 0 });
+	let isInitialized = $state(false);
 
 	const hexSize = 20;
 	const zoomFactor = 0.2;
 	const minScale = 0.2;
 	const maxScale = 4;
+	const viewportWidth = 1200; // Approximate viewport width
+	const viewportHeight = 600; // Map wrapper height
 
 	// Create a set of continent tile coordinates for quick lookup
 	const continentTileSet = $derived.by(() => {
@@ -130,6 +133,30 @@
 			set.add(`${tile.x},${tile.y}`);
 		});
 		return set;
+	});
+
+	// Calculate continent center for initial positioning
+	const continentCenter = $derived.by(() => {
+		if (continent.hexTiles.length === 0) return { x: 0, y: 0 };
+
+		const avgX = continent.hexTiles.reduce((sum, tile) => sum + tile.x, 0) / continent.hexTiles.length;
+		const avgY = continent.hexTiles.reduce((sum, tile) => sum + tile.y, 0) / continent.hexTiles.length;
+
+		// Convert to pixel coordinates
+		const pixelX = avgX * hexSize * 1.5;
+		const pixelY = avgY * hexSize * Math.sqrt(3) + (Math.floor(avgX) % 2) * hexSize * Math.sqrt(3) / 2;
+
+		return { x: pixelX, y: pixelY };
+	});
+
+	// Initialize pan to center the continent
+	$effect(() => {
+		if (!isInitialized && continent.hexTiles.length > 0) {
+			const center = continentCenter;
+			panX = (viewportWidth / 2) - (center.x * scale);
+			panY = (viewportHeight / 2) - (center.y * scale);
+			isInitialized = true;
+		}
 	});
 
 	function getHexPoints(tile: HexTile, size: number): string {
@@ -154,8 +181,9 @@
 
 	function handleReset() {
 		scale = 0.8;
-		panX = 0;
-		panY = 0;
+		const center = continentCenter;
+		panX = (viewportWidth / 2) - (center.x * scale);
+		panY = (viewportHeight / 2) - (center.y * scale);
 	}
 
 	function handleMouseDown(e: MouseEvent) {
