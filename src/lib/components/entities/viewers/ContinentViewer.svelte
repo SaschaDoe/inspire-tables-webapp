@@ -7,6 +7,7 @@
 	import { WorldMap } from '$lib/entities/location/worldMap';
 	import { HexTile } from '$lib/entities/location/hexTile';
 	import { TERRAIN_COLORS } from '$lib/entities/location/terrainType';
+	import EntityViewer from '../EntityViewer.svelte';
 
 	interface Props {
 		continent: Continent;
@@ -357,85 +358,17 @@
 
 	<!-- Hex Tile Details Panel -->
 	{#if selectedHexTile}
-		<Section title="Hex Tile Details">
-			<div class="hex-details" bind:this={hexDetailsElement}>
-				<div class="hex-details-header">
-					<h3>Hex Tile ({selectedHexTile.x}, {selectedHexTile.y})</h3>
-					<button class="close-btn" onclick={closeHexDetails}>✕</button>
-				</div>
-
-				<div class="hex-details-grid">
-					<div class="detail-card">
-						<div class="detail-label">Terrain Type</div>
-						<div class="detail-value" style="color: {TERRAIN_COLORS[selectedHexTile.terrainType]}">
-							{TerrainType[selectedHexTile.terrainType]}
-						</div>
-					</div>
-
-					<div class="detail-card">
-						<div class="detail-label">Elevation</div>
-						<div class="detail-value">{selectedHexTile.elevation}/10</div>
-					</div>
-
-					<div class="detail-card">
-						<div class="detail-label">Temperature</div>
-						<div class="detail-value">{selectedHexTile.temperature}°</div>
-					</div>
-
-					<div class="detail-card">
-						<div class="detail-label">Dryness</div>
-						<div class="detail-value">{selectedHexTile.dryness}%</div>
-					</div>
-
-					{#if selectedHexTile.feature}
-						<div class="detail-card">
-							<div class="detail-label">Feature</div>
-							<div class="detail-value">{selectedHexTile.feature}</div>
-						</div>
-					{/if}
-
-					{#if selectedHexTile.weather}
-						<div class="detail-card">
-							<div class="detail-label">Weather</div>
-							<div class="detail-value">{selectedHexTile.weather}</div>
-						</div>
-					{/if}
-
-					{#if selectedHexTile.settlements && selectedHexTile.settlements.length > 0}
-						<div class="detail-card full-width">
-							<div class="detail-label">Settlements</div>
-							<div class="detail-list">
-								{#each selectedHexTile.settlements as settlement}
-									<span class="list-item">{settlement.name}</span>
-								{/each}
-							</div>
-						</div>
-					{/if}
-
-					{#if selectedHexTile.dungeons && selectedHexTile.dungeons.length > 0}
-						<div class="detail-card full-width">
-							<div class="detail-label">Dungeons</div>
-							<div class="detail-list">
-								{#each selectedHexTile.dungeons as dungeon}
-									<span class="list-item">{dungeon.name}</span>
-								{/each}
-							</div>
-						</div>
-					{/if}
-
-					{#if selectedHexTile.hazards && selectedHexTile.hazards.length > 0}
-						<div class="detail-card full-width">
-							<div class="detail-label">Hazards</div>
-							<div class="detail-list">
-								{#each selectedHexTile.hazards as hazard}
-									<span class="list-item hazard">{hazard}</span>
-								{/each}
-							</div>
-						</div>
-					{/if}
-				</div>
+		<div class="hex-details-container" bind:this={hexDetailsElement}>
+			<div class="hex-details-header">
+				<h3>Selected Hex Tile</h3>
+				<button class="close-btn" onclick={closeHexDetails}>✕</button>
 			</div>
-		</Section>
+			<EntityViewer
+				entity={selectedHexTile}
+				entityType="hexTile"
+				parentEntity={continent}
+			/>
+		</div>
 	{/if}
 </div>
 
@@ -671,9 +604,10 @@
 		margin: 0;
 	}
 
-	/* Hex Tile Details */
-	.hex-details {
-		background: rgb(30 27 75 / 0.3);
+	/* Hex Tile Details Container */
+	.hex-details-container {
+		margin-top: 1.5rem;
+		background: rgb(30 27 75 / 0.2);
 		border: 1px solid rgb(168 85 247 / 0.3);
 		border-radius: 0.5rem;
 		padding: 1.5rem;
@@ -684,6 +618,8 @@
 		justify-content: space-between;
 		align-items: center;
 		margin-bottom: 1.5rem;
+		padding-bottom: 1rem;
+		border-bottom: 1px solid rgb(168 85 247 / 0.2);
 	}
 
 	.hex-details-header h3 {
@@ -711,58 +647,5 @@
 	.close-btn:hover {
 		background: rgb(168 85 247 / 0.4);
 		border-color: rgb(168 85 247 / 0.6);
-	}
-
-	.hex-details-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-		gap: 1rem;
-	}
-
-	.detail-card {
-		padding: 1rem;
-		background: rgb(30 27 75 / 0.4);
-		border: 1px solid rgb(168 85 247 / 0.2);
-		border-radius: 0.5rem;
-	}
-
-	.detail-card.full-width {
-		grid-column: 1 / -1;
-	}
-
-	.detail-label {
-		font-size: 0.75rem;
-		color: rgb(168 85 247);
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		margin-bottom: 0.5rem;
-		font-weight: 600;
-	}
-
-	.detail-value {
-		font-size: 1.125rem;
-		color: rgb(216 180 254);
-		font-weight: 600;
-	}
-
-	.detail-list {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
-	}
-
-	.list-item {
-		padding: 0.25rem 0.75rem;
-		background: rgb(168 85 247 / 0.2);
-		border: 1px solid rgb(168 85 247 / 0.3);
-		border-radius: 0.25rem;
-		font-size: 0.875rem;
-		color: rgb(216 180 254);
-	}
-
-	.list-item.hazard {
-		background: rgb(239 68 68 / 0.2);
-		border-color: rgb(239 68 68 / 0.3);
-		color: rgb(252 165 165);
 	}
 </style>
