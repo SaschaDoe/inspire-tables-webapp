@@ -2,6 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { getEntityCreator } from '$lib/entities/entityRegistry';
 	import { entityStore } from '$lib/stores/entityStore';
+	import { extractAndSaveNestedEntities } from '$lib/utils/nestedEntityExtractor';
 	import EntityViewer from './EntityViewer.svelte';
 
 	interface Props {
@@ -20,22 +21,97 @@
 	let generatedEntity = $state<any>(null);
 	let selectedExistingEntity = $state<any>(null);
 	let entityName = $state<string>('');
+	let previewEntityIds = $state<string[]>([]); // Track all entities created for preview
+	let errorMessage = $state<string>(''); // Error message to display in UI
 
 	// Get all existing entities of this type
 	const existingEntities = $derived(entityStore.getEntitiesByType(entityType as any));
 
 	function switchTab(tab: 'generate' | 'select') {
 		currentTab = tab;
+		// Clear any error messages
+		errorMessage = '';
+		// Clean up preview entities when switching tabs
+		cleanupPreviewEntities();
 		// Reset selections when switching tabs
 		generatedEntity = null;
 		selectedExistingEntity = null;
 	}
 
+	/**
+	 * Delete all preview entities from the store to free up localStorage
+	 */
+	function cleanupPreviewEntities() {
+		for (const entityId of previewEntityIds) {
+			entityStore.deleteEntity(entityId);
+		}
+		previewEntityIds = [];
+		console.log('[AddNestedEntityModal] Cleaned up preview entities');
+	}
+
+	/**
+	 * Generates a new entity for preview in the modal
+	 *
+	 * IMPORTANT: We save and extract nested entities immediately for the preview.
+	 * This allows the graph in the modal to show sphere connections.
+	 * When the user clicks "Add Universe", we skip re-extraction (see handleAdd).
+	 *
+	 * We also track all created entity IDs so we can clean them up if user:
+	 * - Regenerates (creates new preview)
+	 * - Cancels (doesn't add to parent)
+	 * - Switches tabs
+	 */
 	function generateNew() {
-		const creator = getEntityCreator(entityType);
-		if (creator) {
-			generatedEntity = creator.create();
-			entityName = generatedEntity.name || `${displayName} ${generatedEntity.id.slice(0, 8)}`;
+		// Clear any previous errors
+		errorMessage = '';
+
+		try {
+			// Clean up previous preview entities before generating new ones
+			cleanupPreviewEntities();
+
+			const creator = getEntityCreator(entityType);
+			if (creator) {
+				generatedEntity = creator.create();
+				entityName = generatedEntity.name || `${displayName} ${generatedEntity.id.slice(0, 8)}`;
+
+				// Save to store temporarily so preview can access nested entities
+				const previewEntity = {
+					id: generatedEntity.id,
+					type: entityType,
+					name: entityName,
+					created: Date.now(),
+					lastModified: Date.now(),
+					relationships: [],
+					customFields: {
+						generatedEntity: generatedEntity
+					}
+				};
+				entityStore.createEntity(previewEntity);
+
+				// Track this entity ID for cleanup
+				previewEntityIds.push(previewEntity.id);
+
+				// Extract nested entities for preview (sphere connections, etc.)
+				const extractedEntities = extractAndSaveNestedEntities(previewEntity);
+				if (extractedEntities.length > 0) {
+					console.log(`[AddNestedEntityModal] Extracted ${extractedEntities.length} nested entities for preview`);
+					// Track all extracted entity IDs for cleanup
+					previewEntityIds.push(...extractedEntities.map(e => e.id));
+				}
+			}
+		} catch (error) {
+			console.error('[AddNestedEntityModal] Error generating entity:', error);
+
+			// Handle QuotaExceededError specifically
+			if (error instanceof Error && error.name === 'QuotaExceededError') {
+				errorMessage = '❌ Storage Quota Exceeded!\n\n' +
+					'Your browser storage is full. Please:\n' +
+					'1. Delete some entities from the workspace\n' +
+					'2. Or clear browser storage in DevTools (F12 → Application → Local Storage → Clear)\n' +
+					'3. Then try again';
+			} else {
+				errorMessage = `❌ Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`;
+			}
 		}
 	}
 
@@ -43,39 +119,89 @@
 		selectedExistingEntity = entity;
 	}
 
+	/**
+	 * CRITICAL FLOW - DO NOT MODIFY WITHOUT UNDERSTANDING:
+	 *
+	 * UPDATED FLOW (with preview extraction):
+	 * 1. generateNew() saves entity and extracts nested entities FOR PREVIEW
+	 * 2. User sees preview with sphere connections in graph
+	 * 3. User clicks "Add Universe"
+	 * 4. handleAdd() updates the entity name in the store
+	 * 5. handleAdd() calls onAdd callback with the raw generated entity
+	 * 6. The onAdd handler (from viewerUtils.createAddEntityHandler):
+	 *    a. Finds entity already exists in store
+	 *    b. Calls extractAndSaveNestedEntities() - but entities already extracted!
+	 *    c. Adds entity to parent's array (e.g., campaign.universes)
+	 *    d. Updates parent entity in store
+	 *
+	 * This ensures:
+	 * - Preview shows sphere connections (extracted in generateNew)
+	 * - Entity appears in navigation immediately
+	 * - Parent-child relationships are established
+	 * - Reactivity triggers properly
+	 * - Preview entities are kept (not cleaned up) since user is adding them
+	 */
 	function handleAdd() {
-		let entityToAdd = null;
+		// Clear any previous errors
+		errorMessage = '';
 
-		if (currentTab === 'generate' && generatedEntity) {
-			// Update name with user input
-			generatedEntity.name = entityName;
-			entityToAdd = generatedEntity;
+		try {
+			let entityToAdd = null;
 
-			// Save newly generated entity to the store
-			const newEntity = {
-				id: generatedEntity.id,
-				type: entityType,
-				name: entityName,
-				created: Date.now(),
-				lastModified: Date.now(),
-				relationships: [],
-				customFields: {
-					generatedEntity: generatedEntity
+			if (currentTab === 'generate' && generatedEntity) {
+				// Update name with user input
+				generatedEntity.name = entityName;
+				entityToAdd = generatedEntity;
+
+				// Update the existing entity in store (created during generateNew)
+				// with the final user-edited name
+				const existingEntity = entityStore.getEntity(generatedEntity.id);
+				if (existingEntity) {
+					entityStore.updateEntity(generatedEntity.id, {
+						...existingEntity,
+						name: entityName,
+						customFields: {
+							...existingEntity.customFields,
+							generatedEntity: generatedEntity
+						}
+					});
 				}
-			};
-			entityStore.createEntity(newEntity);
-		} else if (currentTab === 'select' && selectedExistingEntity) {
-			entityToAdd = selectedExistingEntity;
-		}
 
-		if (entityToAdd && onAdd) {
-			onAdd(entityToAdd);
-		}
+				// Clear preview tracking since we're keeping these entities
+				previewEntityIds = [];
+			} else if (currentTab === 'select' && selectedExistingEntity) {
+				entityToAdd = selectedExistingEntity;
+			}
 
-		closeModal();
+			// Call onAdd handler which will:
+			// - Extract nested entities (already done, but handler will skip duplicates)
+			// - Add to parent array
+			// - Update parent in store
+			if (entityToAdd && onAdd) {
+				onAdd(entityToAdd);
+			}
+
+			closeModal();
+		} catch (error) {
+			console.error('[AddNestedEntityModal] Error adding entity:', error);
+
+			// Handle QuotaExceededError specifically
+			if (error instanceof Error && error.name === 'QuotaExceededError') {
+				errorMessage = '❌ Storage Quota Exceeded!\n\n' +
+					'Cannot add entity - your browser storage is full. Please:\n' +
+					'1. Delete some entities from the workspace\n' +
+					'2. Or clear browser storage in DevTools (F12 → Application → Local Storage → Clear)\n' +
+					'3. Then try again';
+			} else {
+				errorMessage = `❌ Error adding entity: ${error instanceof Error ? error.message : 'Unknown error occurred'}`;
+			}
+		}
 	}
 
 	function closeModal() {
+		// Clean up preview entities if user is canceling (not adding)
+		cleanupPreviewEntities();
+
 		isOpen = false;
 		currentTab = 'generate';
 		generatedEntity = null;
@@ -110,6 +236,15 @@
 					Select Existing
 				</button>
 			</div>
+
+			<!-- Error Message -->
+			{#if errorMessage}
+				<div class="error-banner">
+					<div class="error-icon">⚠️</div>
+					<div class="error-text">{errorMessage}</div>
+					<button class="error-close" onclick={() => errorMessage = ''} aria-label="Dismiss error">✕</button>
+				</div>
+			{/if}
 
 			<div class="modal-content">
 				{#if currentTab === 'generate'}
@@ -264,6 +399,66 @@
 		color: white;
 		border-bottom-color: rgb(168 85 247);
 		background: rgb(168 85 247 / 0.1);
+	}
+
+	.error-banner {
+		display: flex;
+		align-items: flex-start;
+		gap: 1rem;
+		padding: 1rem 1.5rem;
+		background: rgb(239 68 68 / 0.15);
+		border: 1px solid rgb(239 68 68 / 0.5);
+		border-left: 4px solid rgb(239 68 68);
+		margin: 0 1.5rem;
+		margin-top: 1rem;
+		border-radius: 0.5rem;
+		animation: slideDown 0.3s ease-out;
+	}
+
+	@keyframes slideDown {
+		from {
+			opacity: 0;
+			transform: translateY(-10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.error-icon {
+		font-size: 1.5rem;
+		flex-shrink: 0;
+	}
+
+	.error-text {
+		flex: 1;
+		color: rgb(254 202 202);
+		font-size: 0.875rem;
+		line-height: 1.5;
+		white-space: pre-line;
+	}
+
+	.error-close {
+		background: transparent;
+		border: none;
+		color: rgb(254 202 202);
+		font-size: 1.25rem;
+		cursor: pointer;
+		padding: 0;
+		width: 1.5rem;
+		height: 1.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 0.25rem;
+		transition: all 0.2s;
+		flex-shrink: 0;
+	}
+
+	.error-close:hover {
+		background: rgb(239 68 68 / 0.2);
+		color: white;
 	}
 
 	.modal-content {

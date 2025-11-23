@@ -1,6 +1,7 @@
 import { entityStore } from '$lib/stores/entityStore';
 import type { Entity } from '$lib/types/entity';
 import type { EventDispatcher } from 'svelte';
+import { extractAndSaveNestedEntities } from '$lib/utils/nestedEntityExtractor';
 
 /**
  * Auto-saves nested entities to the entityStore so they appear in the navigator.
@@ -51,7 +52,30 @@ export function autoSaveNestedEntities(
 
 /**
  * Creates a handler function for adding nested entities.
- * Handles array reassignment and event dispatching.
+ *
+ * CRITICAL FLOW - DO NOT MODIFY WITHOUT UNDERSTANDING:
+ *
+ * This handler works in tandem with AddNestedEntityModal:
+ *
+ * TWO CREATION PATHS:
+ *
+ * PATH 1: Modal Creation (Campaign -> Add Universe)
+ * 1. Modal generates entity and saves to entityStore
+ * 2. Modal calls this handler with the raw entity
+ * 3. Handler finds entity already exists
+ * 4. Handler extracts nested entities (sphere connections, etc.)
+ * 5. Handler adds entity to parent array
+ * 6. Handler updates parent in store
+ *
+ * PATH 2: Direct Creation (Workspace Navigator -> New Universe)
+ * 1. Workspace creates entity wrapper and saves to entityStore
+ * 2. Workspace extracts nested entities directly
+ * 3. Workspace opens entity in tab
+ * (This handler is not used in this path)
+ *
+ * KEY INSIGHT: We ALWAYS extract nested entities, even if entity exists,
+ * because the modal saves the entity but doesn't extract. This ensures
+ * sphere connections and other nested entities are properly saved.
  */
 export function createAddEntityHandler<T extends Record<string, any>>(
 	parentObject: T,
@@ -63,9 +87,12 @@ export function createAddEntityHandler<T extends Record<string, any>>(
 	return (entity: any) => {
 		// Save the nested entity to the entity store so it can be navigated to
 		if (entityType && entity && entity.id) {
+			let wrapperEntity: Entity;
 			const existingNestedEntity = entityStore.getEntity(entity.id);
+
 			if (!existingNestedEntity) {
-				const wrapperEntity: Entity = {
+				// PATH 2: Entity doesn't exist yet - create it
+				wrapperEntity = {
 					id: entity.id,
 					type: entityType as any,
 					name: entity.name || `${entityType} ${entity.id.slice(0, 8)}`,
@@ -79,9 +106,20 @@ export function createAddEntityHandler<T extends Record<string, any>>(
 					customFields: { generatedEntity: entity }
 				};
 				entityStore.createEntity(wrapperEntity);
+			} else {
+				// PATH 1: Entity already exists (saved by modal)
+				wrapperEntity = existingNestedEntity;
+			}
+
+			// CRITICAL: Always extract nested entities, regardless of path
+			// This is what saves sphere connections to the entity store
+			const extractedEntities = extractAndSaveNestedEntities(wrapperEntity);
+			if (extractedEntities.length > 0) {
+				console.log(`[viewerUtils] Extracted ${extractedEntities.length} nested entities from ${entityType}`);
 			}
 		}
 
+		// Add entity to parent's array (e.g., campaign.universes)
 		parentObject[arrayKey] = [...parentObject[arrayKey], entity] as T[keyof T];
 
 		if (parentEntity) {
@@ -123,9 +161,12 @@ export function createAddSingleEntityHandler<T extends Record<string, any>>(
 	return (entity: any) => {
 		// Save the nested entity to the entity store so it can be navigated to
 		if (entity && entity.id) {
+			let wrapperEntity: Entity;
 			const existingNestedEntity = entityStore.getEntity(entity.id);
+
 			if (!existingNestedEntity) {
-				const wrapperEntity: Entity = {
+				// Create new entity in store
+				wrapperEntity = {
 					id: entity.id,
 					type: entityType as any,
 					name: entity.name || `${entityType} ${entity.id.slice(0, 8)}`,
@@ -139,6 +180,16 @@ export function createAddSingleEntityHandler<T extends Record<string, any>>(
 					customFields: { generatedEntity: entity }
 				};
 				entityStore.createEntity(wrapperEntity);
+			} else {
+				// Entity already exists (e.g., saved by modal)
+				wrapperEntity = existingNestedEntity;
+			}
+
+			// Always extract nested entities, even if the entity already exists
+			// This handles the case where modal saves the entity but hasn't extracted yet
+			const extractedEntities = extractAndSaveNestedEntities(wrapperEntity);
+			if (extractedEntities.length > 0) {
+				console.log(`[viewerUtils] Extracted ${extractedEntities.length} nested entities from ${entityType}`);
 			}
 		}
 

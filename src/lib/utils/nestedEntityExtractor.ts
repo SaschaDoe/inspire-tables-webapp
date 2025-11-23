@@ -93,6 +93,13 @@ export function extractAndSaveNestedEntities(parentEntity: Entity): Entity[] {
 		for (const nestedEntity of items) {
 			if (!nestedEntity || typeof nestedEntity !== 'object') continue;
 
+			// Skip if entity already exists in store (prevents duplicate extraction)
+			const existingEntity = entityStore.getEntity(nestedEntity.id);
+			if (existingEntity) {
+				console.log(`[nestedEntityExtractor] Skipping ${config.childType} ${nestedEntity.id} - already exists`);
+				continue;
+			}
+
 			// Wrap the nested entity with full Entity properties
 			const wrappedEntity = wrapNestedEntity(nestedEntity, config.childType, parentEntity);
 			console.log(`[nestedEntityExtractor] Wrapped ${config.childType}:`, {

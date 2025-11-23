@@ -273,10 +273,27 @@
 		isEntityModalOpen = false;
 	}
 
+	/**
+	 * WORKSPACE CREATION PATH - Direct entity creation from navigator
+	 *
+	 * This is PATH 2 mentioned in viewerUtils.createAddEntityHandler
+	 *
+	 * Flow:
+	 * 1. User clicks "New Universe" (or other entity) in workspace navigator
+	 * 2. Entity is generated via creator
+	 * 3. This handler saves entity to store
+	 * 4. Extracts nested entities immediately (sphere connections, etc.)
+	 * 5. Opens entity in a new tab
+	 *
+	 * Difference from Modal Path (PATH 1):
+	 * - Direct extraction happens here (no deferred extraction)
+	 * - No parent-child relationship (entity is standalone in workspace)
+	 * - Opens in tab immediately
+	 */
 	function handleSaveEntity(entity: any, entityType: string) {
 		console.log('Saved entity:', entityType, entity);
 
-		// Create a workspace entity from the generated entity
+		// Wrap the generated entity with Entity interface
 		const workspaceEntity: Entity = {
 			id: entity.id,
 			type: entityType as any,
@@ -291,9 +308,11 @@
 			customFields: { generatedEntity: entity }
 		};
 
+		// Save to entity store
 		entityStore.createEntity(workspaceEntity);
 
-		// Extract and save nested entities (rooms, entrances, etc.)
+		// CRITICAL: Extract nested entities immediately
+		// This saves sphere connections, rooms, entrances, etc. to the store
 		const extractedEntities = extractAndSaveNestedEntities(workspaceEntity);
 		console.log(`Extracted ${extractedEntities.length} nested entities from ${entityType}`);
 
@@ -301,7 +320,7 @@
 		autoGenerateChildEntities(workspaceEntity);
 
 		// Reload entities to show the newly created children
-	
+
 		// Open the entity in a tab
 		tabStore.openTab(workspaceEntity);
 	}
