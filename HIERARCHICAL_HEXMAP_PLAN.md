@@ -9,6 +9,37 @@ Transform the current flat hex tile system into a **two-level hierarchical syste
 
 **Key Innovation**: Each planetary hex can be "zoomed into" revealing a detailed 50x50 regional hex map with full civilization simulation, complete with nations, cities, armies, diplomacy, tech trees, culture, and thousands of years of trackable historical events.
 
+## Unciv Integration ⭐ NEW
+
+**Reference Implementation**: [Unciv](https://github.com/yairm210/Unciv) - Open-source Civilization V clone (GPL v3)
+- **Location**: Cloned to `C:\proj\games\Unciv`
+- **Analysis**: See `UNCIV_ANALYSIS.md` for detailed comparison
+
+### Key Learnings from Unciv
+
+1. **Data-Driven Architecture** - JSON files define game rules, code interprets
+2. **"Uniques" System** - Flexible string-based bonus system (e.g., `"[+2 Science] from [Jungle] tiles"`)
+3. **Manager Classes** - Separation of concerns (CityPopulationManager, TechManager, etc.)
+4. **Resource Stockpiling** - Strategic resources are quantified and consumed
+5. **Tile Work Assignment** - Citizens assigned to specific tiles for yields
+6. **Complete Game Data** - 100+ buildings, 80+ units, 75+ techs available as reference
+
+### Available Unciv Assets (GPL v3, with attribution)
+
+- **JSON Game Data**: Buildings, Units, Techs, Policies, Resources, Terrains
+- **Icon Sprite Sheets**: UI icons, nation flags, policy icons, unit promotions
+- **Complete Tech Tree**: Structure and prerequisites
+- **Social Policy Trees**: Tradition, Liberty, Honor, Piety, etc.
+
+### Integration Strategy
+
+**Phase 1.5** (NEW): Enhance Phase 1 entities with Unciv patterns:
+- Add "uniques" system for flexible bonuses
+- Implement manager classes for separation of concerns
+- Add resource stockpiling and consumption
+- Improve tile work assignment system
+- Reference Unciv's JSON data for buildings/units/techs
+
 ## Core Concepts
 
 ### Two Distinct Hex Tile Types
@@ -1762,6 +1793,94 @@ $effect(() => {
 - `src/lib/components/entities/viewerRegistry.ts`
 
 **Deliverable**: All entity types exist, can be created and stored
+
+**Status**: ✅ **COMPLETE** - All core entities created (8 files changed, 2,592 lines added)
+
+---
+
+### Phase 1.5: Unciv Integration & Entity Enhancement ⭐ NEW
+**Goal**: Enhance Phase 1 entities with patterns learned from Unciv
+
+**Tasks**:
+1. **Add "Uniques" System** to entities
+   - Add `uniques: string[]` property to Building, Unit, Policy entities
+   - Create UniqueParser utility to interpret unique strings
+   - Examples: `"[+2 Science] from [Jungle] tiles [in this city]"`
+
+2. **Implement Manager Classes** (Unciv pattern)
+   - Create `CityPopulationManager` (growth, food, starvation)
+   - Create `CityProductionManager` (production queue, building)
+   - Create `CityExpansionManager` (border growth, tile claiming)
+   - Create `TechManager` (research progress, tech tree navigation)
+   - Create `PolicyManager` (culture accumulation, policy unlocking)
+   - Create `DiplomacyManager` (per-nation relationships)
+
+3. **Add Resource Stockpiling**
+   - Change `strategicResources` to stockpile: `Map<string, number>`
+   - Change `luxuryResources` to stockpile: `Map<string, number>`
+   - Implement resource consumption when building units
+   - Track resource sources (tiles, trade routes)
+
+4. **Improve Tile Work Assignment**
+   - Add `workedTileIds: string[]` to City
+   - Add `lockedTileIds: string[]` to City (manual assignment)
+   - Add `isWorked: boolean` to RegionalHexTile
+   - Implement citizen assignment algorithm
+   - Add manual vs automatic work mode
+
+5. **Add Great People Framework**
+   - Create GreatPerson entity type
+   - Add Great Person Points tracking to City
+   - Add `greatPersonPoints: Map<string, number>` to City
+   - Great Scientist, Engineer, Merchant, Artist, General
+
+6. **Create JSON Game Data Files** (reference Unciv)
+   - `src/assets/data/buildings.json` - Building definitions
+   - `src/assets/data/units.json` - Unit definitions
+   - `src/assets/data/techs.json` - Tech tree
+   - `src/assets/data/policies.json` - Social policy trees
+   - `src/assets/data/resources.json` - Strategic/Luxury/Bonus resources
+   - `src/assets/data/improvements.json` - Tile improvements
+   - Load at runtime for data-driven gameplay
+
+7. **Add Missing Mechanics**
+   - Implement happiness system (affects growth rate)
+   - Add city flags (We Love The King, Resistance)
+   - Add puppet city mechanics
+   - Add city razing mechanics (already basic version exists)
+   - Add golden ages (excess happiness → golden age)
+
+**Files to Create**:
+- `src/lib/simulation/managers/CityPopulationManager.ts`
+- `src/lib/simulation/managers/CityProductionManager.ts`
+- `src/lib/simulation/managers/CityExpansionManager.ts`
+- `src/lib/simulation/managers/TechManager.ts`
+- `src/lib/simulation/managers/PolicyManager.ts`
+- `src/lib/simulation/managers/DiplomacyManager.ts`
+- `src/lib/utils/uniqueParser.ts`
+- `src/lib/entities/simulation/greatPerson.ts`
+- `src/assets/data/buildings.json`
+- `src/assets/data/units.json`
+- `src/assets/data/techs.json`
+- `src/assets/data/policies.json`
+- `src/assets/data/resources.json`
+- `src/assets/data/improvements.json`
+
+**Files to Modify**:
+- `src/lib/entities/location/city.ts` (add manager properties, work tiles)
+- `src/lib/entities/location/nation.ts` (add manager properties)
+- `src/lib/entities/location/regionalHexTile.ts` (add isWorked property)
+- `src/lib/types/entity.ts` (add GreatPerson type)
+
+**Unciv Assets to Reference**:
+- Use Unciv's `Buildings.json`, `Units.json`, `Techs.json` as templates
+- Adapt Unciv's unique strings format
+- Reference Unciv's tech tree structure
+- Use Unciv's policy tree layouts
+
+**Deliverable**: Entities enhanced with Unciv patterns, ready for advanced simulation
+
+**Priority**: HIGH - These improvements will make the simulation more authentic and flexible
 
 ---
 
