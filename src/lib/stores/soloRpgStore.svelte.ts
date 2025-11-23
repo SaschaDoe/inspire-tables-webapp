@@ -4,6 +4,8 @@
 import { OddsLevel } from '$lib/utils/fateChart';
 import type { EventFocus } from '$lib/utils/eventFocus';
 import type { FateAnswer } from '$lib/utils/mythicDice';
+import { db, useIndexedDB } from '$lib/db/database';
+import { browser } from '$app/environment';
 
 // ===== TYPE DEFINITIONS =====
 
@@ -287,8 +289,8 @@ class SoloRpgStore {
 	lastSaveTime = $state<Date | null>(null);
 
 	constructor() {
-		// Load sessions from localStorage on init (only in browser)
-		if (typeof window !== 'undefined') {
+		// Load sessions from Dexie or localStorage on init (only in browser)
+		if (browser) {
 			this.loadAllSessions();
 		}
 	}
@@ -1014,8 +1016,41 @@ class SoloRpgStore {
 
 	// ===== PERSISTENCE =====
 
+	// Debounced save to Dexie
+	private async saveToDexie(): Promise<void> {
+		if (!browser) return;
+
+		if (!useIndexedDB) {
+			// Fallback to localStorage
+			this.saveToLocalStorage();
+			return;
+		}
+
+		try {
+			await db.transaction('rw', [db.soloRpgSessions, db.metadata], async () => {
+				// Save all sessions
+				await db.soloRpgSessions.clear();
+				if (this.allSessions.length > 0) {
+					await db.soloRpgSessions.bulkPut(this.allSessions);
+				}
+
+				// Save current session ID
+				await db.metadata.put({
+					key: 'soloRpgCurrentSessionId',
+					value: this.currentSession?.id || null
+				});
+			});
+
+			this.lastSaveTime = new Date();
+		} catch (error) {
+			console.error('[SoloRpgStore] Failed to save to Dexie:', error);
+			// Fallback to localStorage on error
+			this.saveToLocalStorage();
+		}
+	}
+
 	private saveToLocalStorage(): void {
-		if (typeof window === 'undefined') return;
+		if (!browser) return;
 
 		try {
 			// Save all sessions
@@ -1029,13 +1064,41 @@ class SoloRpgStore {
 
 			this.lastSaveTime = new Date();
 		} catch (error) {
-			console.error('Failed to save to localStorage:', error);
+			console.error('[SoloRpgStore] Failed to save to localStorage:', error);
 		}
 	}
 
-	private loadAllSessions(): void {
-		if (typeof window === 'undefined') return;
+	private async loadAllSessions(): Promise<void> {
+		if (!browser) return;
 
+		this.isLoading = true;
+
+		if (useIndexedDB) {
+			try {
+				const [sessions, currentIdMetadata] = await Promise.all([
+					db.soloRpgSessions.toArray(),
+					db.metadata.get('soloRpgCurrentSessionId')
+				]);
+
+				this.allSessions = sessions;
+
+				if (currentIdMetadata?.value) {
+					const session = sessions.find((s) => s.id === currentIdMetadata.value);
+					if (session) {
+						this.currentSession = session;
+					}
+				}
+
+				console.log(`[SoloRpgStore] Loaded ${sessions.length} sessions from Dexie`);
+				this.isLoading = false;
+				return;
+			} catch (error) {
+				console.error('[SoloRpgStore] Failed to load from Dexie:', error);
+				// Fall through to localStorage
+			}
+		}
+
+		// Fallback to localStorage
 		try {
 			const sessionsData = localStorage.getItem('soloRpgSessions');
 			if (sessionsData) {
@@ -1057,8 +1120,10 @@ class SoloRpgStore {
 				}
 			}
 		} catch (error) {
-			console.error('Failed to load from localStorage:', error);
+			console.error('[SoloRpgStore] Failed to load from localStorage:', error);
 			this.allSessions = [];
+		} finally {
+			this.isLoading = false;
 		}
 	}
 
@@ -1071,7 +1136,7 @@ class SoloRpgStore {
 		}
 
 		this.autoSaveTimeout = window.setTimeout(() => {
-			this.saveToLocalStorage();
+			this.saveToDexie();
 		}, 500);
 	}
 

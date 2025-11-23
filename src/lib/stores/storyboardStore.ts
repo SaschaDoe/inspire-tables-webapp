@@ -6,6 +6,8 @@ import type {
 	StoryBoardDrawing,
 	BoardSnapshot
 } from '$lib/types/storyboard';
+import { db, useIndexedDB } from '$lib/db/database';
+import { browser } from '$app/environment';
 
 interface StoryBoardState {
 	boards: Map<string, StoryBoard>; // boardId -> StoryBoard
@@ -22,8 +24,35 @@ function createStoryBoardStore() {
 		connectingFromNodeId: null
 	});
 
-	// Load from localStorage on init
-	function loadFromStorage(): StoryBoardState {
+	// Load from Dexie or fallback to localStorage
+	async function loadFromDexie() {
+		if (!useIndexedDB || !browser) return;
+
+		try {
+			const [storyboards, activeIdMetadata] = await Promise.all([
+				db.storyboards.toArray(),
+				db.metadata.get('activeStoryboardId')
+			]);
+
+			const boards = new Map<string, StoryBoard>();
+			for (const board of storyboards) {
+				boards.set(board.id, board);
+			}
+
+			set({
+				boards,
+				activeBoardId: activeIdMetadata?.value || null,
+				connectingFromNodeId: null
+			});
+
+			console.log(`[StoryboardStore] Loaded ${storyboards.length} storyboards from Dexie`);
+		} catch (error) {
+			console.error('[StoryboardStore] Error loading from Dexie:', error);
+			loadFromLocalStorage();
+		}
+	}
+
+	function loadFromLocalStorage() {
 		try {
 			const stored = localStorage.getItem(STORAGE_KEY);
 			if (stored) {
@@ -44,19 +73,51 @@ function createStoryBoardStore() {
 					});
 					boards.set(id, b as StoryBoard);
 				}
-				return {
+				set({
 					boards,
 					activeBoardId: parsed.activeBoardId || null,
 					connectingFromNodeId: null
-				};
+				});
 			}
 		} catch (error) {
-			console.error('Failed to load storyboards from localStorage:', error);
+			console.error('[StoryboardStore] Error loading from localStorage:', error);
 		}
-		return { boards: new Map(), activeBoardId: null, connectingFromNodeId: null };
 	}
 
-	function saveToStorage(state: StoryBoardState) {
+	// Debounced save to Dexie
+	let saveTimeout: number | null = null;
+	async function saveToDexie(state: StoryBoardState) {
+		if (!useIndexedDB || !browser) {
+			saveToLocalStorage(state);
+			return;
+		}
+
+		if (saveTimeout) clearTimeout(saveTimeout);
+
+		saveTimeout = window.setTimeout(async () => {
+			try {
+				await db.transaction('rw', [db.storyboards, db.metadata], async () => {
+					// Save all boards
+					const boardsArray = Array.from(state.boards.values());
+					await db.storyboards.clear();
+					if (boardsArray.length > 0) {
+						await db.storyboards.bulkPut(boardsArray);
+					}
+
+					// Save active board ID
+					await db.metadata.put({
+						key: 'activeStoryboardId',
+						value: state.activeBoardId
+					});
+				});
+			} catch (error) {
+				console.error('[StoryboardStore] Error saving to Dexie:', error);
+				saveToLocalStorage(state);
+			}
+		}, 500); // Debounce 500ms
+	}
+
+	function saveToLocalStorage(state: StoryBoardState) {
 		try {
 			// Convert Map to plain object for JSON
 			const toSave = {
@@ -65,13 +126,18 @@ function createStoryBoardStore() {
 			};
 			localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
 		} catch (error) {
-			console.error('Failed to save storyboards to localStorage:', error);
+			console.error('[StoryboardStore] Error saving to localStorage:', error);
 		}
 	}
 
-	// Initialize from storage
-	const initialState = loadFromStorage();
-	set(initialState);
+	// Initialize - use Dexie if available, fallback to localStorage
+	if (browser) {
+		if (useIndexedDB) {
+			loadFromDexie();
+		} else {
+			loadFromLocalStorage();
+		}
+	}
 
 	function createSnapshot(board: StoryBoard, action: string): BoardSnapshot {
 		return {
@@ -132,7 +198,7 @@ function createStoryBoardStore() {
 			update((state) => {
 				state.boards.set(board.id, board);
 				state.activeBoardId = board.id;
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 
@@ -145,7 +211,7 @@ function createStoryBoardStore() {
 				if (state.activeBoardId === boardId) {
 					state.activeBoardId = null;
 				}
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -201,7 +267,7 @@ function createStoryBoardStore() {
 
 				board.nodes.push(newNode);
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				createdNode = newNode;
 				return state;
 			});
@@ -221,7 +287,7 @@ function createStoryBoardStore() {
 				console.log('[Store] updateNode AFTER:', { nodeId, bridgeLinksSpawned: node.bridgeLinksSpawned });
 				node.metadata.updatedAt = new Date();
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 			}
 				return state;
 			});
@@ -243,7 +309,7 @@ function createStoryBoardStore() {
 					(c) => c.fromNodeId !== nodeId && c.toNodeId !== nodeId
 				);
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -264,7 +330,7 @@ function createStoryBoardStore() {
 					(c) => !nodeIds.includes(c.fromNodeId) && !nodeIds.includes(c.toNodeId)
 				);
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -303,7 +369,7 @@ function createStoryBoardStore() {
 
 					board.metadata.updatedAt = new Date();
 					if (!skipSnapshot) {
-						saveToStorage(state);
+						saveToDexie(state);
 					}
 				}
 				return state;
@@ -328,7 +394,7 @@ function createStoryBoardStore() {
 				});
 
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -412,7 +478,7 @@ function createStoryBoardStore() {
 					board.drawings = JSON.parse(JSON.stringify(snapshot.drawings));
 					board.historyIndex--;
 					board.metadata.updatedAt = new Date();
-					saveToStorage(state);
+					saveToDexie(state);
 				}
 
 				return state;
@@ -431,7 +497,7 @@ function createStoryBoardStore() {
 					board.connections = JSON.parse(JSON.stringify(snapshot.connections));
 					board.drawings = JSON.parse(JSON.stringify(snapshot.drawings));
 					board.metadata.updatedAt = new Date();
-					saveToStorage(state);
+					saveToDexie(state);
 				}
 
 				return state;
@@ -476,7 +542,7 @@ function createStoryBoardStore() {
 				if (!board) return state;
 
 				board.viewport = { x: 0, y: 0, zoom: 1 };
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -512,7 +578,7 @@ function createStoryBoardStore() {
 
 				board.drawings.push(newDrawing);
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -528,7 +594,7 @@ function createStoryBoardStore() {
 
 				board.drawings = board.drawings.filter((d) => d.id !== drawingId);
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -544,7 +610,7 @@ function createStoryBoardStore() {
 
 				board.drawings = [];
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -561,7 +627,7 @@ function createStoryBoardStore() {
 					board.settings.drawingWidth = width;
 				}
 
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -590,7 +656,7 @@ function createStoryBoardStore() {
 
 				board.connections.push(newConnection);
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -606,7 +672,7 @@ function createStoryBoardStore() {
 
 				board.connections = board.connections.filter((c) => c.id !== connectionId);
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -620,7 +686,7 @@ function createStoryBoardStore() {
 				if (connection) {
 					Object.assign(connection, updates);
 					board.metadata.updatedAt = new Date();
-					saveToStorage(state);
+					saveToDexie(state);
 				}
 				return state;
 			});
@@ -657,7 +723,7 @@ function createStoryBoardStore() {
 
 						board.connections.push(newConnection);
 						board.metadata.updatedAt = new Date();
-						saveToStorage(state);
+						saveToDexie(state);
 					}
 				}
 				state.connectingFromNodeId = null;
@@ -688,7 +754,7 @@ function createStoryBoardStore() {
 				});
 
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -708,7 +774,7 @@ function createStoryBoardStore() {
 				});
 
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -738,7 +804,7 @@ function createStoryBoardStore() {
 				};
 				node.metadata.updatedAt = new Date();
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -763,7 +829,7 @@ function createStoryBoardStore() {
 				};
 				node.metadata.updatedAt = new Date();
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -793,7 +859,7 @@ function createStoryBoardStore() {
 				};
 				node.metadata.updatedAt = new Date();
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -818,7 +884,7 @@ function createStoryBoardStore() {
 				};
 				node.metadata.updatedAt = new Date();
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},
@@ -885,7 +951,7 @@ function createStoryBoardStore() {
 
 				node.metadata.updatedAt = new Date();
 				board.metadata.updatedAt = new Date();
-				saveToStorage(state);
+				saveToDexie(state);
 				return state;
 			});
 		},

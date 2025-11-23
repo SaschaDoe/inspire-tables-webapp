@@ -2,6 +2,8 @@ import { writable, derived } from 'svelte/store';
 import type { Entity, EntityType } from '$lib/types/entity';
 import type { Campaign } from '$lib/entities/campaign';
 import { calculateCascadingDeletion, removeFromParentArray, type DeletionResult } from '$lib/utils/entityDeletion';
+import { db, useIndexedDB } from '$lib/db/database';
+import { browser } from '$app/environment';
 
 interface EntityState {
 	entities: Map<string, Entity>;
@@ -18,8 +20,33 @@ function createEntityStore() {
 		favorites: new Set()
 	});
 
-	// Load from localStorage on init
-	function loadFromStorage() {
+	// Load from Dexie (async) or localStorage (fallback) on init
+	async function loadFromDexie() {
+		if (!useIndexedDB || !browser) return;
+
+		try {
+			const [entities, campaigns, metadataResults] = await Promise.all([
+				db.entities.toArray(),
+				db.campaigns.toArray(),
+				db.metadata.bulkGet(['recentlyUsed', 'favorites'])
+			]);
+
+			update(state => ({
+				entities: new Map(entities.map(e => [e.id, e])),
+				campaigns,
+				recentlyUsed: metadataResults[0]?.value || [],
+				favorites: new Set(metadataResults[1]?.value || [])
+			}));
+
+			console.log(`[EntityStore] Loaded ${entities.length} entities from Dexie`);
+		} catch (error) {
+			console.error('[EntityStore] Error loading from Dexie:', error);
+			// Fallback to localStorage
+			loadFromLocalStorage();
+		}
+	}
+
+	function loadFromLocalStorage() {
 		try {
 			// Load legacy campaigns
 			const stored = localStorage.getItem('campaigns');
@@ -31,7 +58,7 @@ function createEntityStore() {
 			// Load new entities
 			const entitiesStored = localStorage.getItem('entities');
 			if (entitiesStored) {
-				const entitiesArray = JSON.parse(entitiesStored);
+				const entitiesArray = JSON.parse(entitiesStored) as Entity[];
 				const entitiesMap = new Map(entitiesArray.map((e: Entity) => [e.id, e]));
 				update(state => ({ ...state, entities: entitiesMap }));
 			}
@@ -46,16 +73,46 @@ function createEntityStore() {
 			// Load favorites
 			const favoritesStored = localStorage.getItem('favorites');
 			if (favoritesStored) {
-				const favoritesArray = JSON.parse(favoritesStored);
-				const favorites = new Set(favoritesArray);
+				const favoritesArray = JSON.parse(favoritesStored) as string[];
+				const favorites = new Set<string>(favoritesArray);
 				update(state => ({ ...state, favorites }));
 			}
 		} catch (error) {
-			console.error('Error loading from storage:', error);
+			console.error('[EntityStore] Error loading from localStorage:', error);
 		}
 	}
 
-	function saveToStorage(state: EntityState) {
+	// Debounced save to Dexie
+	let saveTimeout: number | null = null;
+	async function saveToDexie(state: EntityState) {
+		if (!useIndexedDB || !browser) {
+			// Fallback to localStorage
+			saveToLocalStorage(state);
+			return;
+		}
+
+		if (saveTimeout) clearTimeout(saveTimeout);
+
+		saveTimeout = window.setTimeout(async () => {
+			try {
+				// Batch all writes in a single transaction for performance
+				await db.transaction('rw', [db.entities, db.campaigns, db.metadata], async () => {
+					await db.entities.bulkPut(Array.from(state.entities.values()));
+					await db.campaigns.bulkPut(state.campaigns);
+					await db.metadata.bulkPut([
+						{ key: 'recentlyUsed', value: state.recentlyUsed },
+						{ key: 'favorites', value: Array.from(state.favorites) }
+					]);
+				});
+			} catch (error) {
+				console.error('[EntityStore] Error saving to Dexie:', error);
+				// Fallback to localStorage on error
+				saveToLocalStorage(state);
+			}
+		}, 500); // Debounce 500ms
+	}
+
+	function saveToLocalStorage(state: EntityState) {
 		try {
 			// Save legacy campaigns
 			localStorage.setItem('campaigns', JSON.stringify(state.campaigns));
@@ -71,12 +128,18 @@ function createEntityStore() {
 			const favoritesArray = Array.from(state.favorites);
 			localStorage.setItem('favorites', JSON.stringify(favoritesArray));
 		} catch (error) {
-			console.error('Error saving to storage:', error);
+			console.error('[EntityStore] Error saving to localStorage:', error);
 		}
 	}
 
-	// Initialize
-	loadFromStorage();
+	// Initialize - use Dexie if available, fallback to localStorage
+	if (browser) {
+		if (useIndexedDB) {
+			loadFromDexie();
+		} else {
+			loadFromLocalStorage();
+		}
+	}
 
 	return {
 		subscribe,
@@ -87,7 +150,7 @@ function createEntityStore() {
 				const newEntities = new Map(state.entities);
 				newEntities.set(entity.id, entity);
 				const newState = { ...state, entities: newEntities };
-				saveToStorage(newState);
+				saveToDexie(newState); // Async persist (debounced)
 				return newState;
 			});
 		},
@@ -117,7 +180,7 @@ function createEntityStore() {
 				const newEntities = new Map(state.entities);
 				newEntities.set(id, updatedEntity);
 				const newState = { ...state, entities: newEntities };
-				saveToStorage(newState);
+				saveToDexie(newState); // Async persist (debounced)
 				return newState;
 			});
 		},
@@ -138,7 +201,7 @@ function createEntityStore() {
 				entitiesToDelete.forEach(entityId => newEntities.delete(entityId));
 
 				const newState = { ...state, entities: newEntities };
-				saveToStorage(newState);
+				saveToDexie(newState); // Async persist (debounced)
 				return newState;
 			});
 		},
@@ -155,7 +218,7 @@ function createEntityStore() {
 			update(state => {
 				const newRecentlyUsed = state.recentlyUsed.filter(id => id !== entityId);
 				const newState = { ...state, recentlyUsed: newRecentlyUsed };
-				saveToStorage(newState);
+				saveToDexie(newState); // Async persist (debounced)
 				return newState;
 			});
 		},
@@ -165,7 +228,7 @@ function createEntityStore() {
 				const newFavorites = new Set(state.favorites);
 				newFavorites.delete(entityId);
 				const newState = { ...state, favorites: newFavorites };
-				saveToStorage(newState);
+				saveToDexie(newState); // Async persist (debounced)
 				return newState;
 			});
 		},
@@ -289,7 +352,7 @@ function createEntityStore() {
 		updateCampaigns(campaigns: Campaign[]) {
 			update(state => {
 				const newState = { ...state, campaigns };
-				saveToStorage(newState);
+				saveToDexie(newState); // Async persist (debounced)
 				return newState;
 			});
 		},
@@ -303,7 +366,7 @@ function createEntityStore() {
 				].slice(0, 20); // Keep only the 20 most recent
 
 				const newState = { ...state, recentlyUsed: newRecentlyUsed };
-				saveToStorage(newState);
+				saveToDexie(newState); // Async persist (debounced)
 				return newState;
 			});
 		},
@@ -330,7 +393,7 @@ function createEntityStore() {
 				}
 
 				const newState = { ...state, favorites: newFavorites };
-				saveToStorage(newState);
+				saveToDexie(newState); // Async persist (debounced)
 				return newState;
 			});
 		},
@@ -354,13 +417,31 @@ function createEntityStore() {
 		},
 
 		// Clear all data
-		clearAll() {
-			set({
-				entities: new Map(),
+		async clearAll() {
+			const newState: EntityState = {
+				entities: new Map<string, Entity>(),
 				campaigns: [],
 				recentlyUsed: [],
-				favorites: new Set()
-			});
+				favorites: new Set<string>()
+			};
+
+			set(newState);
+
+			// Clear from both Dexie and localStorage
+			if (useIndexedDB && browser) {
+				try {
+					await db.transaction('rw', [db.entities, db.campaigns, db.metadata], async () => {
+						await db.entities.clear();
+						await db.campaigns.clear();
+						await db.metadata.delete('recentlyUsed');
+						await db.metadata.delete('favorites');
+					});
+				} catch (error) {
+					console.error('[EntityStore] Error clearing Dexie:', error);
+				}
+			}
+
+			// Also clear localStorage as fallback
 			localStorage.removeItem('entities');
 			localStorage.removeItem('campaigns');
 			localStorage.removeItem('recentlyUsed');

@@ -11,6 +11,7 @@
 	import { WorldMapCreator } from '$lib/entities/location/worldMapCreator';
 	import type { HexTile } from '$lib/entities/location/hexTile';
 	import { TerrainType } from '$lib/entities/location/terrainType';
+	import { entityStore } from '$lib/stores/entityStore';
 
 	interface Props {
 		planet: Planet;
@@ -76,12 +77,49 @@
 	const handleAddContinent = createAddEntityHandler(planet, 'continents', parentEntity, dispatch);
 
 	function generateWorldMap() {
+		console.log('[PlanetViewer] Generate World Map button clicked');
 		showWorldMapError = null;
 		try {
+			console.log('[PlanetViewer] Creating world map for planet:', planet.name);
 			planet.worldMap = WorldMapCreator.create(planet);
+			console.log('[PlanetViewer] World map created successfully');
 			mapKey++; // Force re-render
-			dispatch('entityUpdated', { entity: parentEntity });
+
+			// Save continents to entity store so they appear in navigator
+			autoSaveNestedEntities(
+				{
+					continents: { entities: planet.continents, entityType: 'continent' }
+				},
+				parentEntity,
+				dispatch
+			);
+			console.log('[PlanetViewer] Continents saved to entity store');
+
+			// Update the parent entity in the store to trigger reactivity
+			if (parentEntity) {
+				const existingEntity = entityStore.getEntity(parentEntity.id);
+				if (existingEntity) {
+					// Create a deep copy to ensure reactivity
+					const updatedGeneratedEntity = JSON.parse(JSON.stringify(planet));
+
+					entityStore.updateEntity(parentEntity.id, {
+						...existingEntity,
+						customFields: {
+							...existingEntity.customFields,
+							generatedEntity: updatedGeneratedEntity
+						},
+						metadata: {
+							...existingEntity.metadata,
+							updatedAt: new Date()
+						}
+					});
+					console.log('[PlanetViewer] Entity store updated');
+				}
+
+				dispatch('entityUpdated', { entity: parentEntity });
+			}
 		} catch (error) {
+			console.error('[PlanetViewer] Error generating world map:', error);
 			showWorldMapError = error instanceof Error ? error.message : 'Failed to generate world map';
 		}
 	}

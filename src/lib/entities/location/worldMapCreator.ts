@@ -68,6 +68,9 @@ export class WorldMapCreator {
 			// Store continent ID for navigation
 			continent.id = `continent-${continentInfo.id}`;
 
+			// Store hex tiles that belong to this continent
+			continent.hexTiles = continentInfo.tiles;
+
 			// Override description with location info
 			if (continentInfo.isIsland) {
 				continent.description = `${continent.name} is a ${continent.size} island with ${continent.dominantLandscape}. The climate is ${continent.climate} with ${continent.primaryWeather} weather patterns.`;

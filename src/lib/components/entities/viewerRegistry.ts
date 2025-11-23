@@ -25,6 +25,7 @@ import SphereConnectionViewer from './viewers/SphereConnectionViewer.svelte';
 import GalaxyViewer from './viewers/GalaxyViewer.svelte';
 import SolarSystemViewer from './viewers/SolarSystemViewer.svelte';
 import PlanetViewer from './viewers/PlanetViewer.svelte';
+import ContinentViewer from './viewers/ContinentViewer.svelte';
 
 export interface ViewerConfig {
 	component: ComponentType;
@@ -118,6 +119,10 @@ export const viewerRegistry: Record<string, ViewerConfig> = {
 		component: PlanetViewer,
 		propName: 'planet',
 		needsParentEntity: true
+	},
+	continent: {
+		component: ContinentViewer,
+		propName: 'continent'
 	}
 };
 

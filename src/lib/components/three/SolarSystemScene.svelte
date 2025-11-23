@@ -116,7 +116,7 @@
 	}
 
 	function createStar(star: any): THREE.Mesh {
-		const scale = getScale(star.size, undefined, 0.3);
+		const scale = getScale(star.size, undefined, 2.0);
 		const resolution = getResolution(star.size);
 		const geometry = new THREE.SphereGeometry(scale, resolution, resolution);
 		const texture = new THREE.DataTexture(

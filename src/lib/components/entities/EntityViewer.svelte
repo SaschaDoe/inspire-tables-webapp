@@ -18,6 +18,7 @@
 	import type { Galaxy } from '$lib/entities/celestial/galaxy';
 	import type { SolarSystem } from '$lib/entities/celestial/solarSystem';
 	import type { Planet } from '$lib/entities/celestial/planet';
+	import type { Continent } from '$lib/entities/location/continent';
 	import type { Campaign } from '$lib/entities/campaign';
 
 	// Import specialized viewers
@@ -40,6 +41,7 @@
 	import GalaxyViewer from './viewers/GalaxyViewer.svelte';
 	import SolarSystemViewer from './viewers/SolarSystemViewer.svelte';
 	import PlanetViewer from './viewers/PlanetViewer.svelte';
+	import ContinentViewer from './viewers/ContinentViewer.svelte';
 
 	// Import generic fallback viewer for entity types without specialized viewers
 	import GenericEntityViewer from './viewers/GenericEntityViewer.svelte';
@@ -109,6 +111,8 @@
 				return SolarSystemViewer;
 			case 'planet':
 				return PlanetViewer;
+			case 'continent':
+				return ContinentViewer;
 			default:
 				return GenericEntityViewer;
 		}
@@ -161,6 +165,8 @@
 				return { solarSystem: entity as SolarSystem, parentEntity };
 			case 'planet':
 				return { planet: entity as Planet, parentEntity };
+			case 'continent':
+				return { continent: entity as Continent, parentEntity };
 			default:
 				return { entity, entityType };
 		}
@@ -206,6 +212,8 @@
 		<SolarSystemViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'planet'}
 		<PlanetViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
+	{:else if entityType === 'continent'}
+		<ContinentViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else}
 		<GenericEntityViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{/if}

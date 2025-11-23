@@ -384,6 +384,8 @@
 				entityType = 'solarSystem';
 			} else if (clickedEntity.spheres !== undefined) {
 				entityType = 'universe';
+			} else if (clickedEntity.hexTiles !== undefined) {
+				entityType = 'continent';
 			} else if (clickedEntity.beginning !== undefined && clickedEntity.climax !== undefined && clickedEntity.ending !== undefined) {
 				entityType = 'adventure';
 			} else if (clickedEntity.adventures !== undefined && clickedEntity.universes !== undefined) {

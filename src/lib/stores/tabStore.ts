@@ -1,6 +1,8 @@
 import { writable, derived } from 'svelte/store';
 import type { Entity } from '$lib/types/entity';
 import { entityStore } from './entityStore';
+import { db, useIndexedDB } from '$lib/db/database';
+import { browser } from '$app/environment';
 
 export interface Tab {
 	id: string;
@@ -27,8 +29,31 @@ function createTabStore() {
 		currentHistoryIndex: -1
 	});
 
-	// Load from localStorage on init
-	function loadFromStorage() {
+	// Load from Dexie or fallback to localStorage
+	async function loadFromDexie() {
+		if (!useIndexedDB || !browser) return;
+
+		try {
+			const [tabs, tabStateMetadata] = await Promise.all([
+				db.tabs.toArray(),
+				db.metadata.get('tabState')
+			]);
+
+			set({
+				tabs: tabs || [],
+				activeTabId: tabStateMetadata?.value?.activeTabId || null,
+				navigationHistory: tabStateMetadata?.value?.navigationHistory || [],
+				currentHistoryIndex: tabStateMetadata?.value?.currentHistoryIndex ?? -1
+			});
+
+			console.log(`[TabStore] Loaded ${tabs.length} tabs from Dexie`);
+		} catch (error) {
+			console.error('[TabStore] Error loading from Dexie:', error);
+			loadFromLocalStorage();
+		}
+	}
+
+	function loadFromLocalStorage() {
 		try {
 			const stored = localStorage.getItem('tabs');
 			if (stored) {
@@ -42,20 +67,62 @@ function createTabStore() {
 				});
 			}
 		} catch (error) {
-			console.error('Error loading tabs from storage:', error);
+			console.error('[TabStore] Error loading from localStorage:', error);
 		}
 	}
 
-	function saveToStorage(state: TabState) {
+	// Debounced save to Dexie
+	let saveTimeout: number | null = null;
+	async function saveToDexie(state: TabState) {
+		if (!useIndexedDB || !browser) {
+			saveToLocalStorage(state);
+			return;
+		}
+
+		if (saveTimeout) clearTimeout(saveTimeout);
+
+		saveTimeout = window.setTimeout(async () => {
+			try {
+				await db.transaction('rw', [db.tabs, db.metadata], async () => {
+					// Save tabs
+					await db.tabs.clear();
+					if (state.tabs.length > 0) {
+						await db.tabs.bulkAdd(state.tabs);
+					}
+
+					// Save tab state metadata
+					await db.metadata.put({
+						key: 'tabState',
+						value: {
+							activeTabId: state.activeTabId,
+							navigationHistory: state.navigationHistory,
+							currentHistoryIndex: state.currentHistoryIndex
+						}
+					});
+				});
+			} catch (error) {
+				console.error('[TabStore] Error saving to Dexie:', error);
+				saveToLocalStorage(state);
+			}
+		}, 500); // Debounce 500ms
+	}
+
+	function saveToLocalStorage(state: TabState) {
 		try {
 			localStorage.setItem('tabs', JSON.stringify(state));
 		} catch (error) {
-			console.error('Error saving tabs to storage:', error);
+			console.error('[TabStore] Error saving to localStorage:', error);
 		}
 	}
 
-	// Initialize
-	loadFromStorage();
+	// Initialize - use Dexie if available, fallback to localStorage
+	if (browser) {
+		if (useIndexedDB) {
+			loadFromDexie();
+		} else {
+			loadFromLocalStorage();
+		}
+	}
 
 	// Helper function to add to navigation history
 	function addToNavigationHistory(state: TabState, entityId: string): TabState {
@@ -109,7 +176,7 @@ function createTabStore() {
 					entityStore.markAsRecentlyUsed(entity.id);
 					let newState = { ...state, activeTabId: existingTab.id };
 					newState = addToNavigationHistory(newState, entity.id);
-					saveToStorage(newState);
+					saveToDexie(newState);
 					return newState;
 				}
 
@@ -141,7 +208,7 @@ function createTabStore() {
 					currentHistoryIndex: state.currentHistoryIndex
 				};
 				newState = addToNavigationHistory(newState, entity.id);
-				saveToStorage(newState);
+				saveToDexie(newState);
 				return newState;
 			});
 		},
@@ -173,9 +240,11 @@ function createTabStore() {
 
 				const newState = {
 					tabs: newTabs,
-					activeTabId: newActiveTabId
+					activeTabId: newActiveTabId,
+					navigationHistory: state.navigationHistory,
+					currentHistoryIndex: state.currentHistoryIndex
 				};
-				saveToStorage(newState);
+				saveToDexie(newState);
 				return newState;
 			});
 		},
@@ -209,9 +278,11 @@ function createTabStore() {
 
 				const newState = {
 					tabs: newTabs,
-					activeTabId: newActiveTabId
+					activeTabId: newActiveTabId,
+					navigationHistory: state.navigationHistory,
+					currentHistoryIndex: state.currentHistoryIndex
 				};
-				saveToStorage(newState);
+				saveToDexie(newState);
 				return newState;
 			});
 		},
@@ -226,7 +297,7 @@ function createTabStore() {
 					entityStore.markAsRecentlyUsed(tab.entityId);
 					newState = addToNavigationHistory(newState, tab.entityId);
 				}
-				saveToStorage(newState);
+				saveToDexie(newState);
 				return newState;
 			});
 		},
@@ -272,7 +343,7 @@ function createTabStore() {
 					navigationHistory: state.navigationHistory,
 					currentHistoryIndex: state.currentHistoryIndex
 				};
-				saveToStorage(newState);
+				saveToDexie(newState);
 				return newState;
 			});
 		},
@@ -335,7 +406,7 @@ function createTabStore() {
 					activeTabId: tab.id,
 					currentHistoryIndex: newIndex
 				};
-				saveToStorage(newState);
+				saveToDexie(newState);
 				return newState;
 			});
 		},
@@ -365,7 +436,7 @@ function createTabStore() {
 					activeTabId: tab.id,
 					currentHistoryIndex: newIndex
 				};
-				saveToStorage(newState);
+				saveToDexie(newState);
 				return newState;
 			});
 		},
