@@ -28,6 +28,9 @@ export enum EntityType {
 	Settlement = 'settlement',
 	Building = 'building',
 	HexTile = 'hexTile',
+	PlanetaryHexTile = 'planetaryHexTile',
+	RegionalHexTile = 'regionalHexTile',
+	RegionalMap = 'regionalMap',
 	Location = 'location', // Generic location
 
 	// Dungeons
@@ -59,6 +62,15 @@ export enum EntityType {
 	Illness = 'illness',
 	Clue = 'clue',
 	WeatherEvent = 'weatherEvent',
+	HistoricalEvent = 'historicalEvent',
+	Battle = 'battle',
+
+	// Simulation Entities
+	City = 'city',
+	Unit = 'unit',
+	Army = 'army',
+	Fleet = 'fleet',
+	TradeRoute = 'tradeRoute',
 
 	// Misc
 	Plot = 'plot',
