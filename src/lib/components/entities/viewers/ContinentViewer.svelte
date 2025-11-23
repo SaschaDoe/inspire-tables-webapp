@@ -119,6 +119,7 @@
 	let dragStart = $state({ x: 0, y: 0 });
 	let isInitialized = $state(false);
 	let selectedHexTile = $state<HexTile | null>(null);
+	let hexDetailsElement: HTMLElement | null = null;
 
 	const hexSize = 20;
 	const zoomFactor = 0.2;
@@ -157,6 +158,13 @@
 			panX = (viewportWidth / 2) - (center.x * scale);
 			panY = (viewportHeight / 2) - (center.y * scale);
 			isInitialized = true;
+		}
+	});
+
+	// Scroll to hex details when a tile is selected
+	$effect(() => {
+		if (selectedHexTile && hexDetailsElement) {
+			hexDetailsElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 		}
 	});
 
@@ -350,7 +358,7 @@
 	<!-- Hex Tile Details Panel -->
 	{#if selectedHexTile}
 		<Section title="Hex Tile Details">
-			<div class="hex-details">
+			<div class="hex-details" bind:this={hexDetailsElement}>
 				<div class="hex-details-header">
 					<h3>Hex Tile ({selectedHexTile.x}, {selectedHexTile.y})</h3>
 					<button class="close-btn" onclick={closeHexDetails}>✕</button>
