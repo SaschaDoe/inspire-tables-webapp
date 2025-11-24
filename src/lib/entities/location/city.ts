@@ -1,4 +1,7 @@
 import { Entity } from '../base/entity';
+import { CityPopulationManager } from '$lib/simulation/managers/CityPopulationManager';
+import { CityProductionManager } from '$lib/simulation/managers/CityProductionManager';
+import { CityExpansionManager } from '$lib/simulation/managers/CityExpansionManager';
 
 /**
  * Building types available in cities (Civ 5 inspired)
@@ -111,7 +114,16 @@ export class City extends Entity {
 	parentRegionalMapId = ''; // ID of the RegionalMap this city is in
 	coordinates = { x: 0, y: 0 }; // Coordinates on the regional map
 
-	// Population and growth
+	// Managers (Unciv-inspired separation of concerns)
+	populationManager: CityPopulationManager;
+	productionManager: CityProductionManager;
+	expansionManager: CityExpansionManager;
+
+	// Worked and owned tiles
+	workedTileIds: string[] = []; // Tiles being worked by citizens
+	lockedTileIds: string[] = []; // Tiles locked by player (prevent auto-assignment)
+
+	// Population and growth (DEPRECATED - use populationManager)
 	population = 1; // Current population (1 pop = ~1,000 people)
 	foodStored = 0; // Food accumulated toward next population
 	foodNeededForGrowth = 10; // Food needed to grow to next population (increases with pop)
@@ -189,11 +201,73 @@ export class City extends Entity {
 	constructor() {
 		super();
 		this.name = 'New City';
+
+		// Initialize managers
+		this.populationManager = new CityPopulationManager();
+		this.productionManager = new CityProductionManager();
+		this.expansionManager = new CityExpansionManager(''); // Will be set when city is placed
+
+		// Legacy compatibility
 		this.calculateFoodNeededForGrowth();
 	}
 
 	/**
-	 * Calculate food needed for next population growth
+	 * Set city location (updates expansion manager)
+	 */
+	setLocation(hexTileId: string, parentRegionalMapId: string, coordinates: { x: number; y: number }): void {
+		this.hexTileId = hexTileId;
+		this.parentRegionalMapId = parentRegionalMapId;
+		this.coordinates = coordinates;
+
+		// Reinitialize expansion manager with correct center hex
+		this.expansionManager = new CityExpansionManager(hexTileId);
+	}
+
+	/**
+	 * Process one turn for all managers
+	 */
+	processTurn(currentTurn: number, availableTilesForExpansion: string[] = []): {
+		grew: boolean;
+		starved: boolean;
+		productionCompleted: boolean;
+		productionItem?: any;
+		expanded: boolean;
+		acquiredHexId?: string;
+	} {
+		// Calculate yields first
+		this.calculateYields();
+
+		// Process population
+		const foodYield = this.yields.food - this.population * 2; // Food after consumption
+		const popResult = this.populationManager.processTurn(foodYield);
+
+		// Sync population back to legacy property
+		this.population = this.populationManager.population;
+		this.foodStored = this.populationManager.foodStored;
+		this.isStarving = this.populationManager.isStarving;
+
+		// Process production
+		const prodResult = this.productionManager.processTurn(this.yields.production);
+
+		// Process expansion
+		const expResult = this.expansionManager.processTurn(
+			this.yields.culture,
+			currentTurn,
+			availableTilesForExpansion
+		);
+
+		return {
+			grew: popResult.grew,
+			starved: popResult.starved,
+			productionCompleted: prodResult.completed,
+			productionItem: prodResult.item,
+			expanded: expResult.expanded,
+			acquiredHexId: expResult.acquiredHexId
+		};
+	}
+
+	/**
+	 * Calculate food needed for next population growth (legacy compatibility)
 	 */
 	calculateFoodNeededForGrowth(): void {
 		// Civ 5 formula: 15 + (8 * (pop - 1))
