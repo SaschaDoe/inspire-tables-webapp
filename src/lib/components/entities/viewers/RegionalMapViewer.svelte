@@ -7,6 +7,8 @@
 	import { entityStore } from '$lib/stores/entityStore';
 	import { createEventDispatcher } from 'svelte';
 	import EntityViewer from '../EntityViewer.svelte';
+	import { AssetLoader } from '$lib/utils/assetLoader';
+	import { onMount } from 'svelte';
 
 	interface Props {
 		regionalMap: RegionalMap;
@@ -15,6 +17,11 @@
 
 	let { regionalMap, parentEntity }: Props = $props();
 	const dispatch = createEventDispatcher();
+
+	// Graphics mode state
+	let useGraphics = $state(true); // Try to use graphics by default
+	let assetsAvailable = $state(false);
+	let assetsChecked = $state(false);
 
 	// Load all regional hex tiles from entity store
 	const regionalHexTiles = $derived.by(() => {
@@ -215,6 +222,21 @@
 	function closeHexDetails() {
 		selectedHexTile = null;
 	}
+
+	function toggleGraphicsMode() {
+		useGraphics = !useGraphics;
+	}
+
+	// Check if Unciv graphics are available on mount
+	onMount(async () => {
+		assetsAvailable = await AssetLoader.checkAssetsAvailable();
+		assetsChecked = true;
+
+		// Auto-disable graphics mode if assets not available
+		if (!assetsAvailable && useGraphics) {
+			console.log('Unciv graphics not found - using colored hexes fallback');
+		}
+	});
 </script>
 
 <div class="regional-map-viewer">
@@ -281,6 +303,17 @@
 						<button class="map-btn" onclick={() => handleZoom(-zoomFactor)}>−</button>
 						<button class="map-btn" onclick={handleReset}>⟲</button>
 						<span class="zoom-level">{Math.round(scale * 100)}%</span>
+						{#if assetsChecked}
+							<button
+								class="map-btn"
+								class:active={useGraphics && assetsAvailable}
+								onclick={toggleGraphicsMode}
+								title={assetsAvailable ? 'Toggle graphics/colors' : 'Graphics not available'}
+								disabled={!assetsAvailable}
+							>
+								🎨
+							</button>
+						{/if}
 					</div>
 					<svg
 						class="hex-map-svg"
@@ -295,17 +328,62 @@
 					>
 						<g style="transform: translate({panX}px, {panY}px) scale({scale}); transition: transform 0.1s ease-out;">
 							<!-- Terrain hexes -->
-							{#each regionalHexTiles as tile}
-								{@const color = terrainColors[tile.terrainType] || '#64748b'}
-								<polygon
-									points={getHexPoints(tile, hexSize)}
-									fill={color}
-									stroke={selectedHexTile?.id === tile.id ? '#ffffff' : '#334155'}
-									stroke-width={selectedHexTile?.id === tile.id ? '2' : '0.5'}
-									class="regional-tile clickable"
-									onclick={(e) => handleHexClick(tile, e)}
-								/>
-							{/each}
+							{#if useGraphics && assetsAvailable}
+								<!-- Graphics mode: Use terrain images -->
+								{#each regionalHexTiles as tile}
+									{@const center = getHexCenter(tile, hexSize)}
+									{@const terrainAsset = AssetLoader.getTerrainAsset(tile.terrainType)}
+									{@const size = hexSize * 2.2}
+
+									<!-- Base terrain image -->
+									{#if terrainAsset}
+										<image
+											x={center.x - size / 2}
+											y={center.y - size / 2}
+											width={size}
+											height={size}
+											href={terrainAsset}
+											class="regional-tile clickable"
+											onclick={(e) => handleHexClick(tile, e)}
+										/>
+									{:else}
+										<!-- Fallback to colored hex if asset missing -->
+										{@const color = terrainColors[tile.terrainType] || '#64748b'}
+										<polygon
+											points={getHexPoints(tile, hexSize)}
+											fill={color}
+											stroke={selectedHexTile?.id === tile.id ? '#ffffff' : '#334155'}
+											stroke-width={selectedHexTile?.id === tile.id ? '2' : '0.5'}
+											class="regional-tile clickable"
+											onclick={(e) => handleHexClick(tile, e)}
+										/>
+									{/if}
+
+									<!-- Selection highlight -->
+									{#if selectedHexTile?.id === tile.id}
+										<polygon
+											points={getHexPoints(tile, hexSize)}
+											fill="none"
+											stroke="#ffffff"
+											stroke-width="3"
+											pointer-events="none"
+										/>
+									{/if}
+								{/each}
+							{:else}
+								<!-- Color mode: Use colored polygons (fallback) -->
+								{#each regionalHexTiles as tile}
+									{@const color = terrainColors[tile.terrainType] || '#64748b'}
+									<polygon
+										points={getHexPoints(tile, hexSize)}
+										fill={color}
+										stroke={selectedHexTile?.id === tile.id ? '#ffffff' : '#334155'}
+										stroke-width={selectedHexTile?.id === tile.id ? '2' : '0.5'}
+										class="regional-tile clickable"
+										onclick={(e) => handleHexClick(tile, e)}
+									/>
+								{/each}
+							{/if}
 
 							<!-- Rivers (blue lines on hex edges) -->
 							{#each regionalHexTiles as tile}
@@ -326,43 +404,76 @@
 								{/if}
 							{/each}
 
-							<!-- Feature indicators (text) -->
+							<!-- Features (overlays or text indicators) -->
 							{#each regionalHexTiles as tile}
 								{#if tile.feature}
 									{@const center = getHexCenter(tile, hexSize)}
-									<text
-										x={center.x}
-										y={center.y - 3}
-										text-anchor="middle"
-										font-size="8"
-										fill="#ffffff"
-										opacity="0.9"
-										pointer-events="none"
-										style="text-shadow: 0 0 2px #000;"
-									>
-										{tile.feature.charAt(0)}
-									</text>
+									{@const featureAsset = useGraphics && assetsAvailable ? AssetLoader.getFeatureAsset(tile.feature) : null}
+									{@const size = hexSize * 2.2}
+
+									{#if featureAsset}
+										<!-- Graphics mode: Feature sprite overlay -->
+										<image
+											x={center.x - size / 2}
+											y={center.y - size / 2}
+											width={size}
+											height={size}
+											href={featureAsset}
+											opacity="0.9"
+											pointer-events="none"
+										/>
+									{:else}
+										<!-- Fallback: Single letter indicator -->
+										<text
+											x={center.x}
+											y={center.y - 3}
+											text-anchor="middle"
+											font-size="8"
+											fill="#ffffff"
+											opacity="0.9"
+											pointer-events="none"
+											style="text-shadow: 0 0 2px #000;"
+										>
+											{tile.feature.charAt(0)}
+										</text>
+									{/if}
 								{/if}
 							{/each}
 
-							<!-- Resource labels (text) -->
+							<!-- Resources (icons or text labels) -->
 							{#each regionalHexTiles as tile}
 								{@const resourceLabel = getResourceLabel(tile)}
 								{#if resourceLabel}
 									{@const center = getHexCenter(tile, hexSize)}
-									<text
-										x={center.x}
-										y={center.y + 5}
-										text-anchor="middle"
-										font-size="6"
-										fill="#fbbf24"
-										font-weight="bold"
-										opacity="0.95"
-										pointer-events="none"
-										style="text-shadow: 0 0 3px #000;"
-									>
-										{resourceLabel}
-									</text>
+									{@const resourceAsset = useGraphics && assetsAvailable ? AssetLoader.getResourceAsset(resourceLabel) : null}
+									{@const iconSize = hexSize * 1.2}
+
+									{#if resourceAsset}
+										<!-- Graphics mode: Resource icon -->
+										<image
+											x={center.x - iconSize / 2}
+											y={center.y - iconSize / 2}
+											width={iconSize}
+											height={iconSize}
+											href={resourceAsset}
+											pointer-events="none"
+										/>
+									{:else}
+										<!-- Fallback: Text label -->
+										<text
+											x={center.x}
+											y={center.y + 5}
+											text-anchor="middle"
+											font-size="6"
+											fill="#fbbf24"
+											font-weight="bold"
+											opacity="0.95"
+											pointer-events="none"
+											style="text-shadow: 0 0 3px #000;"
+										>
+											{resourceLabel}
+										</text>
+									{/if}
 								{/if}
 							{/each}
 						</g>
@@ -556,6 +667,20 @@
 
 	.map-btn:hover {
 		background: rgb(22 163 74);
+	}
+
+	.map-btn:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+
+	.map-btn:disabled:hover {
+		background: rgb(34 197 94);
+	}
+
+	.map-btn.active {
+		background: rgb(16 185 129);
+		box-shadow: 0 0 0 2px rgb(16 185 129 / 0.3);
 	}
 
 	.zoom-level {

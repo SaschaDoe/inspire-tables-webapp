@@ -1,12 +1,14 @@
 # Regional Map Visualization - Usage Guide
 
-## Phase 2.5 Implementation (Phase A - Basic Colored Hexes)
+## Phase 2.5 Implementation
 
 This document explains how to visualize the generated regional maps with the new `RegionalMapViewer` component.
 
 ---
 
-## ✅ What's Implemented (Phase A)
+## ✅ What's Implemented
+
+### Phase A - Basic Colored Hexes (Fallback Mode)
 
 **RegionalMapViewer Component** - Full visualization of 50x50 regional hex maps with:
 - ✅ Color-coded terrain hexes (Grassland, Desert, Snow, Ocean, etc.)
@@ -17,6 +19,54 @@ This document explains how to visualize the generated regional maps with the new
 - ✅ Hex selection (click to see details)
 - ✅ Terrain statistics (distribution bars)
 - ✅ Resource counters (strategic, luxury, bonus, rivers)
+
+### Phase B - Unciv Graphics (Enhanced Mode)
+
+**Unciv Graphics Support** - Real Civ 5-style pixel art:
+- ✅ **Terrain tiles** - Actual terrain textures instead of colored polygons
+- ✅ **Resource icons** - Pixel art icons for Iron, Wheat, Gold, etc.
+- ✅ **Feature overlays** - Tree sprites for forests, jungle vegetation, etc.
+- ✅ **Graphics toggle** - 🎨 button to switch between graphics/colors
+- ✅ **Automatic fallback** - Uses colored hexes if graphics not downloaded
+- ✅ **AssetLoader utility** - Manages asset loading with caching
+- ✅ **Download script** - Automated download from Unciv repository
+
+---
+
+## 🎨 Downloading Unciv Graphics
+
+To use real Civ 5/Unciv graphics instead of colored hexes:
+
+### Option 1: Automated Download (Recommended)
+
+Run the download script from the project root:
+
+```bash
+node scripts/download-unciv-assets.js
+```
+
+This will download all necessary graphics from the Unciv repository to `static/civ5-assets/`.
+
+### Option 2: Manual Download
+
+1. Visit the Unciv repository: https://github.com/yairm210/Unciv/tree/master/android/assets/ExtraImages
+
+2. Download these folders:
+   - `TerrainIcons/` → Save to `static/civ5-assets/terrain/`
+   - `ResourceIcons/` → Save to `static/civ5-assets/resources/`
+   - `TerrainFeatureIcons/` → Save to `static/civ5-assets/features/`
+   - `RiverIcons/` → Save to `static/civ5-assets/rivers/`
+
+3. See `static/civ5-assets/README.md` for detailed file naming requirements.
+
+### Verifying Graphics Are Loaded
+
+Once graphics are downloaded:
+
+1. Reload the page (clear browser cache if needed)
+2. Look for the 🎨 button in the map controls
+3. If the button is enabled (not grayed out), graphics are available!
+4. Click 🎨 to toggle between graphics mode and colored hexes
 
 ---
 
