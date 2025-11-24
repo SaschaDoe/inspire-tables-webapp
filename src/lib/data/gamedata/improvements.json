@@ -1,0 +1,223 @@
+[
+	{
+		"id": "farm",
+		"name": "Farm",
+		"yields": {
+			"food": 1
+		},
+		"uniques": [
+			"[+1 Food] from [Fresh Water] tiles"
+		],
+		"requiredTech": "agriculture",
+		"turnsToBuild": 7,
+		"allowedOnTerrain": ["plains", "grassland"],
+		"description": "Provides food for city growth"
+	},
+	{
+		"id": "mine",
+		"name": "Mine",
+		"yields": {
+			"production": 1
+		},
+		"uniques": [
+			"[+1 Production] from [Hill] tiles"
+		],
+		"requiredTech": "mining",
+		"turnsToBuild": 7,
+		"allowedOnTerrain": ["plains", "grassland", "desert", "tundra", "hills"],
+		"description": "Provides production"
+	},
+	{
+		"id": "pasture",
+		"name": "Pasture",
+		"yields": {
+			"food": 1
+		},
+		"requiredTech": "animal_husbandry",
+		"turnsToBuild": 8,
+		"allowedOnTerrain": ["plains", "grassland", "hills"],
+		"allowedOnResources": ["horses", "cattle", "sheep"],
+		"description": "Improves animal resources"
+	},
+	{
+		"id": "plantation",
+		"name": "Plantation",
+		"yields": {
+			"gold": 2
+		},
+		"requiredTech": "calendar",
+		"turnsToBuild": 6,
+		"allowedOnTerrain": ["plains", "grassland", "jungle"],
+		"allowedOnResources": ["sugar", "cotton", "dyes", "silk", "spices", "wine", "incense"],
+		"description": "Improves luxury resources"
+	},
+	{
+		"id": "quarry",
+		"name": "Quarry",
+		"yields": {
+			"production": 1
+		},
+		"requiredTech": "masonry",
+		"turnsToBuild": 8,
+		"allowedOnTerrain": ["hills", "desert"],
+		"allowedOnResources": ["stone", "marble"],
+		"description": "Extracts stone and marble"
+	},
+	{
+		"id": "camp",
+		"name": "Camp",
+		"yields": {
+			"food": 1
+		},
+		"requiredTech": null,
+		"turnsToBuild": 7,
+		"allowedOnTerrain": ["plains", "grassland", "tundra", "forest"],
+		"allowedOnResources": ["deer", "ivory", "furs"],
+		"description": "Hunts animals"
+	},
+	{
+		"id": "fishing_boats",
+		"name": "Fishing Boats",
+		"yields": {
+			"food": 1
+		},
+		"requiredTech": "sailing",
+		"turnsToBuild": 7,
+		"allowedOnTerrain": ["coast", "ocean"],
+		"allowedOnResources": ["fish", "pearls", "whales"],
+		"description": "Harvests ocean resources"
+	},
+	{
+		"id": "oil_well",
+		"name": "Oil Well",
+		"yields": {
+			"production": 3
+		},
+		"requiredTech": "biology",
+		"turnsToBuild": 9,
+		"allowedOnTerrain": ["plains", "grassland", "desert", "tundra", "coast", "ocean"],
+		"allowedOnResources": ["oil"],
+		"description": "Extracts oil"
+	},
+	{
+		"id": "road",
+		"name": "Road",
+		"uniques": [
+			"Provides [Movement] bonus",
+			"Provides [Connection] to [Capital]"
+		],
+		"requiredTech": "the_wheel",
+		"turnsToBuild": 3,
+		"allowedOnTerrain": ["plains", "grassland", "desert", "tundra", "snow", "hills"],
+		"description": "Allows faster movement and trade routes"
+	},
+	{
+		"id": "railroad",
+		"name": "Railroad",
+		"uniques": [
+			"Provides [Fast Movement] bonus",
+			"Provides [Connection] to [Capital]"
+		],
+		"requiredTech": "steam_power",
+		"turnsToBuild": 4,
+		"allowedOnTerrain": ["plains", "grassland", "desert", "tundra", "snow", "hills"],
+		"description": "Faster movement than roads"
+	},
+	{
+		"id": "trading_post",
+		"name": "Trading Post",
+		"yields": {
+			"gold": 1
+		},
+		"uniques": [
+			"[+1 Gold] from [River] tiles"
+		],
+		"requiredTech": "currency",
+		"turnsToBuild": 7,
+		"allowedOnTerrain": ["plains", "grassland", "desert", "tundra"],
+		"description": "Provides gold"
+	},
+	{
+		"id": "academy",
+		"name": "Academy",
+		"yields": {
+			"science": 5
+		},
+		"uniques": [
+			"Great Improvement",
+			"Can only be built by [Great Scientist]"
+		],
+		"turnsToBuild": 0,
+		"allowedOnTerrain": ["plains", "grassland", "desert", "tundra"],
+		"description": "Great Scientist improvement"
+	},
+	{
+		"id": "manufactory",
+		"name": "Manufactory",
+		"yields": {
+			"production": 4
+		},
+		"uniques": [
+			"Great Improvement",
+			"Can only be built by [Great Engineer]"
+		],
+		"turnsToBuild": 0,
+		"allowedOnTerrain": ["plains", "grassland", "desert", "tundra"],
+		"description": "Great Engineer improvement"
+	},
+	{
+		"id": "customs_house",
+		"name": "Customs House",
+		"yields": {
+			"gold": 4
+		},
+		"uniques": [
+			"Great Improvement",
+			"Can only be built by [Great Merchant]"
+		],
+		"turnsToBuild": 0,
+		"allowedOnTerrain": ["plains", "grassland", "desert", "tundra"],
+		"description": "Great Merchant improvement"
+	},
+	{
+		"id": "landmark",
+		"name": "Landmark",
+		"yields": {
+			"culture": 6
+		},
+		"uniques": [
+			"Great Improvement",
+			"Can only be built by [Great Artist]"
+		],
+		"turnsToBuild": 0,
+		"allowedOnTerrain": ["plains", "grassland", "desert", "tundra"],
+		"description": "Great Artist improvement"
+	},
+	{
+		"id": "citadel",
+		"name": "Citadel",
+		"uniques": [
+			"Great Improvement",
+			"Can only be built by [Great General]",
+			"[+100]% [Defense] for [Units] on this tile",
+			"Culture Bomb"
+		],
+		"turnsToBuild": 0,
+		"allowedOnTerrain": ["plains", "grassland", "desert", "tundra", "hills"],
+		"description": "Great General improvement with culture bomb"
+	},
+	{
+		"id": "holy_site",
+		"name": "Holy Site",
+		"yields": {
+			"faith": 6
+		},
+		"uniques": [
+			"Great Improvement",
+			"Can only be built by [Great Prophet]"
+		],
+		"turnsToBuild": 0,
+		"allowedOnTerrain": ["plains", "grassland", "desert", "tundra"],
+		"description": "Great Prophet improvement"
+	}
+]

@@ -1,0 +1,380 @@
+[
+	{
+		"id": "agriculture",
+		"name": "Agriculture",
+		"era": "ancient",
+		"cost": 20,
+		"prerequisites": [],
+		"uniques": [
+			"Unlocks [Farm] improvement"
+		],
+		"description": "Enables farming for food production"
+	},
+	{
+		"id": "pottery",
+		"name": "Pottery",
+		"era": "ancient",
+		"cost": 35,
+		"prerequisites": ["agriculture"],
+		"uniques": [
+			"Unlocks [Granary] building"
+		],
+		"description": "Enables food storage"
+	},
+	{
+		"id": "animal_husbandry",
+		"name": "Animal Husbandry",
+		"era": "ancient",
+		"cost": 35,
+		"prerequisites": ["agriculture"],
+		"uniques": [
+			"Reveals [Horses] resource",
+			"Reveals [Cattle] resource",
+			"Unlocks [Pasture] improvement"
+		],
+		"description": "Reveals and enables use of horses and cattle"
+	},
+	{
+		"id": "archery",
+		"name": "Archery",
+		"era": "ancient",
+		"cost": 35,
+		"prerequisites": ["agriculture"],
+		"uniques": [
+			"Unlocks [Archer] unit"
+		],
+		"description": "Enables ranged combat units"
+	},
+	{
+		"id": "mining",
+		"name": "Mining",
+		"era": "ancient",
+		"cost": 35,
+		"prerequisites": ["agriculture"],
+		"uniques": [
+			"Unlocks [Mine] improvement",
+			"Reveals [Iron] resource",
+			"Reveals [Coal] resource"
+		],
+		"description": "Enables mining for production"
+	},
+	{
+		"id": "sailing",
+		"name": "Sailing",
+		"era": "ancient",
+		"cost": 55,
+		"prerequisites": ["pottery"],
+		"uniques": [
+			"Unlocks [Lighthouse] building",
+			"Unlocks [Fishing Boats] improvement",
+			"Reveals [Fish] resource"
+		],
+		"description": "Enables naval exploration"
+	},
+	{
+		"id": "the_wheel",
+		"name": "The Wheel",
+		"era": "ancient",
+		"cost": 55,
+		"prerequisites": ["animal_husbandry"],
+		"uniques": [
+			"Unlocks [Road] improvement",
+			"Unlocks [Chariot Archer] unit"
+		],
+		"description": "Enables roads and chariots"
+	},
+	{
+		"id": "writing",
+		"name": "Writing",
+		"era": "ancient",
+		"cost": 55,
+		"prerequisites": ["pottery"],
+		"uniques": [
+			"Unlocks [Library] building"
+		],
+		"description": "Major science boost"
+	},
+	{
+		"id": "bronze_working",
+		"name": "Bronze Working",
+		"era": "ancient",
+		"cost": 55,
+		"prerequisites": ["mining"],
+		"uniques": [
+			"Unlocks [Spearman] unit",
+			"Unlocks [Barracks] building"
+		],
+		"description": "Enables military training"
+	},
+	{
+		"id": "masonry",
+		"name": "Masonry",
+		"era": "ancient",
+		"cost": 55,
+		"prerequisites": ["mining"],
+		"uniques": [
+			"Unlocks [Walls] building",
+			"Unlocks [Quarry] improvement"
+		],
+		"description": "Enables defensive structures"
+	},
+	{
+		"id": "calendar",
+		"name": "Calendar",
+		"era": "ancient",
+		"cost": 70,
+		"prerequisites": ["pottery"],
+		"uniques": [
+			"Unlocks [Plantation] improvement",
+			"Reveals [Sugar] resource",
+			"Reveals [Cotton] resource"
+		],
+		"description": "Enables plantations for luxury resources"
+	},
+	{
+		"id": "horseback_riding",
+		"name": "Horseback Riding",
+		"era": "classical",
+		"cost": 105,
+		"prerequisites": ["the_wheel"],
+		"uniques": [
+			"Unlocks [Horseman] unit",
+			"Unlocks [Stable] building"
+		],
+		"description": "Enables cavalry units"
+	},
+	{
+		"id": "iron_working",
+		"name": "Iron Working",
+		"era": "classical",
+		"cost": 150,
+		"prerequisites": ["bronze_working"],
+		"uniques": [
+			"Unlocks [Swordsman] unit",
+			"Reveals [Iron] resource"
+		],
+		"description": "Enables iron weapons"
+	},
+	{
+		"id": "mathematics",
+		"name": "Mathematics",
+		"era": "classical",
+		"cost": 105,
+		"prerequisites": ["the_wheel", "writing"],
+		"uniques": [
+			"Unlocks [Catapult] unit"
+		],
+		"description": "Enables siege weapons"
+	},
+	{
+		"id": "construction",
+		"name": "Construction",
+		"era": "classical",
+		"cost": 105,
+		"prerequisites": ["masonry"],
+		"uniques": [
+			"Unlocks [Composite Bowman] unit"
+		],
+		"description": "Improved ranged units"
+	},
+	{
+		"id": "philosophy",
+		"name": "Philosophy",
+		"era": "classical",
+		"cost": 105,
+		"prerequisites": ["writing"],
+		"uniques": [
+			"Unlocks [Temple] building",
+			"Free [Great Scientist] appears"
+		],
+		"description": "Major culture milestone"
+	},
+	{
+		"id": "currency",
+		"name": "Currency",
+		"era": "classical",
+		"cost": 105,
+		"prerequisites": ["mathematics"],
+		"uniques": [
+			"Unlocks [Market] building"
+		],
+		"description": "Enables trade and commerce"
+	},
+	{
+		"id": "engineering",
+		"name": "Engineering",
+		"era": "classical",
+		"cost": 175,
+		"prerequisites": ["construction", "mathematics"],
+		"uniques": [
+			"Unlocks [Aqueduct] building"
+		],
+		"description": "Advanced infrastructure"
+	},
+	{
+		"id": "metal_casting",
+		"name": "Metal Casting",
+		"era": "medieval",
+		"cost": 275,
+		"prerequisites": ["iron_working"],
+		"uniques": [
+			"Unlocks [Workshop] building"
+		],
+		"description": "Industrial production boost"
+	},
+	{
+		"id": "chivalry",
+		"name": "Chivalry",
+		"era": "medieval",
+		"cost": 440,
+		"prerequisites": ["horseback_riding", "civil_service"],
+		"uniques": [
+			"Unlocks [Knight] unit",
+			"Unlocks [Castle] building"
+		],
+		"description": "Powerful cavalry and defense"
+	},
+	{
+		"id": "education",
+		"name": "Education",
+		"era": "medieval",
+		"cost": 440,
+		"prerequisites": ["philosophy"],
+		"uniques": [
+			"Unlocks [University] building"
+		],
+		"description": "Major science advancement"
+	},
+	{
+		"id": "civil_service",
+		"name": "Civil Service",
+		"era": "medieval",
+		"cost": 275,
+		"prerequisites": ["philosophy"],
+		"uniques": [
+			"Unlocks [Pikeman] unit"
+		],
+		"description": "Government organization"
+	},
+	{
+		"id": "gunpowder",
+		"name": "Gunpowder",
+		"era": "renaissance",
+		"cost": 680,
+		"prerequisites": ["chemistry"],
+		"uniques": [
+			"Unlocks [Musketman] unit"
+		],
+		"description": "Revolutionary military technology"
+	},
+	{
+		"id": "chemistry",
+		"name": "Chemistry",
+		"era": "renaissance",
+		"cost": 485,
+		"prerequisites": ["metal_casting"],
+		"uniques": [
+			"Unlocks [Cannon] unit"
+		],
+		"description": "Advanced siege weapons"
+	},
+	{
+		"id": "banking",
+		"name": "Banking",
+		"era": "renaissance",
+		"cost": 650,
+		"prerequisites": ["currency"],
+		"uniques": [
+			"Unlocks [Bank] building"
+		],
+		"description": "Economic advancement"
+	},
+	{
+		"id": "printing_press",
+		"name": "Printing Press",
+		"era": "renaissance",
+		"cost": 650,
+		"prerequisites": ["education"],
+		"uniques": [
+			"Unlocks [Theater] building"
+		],
+		"description": "Spreads knowledge and culture"
+	},
+	{
+		"id": "rifling",
+		"name": "Rifling",
+		"era": "industrial",
+		"cost": 1425,
+		"prerequisites": ["gunpowder"],
+		"uniques": [
+			"Unlocks [Rifleman] unit"
+		],
+		"description": "Modern firearms"
+	},
+	{
+		"id": "military_science",
+		"name": "Military Science",
+		"era": "industrial",
+		"cost": 1425,
+		"prerequisites": ["gunpowder"],
+		"uniques": [
+			"Unlocks [Cavalry] unit"
+		],
+		"description": "Professional armies"
+	},
+	{
+		"id": "industrialization",
+		"name": "Industrialization",
+		"era": "industrial",
+		"cost": 1425,
+		"prerequisites": ["chemistry"],
+		"uniques": [
+			"Unlocks [Factory] building"
+		],
+		"description": "Industrial revolution"
+	},
+	{
+		"id": "biology",
+		"name": "Biology",
+		"era": "industrial",
+		"cost": 1425,
+		"prerequisites": ["chemistry"],
+		"uniques": [
+			"Unlocks [Hospital] building"
+		],
+		"description": "Medical advances"
+	},
+	{
+		"id": "replaceable_parts",
+		"name": "Replaceable Parts",
+		"era": "modern",
+		"cost": 3250,
+		"prerequisites": ["industrialization"],
+		"uniques": [
+			"Unlocks [Infantry] unit"
+		],
+		"description": "Mass production"
+	},
+	{
+		"id": "combined_arms",
+		"name": "Combined Arms",
+		"era": "modern",
+		"cost": 3250,
+		"prerequisites": ["military_science"],
+		"uniques": [
+			"Unlocks [Tank] unit"
+		],
+		"description": "Modern warfare"
+	},
+	{
+		"id": "plastics",
+		"name": "Plastics",
+		"era": "modern",
+		"cost": 3250,
+		"prerequisites": ["industrialization"],
+		"uniques": [
+			"Unlocks [Research Lab] building"
+		],
+		"description": "Scientific advancement"
+	}
+]

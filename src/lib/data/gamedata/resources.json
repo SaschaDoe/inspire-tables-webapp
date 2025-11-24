@@ -1,0 +1,258 @@
+[
+	{
+		"id": "iron",
+		"name": "Iron",
+		"type": "strategic",
+		"revealedBy": "iron_working",
+		"improvementRequired": "mine",
+		"yields": {
+			"production": 1
+		},
+		"description": "Required for Swordsman and other iron units"
+	},
+	{
+		"id": "horses",
+		"name": "Horses",
+		"type": "strategic",
+		"revealedBy": "animal_husbandry",
+		"improvementRequired": "pasture",
+		"yields": {
+			"production": 1
+		},
+		"description": "Required for mounted units"
+	},
+	{
+		"id": "coal",
+		"name": "Coal",
+		"type": "strategic",
+		"revealedBy": "mining",
+		"improvementRequired": "mine",
+		"yields": {
+			"production": 1
+		},
+		"description": "Industrial age resource"
+	},
+	{
+		"id": "oil",
+		"name": "Oil",
+		"type": "strategic",
+		"revealedBy": "biology",
+		"improvementRequired": "oil_well",
+		"yields": {
+			"production": 1
+		},
+		"description": "Modern age resource for tanks"
+	},
+	{
+		"id": "aluminum",
+		"name": "Aluminum",
+		"type": "strategic",
+		"revealedBy": "electricity",
+		"improvementRequired": "mine",
+		"yields": {
+			"production": 1
+		},
+		"description": "Modern age resource"
+	},
+	{
+		"id": "uranium",
+		"name": "Uranium",
+		"type": "strategic",
+		"revealedBy": "atomic_theory",
+		"improvementRequired": "mine",
+		"yields": {
+			"production": 1
+		},
+		"description": "Atomic age resource"
+	},
+	{
+		"id": "wheat",
+		"name": "Wheat",
+		"type": "bonus",
+		"revealedBy": null,
+		"improvementRequired": "farm",
+		"yields": {
+			"food": 1
+		},
+		"description": "Provides extra food"
+	},
+	{
+		"id": "cattle",
+		"name": "Cattle",
+		"type": "bonus",
+		"revealedBy": "animal_husbandry",
+		"improvementRequired": "pasture",
+		"yields": {
+			"food": 1
+		},
+		"description": "Provides food"
+	},
+	{
+		"id": "fish",
+		"name": "Fish",
+		"type": "bonus",
+		"revealedBy": "sailing",
+		"improvementRequired": "fishing_boats",
+		"yields": {
+			"food": 1
+		},
+		"description": "Ocean food resource"
+	},
+	{
+		"id": "deer",
+		"name": "Deer",
+		"type": "bonus",
+		"revealedBy": null,
+		"improvementRequired": "camp",
+		"yields": {
+			"food": 1
+		},
+		"description": "Forest food resource"
+	},
+	{
+		"id": "gold",
+		"name": "Gold",
+		"type": "luxury",
+		"revealedBy": null,
+		"improvementRequired": "mine",
+		"yields": {
+			"gold": 2
+		},
+		"happiness": 4,
+		"description": "Luxury resource that provides happiness"
+	},
+	{
+		"id": "silver",
+		"name": "Silver",
+		"type": "luxury",
+		"revealedBy": null,
+		"improvementRequired": "mine",
+		"yields": {
+			"gold": 2
+		},
+		"happiness": 4,
+		"description": "Luxury resource that provides happiness"
+	},
+	{
+		"id": "gems",
+		"name": "Gems",
+		"type": "luxury",
+		"revealedBy": null,
+		"improvementRequired": "mine",
+		"yields": {
+			"gold": 3
+		},
+		"happiness": 4,
+		"description": "Luxury resource that provides happiness"
+	},
+	{
+		"id": "silk",
+		"name": "Silk",
+		"type": "luxury",
+		"revealedBy": null,
+		"improvementRequired": "plantation",
+		"yields": {
+			"gold": 2
+		},
+		"happiness": 4,
+		"description": "Luxury resource from plantations"
+	},
+	{
+		"id": "spices",
+		"name": "Spices",
+		"type": "luxury",
+		"revealedBy": null,
+		"improvementRequired": "plantation",
+		"yields": {
+			"gold": 2
+		},
+		"happiness": 4,
+		"description": "Luxury resource from plantations"
+	},
+	{
+		"id": "sugar",
+		"name": "Sugar",
+		"type": "luxury",
+		"revealedBy": "calendar",
+		"improvementRequired": "plantation",
+		"yields": {
+			"food": 1,
+			"gold": 1
+		},
+		"happiness": 4,
+		"description": "Luxury resource from plantations"
+	},
+	{
+		"id": "cotton",
+		"name": "Cotton",
+		"type": "luxury",
+		"revealedBy": "calendar",
+		"improvementRequired": "plantation",
+		"yields": {
+			"gold": 2
+		},
+		"happiness": 4,
+		"description": "Luxury resource from plantations"
+	},
+	{
+		"id": "dyes",
+		"name": "Dyes",
+		"type": "luxury",
+		"revealedBy": null,
+		"improvementRequired": "plantation",
+		"yields": {
+			"gold": 2
+		},
+		"happiness": 4,
+		"description": "Luxury resource from plantations"
+	},
+	{
+		"id": "incense",
+		"name": "Incense",
+		"type": "luxury",
+		"revealedBy": null,
+		"improvementRequired": "plantation",
+		"yields": {
+			"culture": 1,
+			"gold": 1
+		},
+		"happiness": 4,
+		"description": "Luxury resource providing culture"
+	},
+	{
+		"id": "wine",
+		"name": "Wine",
+		"type": "luxury",
+		"revealedBy": null,
+		"improvementRequired": "plantation",
+		"yields": {
+			"gold": 2
+		},
+		"happiness": 4,
+		"description": "Luxury resource from plantations"
+	},
+	{
+		"id": "ivory",
+		"name": "Ivory",
+		"type": "luxury",
+		"revealedBy": null,
+		"improvementRequired": "camp",
+		"yields": {
+			"gold": 2
+		},
+		"happiness": 4,
+		"description": "Luxury resource from camps"
+	},
+	{
+		"id": "furs",
+		"name": "Furs",
+		"type": "luxury",
+		"revealedBy": null,
+		"improvementRequired": "camp",
+		"yields": {
+			"gold": 2
+		},
+		"happiness": 4,
+		"description": "Luxury resource from camps"
+	}
+]

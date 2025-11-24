@@ -1,0 +1,289 @@
+[
+	{
+		"id": "tradition",
+		"name": "Tradition",
+		"type": "tree_opener",
+		"treeId": "tradition",
+		"era": "ancient",
+		"uniques": [
+			"[-25]% Culture cost of acquiring tiles [in all cities]",
+			"[+3 Culture] [in capital]"
+		],
+		"prerequisites": [],
+		"description": "Tradition focuses on building tall cities with strong culture"
+	},
+	{
+		"id": "tradition_aristocracy",
+		"name": "Aristocracy",
+		"type": "policy",
+		"treeId": "tradition",
+		"era": "ancient",
+		"uniques": [
+			"[+15]% [Production] when constructing [Wonders] [in all cities]",
+			"[+1 Happiness] per [10] population [in all cities]"
+		],
+		"prerequisites": ["tradition"],
+		"description": "Aristocracy enables wonder construction"
+	},
+	{
+		"id": "tradition_landed_elite",
+		"name": "Landed Elite",
+		"type": "policy",
+		"treeId": "tradition",
+		"era": "ancient",
+		"uniques": [
+			"[+10]% [Food] [in capital]",
+			"[+2 Food] [in capital]"
+		],
+		"prerequisites": ["tradition"],
+		"description": "Capital grows faster"
+	},
+	{
+		"id": "tradition_monarchy",
+		"name": "Monarchy",
+		"type": "policy",
+		"treeId": "tradition",
+		"era": "ancient",
+		"uniques": [
+			"[-1 Gold] [from every] [Unit] maintenance",
+			"[+1 Happiness] from every [Palace]"
+		],
+		"prerequisites": ["tradition_aristocracy", "tradition_landed_elite"],
+		"description": "Reduces unit maintenance"
+	},
+	{
+		"id": "liberty",
+		"name": "Liberty",
+		"type": "tree_opener",
+		"treeId": "liberty",
+		"era": "ancient",
+		"uniques": [
+			"[+1 Culture] [in all cities]"
+		],
+		"prerequisites": [],
+		"description": "Liberty focuses on rapid expansion"
+	},
+	{
+		"id": "liberty_republic",
+		"name": "Republic",
+		"type": "policy",
+		"treeId": "liberty",
+		"era": "ancient",
+		"uniques": [
+			"[+1 Production] [in all cities]",
+			"[+5]% [Production] when constructing [Buildings] [in all cities]"
+		],
+		"prerequisites": ["liberty"],
+		"description": "Production bonus"
+	},
+	{
+		"id": "liberty_citizenship",
+		"name": "Citizenship",
+		"type": "policy",
+		"treeId": "liberty",
+		"era": "ancient",
+		"uniques": [
+			"[-25]% time to construct [Worker] units [in all cities]"
+		],
+		"prerequisites": ["liberty"],
+		"description": "Workers build faster"
+	},
+	{
+		"id": "liberty_collective_rule",
+		"name": "Collective Rule",
+		"type": "policy",
+		"treeId": "liberty",
+		"era": "ancient",
+		"uniques": [
+			"Free [Settler] appears",
+			"[-50]% time to construct [Settler] units [in all cities]"
+		],
+		"prerequisites": ["liberty_republic"],
+		"description": "Free settler and faster settler production"
+	},
+	{
+		"id": "honor",
+		"name": "Honor",
+		"type": "tree_opener",
+		"treeId": "honor",
+		"era": "ancient",
+		"uniques": [
+			"[+33]% [Strength] vs [Barbarians]",
+			"Gain [Culture] when destroying [Barbarian] units"
+		],
+		"prerequisites": [],
+		"description": "Honor focuses on military prowess"
+	},
+	{
+		"id": "honor_warrior_code",
+		"name": "Warrior Code",
+		"type": "policy",
+		"treeId": "honor",
+		"era": "ancient",
+		"uniques": [
+			"[+15]% [Production] when constructing [Military] units [in all cities]"
+		],
+		"prerequisites": ["honor"],
+		"description": "Build military units faster"
+	},
+	{
+		"id": "honor_discipline",
+		"name": "Discipline",
+		"type": "policy",
+		"treeId": "honor",
+		"era": "ancient",
+		"uniques": [
+			"[+15]% [Strength] for [Military] units which have another [Military] unit in an adjacent tile"
+		],
+		"prerequisites": ["honor"],
+		"description": "Adjacent units gain strength"
+	},
+	{
+		"id": "honor_military_tradition",
+		"name": "Military Tradition",
+		"type": "policy",
+		"treeId": "honor",
+		"era": "ancient",
+		"uniques": [
+			"[+50]% [Experience] gained from combat [for all units]"
+		],
+		"prerequisites": ["honor_warrior_code", "honor_discipline"],
+		"description": "Units gain experience faster"
+	},
+	{
+		"id": "piety",
+		"name": "Piety",
+		"type": "tree_opener",
+		"treeId": "piety",
+		"era": "classical",
+		"uniques": [
+			"[+100]% [Production] when constructing [Shrine] buildings [in all cities]",
+			"[+100]% [Production] when constructing [Temple] buildings [in all cities]"
+		],
+		"prerequisites": [],
+		"description": "Piety focuses on religion and faith"
+	},
+	{
+		"id": "piety_organized_religion",
+		"name": "Organized Religion",
+		"type": "policy",
+		"treeId": "piety",
+		"era": "classical",
+		"uniques": [
+			"[+1 Happiness] from every [Shrine]",
+			"[+1 Happiness] from every [Temple]"
+		],
+		"prerequisites": ["piety"],
+		"description": "Religious buildings provide happiness"
+	},
+	{
+		"id": "patronage",
+		"name": "Patronage",
+		"type": "tree_opener",
+		"treeId": "patronage",
+		"era": "classical",
+		"uniques": [
+			"[-25]% [Influence] lost with [City-States]"
+		],
+		"prerequisites": [],
+		"description": "Patronage focuses on city-state diplomacy"
+	},
+	{
+		"id": "commerce",
+		"name": "Commerce",
+		"type": "tree_opener",
+		"treeId": "commerce",
+		"era": "medieval",
+		"uniques": [
+			"[-25]% [Gold] cost when purchasing items [in all cities]"
+		],
+		"prerequisites": [],
+		"description": "Commerce focuses on trade and gold"
+	},
+	{
+		"id": "commerce_trade_unions",
+		"name": "Trade Unions",
+		"type": "policy",
+		"treeId": "commerce",
+		"era": "medieval",
+		"uniques": [
+			"[-33]% [Gold] unit maintenance costs"
+		],
+		"prerequisites": ["commerce"],
+		"description": "Reduced unit maintenance"
+	},
+	{
+		"id": "rationalism",
+		"name": "Rationalism",
+		"type": "tree_opener",
+		"treeId": "rationalism",
+		"era": "renaissance",
+		"uniques": [
+			"[+15]% [Science] while the empire is happy"
+		],
+		"prerequisites": [],
+		"description": "Rationalism focuses on science"
+	},
+	{
+		"id": "rationalism_humanism",
+		"name": "Humanism",
+		"type": "policy",
+		"treeId": "rationalism",
+		"era": "renaissance",
+		"uniques": [
+			"[+1 Happiness] from every [University]",
+			"[+1 Happiness] from every [Public School]"
+		],
+		"prerequisites": ["rationalism"],
+		"description": "Science buildings provide happiness"
+	},
+	{
+		"id": "rationalism_free_thought",
+		"name": "Free Thought",
+		"type": "policy",
+		"treeId": "rationalism",
+		"era": "renaissance",
+		"uniques": [
+			"[+1 Science] from every [Trading Post]",
+			"[+17]% [Science] from [Research Agreement]"
+		],
+		"prerequisites": ["rationalism"],
+		"description": "Boost science output"
+	},
+	{
+		"id": "freedom",
+		"name": "Freedom",
+		"type": "tree_opener",
+		"treeId": "freedom",
+		"era": "industrial",
+		"uniques": [
+			"[+25]% [Great Person] generation [in all cities]"
+		],
+		"prerequisites": [],
+		"description": "Freedom ideology - Great Person generation"
+	},
+	{
+		"id": "order",
+		"name": "Order",
+		"type": "tree_opener",
+		"treeId": "order",
+		"era": "industrial",
+		"uniques": [
+			"[+1 Happiness] for every [2] population [in all cities]"
+		],
+		"prerequisites": [],
+		"description": "Order ideology - Happiness from population"
+	},
+	{
+		"id": "autocracy",
+		"name": "Autocracy",
+		"type": "tree_opener",
+		"treeId": "autocracy",
+		"era": "industrial",
+		"uniques": [
+			"[+20]% attack bonus when attacking [in all units]"
+		],
+		"prerequisites": [],
+		"description": "Autocracy ideology - Military strength"
+	}
+]

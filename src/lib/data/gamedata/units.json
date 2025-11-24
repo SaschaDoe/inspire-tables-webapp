@@ -1,0 +1,266 @@
+[
+	{
+		"id": "settler",
+		"name": "Settler",
+		"unitType": "civilian",
+		"era": "ancient",
+		"cost": 106,
+		"movement": 2,
+		"uniques": [
+			"Can found new cities",
+			"Cannot attack"
+		],
+		"description": "Founds new cities"
+	},
+	{
+		"id": "worker",
+		"name": "Worker",
+		"unitType": "civilian",
+		"era": "ancient",
+		"cost": 70,
+		"movement": 2,
+		"uniques": [
+			"Can build improvements",
+			"Cannot attack"
+		],
+		"description": "Builds tile improvements"
+	},
+	{
+		"id": "scout",
+		"name": "Scout",
+		"unitType": "recon",
+		"era": "ancient",
+		"cost": 25,
+		"movement": 2,
+		"strength": 5,
+		"uniques": [
+			"Ignores terrain cost"
+		],
+		"requiredTech": null,
+		"description": "Fast exploration unit"
+	},
+	{
+		"id": "warrior",
+		"name": "Warrior",
+		"unitType": "melee",
+		"era": "ancient",
+		"cost": 40,
+		"movement": 2,
+		"strength": 8,
+		"requiredTech": null,
+		"obsoleteTech": "iron_working",
+		"upgradesTo": "swordsman",
+		"description": "Basic melee unit"
+	},
+	{
+		"id": "spearman",
+		"name": "Spearman",
+		"unitType": "melee",
+		"era": "ancient",
+		"cost": 56,
+		"movement": 2,
+		"strength": 11,
+		"uniques": [
+			"[+50]% [Strength] vs [Mounted] units"
+		],
+		"requiredTech": "bronze_working",
+		"obsoleteTech": "civil_service",
+		"upgradesTo": "pikeman",
+		"description": "Anti-cavalry unit"
+	},
+	{
+		"id": "archer",
+		"name": "Archer",
+		"unitType": "ranged",
+		"era": "ancient",
+		"cost": 40,
+		"movement": 2,
+		"strength": 5,
+		"rangedStrength": 7,
+		"range": 2,
+		"requiredTech": "archery",
+		"obsoleteTech": "construction",
+		"upgradesTo": "composite_bowman",
+		"description": "Basic ranged unit"
+	},
+	{
+		"id": "chariot_archer",
+		"name": "Chariot Archer",
+		"unitType": "ranged",
+		"era": "ancient",
+		"cost": 56,
+		"movement": 4,
+		"strength": 6,
+		"rangedStrength": 10,
+		"range": 2,
+		"uniques": [
+			"No defensive terrain bonus"
+		],
+		"requiredTech": "the_wheel",
+		"requiredResource": "horses",
+		"obsoleteTech": "chivalry",
+		"upgradesTo": "knight",
+		"description": "Mobile ranged unit"
+	},
+	{
+		"id": "swordsman",
+		"name": "Swordsman",
+		"unitType": "melee",
+		"era": "classical",
+		"cost": 75,
+		"movement": 2,
+		"strength": 14,
+		"requiredTech": "iron_working",
+		"requiredResource": "iron",
+		"obsoleteTech": "gunpowder",
+		"upgradesTo": "musketman",
+		"description": "Strong melee unit"
+	},
+	{
+		"id": "horseman",
+		"name": "Horseman",
+		"unitType": "mounted",
+		"era": "classical",
+		"cost": 75,
+		"movement": 4,
+		"strength": 12,
+		"uniques": [
+			"Can move after attacking",
+			"No defensive terrain bonus"
+		],
+		"requiredTech": "horseback_riding",
+		"requiredResource": "horses",
+		"obsoleteTech": "chivalry",
+		"upgradesTo": "knight",
+		"description": "Fast cavalry unit"
+	},
+	{
+		"id": "catapult",
+		"name": "Catapult",
+		"unitType": "siege",
+		"era": "classical",
+		"cost": 75,
+		"movement": 2,
+		"strength": 7,
+		"rangedStrength": 14,
+		"range": 2,
+		"uniques": [
+			"[+200]% [Strength] vs [City]",
+			"Must set up to attack",
+			"[-1] Sight"
+		],
+		"requiredTech": "mathematics",
+		"obsoleteTech": "chemistry",
+		"upgradesTo": "cannon",
+		"description": "Siege weapon"
+	},
+	{
+		"id": "knight",
+		"name": "Knight",
+		"unitType": "mounted",
+		"era": "medieval",
+		"cost": 120,
+		"movement": 4,
+		"strength": 20,
+		"uniques": [
+			"Can move after attacking",
+			"No defensive terrain bonus"
+		],
+		"requiredTech": "chivalry",
+		"requiredResource": "horses",
+		"obsoleteTech": "military_science",
+		"upgradesTo": "cavalry",
+		"description": "Powerful medieval cavalry"
+	},
+	{
+		"id": "musketman",
+		"name": "Musketman",
+		"unitType": "gunpowder",
+		"era": "renaissance",
+		"cost": 150,
+		"movement": 2,
+		"strength": 24,
+		"requiredTech": "gunpowder",
+		"obsoleteTech": "rifling",
+		"upgradesTo": "rifleman",
+		"description": "Gunpowder unit"
+	},
+	{
+		"id": "cannon",
+		"name": "Cannon",
+		"unitType": "siege",
+		"era": "renaissance",
+		"cost": 185,
+		"movement": 2,
+		"strength": 14,
+		"rangedStrength": 26,
+		"range": 2,
+		"uniques": [
+			"[+200]% [Strength] vs [City]",
+			"Must set up to attack",
+			"[-1] Sight"
+		],
+		"requiredTech": "chemistry",
+		"obsoleteTech": "dynamite",
+		"upgradesTo": "artillery",
+		"description": "Renaissance siege weapon"
+	},
+	{
+		"id": "rifleman",
+		"name": "Rifleman",
+		"unitType": "gunpowder",
+		"era": "industrial",
+		"cost": 225,
+		"movement": 2,
+		"strength": 34,
+		"requiredTech": "rifling",
+		"obsoleteTech": "replaceable_parts",
+		"upgradesTo": "infantry",
+		"description": "Industrial era infantry"
+	},
+	{
+		"id": "cavalry",
+		"name": "Cavalry",
+		"unitType": "mounted",
+		"era": "industrial",
+		"cost": 225,
+		"movement": 4,
+		"strength": 34,
+		"uniques": [
+			"Can move after attacking",
+			"No defensive terrain bonus"
+		],
+		"requiredTech": "military_science",
+		"requiredResource": "horses",
+		"obsoleteTech": "combined_arms",
+		"upgradesTo": "tank",
+		"description": "Industrial era cavalry"
+	},
+	{
+		"id": "tank",
+		"name": "Tank",
+		"unitType": "armored",
+		"era": "modern",
+		"cost": 375,
+		"movement": 5,
+		"strength": 80,
+		"uniques": [
+			"Can move after attacking",
+			"No defensive terrain bonus"
+		],
+		"requiredTech": "combined_arms",
+		"requiredResource": "oil",
+		"description": "Modern armored unit"
+	},
+	{
+		"id": "infantry",
+		"name": "Infantry",
+		"unitType": "gunpowder",
+		"era": "modern",
+		"cost": 375,
+		"movement": 2,
+		"strength": 70,
+		"requiredTech": "replaceable_parts",
+		"description": "Modern infantry"
+	}
+]

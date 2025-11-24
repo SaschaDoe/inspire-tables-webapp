@@ -1,0 +1,236 @@
+[
+	{
+		"id": "monument",
+		"name": "Monument",
+		"era": "ancient",
+		"cost": 40,
+		"maintenance": 1,
+		"uniques": [
+			"[+2 Culture] [in this city]"
+		],
+		"requiredTech": null,
+		"description": "Provides culture to expand your borders"
+	},
+	{
+		"id": "granary",
+		"name": "Granary",
+		"era": "ancient",
+		"cost": 60,
+		"maintenance": 1,
+		"uniques": [
+			"[+2 Food] [in this city]"
+		],
+		"requiredTech": "pottery",
+		"description": "Stores food and helps city grow faster"
+	},
+	{
+		"id": "library",
+		"name": "Library",
+		"era": "ancient",
+		"cost": 75,
+		"maintenance": 1,
+		"uniques": [
+			"[+1 Science] per [2] population [in this city]"
+		],
+		"requiredTech": "writing",
+		"description": "Provides science based on population"
+	},
+	{
+		"id": "shrine",
+		"name": "Shrine",
+		"era": "ancient",
+		"cost": 40,
+		"maintenance": 1,
+		"uniques": [
+			"[+1 Faith] [in this city]"
+		],
+		"requiredTech": null,
+		"description": "Provides faith for founding a religion"
+	},
+	{
+		"id": "barracks",
+		"name": "Barracks",
+		"era": "ancient",
+		"cost": 75,
+		"maintenance": 1,
+		"uniques": [
+			"[+15]% [Production] when constructing [Military] units [in this city]"
+		],
+		"requiredTech": "bronze_working",
+		"description": "Units built here gain experience"
+	},
+	{
+		"id": "walls",
+		"name": "Walls",
+		"era": "ancient",
+		"cost": 75,
+		"maintenance": 1,
+		"uniques": [
+			"[+50]% [Defense] [in this city]",
+			"Provides [Ranged Attack] ability [in this city]"
+		],
+		"requiredTech": "masonry",
+		"description": "Greatly increases city defense"
+	},
+	{
+		"id": "lighthouse",
+		"name": "Lighthouse",
+		"era": "classical",
+		"cost": 75,
+		"maintenance": 1,
+		"uniques": [
+			"[+1 Food] from [Coast] tiles [in this city]",
+			"[+1 Food] from [Ocean] tiles [in this city]"
+		],
+		"requiredTech": "sailing",
+		"description": "Improves water tiles"
+	},
+	{
+		"id": "market",
+		"name": "Market",
+		"era": "classical",
+		"cost": 100,
+		"maintenance": 2,
+		"uniques": [
+			"[+2 Gold] [in this city]",
+			"[+25]% [Gold] from [Trade Routes] [in this city]"
+		],
+		"requiredTech": "currency",
+		"description": "Provides gold and boosts trade"
+	},
+	{
+		"id": "aqueduct",
+		"name": "Aqueduct",
+		"era": "classical",
+		"cost": 100,
+		"maintenance": 2,
+		"uniques": [
+			"[+40]% [Food] carried over after population growth [in this city]"
+		],
+		"requiredTech": "engineering",
+		"description": "Helps cities grow faster"
+	},
+	{
+		"id": "university",
+		"name": "University",
+		"era": "medieval",
+		"cost": 160,
+		"maintenance": 3,
+		"uniques": [
+			"[+2 Science] from [Jungle] tiles [in this city]",
+			"[+50]% [Science] from [Library] [in this city]"
+		],
+		"requiredTech": "education",
+		"prerequisites": ["library"],
+		"description": "Major source of science"
+	},
+	{
+		"id": "workshop",
+		"name": "Workshop",
+		"era": "medieval",
+		"cost": 120,
+		"maintenance": 2,
+		"uniques": [
+			"[+2 Production] [in this city]",
+			"[+10]% [Production] [in this city]"
+		],
+		"requiredTech": "metal_casting",
+		"description": "Provides production"
+	},
+	{
+		"id": "castle",
+		"name": "Castle",
+		"era": "medieval",
+		"cost": 150,
+		"maintenance": 2,
+		"uniques": [
+			"[+50]% [Defense] [in this city]",
+			"[+7] [Combat Strength] [in this city]"
+		],
+		"requiredTech": "chivalry",
+		"prerequisites": ["walls"],
+		"description": "Strong defensive building"
+	},
+	{
+		"id": "bank",
+		"name": "Bank",
+		"era": "renaissance",
+		"cost": 220,
+		"maintenance": 3,
+		"uniques": [
+			"[+3 Gold] [in this city]",
+			"[+25]% [Gold] [in this city]"
+		],
+		"requiredTech": "banking",
+		"prerequisites": ["market"],
+		"description": "Multiplies gold output"
+	},
+	{
+		"id": "theater",
+		"name": "Theater",
+		"era": "renaissance",
+		"cost": 300,
+		"maintenance": 3,
+		"uniques": [
+			"[+3 Culture] [in this city]",
+			"[+1 Great Artist] points per turn"
+		],
+		"requiredTech": "printing_press",
+		"description": "Provides culture and Great Artist points"
+	},
+	{
+		"id": "factory",
+		"name": "Factory",
+		"era": "industrial",
+		"cost": 360,
+		"maintenance": 3,
+		"uniques": [
+			"[+4 Production] [in this city]",
+			"[+10]% [Production] [in this city]"
+		],
+		"requiredTech": "industrialization",
+		"description": "Major production boost"
+	},
+	{
+		"id": "hospital",
+		"name": "Hospital",
+		"era": "industrial",
+		"cost": 360,
+		"maintenance": 3,
+		"uniques": [
+			"[+5 Food] [in this city]"
+		],
+		"requiredTech": "biology",
+		"description": "Helps city grow"
+	},
+	{
+		"id": "stock_exchange",
+		"name": "Stock Exchange",
+		"era": "modern",
+		"cost": 650,
+		"maintenance": 4,
+		"uniques": [
+			"[+3 Gold] [in this city]",
+			"[+33]% [Gold] [in this city]",
+			"[+2 Great Merchant] points per turn"
+		],
+		"requiredTech": "stock_exchange",
+		"prerequisites": ["bank"],
+		"description": "Major gold boost"
+	},
+	{
+		"id": "laboratory",
+		"name": "Research Lab",
+		"era": "modern",
+		"cost": 600,
+		"maintenance": 3,
+		"uniques": [
+			"[+4 Science] [in this city]",
+			"[+50]% [Science] [in this city]",
+			"[+1 Great Scientist] points per turn"
+		],
+		"requiredTech": "plastics",
+		"prerequisites": ["university"],
+		"description": "Late-game science building"
+	}
+]
