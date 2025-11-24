@@ -1,4 +1,7 @@
 import { Entity } from '../base/entity';
+import { TechManager } from '$lib/simulation/managers/TechManager';
+import { PolicyManager } from '$lib/simulation/managers/PolicyManager';
+import { DiplomacyManager } from '$lib/simulation/managers/DiplomacyManager';
 
 /**
  * Diplomacy state between two nations
@@ -101,6 +104,11 @@ export class Nation extends Entity {
 	totalPopulation = 1000; // Total population across all cities
 	populationGrowthRate = 0; // Current growth rate
 
+	// Managers (Unciv-inspired separation of concerns)
+	techManager: TechManager;
+	policyManager: PolicyManager;
+	diplomacyManagers: Map<string, DiplomacyManager> = new Map(); // One per other nation
+
 	// Resources (Civ 5 style)
 	resources: NationResources = {
 		food: 0,
@@ -183,6 +191,12 @@ export class Nation extends Entity {
 
 	constructor() {
 		super();
+
+		// Initialize managers
+		this.techManager = new TechManager();
+		this.policyManager = new PolicyManager();
+		// DiplomacyManagers are created on-demand when meeting other nations
+
 		this.initializeLeader();
 	}
 
@@ -199,6 +213,59 @@ export class Nation extends Entity {
 			fromYear: this.foundingYear,
 			toYear: null
 		});
+	}
+
+	/**
+	 * Get or create DiplomacyManager for another nation
+	 */
+	getDiplomacyManager(nationId: string, nationName: string): DiplomacyManager {
+		let manager = this.diplomacyManagers.get(nationId);
+		if (!manager) {
+			manager = new DiplomacyManager(nationId, nationName);
+			this.diplomacyManagers.set(nationId, manager);
+		}
+		return manager;
+	}
+
+	/**
+	 * Process one turn for all managers
+	 */
+	processTurn(currentTurn: number): {
+		techCompleted: boolean;
+		techId?: string;
+		policyReady: boolean;
+	} {
+		// Process tech research
+		const techResult = this.techManager.processTurn(this.sciencePerTurn, 100); // TODO: Get actual tech cost
+
+		// Sync to legacy properties
+		if (techResult.completed && techResult.techId) {
+			this.discoveredTechs.push(techResult.techId);
+			this.currentResearch = undefined;
+			this.researchProgress = 0;
+		}
+		this.discoveredTechs = [...this.techManager.researchedTechs];
+		this.currentResearch = this.techManager.currentResearch;
+		this.researchProgress = this.techManager.researchProgress;
+		this.currentEra = this.techManager.currentEra;
+
+		// Process policy accumulation
+		this.policyManager.processTurn(this.culturePerTurn);
+
+		// Sync to legacy properties
+		this.unlockedPolicies = [...this.policyManager.unlockedPolicies];
+		this.cultureAccumulated = this.policyManager.cultureStored + this.policyManager.totalCultureGenerated;
+
+		// Process diplomacy decay for all known nations
+		for (const [, manager] of this.diplomacyManagers) {
+			manager.processTurnDecay(currentTurn);
+		}
+
+		return {
+			techCompleted: techResult.completed,
+			techId: techResult.techId,
+			policyReady: this.policyManager.canAffordPolicy()
+		};
 	}
 
 	/**
