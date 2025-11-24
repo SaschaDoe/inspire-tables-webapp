@@ -1950,26 +1950,127 @@ $effect(() => {
 ### Phase 2: Regional Map Generation (No Simulation Yet)
 **Goal**: Generate detailed regional hex maps when planetary hex clicked
 
-**Tasks**:
-1. Create `RegionalMapCreator` class
-2. Inherit climate/terrain bias from parent planetary hex
-3. Generate 50x50 regional hex grid using noise
-4. Generate rivers (pathfinding from high elevation to ocean)
-5. Place resources (strategic, luxury, bonus)
-6. Detect good city starting positions
-7. Store regional hex tiles as entities
-8. Create UI to zoom from planetary → regional
+**Status**: 🚧 IN PROGRESS
 
-**Files to Create**:
-- `src/lib/entities/location/regionalMapCreator.ts`
-- `src/lib/utils/riverGenerator.ts`
-- `src/lib/utils/resourcePlacer.ts`
-- `src/lib/components/entities/viewers/RegionalMapViewer.svelte`
+**What Already Exists**:
+✅ **RegionalMap entity** (300 lines) - Container for regional simulation with:
+  - Simulation configuration (start/end year, nation count, fantasy/magic toggles)
+  - Entity tracking (nations, cities, units, events, battles)
+  - Adjacent map connections for cross-boundary interactions
+  - Statistics tracking
+
+✅ **RegionalHexTile entity** (399 lines) - Fully Civ 5-compliant hex tiles with:
+  - Terrain types (Grass, Plains, Desert, Tundra, Snow, Coast, Ocean, Mountain)
+  - Features (Forest, Jungle, Marsh, Ice, Fallout)
+  - Resources (Strategic: Iron/Horses/Coal/Oil/Aluminum/Uranium, Luxury: Gold/Gems/Spices/etc., Bonus: Wheat/Cattle/etc.)
+  - Improvements (Farm, Mine, Plantation, Quarry, Pasture, Camp, etc.)
+  - Rivers (hasRiver flag + riverSides array for hex edges)
+  - Yield calculations (food, production, gold, science, culture from terrain + feature + improvement)
+  - Defense bonuses and movement costs (Civ 5-style)
+  - Ownership tracking with full history
+  - Discovery system (which nations discovered when)
+  - Battle/event tracking per hex
+
+✅ **WorldMapCreator** (482 lines) - Planetary-level map generation with:
+  - Simplex noise-based procedural generation
+  - Planet type support (ice, water, earth-like, jungle, desert, volcanic, barren)
+  - Planet-specific terrain distributions and climate patterns
+  - Continent detection algorithm
+
+✅ **TerrainType enum** (19 types) - All Civ 5 terrain types + special planetary types
+
+**What Needs to Be Created**:
+
+**1. RegionalMapCreator** - Bridge planetary to regional level:
+  - Take PlanetaryHexTile as input (with its planet type and terrain)
+  - Generate 50x50 RegionalHexTile grid (2,500 hexes per regional map)
+  - Inherit planetary theme while adding Civ 5 variety:
+    - **Ice Planet** → Mostly Snow/Tundra terrain, Ice features, no jungles
+    - **Desert Planet** → Mostly Desert terrain, some Plains, Oasis features, no forests
+    - **Water Planet** → Mostly Ocean/Coast, scattered small islands, fish resources
+    - **Jungle Planet** → Mostly Grass with Jungle features, high food yields
+    - **Earth-like** → Full variety (Grass, Plains, Desert, Tundra, Forest, Jungle)
+    - **Volcanic Planet** → Mountains, Hills, Lava terrain, high production
+    - **Barren Planet** → Desert, Snow, no resources, low yields
+  - Use multi-octave simplex noise for terrain variation within planetary constraints
+  - Calculate elevation, temperature, moisture for each regional hex
+  - Determine terrain type based on planetary theme + local noise values
+
+**2. RiverGenerator** - Civ 5-style river placement:
+  - Find high-elevation regional hexes (mountains, hills)
+  - Path-find from peaks to ocean/lakes using A* or flow algorithm
+  - Rivers follow elevation gradients (high → low)
+  - Multiple river systems per regional map (3-7 depending on size)
+  - Rivers provide +1 gold yield, enable farms on desert, defensive bonuses
+  - Mark hex edges with river flags (riverSides array)
+
+**3. ResourcePlacer** - Strategic resource placement:
+  - **Strategic Resources**: Iron (hills), Horses (plains/grass), Coal (hills), Oil (desert/tundra/ocean), Aluminum (hills), Uranium (any land)
+  - **Luxury Resources**: Context-dependent (Gems in hills, Pearls in ocean, Spices in jungle, Wine in plains, Furs in tundra, etc.)
+  - **Bonus Resources**: Wheat (plains), Cattle (grass), Deer (forest/tundra), Fish (coast/ocean), Stone (grass/plains), Sheep (hills)
+  - Respect planetary themes (ice planet won't have spices, desert planet won't have furs)
+  - Distribution algorithm: Place 1 strategic resource per 200-300 hexes, 1 luxury per 100-150 hexes
+  - Ensure starting positions have nearby strategic + luxury resources
+
+**4. FeaturePlacer** - Natural feature placement:
+  - **Forests**: On Grass/Plains/Tundra, provide +1 production, -1 food
+  - **Jungles**: On Grass near equator (warm/wet), provide +1 food, -1 production
+  - **Marshes**: On Grass/Plains near rivers, provide +1 food
+  - **Ice**: On Snow/Tundra/Ocean in polar regions
+  - Use noise for clustered placement (forests clump together)
+  - Respect planetary constraints (jungle planet → dense jungles, ice planet → ice everywhere)
+  - 15-30% feature coverage depending on planet type
+
+**Tasks**:
+1. ✅ Review existing entities and understand integration points
+2. ✅ Create `RegionalMapCreator` class with planetary theme inheritance
+3. ✅ Create `RiverGenerator` utility for river pathfinding
+4. ✅ Create `ResourcePlacer` utility for Civ 5-style resource distribution
+5. ⬜ Create `FeaturePlacer` utility for forests/jungles/marshes/ice (PARTIALLY COMPLETE - features handled in RegionalMapCreator)
+6. ⬜ Add starting position detection (balanced resources nearby)
+7. ⬜ Create UI to zoom from planetary → regional
+8. ⬜ Test all planet types generate appropriate regional terrain
+
+**Files Created** (3 files, ~950 lines):
+- ✅ `src/lib/entities/location/regionalMapCreator.ts` (450 lines) - Main regional map generator
+  - Planetary theme inheritance (ice→snow/tundra, desert→desert, jungle→grass+jungle, etc.)
+  - Multi-octave simplex noise for natural terrain variation
+  - Blends planetary climate (60%) with local variation (40%)
+  - Full terrain type determination based on elevation, moisture, temperature
+  - Feature placement (forests, jungles, marshes, ice, oasis)
+  - Coastal tile detection
+  - Integrated river and resource generation
+- ✅ `src/lib/utils/riverGenerator.ts` (280 lines) - Civ 5-style river generation
+  - Flow-based algorithm (high elevation → ocean/lake)
+  - Pathfinding from mountain peaks downhill
+  - 3-7 river systems per map
+  - Hex edge river tracking (riverSides array)
+  - Prevents river crossings
+  - +1 gold yield from rivers
+- ✅ `src/lib/utils/resourcePlacer.ts` (420 lines) - Resource distribution
+  - Strategic resources: Iron, Horses, Coal, Oil, Aluminum, Uranium (~1 per 250 hexes)
+  - Luxury resources: Gold, Gems, Spices, Wine, Silk, Furs, etc. (~1 per 125 hexes)
+  - Bonus resources: Wheat, Cattle, Fish, Deer, Stone, Sheep (~1 per 25 hexes)
+  - Terrain-specific placement (Iron in hills, Horses on plains, Pearls in coast)
+  - Planet-aware (no spices on ice planets, no furs on desert planets)
+  - Clustered placement (40% chance of additional nearby resources)
+  - Weighted random distribution by rarity
+
+**Files Still To Create**:
+- `src/lib/utils/featurePlacer.ts` (forest/jungle/marsh placement) - OPTIONAL, features already handled in RegionalMapCreator
+- `src/lib/components/entities/viewers/RegionalMapViewer.svelte` (UI)
 
 **Files to Modify**:
 - `src/lib/components/entities/viewers/ContinentViewer.svelte` (add zoom button)
 
-**Deliverable**: Can click planetary hex, see detailed regional map
+**Integration with Civ 5 Code**:
+- RegionalHexTile already matches Unciv terrain system
+- Resource types match Civ 5 (Strategic, Luxury, Bonus)
+- Yield calculations follow Civ 5 formulas
+- Defense/movement costs match Civ 5 values
+- Ready to integrate with Unciv JSON data (Terrains.json, TileResources.json, TileImprovements.json)
+
+**Deliverable**: Can click planetary hex, see detailed Civ 5-style regional map with rivers, resources, features, all themed to parent planet type
 
 ---
 
