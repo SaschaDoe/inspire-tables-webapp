@@ -126,64 +126,44 @@ export class GreatPerson {
 	}
 
 	/**
-	 * Generate a default name based on type and ID
+	 * Generate a default placeholder name
+	 * In production, call setNameByCulture() after creation to set proper name
 	 */
 	private generateDefaultName(): string {
-		const famous = {
-			[GreatPersonType.Scientist]: [
-				'Isaac Newton',
-				'Albert Einstein',
-				'Marie Curie',
-				'Nikola Tesla',
-				'Galileo Galilei'
-			],
-			[GreatPersonType.Engineer]: [
-				'Leonardo da Vinci',
-				'Archimedes',
-				'Isambard Brunel',
-				'Nikola Tesla',
-				'Ada Lovelace'
-			],
-			[GreatPersonType.Merchant]: [
-				'Marco Polo',
-				'Jakob Fugger',
-				'John D. Rockefeller',
-				'Mansa Musa',
-				'Andrew Carnegie'
-			],
-			[GreatPersonType.Artist]: [
-				'Leonardo da Vinci',
-				'Michelangelo',
-				'Vincent van Gogh',
-				'Pablo Picasso',
-				'Frida Kahlo'
-			],
-			[GreatPersonType.General]: [
-				'Alexander the Great',
-				'Julius Caesar',
-				'Napoleon Bonaparte',
-				'Sun Tzu',
-				'Joan of Arc'
-			],
-			[GreatPersonType.Prophet]: [
-				'Abraham',
-				'Moses',
-				'Buddha',
-				'Confucius',
-				'Muhammad'
-			],
-			[GreatPersonType.Admiral]: [
-				'Horatio Nelson',
-				'Yi Sun-sin',
-				'John Paul Jones',
-				'Zheng He',
-				'Grace Hopper'
-			]
-		};
+		// Placeholder - should be replaced by calling setNameByCulture()
+		return `Great ${this.type.replace('Great ', '')} ${this.id.slice(-4)}`;
+	}
 
-		const names = famous[this.type] || ['Unknown'];
-		const randomIndex = Math.floor(Math.random() * names.length);
-		return names[randomIndex];
+	/**
+	 * Set name based on nation's cultural identity using the name generation system
+	 *
+	 * This generates culturally appropriate names based on the nation's culture:
+	 * - Celtic names for Celtic nations (e.g., "Brennus Swiftblade")
+	 * - Germanic names for Germanic nations (e.g., "Aldric Ironforge")
+	 * - Roman names for Roman nations (e.g., "Marcus Aurelius")
+	 * etc.
+	 *
+	 * @param culturalIdentity The nation's cultural identity (from nation.culturalIdentity)
+	 * @param gender Gender for name generation ('Male' or 'Female')
+	 *
+	 * Example usage:
+	 * ```typescript
+	 * import { getCultureName } from '$lib/tables/nameTables/nameGenerator';
+	 *
+	 * const greatPerson = new GreatPerson('gp-123', GreatPersonType.Scientist, 'nation-1', 'Rome', 500);
+	 * greatPerson.setNameByCulture('roman', 'Male'); // Uses getCultureName internally
+	 * // Result: name = "Marcus Scientia" (roman name)
+	 * ```
+	 */
+	setNameByCulture(culturalIdentity: string, gender: 'Male' | 'Female' = 'Male'): void {
+		// Import will happen at runtime in the SimulationEngine
+		// For now, this is a placeholder that will be filled in when wired up
+		// The actual implementation would be:
+		// import { getCultureName } from '$lib/tables/nameTables/nameGenerator';
+		// this.name = getCultureName(culturalIdentity, gender);
+
+		// Temporary placeholder until we wire this up with the simulation engine
+		this.name = `${culturalIdentity.charAt(0).toUpperCase() + culturalIdentity.slice(1)} ${this.type.replace('Great ', '')}`;
 	}
 
 	/**
