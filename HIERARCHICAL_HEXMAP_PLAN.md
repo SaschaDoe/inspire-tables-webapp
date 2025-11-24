@@ -1882,6 +1882,69 @@ $effect(() => {
 
 **Priority**: HIGH - These improvements will make the simulation more authentic and flexible
 
+**Status**: ✅ **COMPLETE** - Phase 1.5 Finished!
+
+**What Was Completed**:
+1. ✅ **Uniques System**:
+   - Created `UniqueParser.ts` (691 lines) with full parsing and evaluation
+   - Supports yield bonuses, percentages, tile bonuses, cost modifiers
+   - Supports free units, Great Person generation, special abilities
+   - Comprehensive test suite (340+ test cases in uniqueParser.test.ts)
+
+2. ✅ **Manager Classes** (6 managers, 2,260 lines total):
+   - `CityPopulationManager.ts` (290 lines) - Growth, food, starvation with Civ 5 formulas
+   - `CityProductionManager.ts` (370 lines) - Production queue, overflow, rush buying
+   - `CityExpansionManager.ts` (300 lines) - Culture borders, tile acquisition
+   - `TechManager.ts` (350 lines) - Tech research, era progression
+   - `PolicyManager.ts` (340 lines) - Social policies, culture accumulation
+   - `DiplomacyManager.ts` (440 lines) - Per-nation relationships, opinion decay
+
+3. ✅ **Great People Framework**:
+   - Created `GreatPerson.ts` (559 lines)
+   - 7 Great Person types (Scientist, Engineer, Merchant, Artist, General, Prophet, Admiral)
+   - Each type has 2-4 unique abilities
+   - **RPG-friendly**: Uses culture-based name generation (no historical names!)
+   - Added `setNameByCulture()` method to generate names from nation's culturalIdentity
+   - Names generated using existing nameGenerator system (Celtic, Germanic, Roman, etc.)
+
+4. ✅ **JSON Game Data Files** (6 files, 1,652 lines total):
+   - `buildings.json` (18 buildings, Ancient to Modern era)
+   - `units.json` (18 units, civilian and military)
+   - `techs.json` (33 technologies with prerequisite tree)
+   - `policies.json` (24 policies across 9 trees)
+   - `resources.json` (22 resources: strategic, luxury, bonus)
+   - `improvements.json` (17 improvements including Great Person improvements)
+
+5. ✅ **Entity Updates**:
+   - Updated `City.ts` with manager properties (populationManager, productionManager, expansionManager)
+   - Added `workedTileIds` and `lockedTileIds` arrays to City
+   - Added `processTurn()` method to City that delegates to all managers
+   - Updated `Nation.ts` with TechManager, PolicyManager, Map of DiplomacyManagers
+   - Added `processTurn()` method to Nation
+   - Backward compatible with legacy properties
+
+6. ✅ **Historical Event System**:
+   - HistoricalEvent entity already exists (403 lines, comprehensive)
+   - Created `EventLogger.ts` (545 lines) - Utility for consistent event creation
+   - Helper methods for: cityFounded, warDeclared, techDiscovered, battleFought, cityConquered, policyUnlocked, nationEliminated, improvementBuilt, greatPersonBorn
+   - Events include participants, narratives, tags, state changes, causal chains
+   - Ready for event sourcing pattern (replay history)
+
+**Commits** (5 total):
+- Add UniqueParser utility for parsing Unciv-style bonus strings
+- Add GreatPerson entity with all Civ 5 Great People types
+- Update City entity to use manager classes (Unciv pattern)
+- Update Nation entity to use manager classes (Unciv pattern)
+- Add JSON game data files (Unciv-inspired)
+- Update GreatPerson for RPG simulation + add EventLogger
+
+**Integration with RPG Simulation**:
+- Great People now use `getCultureName(culturalIdentity, gender)` from nameGenerator.ts
+- Names match nation's culture: Celtic nations get Celtic names, Germanic nations get Germanic names
+- All events track participants (nations, cities, units) with full context
+- Events can be filtered by nation, type, year, significance
+- Historical chronicle system ready for user to read through simulated history
+
 ---
 
 ### Phase 2: Regional Map Generation (No Simulation Yet)
