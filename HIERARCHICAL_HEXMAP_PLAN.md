@@ -2074,6 +2074,197 @@ $effect(() => {
 
 ---
 
+### Phase 2.5: Regional Map Visualization with Civ 5 Graphics
+**Goal**: Create UI to visualize regional maps with Unciv/Civ 5-style graphics
+
+**Status**: 🚧 IN PROGRESS
+
+**Why This Phase?**:
+Before implementing simulation (Phase 3), we need to be able to SEE the maps being generated. This allows us to:
+- Verify terrain generation works correctly for all planet types
+- Debug river pathfinding visually
+- Check resource placement distribution
+- Tune noise parameters by seeing results
+- Ensure the foundation is solid before adding simulation complexity
+
+**Graphics Assets**:
+
+We'll use graphics from **Unciv** (open-source Civ 5 clone):
+- **License**: MPL-2.0 and GPLv3 (compatible with open source projects)
+- **Repository**: https://github.com/yairm210/Unciv
+- **Assets location**: `/android/assets/jsons/` and `/android/assets/` in Unciv repo
+- **Quality**: High-quality pixel art matching Civ 5 aesthetic
+
+**Assets needed**:
+1. **Terrain tiles** - Base hex textures for each terrain type:
+   - Grassland, Plains, Desert, Tundra, Snow
+   - Coast, Ocean, Mountain, Hills
+   - Special: Lava, Ice, Ash Plains
+
+2. **River sprites** - SVG/PNG lines for hex edges:
+   - 6 variations (one per hex side)
+   - Flow animations (optional)
+   - Confluence sprites (where rivers meet)
+
+3. **Resource icons** - 32x32 or 64x64 icons:
+   - Strategic: Iron, Horses, Coal, Oil, Aluminum, Uranium
+   - Luxury: Gold, Gems, Spices, Wine, Silk, Furs, Pearls, etc.
+   - Bonus: Wheat, Cattle, Fish, Deer, Stone, Sheep, Bananas
+
+4. **Feature overlays** - Alpha-blended overlays:
+   - Forest (trees)
+   - Jungle (dense vegetation)
+   - Marsh (wetlands)
+   - Ice (frozen terrain)
+
+**Asset Setup Instructions**:
+
+```bash
+# 1. Clone Unciv repository (just to extract assets)
+git clone https://github.com/yairm210/Unciv.git temp-unciv
+
+# 2. Copy needed assets to our static folder
+# Terrain tiles
+cp -r temp-unciv/android/assets/TerrainIcons static/civ5-assets/terrain/
+
+# Resource icons
+cp -r temp-unciv/android/assets/ResourceIcons static/civ5-assets/resources/
+
+# Feature overlays
+cp -r temp-unciv/android/assets/TerrainFeatureIcons static/civ5-assets/features/
+
+# River sprites
+cp -r temp-unciv/android/assets/RiverIcons static/civ5-assets/rivers/
+
+# 3. Clean up
+rm -rf temp-unciv
+```
+
+Alternatively, download specific assets from:
+https://github.com/yairm210/Unciv/tree/master/android/assets
+
+**Tasks**:
+1. ✅ Update plan document to add Phase 2.5
+2. ✅ Create `RegionalMapViewer.svelte` component (Phase A - Basic Visualization) with:
+   - ✅ SVG hex grid rendering (similar to ContinentViewer)
+   - ✅ Terrain tile display (colored hexes with Civ 5 color palette)
+   - ✅ River rendering on hex edges (bright blue lines using riverSides array)
+   - ✅ Resource text labels (yellow text showing resource names)
+   - ✅ Feature indicators (single-letter overlays: F=Forest, J=Jungle, etc.)
+   - ✅ Zoom/pan controls (mouse drag, scroll wheel, +/- buttons)
+   - ✅ Hex selection and Entity Viewer details panel
+   - ✅ Terrain distribution statistics (bar charts)
+   - ✅ Resource counters (strategic, luxury, bonus, rivers)
+3. ✅ Create usage documentation (`REGIONAL_MAP_VISUALIZATION.md`)
+4. ⬜ Add "Zoom to Regional Map" button in ContinentViewer for planetary hexes
+5. ⬜ Test visualization with all 7 planet types (user testing):
+   - Ice planet → mostly snow/tundra
+   - Desert planet → mostly desert
+   - Water planet → mostly ocean with islands
+   - Jungle planet → grass with dense jungle features
+   - Earth-like → full variety
+   - Volcanic → mountains, lava, ash
+   - Barren → minimal features
+6. 🔜 **Phase B** - Download/integrate Unciv graphics assets:
+   - ⬜ Set up asset folder structure in `static/civ5-assets/`
+   - ⬜ Download/copy Unciv terrain textures
+   - ⬜ Download/copy Unciv resource icons
+   - ⬜ Download/copy Unciv feature sprites
+   - ⬜ Download/copy Unciv river sprites
+   - ⬜ Create asset loading utility (`src/lib/utils/assetLoader.ts`)
+   - ⬜ Update RegionalMapViewer to use real graphics
+   - ⬜ Document graphics attribution in README
+
+**Files Created** (Phase A - ~650 lines):
+- ✅ `src/lib/components/entities/viewers/RegionalMapViewer.svelte` (650 lines) - Full regional map visualization:
+  - SVG hex grid rendering with color-coded terrain
+  - River visualization (blue lines on hex edges)
+  - Resource labels (text overlays)
+  - Feature indicators (single-letter markers)
+  - Interactive zoom/pan controls
+  - Hex selection and details panel
+  - Terrain statistics and resource counters
+- ✅ `REGIONAL_MAP_VISUALIZATION.md` - Complete usage guide and documentation
+
+**Files Still To Create** (Phase B):
+- `src/lib/utils/assetLoader.ts` (~100 lines) - Graphics asset management
+- `static/civ5-assets/` folder structure - Unciv graphics organization
+- `static/civ5-assets/README.md` - Attribution and sources
+
+**Files to Modify**:
+- `src/lib/components/entities/viewers/ContinentViewer.svelte` (add zoom button to access regional maps)
+
+**Technical Approach**:
+
+**Hex Rendering** (same as ContinentViewer):
+```typescript
+// SVG polygon for each hex
+<polygon
+  points={getHexPoints(tile, hexSize)}
+  fill={getTerrainColor(tile.terrainType)}
+  stroke="#334155"
+  stroke-width="1"
+/>
+```
+
+**River Rendering** (new):
+```svelte
+{#if tile.hasRiver}
+  {#each tile.riverSides as side}
+    <line
+      x1={riverX1} y1={riverY1}
+      x2={riverX2} y2={riverY2}
+      stroke="#4299e1"
+      stroke-width="3"
+      stroke-linecap="round"
+    />
+  {/each}
+{/if}
+```
+
+**Resource Icons** (new):
+```svelte
+{#if tile.strategicResource !== StrategicResource.None}
+  <image
+    x={iconX} y={iconY}
+    width="16" height="16"
+    href="/civ5-assets/resources/{tile.strategicResource}.png"
+  />
+{/if}
+```
+
+**Feature Overlays** (new):
+```svelte
+{#if tile.feature === 'Forest'}
+  <image
+    x={tileX} y={tileY}
+    width={hexSize * 2} height={hexSize * 2}
+    href="/civ5-assets/features/Forest.png"
+    opacity="0.8"
+  />
+{/if}
+```
+
+**Initial Implementation Strategy**:
+
+**Phase A** - Basic hex visualization (colored polygons)
+- Reuse ContinentViewer rendering pattern
+- Show terrain with color-coded hexes
+- Add rivers as simple blue lines on hex edges
+- Text labels for resources ("Iron", "Wheat")
+
+**Phase B** - Add Unciv graphics
+- Load terrain textures
+- Load resource icons
+- Load feature sprites
+- Alpha-blend everything together
+
+Start with Phase A to get something visible quickly, then enhance with real graphics in Phase B.
+
+**Deliverable**: Interactive regional map viewer showing terrain, rivers, resources, and features with Civ 5/Unciv graphics
+
+---
+
 ### Phase 3: Basic Simulation Engine
 **Goal**: Implement turn-based simulation without combat
 
