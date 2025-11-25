@@ -5,12 +5,12 @@
 	import { StrategicResource, LuxuryResource } from '$lib/entities/location/regionalHexTile';
 	import Section from '../shared/Section.svelte';
 	import { entityStore } from '$lib/stores/entityStore';
-	import { createEventDispatcher } from 'svelte';
 	import EntityViewer from '../EntityViewer.svelte';
 	import { AssetLoader } from '$lib/utils/assetLoader';
 	import { onMount } from 'svelte';
 	import SimulationControlPanel from '../../simulation/SimulationControlPanel.svelte';
 	import type { SimulationEngine } from '$lib/simulation/SimulationEngine';
+	import HexMapRenderer from '../../simulation/HexMapRenderer.svelte';
 
 	interface Props {
 		regionalMap: RegionalMap;
@@ -138,53 +138,6 @@
 			hexDetailsElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 		}
 	});
-
-	function getHexPoints(tile: RegionalHexTile, size: number): string {
-		const x = tile.x * size * 1.5;
-		const y = tile.y * size * Math.sqrt(3) + (tile.x % 2) * size * Math.sqrt(3) / 2;
-		const points: [number, number][] = [];
-
-		for (let i = 0; i < 6; i++) {
-			const angle = (Math.PI / 3) * i;
-			const px = x + size * Math.cos(angle);
-			const py = y + size * Math.sin(angle);
-			points.push([px, py]);
-		}
-
-		return points.map(p => `${p[0]},${p[1]}`).join(' ');
-	}
-
-	function getHexCenter(tile: RegionalHexTile, size: number): { x: number; y: number } {
-		const x = tile.x * size * 1.5;
-		const y = tile.y * size * Math.sqrt(3) + (tile.x % 2) * size * Math.sqrt(3) / 2;
-		return { x, y };
-	}
-
-	function getRiverEdgePoints(tile: RegionalHexTile, side: number, size: number): { x1: number; y1: number; x2: number; y2: number } {
-		const center = getHexCenter(tile, size);
-		const angle1 = (Math.PI / 3) * side;
-		const angle2 = (Math.PI / 3) * (side + 1);
-
-		return {
-			x1: center.x + size * Math.cos(angle1),
-			y1: center.y + size * Math.sin(angle1),
-			x2: center.x + size * Math.cos(angle2),
-			y2: center.y + size * Math.sin(angle2)
-		};
-	}
-
-	function getResourceLabel(tile: RegionalHexTile): string | null {
-		if (tile.strategicResource !== StrategicResource.None) {
-			return tile.strategicResource.toString();
-		}
-		if (tile.luxuryResource !== LuxuryResource.None) {
-			return tile.luxuryResource.toString();
-		}
-		if (tile.bonusResource) {
-			return tile.bonusResource;
-		}
-		return null;
-	}
 
 	function handleZoom(delta: number) {
 		const newScale = Math.max(minScale, Math.min(maxScale, scale + delta));
@@ -346,157 +299,19 @@
 						role="img"
 						aria-label="Regional hex map"
 					>
-						<g style="transform: translate({panX}px, {panY}px) scale({scale}); transition: transform 0.1s ease-out;">
-							<!-- Terrain hexes -->
-							{#if useGraphics && assetsAvailable}
-								<!-- Graphics mode: Use terrain images -->
-								{#each regionalHexTiles as tile}
-									{@const center = getHexCenter(tile, hexSize)}
-									{@const terrainAsset = AssetLoader.getTerrainAsset(tile.terrainType)}
-									{@const size = hexSize * 2.2}
-
-									<!-- Base terrain image -->
-									{#if terrainAsset}
-										<image
-											x={center.x - size / 2}
-											y={center.y - size / 2}
-											width={size}
-											height={size}
-											href={terrainAsset}
-											class="regional-tile clickable"
-											onclick={(e) => handleHexClick(tile, e)}
-										/>
-									{:else}
-										<!-- Fallback to colored hex if asset missing -->
-										{@const color = terrainColors[tile.terrainType] || '#64748b'}
-										<polygon
-											points={getHexPoints(tile, hexSize)}
-											fill={color}
-											stroke={selectedHexTile?.id === tile.id ? '#ffffff' : '#334155'}
-											stroke-width={selectedHexTile?.id === tile.id ? '2' : '0.5'}
-											class="regional-tile clickable"
-											onclick={(e) => handleHexClick(tile, e)}
-										/>
-									{/if}
-
-									<!-- Selection highlight -->
-									{#if selectedHexTile?.id === tile.id}
-										<polygon
-											points={getHexPoints(tile, hexSize)}
-											fill="none"
-											stroke="#ffffff"
-											stroke-width="3"
-											pointer-events="none"
-										/>
-									{/if}
-								{/each}
-							{:else}
-								<!-- Color mode: Use colored polygons (fallback) -->
-								{#each regionalHexTiles as tile}
-									{@const color = terrainColors[tile.terrainType] || '#64748b'}
-									<polygon
-										points={getHexPoints(tile, hexSize)}
-										fill={color}
-										stroke={selectedHexTile?.id === tile.id ? '#ffffff' : '#334155'}
-										stroke-width={selectedHexTile?.id === tile.id ? '2' : '0.5'}
-										class="regional-tile clickable"
-										onclick={(e) => handleHexClick(tile, e)}
-									/>
-								{/each}
-							{/if}
-
-							<!-- Rivers (blue lines on hex edges) -->
-							{#each regionalHexTiles as tile}
-								{#if tile.hasRiver}
-									{#each tile.riverSides as side}
-										{@const riverPoints = getRiverEdgePoints(tile, side, hexSize)}
-										<line
-											x1={riverPoints.x1}
-											y1={riverPoints.y1}
-											x2={riverPoints.x2}
-											y2={riverPoints.y2}
-											stroke="#60a5fa"
-											stroke-width="2"
-											stroke-linecap="round"
-											opacity="0.8"
-										/>
-									{/each}
-								{/if}
-							{/each}
-
-							<!-- Features (overlays or text indicators) -->
-							{#each regionalHexTiles as tile}
-								{#if tile.feature}
-									{@const center = getHexCenter(tile, hexSize)}
-									{@const featureAsset = useGraphics && assetsAvailable ? AssetLoader.getFeatureAsset(tile.feature) : null}
-									{@const size = hexSize * 2.2}
-
-									{#if featureAsset}
-										<!-- Graphics mode: Feature sprite overlay -->
-										<image
-											x={center.x - size / 2}
-											y={center.y - size / 2}
-											width={size}
-											height={size}
-											href={featureAsset}
-											opacity="0.9"
-											pointer-events="none"
-										/>
-									{:else}
-										<!-- Fallback: Single letter indicator -->
-										<text
-											x={center.x}
-											y={center.y - 3}
-											text-anchor="middle"
-											font-size="8"
-											fill="#ffffff"
-											opacity="0.9"
-											pointer-events="none"
-											style="text-shadow: 0 0 2px #000;"
-										>
-											{tile.feature.charAt(0)}
-										</text>
-									{/if}
-								{/if}
-							{/each}
-
-							<!-- Resources (icons or text labels) -->
-							{#each regionalHexTiles as tile}
-								{@const resourceLabel = getResourceLabel(tile)}
-								{#if resourceLabel}
-									{@const center = getHexCenter(tile, hexSize)}
-									{@const resourceAsset = useGraphics && assetsAvailable ? AssetLoader.getResourceAsset(resourceLabel) : null}
-									{@const iconSize = hexSize * 1.2}
-
-									{#if resourceAsset}
-										<!-- Graphics mode: Resource icon -->
-										<image
-											x={center.x - iconSize / 2}
-											y={center.y - iconSize / 2}
-											width={iconSize}
-											height={iconSize}
-											href={resourceAsset}
-											pointer-events="none"
-										/>
-									{:else}
-										<!-- Fallback: Text label -->
-										<text
-											x={center.x}
-											y={center.y + 5}
-											text-anchor="middle"
-											font-size="6"
-											fill="#fbbf24"
-											font-weight="bold"
-											opacity="0.95"
-											pointer-events="none"
-											style="text-shadow: 0 0 3px #000;"
-										>
-											{resourceLabel}
-										</text>
-									{/if}
-								{/if}
-							{/each}
-						</g>
+						<HexMapRenderer
+							hexTiles={regionalHexTiles}
+							hexSize={hexSize}
+							panX={panX}
+							panY={panY}
+							scale={scale}
+							selectedHexId={selectedHexTile?.id}
+							onHexClick={handleHexClick}
+							showCities={true}
+							showUnits={true}
+							showBorders={true}
+							showLabels={true}
+						/>
 					</svg>
 				</div>
 			{:else}
