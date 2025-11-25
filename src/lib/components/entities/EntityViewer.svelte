@@ -13,6 +13,7 @@
 	import type { Faction } from '$lib/entities/faction/faction';
 	import type { Settlement } from '$lib/entities/location/settlement';
 	import type { City } from '$lib/entities/location/city';
+	import type { Nation } from '$lib/entities/location/nation';
 	import type { Universe } from '$lib/entities/celestial/universe';
 	import type { Sphere } from '$lib/entities/celestial/sphere';
 	import type { SphereConnection } from '$lib/entities/celestial/sphereConnection';
@@ -37,6 +38,7 @@
 	import FactionViewer from './viewers/FactionViewer.svelte';
 	import SettlementViewer from './viewers/SettlementViewer.svelte';
 	import CityViewer from './viewers/CityViewer.svelte';
+	import NationViewer from './viewers/NationViewer.svelte';
 	import UniverseViewer from './viewers/UniverseViewer.svelte';
 	import SphereViewer from './viewers/SphereViewer.svelte';
 	import SphereConnectionViewer from './viewers/SphereConnectionViewer.svelte';
@@ -103,6 +105,8 @@
 				return SettlementViewer;
 			case 'city':
 				return CityViewer;
+			case 'nation':
+				return NationViewer;
 			case 'universe':
 				return UniverseViewer;
 			case 'sphere':
@@ -159,6 +163,8 @@
 				return { settlement: entity as Settlement };
 			case 'city':
 				return { city: entity as City };
+			case 'nation':
+				return { nation: entity as Nation };
 			case 'universe':
 				return { universe: entity as Universe, parentEntity };
 			case 'sphere':
@@ -208,6 +214,8 @@
 		<SettlementViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'city'}
 		<CityViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
+	{:else if entityType === 'nation'}
+		<NationViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'universe'}
 		<UniverseViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'sphere'}
