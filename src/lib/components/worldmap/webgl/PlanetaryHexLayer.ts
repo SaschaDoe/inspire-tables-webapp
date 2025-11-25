@@ -85,12 +85,17 @@ export class PlanetaryHexLayer {
 	 * Select a hex
 	 */
 	private selectHex(hexTile: HexTile): void {
+		const previousSelection = this.selectedHex;
+
+		// Update selectedHex FIRST before calling updateHexAppearance
+		// This is critical because updateHexAppearance checks this.selectedHex
+		this.selectedHex = hexTile;
+
 		// Deselect previous
-		if (this.selectedHex) {
-			this.updateHexAppearance(this.selectedHex);
+		if (previousSelection && previousSelection !== hexTile) {
+			this.updateHexAppearance(previousSelection);
 		}
 
-		this.selectedHex = hexTile;
 		this.updateHexAppearance(hexTile);
 
 		if (this.onHexClick) {
