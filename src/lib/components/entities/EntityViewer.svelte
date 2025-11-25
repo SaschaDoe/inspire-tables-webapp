@@ -12,6 +12,7 @@
 	import type { Quest } from '$lib/entities/quest/quest';
 	import type { Faction } from '$lib/entities/faction/faction';
 	import type { Settlement } from '$lib/entities/location/settlement';
+	import type { City } from '$lib/entities/location/city';
 	import type { Universe } from '$lib/entities/celestial/universe';
 	import type { Sphere } from '$lib/entities/celestial/sphere';
 	import type { SphereConnection } from '$lib/entities/celestial/sphereConnection';
@@ -35,6 +36,7 @@
 	import QuestViewer from './viewers/QuestViewer.svelte';
 	import FactionViewer from './viewers/FactionViewer.svelte';
 	import SettlementViewer from './viewers/SettlementViewer.svelte';
+	import CityViewer from './viewers/CityViewer.svelte';
 	import UniverseViewer from './viewers/UniverseViewer.svelte';
 	import SphereViewer from './viewers/SphereViewer.svelte';
 	import SphereConnectionViewer from './viewers/SphereConnectionViewer.svelte';
@@ -99,6 +101,8 @@
 				return FactionViewer;
 			case 'settlement':
 				return SettlementViewer;
+			case 'city':
+				return CityViewer;
 			case 'universe':
 				return UniverseViewer;
 			case 'sphere':
@@ -153,6 +157,8 @@
 				return { faction: entity as Faction, parentEntity };
 			case 'settlement':
 				return { settlement: entity as Settlement };
+			case 'city':
+				return { city: entity as City };
 			case 'universe':
 				return { universe: entity as Universe, parentEntity };
 			case 'sphere':
@@ -200,6 +206,8 @@
 		<FactionViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'settlement'}
 		<SettlementViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
+	{:else if entityType === 'city'}
+		<CityViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'universe'}
 		<UniverseViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'sphere'}
