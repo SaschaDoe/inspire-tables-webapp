@@ -9,6 +9,8 @@
 	import EntityViewer from '../EntityViewer.svelte';
 	import { AssetLoader } from '$lib/utils/assetLoader';
 	import { onMount } from 'svelte';
+	import SimulationControlPanel from '../../simulation/SimulationControlPanel.svelte';
+	import type { SimulationEngine } from '$lib/simulation/SimulationEngine';
 
 	interface Props {
 		regionalMap: RegionalMap;
@@ -96,6 +98,10 @@
 	let isInitialized = $state(false);
 	let selectedHexTile = $state<RegionalHexTile | null>(null);
 	let hexDetailsElement: HTMLElement | null = null;
+
+	// Simulation state (Phase 2.6)
+	let simulationEngine = $state<SimulationEngine | null>(null);
+	let mapNeedsUpdate = $state(false);
 
 	const hexSize = 15;
 	const zoomFactor = 0.3;
@@ -223,6 +229,17 @@
 		selectedHexTile = null;
 	}
 
+	/**
+	 * Handle simulation updates (Phase 2.6)
+	 */
+	function handleSimulationUpdate(engine: SimulationEngine) {
+		simulationEngine = engine;
+		mapNeedsUpdate = true;
+
+		// Trigger re-render of hex tiles with updated ownership, cities, etc.
+		// The reactive statements will automatically update when regionalMap changes
+	}
+
 	function toggleGraphicsMode() {
 		useGraphics = !useGraphics;
 	}
@@ -272,6 +289,9 @@
 			<div class="card-value">{resourceStats.bonusCount}</div>
 		</div>
 	</div>
+
+	<!-- Simulation Control Panel (Phase 2.6) -->
+	<SimulationControlPanel {regionalMap} onSimulationUpdate={handleSimulationUpdate} />
 
 	<!-- Terrain Distribution -->
 	<Section title="Terrain Distribution">
