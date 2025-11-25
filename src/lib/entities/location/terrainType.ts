@@ -1,5 +1,7 @@
 export enum TerrainType {
 	Water = 'Water',
+	Ocean = 'Ocean', // Deep water
+	Coast = 'Coast', // Shallow coastal water
 	Grass = 'Grass',
 	Hills = 'Hills',
 	Mountain = 'Mountain',
@@ -21,6 +23,8 @@ export enum TerrainType {
 
 export const TERRAIN_COLORS: Record<TerrainType, string> = {
 	[TerrainType.Water]: '#2563eb',
+	[TerrainType.Ocean]: '#1e40af', // Darker blue for deep ocean
+	[TerrainType.Coast]: '#3b82f6', // Lighter blue for coastal waters
 	[TerrainType.Grass]: '#22c55e',
 	[TerrainType.Hills]: '#84cc16',
 	[TerrainType.Mountain]: '#6b7280',

@@ -6,9 +6,17 @@ import { makeNoise2D } from 'open-simplex-noise';
 import { ContinentDetector } from '$lib/utils/continentDetector';
 import { ContinentCreator } from './continentCreator';
 import type { Continent } from './continent';
+import { StrategicResource, LuxuryResource } from './regionalHexTile';
+import {
+	type RegionalHexData,
+	createRegionalHexData,
+	calculateRegionalYields,
+	calculateRegionalDefense
+} from './regionalHexData';
 
 export class WorldMapCreator {
 	private static readonly NOISE_SCALE = 4.0;
+	private static readonly REGIONAL_GRID_SIZE = 10; // 10x10 regional hexes per planetary hex
 
 	/**
 	 * Create a world map for a planet
@@ -29,6 +37,9 @@ export class WorldMapCreator {
 
 		// Generate hex grid
 		worldMap.hexTiles = this.generateHexGrid(planet, width, height);
+
+		// Generate regional hexes for each planetary hex (Level 2 - for seamless zoom)
+		this.generateRegionalHexes(worldMap, planet);
 
 		// Detect and tag continents
 		worldMap.continents = ContinentDetector.detectContinents(worldMap.hexTiles);
@@ -477,5 +488,561 @@ export class WorldMapCreator {
 		if (temperature < 20) return TerrainType.SnowMountain;
 		if (elevation >= 8) return TerrainType.HighMountain;
 		return TerrainType.Mountain;
+	}
+
+	/**
+	 * Generate regional hexes for all planetary hexes (Level 2 - seamless zoom)
+	 */
+	private static generateRegionalHexes(worldMap: WorldMap, planet: Planet): void {
+		const gridSize = this.REGIONAL_GRID_SIZE;
+
+		// Create noise functions for regional detail (offset from planetary to get different patterns)
+		const regionalSeed = planet.seed + 10000;
+		const featureNoise = makeNoise2D(regionalSeed);
+		const resourceNoise = makeNoise2D(regionalSeed + 1);
+		const riverNoise = makeNoise2D(regionalSeed + 2);
+		const blendNoise = makeNoise2D(regionalSeed + 3); // For terrain blending at edges
+
+		for (let py = 0; py < worldMap.height; py++) {
+			for (let px = 0; px < worldMap.width; px++) {
+				const planetaryHex = worldMap.hexTiles[py][px];
+				planetaryHex.regionalGridSize = gridSize;
+				planetaryHex.regionalHexes = [];
+
+				// Get neighboring planetary hexes for blending
+				const neighbors = this.getPlanetaryNeighbors(worldMap, px, py);
+
+				// Generate regional grid for this planetary hex
+				for (let ry = 0; ry < gridSize; ry++) {
+					planetaryHex.regionalHexes[ry] = [];
+					for (let rx = 0; rx < gridSize; rx++) {
+						const regionalHex = this.createRegionalHex(
+							planetaryHex,
+							rx,
+							ry,
+							px,
+							py,
+							gridSize,
+							featureNoise,
+							resourceNoise,
+							riverNoise,
+							blendNoise,
+							neighbors,
+							planet
+						);
+						planetaryHex.regionalHexes[ry][rx] = regionalHex;
+					}
+				}
+
+				// Connect rivers within the regional grid
+				this.connectRiversInRegion(planetaryHex.regionalHexes, riverNoise, px, py);
+			}
+		}
+	}
+
+	/**
+	 * Get neighboring planetary hexes (for terrain blending)
+	 */
+	private static getPlanetaryNeighbors(
+		worldMap: WorldMap,
+		px: number,
+		py: number
+	): Map<string, HexTile | null> {
+		const neighbors = new Map<string, HexTile | null>();
+
+		// Offset coordinates for hex neighbors (odd-q vertical layout)
+		const isOddCol = px % 2 === 1;
+		const offsets = isOddCol
+			? [
+					{ dir: 'NE', dx: 1, dy: 0 },
+					{ dir: 'E', dx: 1, dy: 1 },
+					{ dir: 'SE', dx: 0, dy: 1 },
+					{ dir: 'SW', dx: -1, dy: 1 },
+					{ dir: 'W', dx: -1, dy: 0 },
+					{ dir: 'NW', dx: 0, dy: -1 }
+			  ]
+			: [
+					{ dir: 'NE', dx: 1, dy: -1 },
+					{ dir: 'E', dx: 1, dy: 0 },
+					{ dir: 'SE', dx: 0, dy: 1 },
+					{ dir: 'SW', dx: -1, dy: 0 },
+					{ dir: 'W', dx: -1, dy: -1 },
+					{ dir: 'NW', dx: 0, dy: -1 }
+			  ];
+
+		for (const { dir, dx, dy } of offsets) {
+			const nx = px + dx;
+			const ny = py + dy;
+			if (nx >= 0 && nx < worldMap.width && ny >= 0 && ny < worldMap.height) {
+				neighbors.set(dir, worldMap.hexTiles[ny][nx]);
+			} else {
+				neighbors.set(dir, null);
+			}
+		}
+
+		return neighbors;
+	}
+
+	/**
+	 * Create a single regional hex tile (lightweight data, not Entity)
+	 */
+	private static createRegionalHex(
+		parentHex: HexTile,
+		rx: number,
+		ry: number,
+		px: number,
+		py: number,
+		gridSize: number,
+		featureNoise: (x: number, y: number) => number,
+		resourceNoise: (x: number, y: number) => number,
+		riverNoise: (x: number, y: number) => number,
+		blendNoise: (x: number, y: number) => number,
+		neighbors: Map<string, HexTile | null>,
+		planet: Planet
+	): RegionalHexData {
+		const regional = createRegionalHexData(rx, ry);
+
+		// Calculate global position for noise sampling
+		const globalX = px * gridSize + rx;
+		const globalY = py * gridSize + ry;
+		const noiseScale = 0.1;
+
+		// Determine terrain with blending at edges
+		const blendedTerrain = this.getBlendedTerrain(
+			parentHex,
+			rx,
+			ry,
+			gridSize,
+			neighbors,
+			blendNoise,
+			globalX,
+			globalY
+		);
+		regional.terrainType = blendedTerrain.terrain;
+		regional.elevation = blendedTerrain.elevation;
+
+		// Add features based on terrain type (use blended terrain)
+		const featureValue = featureNoise(globalX * noiseScale, globalY * noiseScale);
+		regional.feature = this.determineFeature(regional.terrainType, featureValue, parentHex.dryness);
+
+		// Add resources (rare)
+		const resourceValue = resourceNoise(globalX * noiseScale * 2, globalY * noiseScale * 2);
+		this.assignResources(regional, resourceValue, regional.terrainType, planet.type);
+
+		// Determine river potential
+		const riverValue = riverNoise(globalX * noiseScale * 0.5, globalY * noiseScale * 0.5);
+		regional.hasRiver = this.shouldHaveRiver(parentHex, riverValue);
+
+		// Calculate yields and defense
+		calculateRegionalYields(regional);
+		calculateRegionalDefense(regional);
+
+		return regional;
+	}
+
+	/**
+	 * Get blended terrain based on position within hex and neighboring hexes
+	 * Creates natural-looking coastlines and terrain transitions
+	 */
+	private static getBlendedTerrain(
+		parentHex: HexTile,
+		rx: number,
+		ry: number,
+		gridSize: number,
+		neighbors: Map<string, HexTile | null>,
+		blendNoise: (x: number, y: number) => number,
+		globalX: number,
+		globalY: number
+	): { terrain: TerrainType; elevation: number } {
+		// Normalize position within hex (0-1)
+		const normX = rx / (gridSize - 1);
+		const normY = ry / (gridSize - 1);
+
+		// Center of hex is (0.5, 0.5)
+		const centerX = 0.5;
+		const centerY = 0.5;
+
+		// Calculate distance from center (0 at center, ~0.7 at corners)
+		const distFromCenter = Math.sqrt(
+			Math.pow(normX - centerX, 2) + Math.pow(normY - centerY, 2)
+		);
+
+		// If close to center, use parent terrain
+		const blendThreshold = 0.25; // Start blending at 25% from center
+		if (distFromCenter < blendThreshold) {
+			return { terrain: parentHex.terrainType, elevation: parentHex.elevation };
+		}
+
+		// Find which edge/corner we're closest to and get the neighbor
+		const edgeInfo = this.getClosestEdgeNeighbor(normX, normY, neighbors);
+		if (!edgeInfo.neighbor) {
+			return { terrain: parentHex.terrainType, elevation: parentHex.elevation };
+		}
+
+		const neighborHex = edgeInfo.neighbor;
+
+		// Don't blend similar terrains
+		if (this.areTerrainsSimilar(parentHex.terrainType, neighborHex.terrainType)) {
+			return { terrain: parentHex.terrainType, elevation: parentHex.elevation };
+		}
+
+		// Calculate blend factor based on distance from center + noise
+		const noiseValue = blendNoise(globalX * 0.3, globalY * 0.3); // Noise for irregular edges
+		const normalizedDist = (distFromCenter - blendThreshold) / (0.7 - blendThreshold);
+
+		// Add noise to make irregular coastlines (-0.3 to +0.3 variation)
+		const noisyBlendFactor = normalizedDist + noiseValue * 0.35;
+
+		// Determine which terrain to use based on blend factor
+		// Higher blend factor = more likely to use neighbor terrain
+		const blendChance = Math.max(0, Math.min(1, noisyBlendFactor));
+
+		// Use a sharper threshold for coastlines (water/land boundaries)
+		const isCoastline = this.isWaterTerrain(parentHex.terrainType) !== this.isWaterTerrain(neighborHex.terrainType);
+
+		if (isCoastline) {
+			// For coastlines, create more dramatic irregular edges
+			const coastNoise = blendNoise(globalX * 0.5, globalY * 0.5);
+			const coastBlend = normalizedDist * 1.5 + coastNoise * 0.5;
+
+			if (coastBlend > 0.5) {
+				// Add Coast terrain as transition between land and ocean
+				if (this.isWaterTerrain(neighborHex.terrainType) && !this.isWaterTerrain(parentHex.terrainType)) {
+					// Land hex near water - might become coast or water
+					if (coastBlend > 0.75) {
+						return { terrain: TerrainType.Water, elevation: 0 };
+					} else if (coastBlend > 0.55) {
+						return { terrain: TerrainType.Coast, elevation: 1 };
+					}
+				} else if (!this.isWaterTerrain(neighborHex.terrainType) && this.isWaterTerrain(parentHex.terrainType)) {
+					// Water hex near land - might become coast or land
+					if (coastBlend > 0.75) {
+						return { terrain: neighborHex.terrainType, elevation: neighborHex.elevation };
+					} else if (coastBlend > 0.55) {
+						return { terrain: TerrainType.Coast, elevation: 1 };
+					}
+				}
+			}
+		} else {
+			// Non-coastline terrain transitions (grass/desert, plains/tundra, etc.)
+			if (blendChance > 0.6) {
+				return { terrain: neighborHex.terrainType, elevation: neighborHex.elevation };
+			}
+		}
+
+		return { terrain: parentHex.terrainType, elevation: parentHex.elevation };
+	}
+
+	/**
+	 * Find which neighbor hex is closest based on position within the hex
+	 */
+	private static getClosestEdgeNeighbor(
+		normX: number,
+		normY: number,
+		neighbors: Map<string, HexTile | null>
+	): { direction: string; neighbor: HexTile | null } {
+		// Calculate angle from center to determine which edge we're closest to
+		const dx = normX - 0.5;
+		const dy = normY - 0.5;
+		const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+		// Map angle to hex directions (6 directions, 60 degrees each)
+		// Adjusted for our hex orientation
+		let direction: string;
+		if (angle >= -30 && angle < 30) {
+			direction = 'E';
+		} else if (angle >= 30 && angle < 90) {
+			direction = 'SE';
+		} else if (angle >= 90 && angle < 150) {
+			direction = 'SW';
+		} else if (angle >= 150 || angle < -150) {
+			direction = 'W';
+		} else if (angle >= -150 && angle < -90) {
+			direction = 'NW';
+		} else {
+			direction = 'NE';
+		}
+
+		return { direction, neighbor: neighbors.get(direction) || null };
+	}
+
+	/**
+	 * Check if terrain is water-based
+	 */
+	private static isWaterTerrain(terrain: TerrainType): boolean {
+		return (
+			terrain === TerrainType.Water ||
+			terrain === TerrainType.Ocean ||
+			terrain === TerrainType.Coast ||
+			terrain === TerrainType.SaltLake ||
+			terrain === TerrainType.IceFloe
+		);
+	}
+
+	/**
+	 * Check if two terrain types are similar (shouldn't blend)
+	 */
+	private static areTerrainsSimilar(t1: TerrainType, t2: TerrainType): boolean {
+		// Group similar terrains
+		const waterTypes = [TerrainType.Water, TerrainType.Ocean, TerrainType.Coast, TerrainType.SaltLake];
+		const grassTypes = [TerrainType.Grass, TerrainType.GrassHills, TerrainType.Jungle, TerrainType.JungleHills];
+		const desertTypes = [TerrainType.Desert, TerrainType.AshPlains];
+		const coldTypes = [TerrainType.Snow, TerrainType.Tundra, TerrainType.IceFloe];
+		const mountainTypes = [TerrainType.Mountain, TerrainType.HighMountain, TerrainType.SnowMountain];
+
+		const groups = [waterTypes, grassTypes, desertTypes, coldTypes, mountainTypes];
+
+		for (const group of groups) {
+			if (group.includes(t1) && group.includes(t2)) {
+				return true;
+			}
+		}
+
+		return t1 === t2;
+	}
+
+	/**
+	 * Determine feature (forest, jungle, marsh, etc.) based on terrain and noise
+	 */
+	private static determineFeature(
+		terrainType: TerrainType,
+		noiseValue: number,
+		dryness: number
+	): string {
+		// No features on water, mountains, or extreme terrain
+		if (
+			terrainType === TerrainType.Water ||
+			terrainType === TerrainType.SaltLake ||
+			terrainType === TerrainType.Mountain ||
+			terrainType === TerrainType.HighMountain ||
+			terrainType === TerrainType.SnowMountain ||
+			terrainType === TerrainType.Lava ||
+			terrainType === TerrainType.IceFloe
+		) {
+			return '';
+		}
+
+		// Normalize noise to 0-1
+		const normalizedNoise = (noiseValue + 1) / 2;
+
+		// Feature probability based on terrain
+		switch (terrainType) {
+			case TerrainType.Grass:
+			case TerrainType.GrassHills:
+				if (normalizedNoise > 0.6 && dryness < 50) return 'Forest';
+				if (normalizedNoise > 0.85 && dryness < 30) return 'Marsh';
+				break;
+			case TerrainType.Plains:
+				if (normalizedNoise > 0.7 && dryness < 45) return 'Forest';
+				break;
+			case TerrainType.Jungle:
+			case TerrainType.JungleHills:
+				if (normalizedNoise > 0.3) return 'Jungle';
+				break;
+			case TerrainType.Tundra:
+				if (normalizedNoise > 0.75) return 'Forest';
+				break;
+			case TerrainType.Snow:
+				if (normalizedNoise > 0.9) return 'Ice';
+				break;
+		}
+
+		return '';
+	}
+
+	/**
+	 * Assign resources to a regional hex
+	 */
+	private static assignResources(
+		regional: RegionalHexData,
+		noiseValue: number,
+		terrainType: TerrainType,
+		planetType: string
+	): void {
+		// Normalize noise to 0-1
+		const normalizedNoise = (noiseValue + 1) / 2;
+
+		// Resources are rare - only spawn above high threshold
+		if (normalizedNoise < 0.85) return;
+
+		// Strategic resources based on terrain
+		if (normalizedNoise > 0.95) {
+			switch (terrainType) {
+				case TerrainType.Hills:
+				case TerrainType.GrassHills:
+					regional.strategicResource = StrategicResource.Iron;
+					break;
+				case TerrainType.Plains:
+				case TerrainType.Grass:
+					regional.strategicResource = StrategicResource.Horses;
+					break;
+				case TerrainType.Desert:
+					regional.strategicResource = StrategicResource.Oil;
+					break;
+				case TerrainType.Mountain:
+					regional.strategicResource = StrategicResource.Aluminum;
+					break;
+				case TerrainType.Tundra:
+					regional.strategicResource = StrategicResource.Uranium;
+					break;
+			}
+		}
+		// Luxury resources
+		else if (normalizedNoise > 0.88) {
+			const luxuryOptions = this.getLuxuryOptionsForTerrain(terrainType);
+			if (luxuryOptions.length > 0) {
+				const index = Math.floor(normalizedNoise * 100) % luxuryOptions.length;
+				regional.luxuryResource = luxuryOptions[index];
+			}
+		}
+		// Bonus resources
+		else if (normalizedNoise > 0.85) {
+			regional.bonusResource = this.getBonusResourceForTerrain(terrainType);
+		}
+	}
+
+	/**
+	 * Get luxury resource options for terrain type
+	 */
+	private static getLuxuryOptionsForTerrain(terrainType: TerrainType): LuxuryResource[] {
+		switch (terrainType) {
+			case TerrainType.Grass:
+			case TerrainType.Plains:
+				return [LuxuryResource.Cotton, LuxuryResource.Wine, LuxuryResource.Dyes];
+			case TerrainType.Desert:
+				return [LuxuryResource.Incense, LuxuryResource.Gold];
+			case TerrainType.Jungle:
+				return [LuxuryResource.Gems, LuxuryResource.Spices, LuxuryResource.Dyes];
+			case TerrainType.Tundra:
+				return [LuxuryResource.Furs, LuxuryResource.Silver];
+			case TerrainType.Hills:
+			case TerrainType.GrassHills:
+				return [LuxuryResource.Gold, LuxuryResource.Silver, LuxuryResource.Gems];
+			case TerrainType.Water:
+				return [LuxuryResource.Pearls];
+			default:
+				return [];
+		}
+	}
+
+	/**
+	 * Get bonus resource for terrain type
+	 */
+	private static getBonusResourceForTerrain(terrainType: TerrainType): string {
+		switch (terrainType) {
+			case TerrainType.Grass:
+				return 'Cattle';
+			case TerrainType.Plains:
+				return 'Wheat';
+			case TerrainType.Tundra:
+				return 'Deer';
+			case TerrainType.Desert:
+				return 'Oasis';
+			case TerrainType.Water:
+				return 'Fish';
+			case TerrainType.Jungle:
+				return 'Bananas';
+			default:
+				return '';
+		}
+	}
+
+	/**
+	 * Determine if a regional hex should have a river
+	 */
+	private static shouldHaveRiver(parentHex: HexTile, riverNoise: number): boolean {
+		// No rivers in water or extreme terrain
+		if (
+			parentHex.elevation === 0 ||
+			parentHex.terrainType === TerrainType.Desert ||
+			parentHex.terrainType === TerrainType.Snow ||
+			parentHex.terrainType === TerrainType.Lava
+		) {
+			return false;
+		}
+
+		// Rivers more common in wet areas
+		const riverThreshold = parentHex.dryness > 50 ? 0.85 : 0.7;
+		return riverNoise > riverThreshold;
+	}
+
+	/**
+	 * Connect rivers within a regional grid to form coherent river systems
+	 */
+	private static connectRiversInRegion(
+		regionalHexes: RegionalHexData[][],
+		riverNoise: (x: number, y: number) => number,
+		px: number,
+		py: number
+	): void {
+		const gridSize = regionalHexes.length;
+		if (gridSize === 0) return;
+
+		// Find hexes with rivers and connect them
+		for (let ry = 0; ry < gridSize; ry++) {
+			for (let rx = 0; rx < gridSize; rx++) {
+				const hex = regionalHexes[ry][rx];
+				if (!hex.hasRiver) continue;
+
+				// Determine which sides have river based on neighbors
+				hex.riverSides = [];
+
+				// Check each of the 6 hex neighbors
+				const neighbors = this.getRegionalNeighbors(rx, ry, gridSize);
+				for (let side = 0; side < 6; side++) {
+					const neighbor = neighbors[side];
+					if (neighbor) {
+						const neighborHex = regionalHexes[neighbor.y]?.[neighbor.x];
+						if (neighborHex?.hasRiver) {
+							// River flows between these two hexes
+							hex.riverSides.push(side);
+						}
+					}
+				}
+
+				// If no connections found, add at least one side
+				if (hex.riverSides.length === 0) {
+					hex.riverSides = [Math.floor(Math.abs(riverNoise(px * 100 + rx, py * 100 + ry)) * 6)];
+				}
+			}
+		}
+	}
+
+	/**
+	 * Get neighbors of a regional hex (within the 5x5 grid)
+	 */
+	private static getRegionalNeighbors(
+		rx: number,
+		ry: number,
+		gridSize: number
+	): ({ x: number; y: number } | null)[] {
+		// Hex neighbor offsets (even/odd column offset layout)
+		const isOddCol = rx % 2 === 1;
+		const offsets = isOddCol
+			? [
+					{ x: 1, y: 0 }, // NE
+					{ x: 1, y: 1 }, // SE
+					{ x: 0, y: 1 }, // S
+					{ x: -1, y: 1 }, // SW
+					{ x: -1, y: 0 }, // NW
+					{ x: 0, y: -1 } // N
+				]
+			: [
+					{ x: 1, y: -1 }, // NE
+					{ x: 1, y: 0 }, // SE
+					{ x: 0, y: 1 }, // S
+					{ x: -1, y: 0 }, // SW
+					{ x: -1, y: -1 }, // NW
+					{ x: 0, y: -1 } // N
+				];
+
+		return offsets.map((offset) => {
+			const nx = rx + offset.x;
+			const ny = ry + offset.y;
+			if (nx >= 0 && nx < gridSize && ny >= 0 && ny < gridSize) {
+				return { x: nx, y: ny };
+			}
+			return null;
+		});
 	}
 }
