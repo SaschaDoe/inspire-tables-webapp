@@ -697,35 +697,36 @@ export class WorldMapCreator {
 		// Higher blend factor = more likely to use neighbor terrain
 		const blendChance = Math.max(0, Math.min(1, noisyBlendFactor));
 
-		// Use a sharper threshold for coastlines (water/land boundaries)
+		// Check if this is a coastline (water/land boundary)
 		const isCoastline = this.isWaterTerrain(parentHex.terrainType) !== this.isWaterTerrain(neighborHex.terrainType);
 
-		if (isCoastline) {
-			// For coastlines, create more dramatic irregular edges
-			const coastNoise = blendNoise(globalX * 0.5, globalY * 0.5);
-			const coastBlend = normalizedDist * 1.5 + coastNoise * 0.5;
+		// Use noise for irregular boundaries - same approach for all terrain transitions
+		const transitionNoise = blendNoise(globalX * 0.5, globalY * 0.5);
+		const blendFactor = normalizedDist * 1.5 + transitionNoise * 0.5;
 
-			if (coastBlend > 0.5) {
-				// Add Coast terrain as transition between land and ocean
+		if (isCoastline) {
+			// For coastlines, create irregular edges with Coast as transition
+			if (blendFactor > 0.5) {
 				if (this.isWaterTerrain(neighborHex.terrainType) && !this.isWaterTerrain(parentHex.terrainType)) {
 					// Land hex near water - might become coast or water
-					if (coastBlend > 0.75) {
+					if (blendFactor > 0.75) {
 						return { terrain: TerrainType.Water, elevation: 0 };
-					} else if (coastBlend > 0.55) {
+					} else if (blendFactor > 0.55) {
 						return { terrain: TerrainType.Coast, elevation: 1 };
 					}
 				} else if (!this.isWaterTerrain(neighborHex.terrainType) && this.isWaterTerrain(parentHex.terrainType)) {
 					// Water hex near land - might become coast or land
-					if (coastBlend > 0.75) {
+					if (blendFactor > 0.75) {
 						return { terrain: neighborHex.terrainType, elevation: neighborHex.elevation };
-					} else if (coastBlend > 0.55) {
+					} else if (blendFactor > 0.55) {
 						return { terrain: TerrainType.Coast, elevation: 1 };
 					}
 				}
 			}
 		} else {
-			// Non-coastline terrain transitions (grass/desert, plains/tundra, etc.)
-			if (blendChance > 0.6) {
+			// Land-to-land terrain transitions (grass/tundra, plains/desert, etc.)
+			// Use the same noise-based irregular blending as coastlines
+			if (blendFactor > 0.5) {
 				return { terrain: neighborHex.terrainType, elevation: neighborHex.elevation };
 			}
 		}
