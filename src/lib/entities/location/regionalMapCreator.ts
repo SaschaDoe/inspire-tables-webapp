@@ -41,7 +41,7 @@ export class RegionalMapCreator {
 	 * @param seed - Random seed for consistent generation
 	 * @param width - Map width in hexes (default: 50)
 	 * @param height - Map height in hexes (default: 50)
-	 * @returns Generated RegionalMap with all hex tiles
+	 * @returns Object with regionalMap and hexTiles array
 	 */
 	static create(
 		planetaryHex: PlanetaryHexTile,
@@ -49,7 +49,7 @@ export class RegionalMapCreator {
 		seed: number,
 		width: number = this.DEFAULT_WIDTH,
 		height: number = this.DEFAULT_HEIGHT
-	): RegionalMap {
+	): { regionalMap: RegionalMap; hexTiles: RegionalHexTile[] } {
 		const regionalMap = new RegionalMap();
 		regionalMap.width = width;
 		regionalMap.height = height;
@@ -102,7 +102,7 @@ export class RegionalMapCreator {
 			tile.calculateDefenseAndMovement();
 		});
 
-		return regionalMap;
+		return { regionalMap, hexTiles };
 	}
 
 	/**

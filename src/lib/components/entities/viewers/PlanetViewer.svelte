@@ -12,6 +12,8 @@
 	import type { HexTile } from '$lib/entities/location/hexTile';
 	import { TerrainType } from '$lib/entities/location/terrainType';
 	import { entityStore } from '$lib/stores/entityStore';
+	import { PlanetaryHexTile } from '$lib/entities/location/planetaryHexTile';
+	import { PlanetWorkflow } from '$lib/utils/planetWorkflow';
 
 	interface Props {
 		planet: Planet;
@@ -179,6 +181,56 @@
 				]
 			: []
 	);
+
+	/**
+	 * Expand selected hex tile to a detailed regional map
+	 * (Phase 4: Planet Workflow Integration)
+	 */
+	function expandHexToRegionalMap() {
+		if (!selectedHex) {
+			console.error('No hex selected');
+			return;
+		}
+
+		// Create a PlanetaryHexTile from the simple HexTile
+		const planetaryHex = new PlanetaryHexTile();
+		planetaryHex.x = selectedHex.x;
+		planetaryHex.y = selectedHex.y;
+		planetaryHex.terrainType = selectedHex.terrainType;
+		planetaryHex.elevation = selectedHex.elevation;
+		planetaryHex.temperature = selectedHex.temperature;
+		planetaryHex.dryness = selectedHex.dryness;
+		planetaryHex.parentPlanetId = planet.id;
+		planetaryHex.continentId = selectedHex.continentId;
+		planetaryHex.name = `Planetary Hex (${selectedHex.x}, ${selectedHex.y})`;
+
+		// Save the planetary hex tile entity
+		entityStore.addEntity(planetaryHex);
+
+		// Find the continent if it exists
+		const continent = selectedHex.continentId
+			? planet.continents.find((c) => c.id === selectedHex.continentId.toString())
+			: null;
+
+		// Infer planet type from the planetary hex
+		const planetType = PlanetWorkflow.inferPlanetTypeFromHex(planetaryHex);
+
+		// Expand to regional map (this will create and save all entities)
+		const regionalMapId = PlanetWorkflow.expandPlanetaryHexToRegionalMap(
+			planetaryHex,
+			planet,
+			continent,
+			planetType,
+			50, // width
+			50 // height
+		);
+
+		// Navigate to the regional map
+		const regionalMap = entityStore.getEntity(regionalMapId);
+		if (regionalMap) {
+			dispatch('openEntity', { entity: regionalMap });
+		}
+	}
 </script>
 
 <div class="planet-viewer">
@@ -231,6 +283,9 @@
 					<div class="hex-info-panel">
 						<h4 class="hex-info-title">Selected Hex</h4>
 						<InfoGrid items={hexInfo} />
+						<button class="expand-hex-btn" onclick={expandHexToRegionalMap}>
+							🔍 Expand to Regional Map
+						</button>
 					</div>
 				{/if}
 			{:else}
@@ -442,6 +497,9 @@
 		background: rgb(30 27 75 / 0.4);
 		border-radius: 0.5rem;
 		border: 2px solid rgb(147 51 234 / 0.3);
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 	}
 
 	.hex-info-title {
@@ -461,5 +519,31 @@
 		line-height: 1.6;
 		margin: 0;
 		white-space: pre-wrap;
+	}
+
+	.expand-hex-btn {
+		padding: 0.75rem 1.25rem;
+		background: linear-gradient(135deg, rgb(34 197 94), rgb(21 128 61));
+		color: white;
+		border: none;
+		border-radius: 0.5rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		font-size: 0.875rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+	}
+
+	.expand-hex-btn:hover {
+		background: linear-gradient(135deg, rgb(21 128 61), rgb(22 101 52));
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+	}
+
+	.expand-hex-btn:active {
+		transform: translateY(0);
 	}
 </style>

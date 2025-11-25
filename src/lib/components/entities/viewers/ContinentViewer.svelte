@@ -8,6 +8,7 @@
 	import { HexTile } from '$lib/entities/location/hexTile';
 	import { TERRAIN_COLORS } from '$lib/entities/location/terrainType';
 	import EntityViewer from '../EntityViewer.svelte';
+	import { PlanetWorkflow } from '$lib/utils/planetWorkflow';
 
 	interface Props {
 		continent: Continent;
@@ -152,6 +153,14 @@
 		return { x: pixelX, y: pixelY };
 	});
 
+	// Get regional maps linked to this continent (Phase 4: Planet Workflow Integration)
+	const continentRegionalMaps = $derived.by(() => {
+		if (!continent.regionalMapIds || continent.regionalMapIds.length === 0) {
+			return [];
+		}
+		return PlanetWorkflow.getContinentRegionalMaps(continent);
+	});
+
 	// Initialize pan to center the continent
 	$effect(() => {
 		if (!isInitialized && continent.hexTiles.length > 0) {
@@ -288,6 +297,39 @@
 			{/each}
 		</div>
 	</Section>
+
+	<!-- Regional Maps (Phase 4: Planet Workflow Integration) -->
+	{#if continentRegionalMaps.length > 0}
+		<Section title="Regional Maps ({continentRegionalMaps.length})">
+			<div class="regional-maps-grid">
+				{#each continentRegionalMaps as regionalMap (regionalMap.id)}
+					<button class="regional-map-card" onclick={() => dispatch('openEntity', { entity: regionalMap })}>
+						<div class="regional-map-header">
+							<span class="regional-map-icon">🗺️</span>
+							<span class="regional-map-name">{regionalMap.name}</span>
+						</div>
+						<div class="regional-map-info">
+							<div class="regional-map-stat">
+								<span class="stat-label">Dimensions:</span>
+								<span class="stat-value">{regionalMap.width}×{regionalMap.height}</span>
+							</div>
+							<div class="regional-map-stat">
+								<span class="stat-label">Hexes:</span>
+								<span class="stat-value">{regionalMap.hexTileIds.length}</span>
+							</div>
+							<div class="regional-map-stat">
+								<span class="stat-label">Simulation:</span>
+								<span class="stat-value">{regionalMap.simulationInitialized ? '✓ Initialized' : '○ Not initialized'}</span>
+							</div>
+						</div>
+						<div class="regional-map-action">
+							<span>View Regional Map →</span>
+						</div>
+					</button>
+				{/each}
+			</div>
+		</Section>
+	{/if}
 
 	<!-- Hex Map Visualization -->
 	<Section title="Continent Map">
@@ -647,5 +689,85 @@
 	.close-btn:hover {
 		background: rgb(168 85 247 / 0.4);
 		border-color: rgb(168 85 247 / 0.6);
+	}
+
+	/* Regional Maps Grid (Phase 4: Planet Workflow Integration) */
+	.regional-maps-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+		gap: 1rem;
+	}
+
+	.regional-map-card {
+		padding: 1.25rem;
+		background: rgb(30 27 75 / 0.4);
+		border: 1px solid rgb(34 197 94 / 0.3);
+		border-radius: 0.5rem;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		text-align: left;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.regional-map-card:hover {
+		background: rgb(30 27 75 / 0.6);
+		border-color: rgb(34 197 94 / 0.6);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+	}
+
+	.regional-map-header {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+	}
+
+	.regional-map-icon {
+		font-size: 1.5rem;
+	}
+
+	.regional-map-name {
+		font-size: 1rem;
+		font-weight: 600;
+		color: rgb(216 180 254);
+		flex: 1;
+	}
+
+	.regional-map-info {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.regional-map-stat {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 0.875rem;
+	}
+
+	.stat-label {
+		color: rgb(168 85 247);
+		font-weight: 500;
+	}
+
+	.stat-value {
+		color: rgb(203 213 225);
+		font-weight: 600;
+	}
+
+	.regional-map-action {
+		padding-top: 0.75rem;
+		border-top: 1px solid rgb(168 85 247 / 0.2);
+		font-size: 0.875rem;
+		color: rgb(34 197 94);
+		font-weight: 600;
+		text-align: center;
+	}
+
+	.regional-map-card:hover .regional-map-action {
+		color: rgb(21 128 61);
 	}
 </style>
