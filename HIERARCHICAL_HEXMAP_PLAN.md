@@ -1947,6 +1947,345 @@ $effect(() => {
 
 ---
 
+### Phase 1.6: SimulationEntityBridge ⭐ NEW - CRITICAL
+**Goal**: Sync simulation objects with entityStore for persistence
+
+**Status**: ⬜ NOT STARTED
+
+**Why Critical**: Without this, simulations run in-memory only and all progress is lost on page refresh. This is the bridge between the simulation engine and the entity system.
+
+**Tasks**:
+1. Create `SimulationEntityBridge.ts` class
+2. Implement `syncNationToEntity(nation)` - Save Nation simulation object to entityStore
+3. Implement `syncCityToEntity(city)` - Save City simulation object to entityStore
+4. Implement `syncUnitToEntity(unit)` - Save Unit simulation object to entityStore
+5. Implement `syncEventToEntity(event)` - Save HistoricalEvent to entityStore
+6. Implement `loadNationFromEntity(entityId)` - Restore Nation from entityStore
+7. Implement `loadCityFromEntity(entityId)` - Restore City from entityStore
+8. Implement `loadUnitFromEntity(entityId)` - Restore Unit from entityStore
+9. Add batch update optimization (update multiple entities at once)
+10. Integrate into SimulationEngine.processTurn() - sync after each turn
+11. Integrate into SimulationEngine initialization - load existing simulation state
+12. Add `initializeFromEntities(regionalMapId)` method to SimulationEngine
+13. Test: Run simulation → refresh page → verify entities persisted
+14. Test: Load existing simulation → verify state restored correctly
+
+**Files to Create**:
+- `src/lib/simulation/SimulationEntityBridge.ts` (300-400 lines)
+
+**Files to Modify**:
+- `src/lib/simulation/SimulationEngine.ts` (add entityBridge property, integrate sync calls)
+
+**Technical Approach**:
+
+```typescript
+/**
+ * Bridge between simulation objects and entity store
+ * Handles bidirectional sync:
+ * - Simulation → Entity Store (persistence)
+ * - Entity Store → Simulation (loading/restoration)
+ */
+export class SimulationEntityBridge {
+  private entityStore: typeof entityStore;
+
+  constructor() {
+    this.entityStore = entityStore;
+  }
+
+  /**
+   * Sync a Nation simulation object to entity store
+   */
+  async syncNationToEntity(nation: Nation): Promise<void> {
+    const existingEntity = this.entityStore.getEntity(nation.id);
+
+    if (existingEntity) {
+      // Update existing entity
+      existingEntity.customFields.generatedEntity = nation;
+      await this.entityStore.updateEntity(nation.id, existingEntity);
+    } else {
+      // Create new entity
+      const entity = new EntityInstance();
+      entity.id = nation.id;
+      entity.type = EntityType.Nation;
+      entity.name = nation.name;
+      entity.customFields.generatedEntity = nation;
+      await this.entityStore.createEntity(entity);
+    }
+  }
+
+  /**
+   * Sync a City simulation object to entity store
+   */
+  async syncCityToEntity(city: City): Promise<void> {
+    // Similar to syncNationToEntity
+  }
+
+  /**
+   * Batch sync multiple entities (more efficient)
+   */
+  async batchSync(entities: Array<Nation | City | Unit | HistoricalEvent>): Promise<void> {
+    const updates: EntityInstance[] = [];
+
+    for (const simEntity of entities) {
+      const entityInstance = this.convertToEntityInstance(simEntity);
+      updates.push(entityInstance);
+    }
+
+    // Batch update to entityStore (if supported)
+    await Promise.all(updates.map(e => this.entityStore.updateEntity(e.id, e)));
+  }
+
+  /**
+   * Load a Nation from entity store into simulation object
+   */
+  loadNationFromEntity(entityId: string): Nation | null {
+    const entity = this.entityStore.getEntity(entityId);
+    if (!entity || entity.type !== EntityType.Nation) return null;
+
+    return entity.customFields.generatedEntity as Nation;
+  }
+
+  /**
+   * Initialize simulation from existing entities
+   */
+  async initializeFromRegionalMap(regionalMapId: string): Promise<{
+    nations: Nation[];
+    cities: City[];
+    units: Unit[];
+    events: HistoricalEvent[];
+  }> {
+    const regionalMap = this.entityStore.getEntity(regionalMapId) as RegionalMap;
+
+    const nations = regionalMap.nationIds
+      .map(id => this.loadNationFromEntity(id))
+      .filter(n => n !== null) as Nation[];
+
+    const cities = regionalMap.cityIds
+      .map(id => this.loadCityFromEntity(id))
+      .filter(c => c !== null) as City[];
+
+    const units = regionalMap.unitIds
+      .map(id => this.loadUnitFromEntity(id))
+      .filter(u => u !== null) as Unit[];
+
+    const events = regionalMap.historicalEventIds
+      .map(id => this.loadEventFromEntity(id))
+      .filter(e => e !== null) as HistoricalEvent[];
+
+    return { nations, cities, units, events };
+  }
+}
+```
+
+**Integration with SimulationEngine**:
+
+```typescript
+export class SimulationEngine {
+  private entityBridge: SimulationEntityBridge;
+
+  constructor(config: SimulationConfig) {
+    // ... existing code ...
+    this.entityBridge = new SimulationEntityBridge();
+  }
+
+  /**
+   * Process a single turn (modified to sync entities)
+   */
+  processTurn(): void {
+    if (!this.isRunning || this.isPaused) return;
+
+    // ... existing turn processing ...
+
+    // NEW: Sync all entities to store after turn processing
+    this.syncEntitiesToStore();
+  }
+
+  /**
+   * Sync all simulation objects to entity store
+   */
+  private async syncEntitiesToStore(): Promise<void> {
+    const entitiesToSync = [
+      ...this.nations,
+      ...this.cities,
+      ...this.units,
+      ...this.eventsThisTurn
+    ];
+
+    await this.entityBridge.batchSync(entitiesToSync);
+
+    // Also sync the RegionalMap entity (update current year, etc.)
+    await this.syncRegionalMapEntity();
+  }
+
+  /**
+   * Initialize simulation from existing entities
+   */
+  async initializeFromEntities(regionalMapId: string): Promise<void> {
+    const { nations, cities, units, events } =
+      await this.entityBridge.initializeFromRegionalMap(regionalMapId);
+
+    this.nations = nations;
+    this.cities = cities;
+    this.units = units;
+    this.historicalEvents = events;
+
+    // Restore simulation state
+    const regionalMap = entityStore.getEntity(regionalMapId) as RegionalMap;
+    this.currentYear = regionalMap.currentYear;
+    this.currentTurn = regionalMap.currentTurn || 0;
+
+    this.isInitialized = true;
+  }
+}
+```
+
+**Deliverable**: Simulations are fully persistent, can be saved/loaded, and integrate seamlessly with the entity system.
+
+**Priority**: **CRITICAL** - This is required for all simulation features to be usable long-term.
+
+---
+
+### Phase 1.7: Settlement/City Merge ⭐ NEW - USER REQUIREMENT
+**Goal**: Merge Settlement entity into City with dual-mode support (RPG vs Simulation)
+
+**Status**: ⬜ NOT STARTED
+
+**Why Required**: User wants one unified city entity type that works for both manual RPG creation and simulation-generated cities. Currently Settlement (11 lines, simple) and City (620 lines, full simulation) are separate entities.
+
+**Tasks**:
+1. Add `isSimulationGenerated` boolean flag to City class
+2. Add RPG-specific properties to City:
+   - `size?: string` - from Settlement ('small', 'medium', 'large')
+   - `fame?: string` - from Settlement ('unknown', 'famous', 'legendary')
+   - `rpgEvents?: string[]` - from Settlement (narrative events)
+   - `rpgDescription?: string` - from Settlement (flavor text)
+3. Update CityCreator with dual-mode creation:
+   - `create()` - Creates RPG city (isSimulationGenerated = false)
+   - `createFromSimulation()` - Creates simulation city (isSimulationGenerated = true)
+4. Create CityViewer.svelte with dual-mode rendering:
+   - If isSimulationGenerated: Show full simulation UI (yields, managers, etc.)
+   - If !isSimulationGenerated: Show RPG UI (size, fame, description)
+5. Create migration script `migrateSettlementsToCities.ts`:
+   - Find all Settlement entities
+   - Convert to City entities with isSimulationGenerated = false
+   - Copy properties (name, size, fame, events, description)
+   - Update entity type to EntityType.City
+   - Save updated entities
+6. Update entity registry:
+   - Remove EntityType.Settlement from enum (deprecated)
+   - Update viewerRegistry to use CityViewer for cities
+   - Remove SettlementViewer references
+7. Update SettlementCreator → mark as deprecated, point to CityCreator
+8. Test dual-mode creation:
+   - Create RPG city manually → verify properties
+   - Create simulation city via engine → verify managers initialized
+   - Verify both display correctly in CityViewer
+
+**Files to Create**:
+- `src/lib/components/entities/viewers/CityViewer.svelte` (400-500 lines)
+- `src/lib/migration/migrateSettlementsToCities.ts` (100 lines)
+
+**Files to Modify**:
+- `src/lib/entities/location/city.ts` (add RPG properties)
+- `src/lib/entities/location/cityCreator.ts` (add dual-mode creation)
+- `src/lib/types/entity.ts` (deprecate EntityType.Settlement)
+- `src/lib/components/entities/viewerRegistry.ts` (add CityViewer)
+
+**Updated City Class**:
+
+```typescript
+export class City extends Entity {
+  // === EXISTING SIMULATION PROPERTIES ===
+  // (all current 620 lines stay unchanged)
+
+  name: string = '';
+  ownerNationId: string = '';
+  founderNationId: string = '';
+  foundedYear: number = 0;
+  hexTileId: string = '';
+  parentRegionalMapId: string = '';
+  coordinates: { x: number; y: number } = { x: 0, y: 0 };
+  population: number = 1;
+  isCapital: boolean = false;
+
+  // Managers (simulation only)
+  populationManager: CityPopulationManager;
+  productionManager: CityProductionManager;
+  expansionManager: CityExpansionManager;
+
+  // Yields, buildings, units, etc. (simulation only)
+  yields: CityYields = { ... };
+  buildings: BuildingType[] = [];
+  // ... all other simulation properties ...
+
+  // === NEW: MODE FLAG ===
+  isSimulationGenerated: boolean = false; // false = RPG, true = Simulation
+
+  // === NEW: RPG MODE PROPERTIES ===
+  // Only used when isSimulationGenerated = false
+  size?: string; // 'small', 'medium', 'large' (from Settlement)
+  fame?: string; // 'unknown', 'famous', 'legendary' (from Settlement)
+  rpgEvents?: string[]; // Narrative events (from Settlement)
+  rpgDescription?: string; // Flavor text (from Settlement)
+
+  // === UNIFIED PROPERTIES ===
+  // These work in both modes:
+  // - name (string)
+  // - description (string) - generated or manual
+  // - population (number) - RPG: 100-10000, Simulation: 1-50
+}
+```
+
+**Migration Script**:
+
+```typescript
+/**
+ * One-time migration: Convert Settlement entities → City entities
+ * Run this script once to migrate existing data
+ */
+export async function migrateSettlementsToCities() {
+  const allEntities = entityStore.getAllEntities();
+  const settlementEntities = allEntities.filter(e => e.type === EntityType.Settlement);
+
+  console.log(`Found ${settlementEntities.length} Settlement entities to migrate`);
+
+  for (const settlementEntity of settlementEntities) {
+    const settlement = settlementEntity.customFields.generatedEntity as Settlement;
+
+    // Create new City from Settlement data
+    const city = new City();
+    city.id = settlement.id; // Keep same ID
+    city.name = settlement.name;
+    city.description = settlement.description;
+    city.population = settlement.population || 1000;
+
+    // Mark as RPG-generated
+    city.isSimulationGenerated = false;
+
+    // Copy RPG-specific properties
+    city.size = settlement.size;
+    city.fame = settlement.fame;
+    city.rpgEvents = settlement.events;
+    city.rpgDescription = settlement.description;
+
+    // Update entity type and save
+    settlementEntity.type = EntityType.City;
+    settlementEntity.name = city.name;
+    settlementEntity.customFields.generatedEntity = city;
+
+    await entityStore.updateEntity(settlementEntity.id, settlementEntity);
+  }
+
+  console.log(`Migration complete! Migrated ${settlementEntities.length} settlements to cities.`);
+}
+```
+
+**Deliverable**: Single unified City entity that works for both RPG and simulation contexts, with existing Settlement data migrated.
+
+**Priority**: **HIGH** - User requirement, simplifies entity system, enables unified UI.
+
+---
+
 ### Phase 2: Regional Map Generation (No Simulation Yet)
 **Goal**: Generate detailed regional hex maps when planetary hex clicked
 
@@ -2077,7 +2416,7 @@ $effect(() => {
 ### Phase 2.5: Regional Map Visualization with Civ 5 Graphics
 **Goal**: Create UI to visualize regional maps with Unciv/Civ 5-style graphics
 
-**Status**: 🚧 IN PROGRESS
+**Status**: ✅ COMPLETE
 
 **Why This Phase?**:
 Before implementing simulation (Phase 3), we need to be able to SEE the maps being generated. This allows us to:
@@ -2089,10 +2428,11 @@ Before implementing simulation (Phase 3), we need to be able to SEE the maps bei
 
 **Graphics Assets**:
 
-We'll use graphics from **Unciv** (open-source Civ 5 clone):
+We use graphics from **HexaRealm-Tileset** (Unciv tileset mod):
 - **License**: MPL-2.0 and GPLv3 (compatible with open source projects)
-- **Repository**: https://github.com/yairm210/Unciv
-- **Assets location**: `/android/assets/jsons/` and `/android/assets/` in Unciv repo
+- **Repository**: https://github.com/GeneralWadaling/HexaRealm-Tileset
+- **Base Game**: https://github.com/yairm210/Unciv (open-source Civ 5 clone)
+- **Assets location**: `/Images/TileSets/HexaRealm/Tiles/` (individual PNG files)
 - **Quality**: High-quality pixel art matching Civ 5 aesthetic
 
 **Assets needed**:
@@ -2165,15 +2505,16 @@ https://github.com/yairm210/Unciv/tree/master/android/assets
    - Earth-like → full variety
    - Volcanic → mountains, lava, ash
    - Barren → minimal features
-6. 🔜 **Phase B** - Download/integrate Unciv graphics assets:
-   - ⬜ Set up asset folder structure in `static/civ5-assets/`
-   - ⬜ Download/copy Unciv terrain textures
-   - ⬜ Download/copy Unciv resource icons
-   - ⬜ Download/copy Unciv feature sprites
-   - ⬜ Download/copy Unciv river sprites
-   - ⬜ Create asset loading utility (`src/lib/utils/assetLoader.ts`)
-   - ⬜ Update RegionalMapViewer to use real graphics
-   - ⬜ Document graphics attribution in README
+6. ✅ **Phase B** - Download/integrate HexaRealm tileset graphics:
+   - ✅ Set up asset folder structure in `static/civ5-assets/`
+   - ✅ Download HexaRealm terrain textures (9 terrain types)
+   - ✅ Download HexaRealm resource icons (24 resources: strategic, luxury, bonus)
+   - ✅ Download HexaRealm feature sprites (4 features: Forest, Jungle, Marsh, Ice)
+   - ✅ Rivers use simple blue lines (HexaRealm has no separate river sprites)
+   - ✅ Create asset loading utility (`src/lib/utils/assetLoader.ts`)
+   - ✅ Create automated download script (`scripts/download-unciv-assets.js`)
+   - ✅ Update RegionalMapViewer to use real graphics (🎨 toggle button)
+   - ✅ Document graphics attribution in README
 
 **Files Created** (Phase A - ~650 lines):
 - ✅ `src/lib/components/entities/viewers/RegionalMapViewer.svelte` (650 lines) - Full regional map visualization:
@@ -2186,10 +2527,12 @@ https://github.com/yairm210/Unciv/tree/master/android/assets
   - Terrain statistics and resource counters
 - ✅ `REGIONAL_MAP_VISUALIZATION.md` - Complete usage guide and documentation
 
-**Files Still To Create** (Phase B):
-- `src/lib/utils/assetLoader.ts` (~100 lines) - Graphics asset management
-- `static/civ5-assets/` folder structure - Unciv graphics organization
-- `static/civ5-assets/README.md` - Attribution and sources
+**Files Created** (Phase B - ~400 lines):
+- ✅ `src/lib/utils/assetLoader.ts` (257 lines) - Graphics asset management with caching
+- ✅ `scripts/download-unciv-assets.js` (186 lines) - Automated HexaRealm tileset download
+- ✅ `static/civ5-assets/` folder structure - HexaRealm graphics organization (37 PNG files)
+- ✅ `static/civ5-assets/README.md` (161 lines) - Attribution and sources
+- ✅ Enhanced `RegionalMapViewer.svelte` - Graphics mode with 🎨 toggle button
 
 **Files to Modify**:
 - `src/lib/components/entities/viewers/ContinentViewer.svelte` (add zoom button to access regional maps)
@@ -2268,24 +2611,42 @@ Start with Phase A to get something visible quickly, then enhance with real grap
 ### Phase 3: Basic Simulation Engine
 **Goal**: Implement turn-based simulation without combat
 
+**Status**: ✅ COMPLETE
+
 **Tasks**:
-1. Create `SimulationEngine` class
-2. Implement turn progression (1 turn = 1 year)
-3. Implement city founding (AI settles preferred terrain)
-4. Implement city growth (food → population)
-5. Implement city production (build settlers, workers, buildings)
-6. Implement basic resource system (food, production, gold, science)
-7. Implement exploration (units reveal fog of war)
-8. Create historical events for all actions
-9. Store events by year, nation, hex
+1. ✅ Create `SimulationEngine` class
+2. ✅ Implement turn progression (1 turn = 1 year)
+3. ✅ Implement city founding (AI settles preferred terrain)
+4. ✅ Implement city growth (food → population)
+5. ✅ Implement city production (build settlers, workers, buildings)
+6. ✅ Implement basic resource system (food, production, gold, science)
+7. ⬜ Implement exploration (units reveal fog of war) - Deferred to Phase 5
+8. ✅ Create historical events for all actions
+9. ✅ Store events by year, nation, hex
 
-**Files to Create**:
-- `src/lib/simulation/simulationEngine.ts`
-- `src/lib/simulation/cityManager.ts`
-- `src/lib/simulation/resourceManager.ts`
-- `src/lib/simulation/explorationManager.ts`
+**Files Created**:
+- ✅ `src/lib/simulation/simulationEngine.ts` (775 lines) - Main simulation orchestrator
+- ✅ `src/lib/simulation/examples/testSimulation.ts` (285 lines) - Test/example scripts
+- ✅ Manager classes already exist:
+  - `src/lib/simulation/managers/CityPopulationManager.ts` - City growth
+  - `src/lib/simulation/managers/CityProductionManager.ts` - City production
+  - `src/lib/simulation/managers/CityExpansionManager.ts` - Border expansion
+  - `src/lib/simulation/managers/TechManager.ts` - Technology research
+  - `src/lib/simulation/managers/PolicyManager.ts` - Social policies
+  - `src/lib/simulation/managers/DiplomacyManager.ts` - Diplomatic relations
 
-**Deliverable**: Can run simulation, nations expand, cities grow, events tracked
+**Key Features Implemented**:
+- Turn-by-turn simulation (configurable years per turn)
+- AI city founding with terrain scoring and validation
+- City growth, production, and border expansion
+- Nation yield calculation and resource accumulation
+- Technology research and policy unlocking
+- Historical event tracking with indexing (by year, nation, hex)
+- Event creation for city founding, growth, starvation, tech discoveries
+- Simulation state management (start, pause, resume, stop)
+- Query methods for events by year/nation/hex
+
+**Deliverable**: ✅ Can run simulation, nations expand, cities grow, events tracked
 
 ---
 
