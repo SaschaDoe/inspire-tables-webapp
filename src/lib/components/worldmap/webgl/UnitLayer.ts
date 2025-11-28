@@ -1,4 +1,4 @@
-import { Container, Graphics, Text, TextStyle } from 'pixi.js';
+import { Container, Graphics, Text, TextStyle, Sprite, Assets } from 'pixi.js';
 import type { Nation } from '$lib/entities/location/nation';
 import { hexToPixel, getRegionalHexCenter, type Point } from './HexGeometry';
 import {
@@ -127,71 +127,64 @@ export class UnitLayer {
 		unitContainer.x = info.centerX;
 		unitContainer.y = info.centerY;
 
-		// Draw settler icon
+		// Draw settler icon - make it much larger and more visible
 		const graphics = new Graphics();
 
-		// Base circle (body)
-		const baseSize = this.hexSize / this.gridSize * 0.4;
+		// Size based on regional hex size (not tiny fraction)
+		const regionalHexSize = this.hexSize / this.gridSize;
+		const baseSize = regionalHexSize * 0.8; // 80% of hex size
 
-		// Draw a simple person-like settler icon
-		// Head
-		graphics.circle(0, -baseSize * 0.6, baseSize * 0.35);
-		graphics.fill({ color: 0xffd699 }); // Skin color
+		// Background circle for visibility
+		graphics.circle(0, 0, baseSize * 0.6);
+		graphics.fill({ color: info.color, alpha: 0.3 });
+		graphics.stroke({ color: info.color, width: 2 });
 
-		// Body (triangle cloak)
-		graphics.moveTo(-baseSize * 0.5, baseSize * 0.5);
-		graphics.lineTo(baseSize * 0.5, baseSize * 0.5);
-		graphics.lineTo(0, -baseSize * 0.2);
-		graphics.closePath();
-		graphics.fill({ color: info.color });
-
-		// Outline
-		graphics.circle(0, -baseSize * 0.6, baseSize * 0.35);
+		// Draw a covered wagon / settler wagon icon
+		// Wagon body
+		graphics.roundRect(-baseSize * 0.4, -baseSize * 0.1, baseSize * 0.8, baseSize * 0.35, 3);
+		graphics.fill({ color: 0x8B4513 }); // Brown wood
 		graphics.stroke({ color: 0x000000, width: 1 });
 
-		graphics.moveTo(-baseSize * 0.5, baseSize * 0.5);
-		graphics.lineTo(baseSize * 0.5, baseSize * 0.5);
-		graphics.lineTo(0, -baseSize * 0.2);
-		graphics.closePath();
+		// Wagon cover (canvas top)
+		graphics.ellipse(0, -baseSize * 0.15, baseSize * 0.45, baseSize * 0.3);
+		graphics.fill({ color: 0xF5DEB3 }); // Wheat/canvas color
 		graphics.stroke({ color: 0x000000, width: 1 });
 
-		// Nation flag/banner
-		const flagPoleHeight = baseSize * 1.2;
-		const flagWidth = baseSize * 0.6;
-		const flagHeight = baseSize * 0.4;
+		// Wheels
+		const wheelRadius = baseSize * 0.12;
+		const wheelY = baseSize * 0.25;
+		// Left wheel
+		graphics.circle(-baseSize * 0.25, wheelY, wheelRadius);
+		graphics.fill({ color: 0x654321 });
+		graphics.stroke({ color: 0x000000, width: 1 });
+		// Right wheel
+		graphics.circle(baseSize * 0.25, wheelY, wheelRadius);
+		graphics.fill({ color: 0x654321 });
+		graphics.stroke({ color: 0x000000, width: 1 });
 
-		// Flag pole
-		graphics.moveTo(baseSize * 0.4, -baseSize * 0.3);
-		graphics.lineTo(baseSize * 0.4, -baseSize * 0.3 - flagPoleHeight);
-		graphics.stroke({ color: 0x654321, width: 2 });
-
-		// Flag
-		graphics.rect(
-			baseSize * 0.4,
-			-baseSize * 0.3 - flagPoleHeight,
-			flagWidth,
-			flagHeight
-		);
+		// Nation color banner on wagon
+		graphics.rect(-baseSize * 0.15, -baseSize * 0.35, baseSize * 0.3, baseSize * 0.15);
 		graphics.fill({ color: info.color });
 		graphics.stroke({ color: 0x000000, width: 1 });
 
 		unitContainer.addChild(graphics);
 
-		// Add nation name label
+		// Add nation name label - larger font
 		const style = new TextStyle({
 			fontFamily: 'Arial',
-			fontSize: 8,
+			fontSize: 12,
+			fontWeight: 'bold',
 			fill: 0xffffff,
-			stroke: { color: 0x000000, width: 2 },
+			stroke: { color: 0x000000, width: 3 },
 			align: 'center'
 		});
 
 		const label = new Text({
-			text: info.nation.name.substring(0, 10),
+			text: info.nation.name.substring(0, 12),
 			style
 		});
 		label.anchor.set(0.5, 0);
-		label.y = baseSize * 0.7;
+		label.y = baseSize * 0.5;
 		unitContainer.addChild(label);
 
 		this.container.addChild(unitContainer);
@@ -209,18 +202,22 @@ export class UnitLayer {
 			const info = this.units.get(nationId);
 			if (!info) continue;
 
-			// Always show units, but scale them based on zoom
+			// Always show units
 			graphic.visible = true;
 
-			if (zoom < REGIONAL_ZOOM_START * 0.3) {
-				// Very zoomed out - show as larger marker so it's visible
-				graphic.scale.set(1 / zoom * 0.3);
-			} else if (zoom < REGIONAL_ZOOM_START) {
-				// Partially zoomed - medium size marker
-				graphic.scale.set(1 / zoom * 0.5);
+			// Scale units to maintain reasonable size on screen
+			// At zoom 1.0, scale = 1.0 (natural size)
+			// At zoom 3.0, scale = 1.0 (same size - unit fills hex nicely)
+			// At zoom 10.0+, scale down slightly so it doesn't dominate
+			if (zoom < REGIONAL_ZOOM_START) {
+				// Before regional view - show larger marker
+				graphic.scale.set(2.0 / zoom);
+			} else if (zoom < 5.0) {
+				// Regional view - natural size (1.0)
+				graphic.scale.set(1.0);
 			} else {
-				// Zoomed in - show full detail at appropriate size
-				graphic.scale.set(1 / zoom);
+				// Very zoomed in - scale down slightly
+				graphic.scale.set(5.0 / zoom);
 			}
 		}
 	}

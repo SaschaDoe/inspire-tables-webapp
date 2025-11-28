@@ -6,7 +6,7 @@ export const REGIONAL_GRID_SIZE = 10; // 10x10 regional hexes per planetary hex
 
 // Zoom thresholds
 export const MIN_ZOOM = 0.2;
-export const MAX_ZOOM = 8.0;
+export const MAX_ZOOM = 20.0; // Allow zooming in much closer
 export const REGIONAL_ZOOM_START = 1.6; // Start showing regional hexes
 export const REGIONAL_ZOOM_FULL = 2.4; // Full regional view
 
