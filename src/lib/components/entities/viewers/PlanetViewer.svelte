@@ -82,8 +82,9 @@
 
 				const loaded = await worldMapTileStore.loadTiles(planet.id, worldMap);
 				if (loaded) {
+					// Only store in local state - DO NOT set planet.worldMap as it would
+					// include detailed tiles with methods that can't be serialized
 					localWorldMap = worldMap;
-					planet.worldMap = worldMap;
 					mapKey++; // Force re-render
 					console.log('[PlanetViewer] Loaded detailed tiles from IndexedDB');
 				} else {
@@ -96,7 +97,34 @@
 					: WorldMap.fromJSON(planet.worldMap as unknown as Record<string, unknown>);
 			}
 		}
+
+		// Load nations for this planet from entity store
+		loadNationsFromStore();
 	});
+
+	/**
+	 * Load nations that belong to this planet from entity store
+	 */
+	function loadNationsFromStore() {
+		// Get all nation entities from the store
+		const allEntities = entityStore.getAllEntities();
+		const nationEntities = allEntities.filter(e => e.type === 'nation');
+
+		const loadedNations: Nation[] = [];
+		for (const entity of nationEntities) {
+			const generatedEntity = entity.customFields?.generatedEntity as Nation | undefined;
+			if (generatedEntity && generatedEntity.parentPlanetId === planet.id) {
+				// Reconstruct the Nation object
+				const nation = Object.assign(new Nation(), generatedEntity);
+				loadedNations.push(nation);
+			}
+		}
+
+		if (loadedNations.length > 0) {
+			nations = loadedNations;
+			console.log(`[PlanetViewer] Loaded ${loadedNations.length} nations from entity store`);
+		}
+	}
 
 	const basicInfo = $derived([
 		{
