@@ -8,6 +8,7 @@
 	import { autoSaveNestedEntities, createAddEntityHandler, createEventForwarders } from './viewerUtils';
 	import PlanetRenderer from '$lib/components/three/PlanetRenderer.svelte';
 	import HexMapWebGL from '$lib/components/worldmap/HexMapWebGL.svelte';
+	import type { Entity } from '$lib/types/entity';
 	import { WorldMapCreator } from '$lib/entities/location/worldMapCreator';
 	import { WorldMap } from '$lib/entities/location/worldMap';
 	import type { HexTile } from '$lib/entities/location/hexTile';
@@ -41,6 +42,9 @@
 
 	// Nations on this planet
 	let nations: Nation[] = $state([]);
+
+	// Reference to the hex map component for panning
+	let hexMapComponent: HexMapWebGL | null = $state(null);
 
 	// Local world map state - keeps detailed tiles in memory even after store saves
 	// (The store only saves lightweight version without detailed tiles)
@@ -435,6 +439,22 @@
 		nation.startingHexY = startingHex.globalY;
 		nation.hasFoundedFirstCity = false;
 
+		// Save nation to entity store so it can be navigated to
+		const nationEntity: Entity = {
+			id: nation.id,
+			type: 'nation' as any,
+			name: nation.name,
+			description: nation.description || '',
+			tags: [],
+			metadata: {
+				createdAt: new Date(),
+				updatedAt: new Date()
+			},
+			relationships: [],
+			customFields: { generatedEntity: nation }
+		};
+		entityStore.createEntity(nationEntity);
+
 		// Add to nations list
 		nations = [...nations, nation];
 
@@ -447,8 +467,33 @@
 	 * Remove a nation from the planet
 	 */
 	function removeNation(nationToRemove: Nation) {
+		// Remove from entity store
+		entityStore.deleteEntity(nationToRemove.id);
+		// Remove from local list
 		nations = nations.filter(n => n.id !== nationToRemove.id);
 		console.log(`[PlanetViewer] Removed nation "${nationToRemove.name}"`);
+	}
+
+	/**
+	 * Open nation in a new tab (navigate to entity)
+	 */
+	function openNation(nation: Nation) {
+		const nationEntity = entityStore.getEntity(nation.id);
+		if (nationEntity) {
+			dispatch('openEntity', { entity: nationEntity });
+		} else {
+			console.error(`[PlanetViewer] Nation entity not found for "${nation.name}"`);
+		}
+	}
+
+	/**
+	 * Pan the map to a nation's location
+	 */
+	function locateNation(nation: Nation) {
+		if (nation.startingHexX !== undefined && nation.startingHexY !== undefined) {
+			// Pan to the nation's starting position and zoom in to see the settler
+			hexMapComponent?.panToGlobalHex(nation.startingHexX, nation.startingHexY, 1.5);
+		}
 	}
 
 	const hexInfo = $derived(
@@ -561,7 +606,13 @@
 								{#each nations as nation (nation.id)}
 									<li class="nation-item">
 										<div class="nation-info">
-											<span class="nation-name">{nation.name}</span>
+											<button
+												class="nation-name-btn"
+												onclick={() => openNation(nation)}
+												title="Open nation details"
+											>
+												{nation.name}
+											</button>
 											<span class="nation-terrain">
 												Prefers: {nation.preferredTerrainTypes.slice(0, 2).map(t => TerrainType[t]).join(', ')}
 											</span>
@@ -571,13 +622,22 @@
 												</span>
 											{/if}
 										</div>
-										<button
-											class="remove-nation-btn"
-											onclick={() => removeNation(nation)}
-											title="Remove nation"
-										>
-											×
-										</button>
+										<div class="nation-actions">
+											<button
+												class="locate-nation-btn"
+												onclick={() => locateNation(nation)}
+												title="Locate on map"
+											>
+												&#128205;
+											</button>
+											<button
+												class="remove-nation-btn"
+												onclick={() => removeNation(nation)}
+												title="Remove nation"
+											>
+												×
+											</button>
+										</div>
 									</li>
 								{/each}
 							</ul>
@@ -589,6 +649,7 @@
 
 				{#key mapKey}
 					<HexMapWebGL
+						bind:this={hexMapComponent}
 						worldMap={activeWorldMap}
 						{nations}
 						on:hexSelected={handleHexSelected}
@@ -1010,10 +1071,47 @@
 		gap: 0.15rem;
 	}
 
-	.nation-name {
+	.nation-name-btn {
+		background: none;
+		border: none;
+		padding: 0;
 		color: rgb(226 232 240);
 		font-weight: 600;
 		font-size: 0.85rem;
+		cursor: pointer;
+		text-align: left;
+		transition: color 0.2s;
+	}
+
+	.nation-name-btn:hover {
+		color: rgb(192 132 252);
+		text-decoration: underline;
+	}
+
+	.nation-actions {
+		display: flex;
+		gap: 0.25rem;
+		align-items: center;
+	}
+
+	.locate-nation-btn {
+		width: 24px;
+		height: 24px;
+		background: transparent;
+		border: 1px solid rgb(59 130 246 / 0.5);
+		border-radius: 0.25rem;
+		color: rgb(59 130 246);
+		font-size: 0.75rem;
+		cursor: pointer;
+		transition: all 0.2s;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.locate-nation-btn:hover {
+		background: rgb(30 58 138 / 0.3);
+		border-color: rgb(59 130 246);
 	}
 
 	.nation-terrain,

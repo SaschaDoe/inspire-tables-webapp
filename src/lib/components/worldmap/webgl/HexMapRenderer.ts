@@ -371,6 +371,61 @@ export class HexMapRenderer {
 		this.centerView();
 	}
 
+	/**
+	 * Pan to a specific global hex coordinate
+	 */
+	panToGlobalHex(globalX: number, globalY: number, zoomLevel?: number): void {
+		// Calculate world pixel position from global coordinates
+		const gridSize = this.worldMap.gridSize || 10;
+
+		// Calculate planetary hex coordinates
+		const px = Math.floor(globalX / gridSize);
+		const py = Math.floor(globalY / gridSize);
+
+		// Calculate local coordinates within planetary hex
+		const localX = globalX % gridSize;
+		const localY = globalY % gridSize;
+
+		// Get planetary hex center
+		const planetaryCenter = this.getHexWorldPosition(px, py);
+
+		// Calculate detailed hex offset within the planetary hex
+		const hexHeight = PLANETARY_HEX_SIZE * Math.sqrt(3) / gridSize;
+		const hexWidth = PLANETARY_HEX_SIZE / gridSize;
+
+		// Offset from planetary hex center
+		const regionalOffsetX = (localX - gridSize / 2 + 0.5) * hexWidth * 1.5;
+		const regionalOffsetY = (localY - gridSize / 2 + (localX % 2) * 0.5) * hexHeight;
+
+		const worldX = planetaryCenter.x + regionalOffsetX;
+		const worldY = planetaryCenter.y + regionalOffsetY;
+
+		// Set target zoom if specified
+		if (zoomLevel !== undefined) {
+			this.targetScale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoomLevel));
+		}
+
+		// Calculate pan to center this position on screen
+		this.targetPanX = this.app.screen.width / 2 - worldX * this.targetScale;
+		this.targetPanY = this.app.screen.height / 2 - worldY * this.targetScale;
+	}
+
+	/**
+	 * Pan to a planetary hex coordinate
+	 */
+	panToPlanetaryHex(hexX: number, hexY: number, zoomLevel?: number): void {
+		const worldPos = this.getHexWorldPosition(hexX, hexY);
+
+		// Set target zoom if specified
+		if (zoomLevel !== undefined) {
+			this.targetScale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoomLevel));
+		}
+
+		// Calculate pan to center this position on screen
+		this.targetPanX = this.app.screen.width / 2 - worldPos.x * this.targetScale;
+		this.targetPanY = this.app.screen.height / 2 - worldPos.y * this.targetScale;
+	}
+
 	getZoomPercent(): number {
 		return Math.round(this.scale * 100);
 	}

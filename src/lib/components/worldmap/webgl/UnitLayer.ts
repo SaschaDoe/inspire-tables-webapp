@@ -193,25 +193,22 @@ export class UnitLayer {
 	updateZoom(zoom: number): void {
 		this.currentZoom = zoom;
 
-		// Show units based on zoom level
-		// At low zoom, show simplified markers
-		// At high zoom, show full settler icons
-		const showDetailed = zoom >= REGIONAL_ZOOM_START;
-
+		// Show units at all zoom levels, but scale appropriately
 		for (const [nationId, graphic] of this.unitGraphics) {
 			const info = this.units.get(nationId);
 			if (!info) continue;
 
-			if (zoom < REGIONAL_ZOOM_START * 0.5) {
-				// Very zoomed out - hide units
-				graphic.visible = false;
+			// Always show units, but scale them based on zoom
+			graphic.visible = true;
+
+			if (zoom < REGIONAL_ZOOM_START * 0.3) {
+				// Very zoomed out - show as larger marker so it's visible
+				graphic.scale.set(1 / zoom * 0.3);
 			} else if (zoom < REGIONAL_ZOOM_START) {
-				// Partially zoomed - show simplified marker
-				graphic.visible = true;
+				// Partially zoomed - medium size marker
 				graphic.scale.set(1 / zoom * 0.5);
 			} else {
-				// Zoomed in - show full detail
-				graphic.visible = true;
+				// Zoomed in - show full detail at appropriate size
 				graphic.scale.set(1 / zoom);
 			}
 		}

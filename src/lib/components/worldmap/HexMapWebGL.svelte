@@ -18,6 +18,20 @@
 	let zoomPercent = $state(60);
 	let viewMode = $state('Planetary View');
 
+	/**
+	 * Pan to a global hex coordinate (exposed for external use)
+	 */
+	export function panToGlobalHex(globalX: number, globalY: number, zoomLevel?: number): void {
+		renderer?.panToGlobalHex(globalX, globalY, zoomLevel);
+	}
+
+	/**
+	 * Pan to a planetary hex coordinate (exposed for external use)
+	 */
+	export function panToPlanetaryHex(hexX: number, hexY: number, zoomLevel?: number): void {
+		renderer?.panToPlanetaryHex(hexX, hexY, zoomLevel);
+	}
+
 	// Update zoom display periodically
 	let updateInterval: number | null = null;
 
