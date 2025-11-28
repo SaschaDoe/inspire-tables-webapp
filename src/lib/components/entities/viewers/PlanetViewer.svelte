@@ -17,7 +17,7 @@
 	import { TerrainType } from '$lib/entities/location/terrainType';
 	import { entityStore } from '$lib/stores/entityStore';
 	import { NationCreator } from '$lib/entities/location/nationCreator';
-	import type { Nation } from '$lib/entities/location/nation';
+	import { Nation } from '$lib/entities/location/nation';
 	import { worldMapTileStore } from '$lib/stores/worldMapTileStore';
 
 	interface Props {
