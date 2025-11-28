@@ -1,12 +1,12 @@
 import { TerrainType } from '$lib/entities/location/terrainType';
 
 // Hex sizes
-export const PLANETARY_HEX_SIZE = 20; // Base size for planetary hexes
+export const PLANETARY_HEX_SIZE = 80; // Base size for planetary hexes
 export const REGIONAL_GRID_SIZE = 10; // 10x10 regional hexes per planetary hex
 
 // Zoom thresholds
 export const MIN_ZOOM = 0.2;
-export const MAX_ZOOM = 20.0; // Allow zooming in much closer
+export const MAX_ZOOM = 20.0; // Allow zooming in close (2000%)
 export const REGIONAL_ZOOM_START = 1.6; // Start showing regional hexes
 export const REGIONAL_ZOOM_FULL = 2.4; // Full regional view
 

@@ -170,65 +170,26 @@ export class UnitLayer {
 		unitContainer.x = info.centerX;
 		unitContainer.y = info.centerY;
 
-		// Size based on regional hex size - make settler fill most of the hex
-		const regionalHexSize = this.hexSize / this.gridSize;
-		const baseSize = regionalHexSize * 0.9; // 90% of hex size
-
-		// Add background circle with nation color for visibility
-		const background = new Graphics();
-		background.circle(0, 0, baseSize * 0.55);
-		background.fill({ color: info.color, alpha: 0.3 });
-		background.stroke({ color: info.color, width: 2 });
-		unitContainer.addChild(background);
+		// Settler slightly larger than 1 regional hex
+		const regionalHexSize = this.hexSize / this.gridSize; // 80/10 = 8
+		const spriteSize = regionalHexSize * 1.4; // Bigger sprite
 
 		// Use settler sprite if loaded, otherwise draw fallback
 		if (this.settlerTexture) {
 			const sprite = new Sprite(this.settlerTexture);
 			sprite.anchor.set(0.5, 0.5);
-			// Scale sprite to fill the hex nicely (sprite is 96x96)
-			const spriteScale = baseSize / Math.max(sprite.width, sprite.height);
+			const spriteScale = spriteSize / Math.max(sprite.width, sprite.height);
 			sprite.scale.set(spriteScale);
 			unitContainer.addChild(sprite);
 		} else {
-			// Fallback: draw a simple wagon icon
+			// Fallback: colored circle
 			const graphics = new Graphics();
-
-			// Wagon body
-			graphics.roundRect(-baseSize * 0.3, -baseSize * 0.05, baseSize * 0.6, baseSize * 0.25, 3);
-			graphics.fill({ color: 0x8B4513 });
-			graphics.stroke({ color: 0x000000, width: 1 });
-
-			// Wagon cover
-			graphics.ellipse(0, -baseSize * 0.1, baseSize * 0.35, baseSize * 0.2);
-			graphics.fill({ color: 0xF5DEB3 });
-			graphics.stroke({ color: 0x000000, width: 1 });
-
-			// Wheels
-			graphics.circle(-baseSize * 0.2, baseSize * 0.2, baseSize * 0.08);
-			graphics.fill({ color: 0x654321 });
-			graphics.circle(baseSize * 0.2, baseSize * 0.2, baseSize * 0.08);
-			graphics.fill({ color: 0x654321 });
-
+			graphics.circle(0, 0, spriteSize * 0.4);
+			graphics.fill({ color: info.color });
 			unitContainer.addChild(graphics);
 		}
 
-		// Add small nation name label below
-		const style = new TextStyle({
-			fontFamily: 'Arial',
-			fontSize: 6,
-			fontWeight: 'bold',
-			fill: 0xffffff,
-			stroke: { color: 0x000000, width: 2 },
-			align: 'center'
-		});
-
-		const label = new Text({
-			text: info.nation.name.substring(0, 10),
-			style
-		});
-		label.anchor.set(0.5, 0);
-		label.y = baseSize * 0.5;
-		unitContainer.addChild(label);
+		// No label - just the sprite
 
 		this.container.addChild(unitContainer);
 		this.unitGraphics.set(info.nation.id, unitContainer);
@@ -240,7 +201,8 @@ export class UnitLayer {
 	updateZoom(zoom: number): void {
 		this.currentZoom = zoom;
 
-		// Show units at all zoom levels, but scale appropriately
+		// Show units at all zoom levels with constant scale
+		// The settler is drawn at a fixed world size, so it naturally scales with zoom
 		for (const [nationId, graphic] of this.unitGraphics) {
 			const info = this.units.get(nationId);
 			if (!info) continue;
@@ -248,19 +210,14 @@ export class UnitLayer {
 			// Always show units
 			graphic.visible = true;
 
-			// Scale units to maintain reasonable size on screen
-			// At zoom 1.0, scale = 1.0 (natural size)
-			// At zoom 3.0, scale = 1.0 (same size - unit fills hex nicely)
-			// At zoom 10.0+, scale down slightly so it doesn't dominate
+			// Keep constant scale - let the world zoom handle sizing
+			// At low zoom, make settler larger so it's visible on planetary view
 			if (zoom < REGIONAL_ZOOM_START) {
-				// Before regional view - show larger marker
-				graphic.scale.set(2.0 / zoom);
-			} else if (zoom < 5.0) {
-				// Regional view - natural size (1.0)
-				graphic.scale.set(1.0);
+				// Before regional view - show larger marker for visibility
+				graphic.scale.set(3.0 / zoom);
 			} else {
-				// Very zoomed in - scale down slightly
-				graphic.scale.set(5.0 / zoom);
+				// Regional view and beyond - constant size, settler fills hex nicely
+				graphic.scale.set(1.0);
 			}
 		}
 	}

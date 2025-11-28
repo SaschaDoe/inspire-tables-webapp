@@ -8,11 +8,8 @@ import { PlanetaryHexLayer } from './PlanetaryHexLayer';
 import { RegionalHexLayer } from './RegionalHexLayer';
 import { UnitLayer } from './UnitLayer';
 import {
-	MIN_ZOOM,
-	MAX_ZOOM,
-	REGIONAL_ZOOM_START,
-	REGIONAL_ZOOM_FULL,
 	PLANETARY_HEX_SIZE,
+	REGIONAL_GRID_SIZE,
 	BACKGROUND_COLOR
 } from './constants';
 
@@ -42,12 +39,18 @@ export class HexMapRenderer {
 
 	private worldMap: WorldMap;
 	private nations: Nation[] = [];
-	private scale = 0.6;
-	private targetScale = 0.6;
+	private scale = 1;
+	private targetScale = 1;
 	private panX = 0;
 	private panY = 0;
 	private targetPanX = 0;
 	private targetPanY = 0;
+
+	// Dynamic zoom bounds based on map size
+	private minScale = 0.1; // Scale to fit entire map (0% zoom)
+	private maxScale = 10;  // Scale for one regional hex to fill screen (100% zoom)
+	private regionalStartScale = 0.5; // When to start showing regional hexes
+	private regionalFullScale = 1.0;  // When regional hexes fully visible
 
 	private isPanning = false;
 	private lastMouseX = 0;
@@ -117,14 +120,56 @@ export class HexMapRenderer {
 		// Setup interaction
 		this.setupInteraction();
 
+		// Calculate dynamic zoom bounds based on map size
+		this.calculateZoomBounds();
+
 		// Start render loop
 		this.app.ticker.add(this.update.bind(this));
 
-		// Initial render
+		// Initial render - start at 0% zoom (whole map visible)
+		this.scale = this.minScale;
+		this.targetScale = this.minScale;
 		this.updateLayerVisibility();
 		this.centerView();
 
 		this.isInitialized = true;
+	}
+
+	/**
+	 * Calculate zoom bounds based on map size
+	 * 0% zoom = entire map fits in viewport
+	 * 100% zoom = one regional hex fills ~half the screen
+	 */
+	private calculateZoomBounds(): void {
+		// Calculate map size in world pixels
+		const mapPixelWidth = (this.worldMap.width + 1) * PLANETARY_HEX_SIZE * 1.5;
+		const mapPixelHeight = this.worldMap.height * PLANETARY_HEX_SIZE * Math.sqrt(3) + PLANETARY_HEX_SIZE;
+
+		// Scale to fit entire map in viewport (with some padding)
+		const padding = 0.9; // 90% of viewport
+		this.minScale = Math.min(
+			(this.app.screen.width * padding) / mapPixelWidth,
+			(this.app.screen.height * padding) / mapPixelHeight
+		);
+
+		// Regional hex size in world pixels
+		const regionalHexSize = PLANETARY_HEX_SIZE / REGIONAL_GRID_SIZE;
+
+		// Scale for one regional hex to fill ~1/3 of screen width
+		this.maxScale = (this.app.screen.width / 3) / regionalHexSize;
+
+		// Calculate when to transition between planetary and regional views
+		// Regional view starts when planetary hexes are ~50px on screen
+		this.regionalStartScale = 50 / PLANETARY_HEX_SIZE;
+		// Regional view fully visible when planetary hexes are ~100px
+		this.regionalFullScale = 100 / PLANETARY_HEX_SIZE;
+
+		console.log('[HexMapRenderer] Zoom bounds:', {
+			minScale: this.minScale.toFixed(3),
+			maxScale: this.maxScale.toFixed(3),
+			regionalStartScale: this.regionalStartScale.toFixed(3),
+			regionalFullScale: this.regionalFullScale.toFixed(3)
+		});
 	}
 
 	/**
@@ -165,8 +210,10 @@ export class HexMapRenderer {
 	private handleWheel(e: WheelEvent): void {
 		e.preventDefault();
 
-		const zoomFactor = 0.1;
-		const delta = e.deltaY > 0 ? -zoomFactor : zoomFactor;
+		// Zoom by 5% of the range per scroll
+		const zoomRange = this.maxScale - this.minScale;
+		const zoomStep = zoomRange * 0.05;
+		const delta = e.deltaY > 0 ? -zoomStep : zoomStep;
 
 		// Zoom toward cursor position
 		const rect = this.app.canvas.getBoundingClientRect();
@@ -177,8 +224,8 @@ export class HexMapRenderer {
 		const worldX = (mouseX - this.panX) / this.scale;
 		const worldY = (mouseY - this.panY) / this.scale;
 
-		// Apply zoom
-		this.targetScale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, this.targetScale + delta));
+		// Apply zoom within dynamic bounds
+		this.targetScale = Math.max(this.minScale, Math.min(this.maxScale, this.targetScale + delta));
 
 		// Adjust pan to keep cursor position stable
 		this.targetPanX = mouseX - worldX * this.targetScale;
@@ -266,12 +313,12 @@ export class HexMapRenderer {
 	private updateLayerVisibility(): void {
 		// Calculate transition progress (0 = planetary only, 1 = regional only)
 		let progress = 0;
-		if (this.scale < REGIONAL_ZOOM_START) {
+		if (this.scale < this.regionalStartScale) {
 			progress = 0;
-		} else if (this.scale > REGIONAL_ZOOM_FULL) {
+		} else if (this.scale > this.regionalFullScale) {
 			progress = 1;
 		} else {
-			progress = (this.scale - REGIONAL_ZOOM_START) / (REGIONAL_ZOOM_FULL - REGIONAL_ZOOM_START);
+			progress = (this.scale - this.regionalStartScale) / (this.regionalFullScale - this.regionalStartScale);
 		}
 
 		// Apply smooth easing
@@ -315,13 +362,16 @@ export class HexMapRenderer {
 
 	/**
 	 * Zoom controls - zoom toward selected hex or screen center
+	 * Each click zooms by 10% of the zoom range
 	 */
 	zoomIn(): void {
-		this.zoomTowardFocus(0.3);
+		const zoomRange = this.maxScale - this.minScale;
+		this.zoomTowardFocus(zoomRange * 0.1);
 	}
 
 	zoomOut(): void {
-		this.zoomTowardFocus(-0.3);
+		const zoomRange = this.maxScale - this.minScale;
+		this.zoomTowardFocus(-zoomRange * 0.1);
 	}
 
 	/**
@@ -349,8 +399,8 @@ export class HexMapRenderer {
 		const worldX = (focusX - this.panX) / this.scale;
 		const worldY = (focusY - this.panY) / this.scale;
 
-		// Apply zoom
-		this.targetScale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, this.targetScale + delta));
+		// Apply zoom within dynamic bounds
+		this.targetScale = Math.max(this.minScale, Math.min(this.maxScale, this.targetScale + delta));
 
 		// Adjust pan to keep focus point stable
 		this.targetPanX = focusX - worldX * this.targetScale;
@@ -367,14 +417,15 @@ export class HexMapRenderer {
 	}
 
 	resetZoom(): void {
-		this.targetScale = 0.6;
+		// Reset to 0% zoom (whole map visible)
+		this.targetScale = this.minScale;
 		this.centerView();
 	}
 
 	/**
 	 * Pan to a specific global hex coordinate
 	 */
-	panToGlobalHex(globalX: number, globalY: number, zoomLevel?: number): void {
+	panToGlobalHex(globalX: number, globalY: number, zoomPercent?: number): void {
 		// Calculate world pixel position from global coordinates
 		const gridSize = this.worldMap.gridSize || 10;
 
@@ -400,9 +451,10 @@ export class HexMapRenderer {
 		const worldX = planetaryCenter.x + regionalOffsetX;
 		const worldY = planetaryCenter.y + regionalOffsetY;
 
-		// Set target zoom if specified
-		if (zoomLevel !== undefined) {
-			this.targetScale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoomLevel));
+		// Set target zoom if specified (as percentage 0-100)
+		if (zoomPercent !== undefined) {
+			const scale = this.minScale + (zoomPercent / 100) * (this.maxScale - this.minScale);
+			this.targetScale = Math.max(this.minScale, Math.min(this.maxScale, scale));
 		}
 
 		// Calculate pan to center this position on screen
@@ -413,12 +465,13 @@ export class HexMapRenderer {
 	/**
 	 * Pan to a planetary hex coordinate
 	 */
-	panToPlanetaryHex(hexX: number, hexY: number, zoomLevel?: number): void {
+	panToPlanetaryHex(hexX: number, hexY: number, zoomPercent?: number): void {
 		const worldPos = this.getHexWorldPosition(hexX, hexY);
 
-		// Set target zoom if specified
-		if (zoomLevel !== undefined) {
-			this.targetScale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoomLevel));
+		// Set target zoom if specified (as percentage 0-100)
+		if (zoomPercent !== undefined) {
+			const scale = this.minScale + (zoomPercent / 100) * (this.maxScale - this.minScale);
+			this.targetScale = Math.max(this.minScale, Math.min(this.maxScale, scale));
 		}
 
 		// Calculate pan to center this position on screen
@@ -427,12 +480,14 @@ export class HexMapRenderer {
 	}
 
 	getZoomPercent(): number {
-		return Math.round(this.scale * 100);
+		// Return 0-100% based on scale between minScale and maxScale
+		const percent = ((this.scale - this.minScale) / (this.maxScale - this.minScale)) * 100;
+		return Math.round(Math.max(0, Math.min(100, percent)));
 	}
 
 	getViewMode(): string {
-		if (this.scale < REGIONAL_ZOOM_START) return 'Planetary View';
-		if (this.scale > REGIONAL_ZOOM_FULL) return 'Regional View';
+		if (this.scale < this.regionalStartScale) return 'Planetary View';
+		if (this.scale > this.regionalFullScale) return 'Regional View';
 		return 'Transitioning...';
 	}
 
@@ -449,6 +504,13 @@ export class HexMapRenderer {
 
 		this.planetaryLayer.rebuild(worldMap);
 		this.regionalLayer.rebuild(worldMap);
+
+		// Recalculate zoom bounds for new map size
+		this.calculateZoomBounds();
+
+		// Reset to 0% zoom (whole map visible)
+		this.scale = this.minScale;
+		this.targetScale = this.minScale;
 		this.centerView();
 	}
 

@@ -519,9 +519,8 @@
 	 */
 	function locateNation(nation: Nation) {
 		if (nation.startingHexX !== undefined && nation.startingHexY !== undefined) {
-			// Pan to the nation's starting position and zoom in enough to see the settler
-			// REGIONAL_ZOOM_FULL is 2.4, so we use 3.0 to ensure detailed tiles and settlers are visible
-			hexMapComponent?.panToGlobalHex(nation.startingHexX, nation.startingHexY, 3.0);
+			// Pan to the nation's starting position and zoom to 70% (good regional view with settler visible)
+			hexMapComponent?.panToGlobalHex(nation.startingHexX, nation.startingHexY, 70);
 		}
 	}
 
