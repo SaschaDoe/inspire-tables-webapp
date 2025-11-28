@@ -1,8 +1,8 @@
 import { entityStore } from '$lib/stores/entityStore';
 import { Nation } from '$lib/entities/location/nation';
 import { City } from '$lib/entities/location/city';
-import { RegionalMap } from '$lib/entities/location/regionalMap';
-import { RegionalHexTile } from '$lib/entities/location/regionalHexTile';
+import { WorldMap } from '$lib/entities/location/worldMap';
+import { DetailedHexTile } from '$lib/entities/location/detailedHexTile';
 import { HistoricalEvent, HistoricalEventType, EventSignificance, type EventParticipant } from '$lib/entities/simulation/historicalEvent';
 import { TerrainType } from '$lib/entities/location/terrainType';
 import { SimulationEntityBridge } from './SimulationEntityBridge';
@@ -29,7 +29,7 @@ export interface SimulationState {
 	nationIds: string[];
 	cityIds: string[];
 	eventIds: string[];
-	regionalMapIds: string[];
+	planetId: string; // Planet (WorldMap) where simulation runs
 	isRunning: boolean;
 	isPaused: boolean;
 }
@@ -66,16 +66,14 @@ export class SimulationEngine {
 	// Entity references
 	nationIds: string[] = [];
 	cityIds: string[] = [];
-	regionalMapIds: string[] = [];
+	planetId: string = ''; // Planet ID where simulation runs
+	worldMap: WorldMap | null = null; // Cached WorldMap for simulation
 	historicalEventIds: string[] = [];
 
 	// Event indices for fast lookup
 	private eventsByYear: Map<number, string[]> = new Map();
 	private eventsByNation: Map<string, string[]> = new Map();
 	private eventsByHex: Map<string, string[]> = new Map();
-
-	// Entity store reference (injected or use default)
-	private store: ReturnType<typeof entityStore.getEntity>;
 
 	// Phase 1.6: Entity bridge for persistence
 	private entityBridge: SimulationEntityBridge;
@@ -85,17 +83,22 @@ export class SimulationEngine {
 			this.config = { ...this.config, ...config };
 		}
 		this.currentYear = this.config.startYear;
-		this.store = entityStore.getEntity.bind(entityStore);
 
 		// Initialize entity bridge
 		this.entityBridge = new SimulationEntityBridge();
 	}
 
 	/**
-	 * Initialize simulation with nations and regional maps (new simulation)
+	 * Initialize simulation with a planet and its WorldMap (new simulation)
+	 * @param planetId The planet entity ID
+	 * @param worldMap The WorldMap containing detailed hex tiles for simulation
 	 */
-	initialize(nationalMapIds: string[]): void {
-		this.regionalMapIds = nationalMapIds;
+	initialize(planetId: string, worldMap: WorldMap): void {
+		this.planetId = planetId;
+		this.worldMap = worldMap;
+
+		// Enable simulation on the world map
+		worldMap.simulationEnabled = true;
 
 		// TODO: Create initial nations and place their first settlers
 		// For now, we'll expect nations to be created externally
@@ -120,32 +123,27 @@ export class SimulationEngine {
 	 * Initialize simulation from existing entities (Phase 1.6)
 	 * This loads a previously saved simulation from the entity store
 	 *
-	 * @param regionalMapId ID of the RegionalMap to load
+	 * @param planetId ID of the Planet to load
+	 * @param worldMap The WorldMap containing detailed hex tiles
 	 */
-	async initializeFromEntities(regionalMapId: string): Promise<void> {
-		console.log(`Loading simulation from RegionalMap ${regionalMapId}...`);
+	async initializeFromEntities(planetId: string, worldMap: WorldMap): Promise<void> {
+		console.log(`Loading simulation from Planet ${planetId}...`);
 
-		// Load the regional map entity
-		const regionalMapEntity = entityStore.getEntity(regionalMapId);
-		if (!regionalMapEntity || !regionalMapEntity.customFields.generatedEntity) {
-			throw new Error(`RegionalMap ${regionalMapId} not found in entity store`);
-		}
-
-		const regionalMap = regionalMapEntity.customFields.generatedEntity as RegionalMap;
+		this.planetId = planetId;
+		this.worldMap = worldMap;
 
 		// Load all simulation entities using the bridge
 		const { nations, cities, units, events } =
-			await this.entityBridge.initializeFromRegionalMap(regionalMapId);
+			await this.entityBridge.initializeFromPlanet(planetId);
 
 		// Restore entity IDs
-		this.regionalMapIds = [regionalMapId];
 		this.nationIds = nations.map((n) => n.id);
 		this.cityIds = cities.map((c) => c.id);
 		this.historicalEventIds = events.map((e) => e.id);
 
-		// Restore simulation state
-		this.currentYear = regionalMap.currentYear || this.config.startYear;
-		this.currentTurn = regionalMap.currentTurn || 0;
+		// Restore simulation state from worldMap
+		this.currentYear = worldMap.currentTurn > 0 ? this.config.startYear + worldMap.currentTurn : this.config.startYear;
+		this.currentTurn = worldMap.currentTurn || 0;
 
 		// Rebuild event indices for fast lookup
 		this.rebuildEventIndices(events);
@@ -183,10 +181,10 @@ export class SimulationEngine {
 			}
 
 			// Index by hex (if location specified)
-			if (event.locationHexId) {
-				const hexEvents = this.eventsByHex.get(event.locationHexId) || [];
+			if (event.hexTileId) {
+				const hexEvents = this.eventsByHex.get(event.hexTileId) || [];
 				hexEvents.push(event.id);
-				this.eventsByHex.set(event.locationHexId, hexEvents);
+				this.eventsByHex.set(event.hexTileId, hexEvents);
 			}
 		}
 	}
@@ -423,9 +421,18 @@ export class SimulationEngine {
 		city.ownerNationId = nation.id;
 		city.founderNationId = nation.id;
 		city.foundedYear = this.currentYear;
-		city.setLocation(location.hexTileId, location.regionalMapId, location.coordinates);
+		city.setLocation(location.hexTileId, this.planetId, location.coordinates);
 		city.population = 1;
 		city.isCapital = nation.cityIds.length === 0; // First city is capital
+
+		// Mark the tile as a city center
+		const tile = this.worldMap?.getDetailedHex(location.coordinates.x, location.coordinates.y);
+		if (tile) {
+			tile.isCityCenter = true;
+			tile.ownerNationId = nation.id;
+			tile.ownerCityId = city.id;
+			if (city.isCapital) tile.isCapital = true;
+		}
 
 		// Save city
 		entityStore.createEntity(city);
@@ -446,48 +453,39 @@ export class SimulationEngine {
 	 */
 	private findCityFoundingLocation(nation: Nation): {
 		hexTileId: string;
-		regionalMapId: string;
 		coordinates: { x: number; y: number };
 	} | null {
-		// Get all regional maps
-		for (const mapId of this.regionalMapIds) {
-			const map = entityStore.getEntity(mapId) as RegionalMap;
-			if (!map) continue;
+		if (!this.worldMap) return null;
 
-			// Score all tiles
-			const scoredTiles: Array<{
-				hexTileId: string;
-				score: number;
-				coordinates: { x: number; y: number };
-			}> = [];
+		// Score all tiles
+		const scoredTiles: Array<{
+			hexTileId: string;
+			score: number;
+			coordinates: { x: number; y: number };
+		}> = [];
 
-			for (const tileId of map.hexTileIds) {
-				const tile = entityStore.getEntity(tileId) as RegionalHexTile;
-				if (!tile) continue;
+		for (const tile of this.worldMap.detailedHexTiles.values()) {
+			// Check if tile is valid for city founding
+			if (!this.isValidCityLocation(tile)) continue;
 
-				// Check if tile is valid for city founding
-				if (!this.isValidCityLocation(tile, map)) continue;
+			// Score the tile
+			const score = this.scoreCityLocation(tile, nation);
+			scoredTiles.push({
+				hexTileId: tile.id,
+				score,
+				coordinates: { x: tile.globalX, y: tile.globalY }
+			});
+		}
 
-				// Score the tile
-				const score = this.scoreCityLocation(tile, nation);
-				scoredTiles.push({
-					hexTileId: tile.id,
-					score,
-					coordinates: { x: tile.x, y: tile.y }
-				});
-			}
+		// Sort by score (highest first)
+		scoredTiles.sort((a, b) => b.score - a.score);
 
-			// Sort by score (highest first)
-			scoredTiles.sort((a, b) => b.score - a.score);
-
-			// Return best location
-			if (scoredTiles.length > 0) {
-				return {
-					hexTileId: scoredTiles[0].hexTileId,
-					regionalMapId: map.id,
-					coordinates: scoredTiles[0].coordinates
-				};
-			}
+		// Return best location
+		if (scoredTiles.length > 0) {
+			return {
+				hexTileId: scoredTiles[0].hexTileId,
+				coordinates: scoredTiles[0].coordinates
+			};
 		}
 
 		return null;
@@ -496,26 +494,28 @@ export class SimulationEngine {
 	/**
 	 * Check if a tile is valid for city founding
 	 */
-	private isValidCityLocation(tile: RegionalHexTile, map: RegionalMap): boolean {
-		// Can't found on mountains or ocean
-		if (tile.terrainType === TerrainType.Mountain || tile.terrainType === TerrainType.Ocean) {
+	private isValidCityLocation(tile: DetailedHexTile): boolean {
+		// Can't found on mountains, ocean, or impassable terrain
+		if (tile.terrainType === TerrainType.Mountain ||
+			tile.terrainType === TerrainType.HighMountain ||
+			tile.terrainType === TerrainType.SnowMountain ||
+			tile.terrainType === TerrainType.Ocean ||
+			tile.terrainType === TerrainType.Water ||
+			tile.isImpassable) {
 			return false;
 		}
 
-		// Check if there's already a city here
-		for (const cityId of this.cityIds) {
-			const city = entityStore.getEntity(cityId) as City;
-			if (city && city.hexTileId === tile.id) {
-				return false;
-			}
+		// Can't found if tile is already owned
+		if (tile.ownerNationId || tile.isCityCenter) {
+			return false;
 		}
 
 		// Check minimum distance from other cities (at least 4 tiles)
 		for (const cityId of this.cityIds) {
 			const city = entityStore.getEntity(cityId) as City;
-			if (!city || city.parentRegionalMapId !== map.id) continue;
+			if (!city || city.parentPlanetId !== this.planetId) continue;
 
-			const distance = Math.abs(city.coordinates.x - tile.x) + Math.abs(city.coordinates.y - tile.y);
+			const distance = Math.abs(city.coordinates.x - tile.globalX) + Math.abs(city.coordinates.y - tile.globalY);
 			if (distance < 4) {
 				return false;
 			}
@@ -527,8 +527,13 @@ export class SimulationEngine {
 	/**
 	 * Score a tile for city founding
 	 */
-	private scoreCityLocation(tile: RegionalHexTile, nation: Nation): number {
+	private scoreCityLocation(tile: DetailedHexTile, nation: Nation): number {
 		let score = 0;
+
+		// Prefer terrain matching nation's preference
+		if (nation.preferredTerrainTypes.includes(tile.terrainType)) {
+			score += 15;
+		}
 
 		// Prefer grassland and plains
 		if (tile.terrainType === TerrainType.Grass) score += 10;
@@ -540,18 +545,18 @@ export class SimulationEngine {
 		}
 
 		// Rivers are very valuable
-		if (tile.riverSides && tile.riverSides.some(r => r)) {
+		if (tile.hasRiver) {
 			score += 15;
 		}
 
 		// Strategic resources are valuable
-		if (tile.strategicResource) score += 12;
+		if (tile.strategicResource && tile.strategicResource !== 'None') score += 12;
 
 		// Luxury resources are valuable
-		if (tile.luxuryResource) score += 10;
+		if (tile.luxuryResource && tile.luxuryResource !== 'None') score += 10;
 
 		// Bonus resources are nice
-		if (tile.bonusResource) score += 5;
+		if (tile.bonusResource && tile.bonusResource !== '') score += 5;
 
 		// Food yield is important
 		score += tile.yields.food * 3;
@@ -624,15 +629,19 @@ export class SimulationEngine {
 		stateChanges?: any[];
 	}): HistoricalEvent {
 		const event = new HistoricalEvent();
-		event.type = data.type;
+		event.eventType = data.type;
 		event.year = data.year;
-		event.turn = this.currentTurn;
-		event.title = data.title;
+		event.turnNumber = this.currentTurn;
+		event.name = data.title;
 		event.description = data.description;
 		event.significance = data.significance;
 		event.participants = data.participants;
 		event.hexTileId = data.hexTileId;
-		event.stateChanges = data.stateChanges || [];
+		if (data.stateChanges) {
+			for (const change of data.stateChanges) {
+				event.recordStateChange(change.entityId, change.entityType, change.property, change.oldValue, change.newValue);
+			}
+		}
 
 		// Save event
 		entityStore.createEntity(event);
@@ -794,7 +803,7 @@ export class SimulationEngine {
 			nationIds: [...this.nationIds],
 			cityIds: [...this.cityIds],
 			eventIds: [...this.historicalEventIds],
-			regionalMapIds: [...this.regionalMapIds],
+			planetId: this.planetId,
 			isRunning: this.isRunning,
 			isPaused: this.isPaused
 		};
@@ -829,19 +838,9 @@ export class SimulationEngine {
 		// Batch sync all entities
 		await this.entityBridge.batchSync(entitiesToSync);
 
-		// Also sync each regional map with updated state
-		for (const regionalMapId of this.regionalMapIds) {
-			const regionalMap = entityStore.getEntity(regionalMapId) as RegionalMap;
-			if (regionalMap) {
-				// Update simulation state in regional map
-				regionalMap.currentYear = this.currentYear;
-				regionalMap.currentTurn = this.currentTurn;
-				regionalMap.nationIds = [...this.nationIds];
-				regionalMap.cityIds = [...this.cityIds];
-				regionalMap.historicalEventIds = [...this.historicalEventIds];
-
-				await this.entityBridge.syncRegionalMapEntity(regionalMap);
-			}
+		// Update WorldMap simulation state
+		if (this.worldMap) {
+			this.worldMap.currentTurn = this.currentTurn;
 		}
 	}
 
@@ -856,14 +855,19 @@ export class SimulationEngine {
 
 	/**
 	 * Load simulation state
+	 * @param state The saved simulation state
+	 * @param worldMap The WorldMap to use for simulation (must be provided separately)
 	 */
-	loadState(state: SimulationState): void {
+	loadState(state: SimulationState, worldMap?: WorldMap): void {
 		this.currentYear = state.currentYear;
 		this.currentTurn = state.currentTurn;
 		this.nationIds = [...state.nationIds];
 		this.cityIds = [...state.cityIds];
 		this.historicalEventIds = [...state.eventIds];
-		this.regionalMapIds = [...state.regionalMapIds];
+		this.planetId = state.planetId;
+		if (worldMap) {
+			this.worldMap = worldMap;
+		}
 		this.isRunning = state.isRunning;
 		this.isPaused = state.isPaused;
 
@@ -976,8 +980,33 @@ Turn: ${this.currentTurn}
 Active Nations: ${activeNations}
 Total Cities: ${this.cityIds.length}
 Historical Events: ${this.historicalEventIds.length}
-Regional Maps: ${this.regionalMapIds.length}
+Planet: ${this.planetId || 'None'}
 Status: ${this.isRunning ? (this.isPaused ? 'Paused' : 'Running') : 'Stopped'}
 		`.trim();
+	}
+
+	/**
+	 * Add a nation to the simulation
+	 */
+	addNation(nation: Nation): void {
+		if (!this.nationIds.includes(nation.id)) {
+			this.nationIds.push(nation.id);
+		}
+	}
+
+	/**
+	 * Add a city to the simulation
+	 */
+	addCity(city: City): void {
+		if (!this.cityIds.includes(city.id)) {
+			this.cityIds.push(city.id);
+		}
+	}
+
+	/**
+	 * Get the WorldMap being used for simulation
+	 */
+	getWorldMap(): WorldMap | null {
+		return this.worldMap;
 	}
 }

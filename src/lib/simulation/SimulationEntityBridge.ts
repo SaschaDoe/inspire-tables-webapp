@@ -1,10 +1,9 @@
 import { entityStore } from '$lib/stores/entityStore';
 import { EntityType } from '$lib/types/entity';
-import type { Nation } from '$lib/entities/location/nation';
+import { Nation } from '$lib/entities/location/nation';
 import type { City } from '$lib/entities/location/city';
 import type { Unit } from '$lib/entities/military/unit';
 import type { HistoricalEvent } from '$lib/entities/simulation/historicalEvent';
-import type { RegionalMap } from '$lib/entities/location/regionalMap';
 import type { EntityInstance } from '$lib/stores/entityStore';
 
 /**
@@ -288,77 +287,52 @@ export class SimulationEntityBridge {
 	}
 
 	/**
-	 * Initialize simulation from existing entities in a RegionalMap
+	 * Initialize simulation from existing entities for a Planet
 	 *
 	 * This is called when loading a saved simulation.
 	 * It restores all nations, cities, units, and events from the entity store.
 	 *
-	 * @param regionalMapId ID of the RegionalMap to load
-	 * @returns All simulation objects stored in that map
+	 * @param planetId ID of the Planet to load
+	 * @returns All simulation objects stored for that planet
 	 */
-	async initializeFromRegionalMap(regionalMapId: string): Promise<{
+	async initializeFromPlanet(planetId: string): Promise<{
 		nations: Nation[];
 		cities: City[];
 		units: Unit[];
 		events: HistoricalEvent[];
 	}> {
-		const regionalMapEntity = entityStore.getEntity(regionalMapId);
-		if (!regionalMapEntity || !regionalMapEntity.customFields.generatedEntity) {
-			throw new Error(`RegionalMap ${regionalMapId} not found in entity store`);
+		// Load all nations that belong to this planet
+		const allEntities = entityStore.getAllEntities();
+
+		const nations: Nation[] = [];
+		const cities: City[] = [];
+		const units: Unit[] = [];
+		const events: HistoricalEvent[] = [];
+
+		for (const entity of allEntities) {
+			if (!entity.customFields?.generatedEntity) continue;
+
+			const generated = entity.customFields.generatedEntity;
+
+			// Check if entity belongs to this planet
+			if (entity.type === EntityType.Nation && generated.parentPlanetId === planetId) {
+				const nation = this.loadNationFromEntity(entity.id);
+				if (nation) nations.push(nation);
+			} else if (entity.type === EntityType.City && generated.parentPlanetId === planetId) {
+				const city = this.loadCityFromEntity(entity.id);
+				if (city) cities.push(city);
+			} else if (entity.type === EntityType.Unit && generated.parentPlanetId === planetId) {
+				const unit = this.loadUnitFromEntity(entity.id);
+				if (unit) units.push(unit);
+			} else if (entity.type === EntityType.HistoricalEvent && generated.parentPlanetId === planetId) {
+				const event = this.loadEventFromEntity(entity.id);
+				if (event) events.push(event);
+			}
 		}
-
-		const regionalMap = regionalMapEntity.customFields.generatedEntity as RegionalMap;
-
-		// Load all entities referenced by the regional map
-		const nations = (regionalMap.nationIds || [])
-			.map((id) => this.loadNationFromEntity(id))
-			.filter((n) => n !== null) as Nation[];
-
-		const cities = (regionalMap.cityIds || [])
-			.map((id) => this.loadCityFromEntity(id))
-			.filter((c) => c !== null) as City[];
-
-		const units = (regionalMap.unitIds || [])
-			.map((id) => this.loadUnitFromEntity(id))
-			.filter((u) => u !== null) as Unit[];
-
-		const events = (regionalMap.historicalEventIds || [])
-			.map((id) => this.loadEventFromEntity(id))
-			.filter((e) => e !== null) as HistoricalEvent[];
 
 		return { nations, cities, units, events };
 	}
 
-	/**
-	 * Sync RegionalMap entity to update simulation state
-	 *
-	 * @param regionalMap RegionalMap to sync
-	 */
-	async syncRegionalMapEntity(regionalMap: RegionalMap): Promise<void> {
-		const existingEntity = entityStore.getEntity(regionalMap.id);
-
-		// Create a clean copy without circular references
-		const regionalMapCopy = this.cleanEntityForStorage(regionalMap);
-
-		if (existingEntity) {
-			// Update existing entity
-			existingEntity.name = regionalMap.name || 'Regional Map';
-			existingEntity.customFields = existingEntity.customFields || {};
-			existingEntity.customFields.generatedEntity = regionalMapCopy;
-			await entityStore.updateEntity(regionalMap.id, existingEntity);
-		} else {
-			// Create new entity
-			const entityInstance: EntityInstance = {
-				id: regionalMap.id,
-				type: EntityType.RegionalMap,
-				name: regionalMap.name || 'Regional Map',
-				customFields: {
-					generatedEntity: regionalMapCopy
-				}
-			};
-			await entityStore.createEntity(entityInstance);
-		}
-	}
 
 	/**
 	 * Clean an entity for storage by removing circular references

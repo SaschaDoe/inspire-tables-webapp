@@ -2,6 +2,7 @@ import { Entity } from '../base/entity';
 import { TechManager } from '$lib/simulation/managers/TechManager';
 import { PolicyManager } from '$lib/simulation/managers/PolicyManager';
 import { DiplomacyManager } from '$lib/simulation/managers/DiplomacyManager';
+import { TerrainType } from './terrainType';
 
 /**
  * Diplomacy state between two nations
@@ -100,10 +101,16 @@ export class Nation extends Entity {
 	technologyLevel?: string;
 
 	/**
-	 * Landscape/terrain preference for RPG nations (from old NationCreator)
+	 * Landscape/terrain preference description (for RPG mode display)
 	 * Examples: 'mountains', 'forests', 'desert', 'coastal', 'plains'
 	 */
 	landscape?: string;
+
+	/**
+	 * Preferred terrain types for starting location (simulation mode)
+	 * Nation's settler will be placed on one of these terrain types if available
+	 */
+	preferredTerrainTypes: TerrainType[] = [TerrainType.Grass, TerrainType.Plains];
 
 	/**
 	 * Primary resource for RPG nations (from old NationCreator)
@@ -221,8 +228,12 @@ export class Nation extends Entity {
 	eliminatedYear?: number; // Year nation was eliminated
 
 	// Parent references
-	parentRegionalMapId = ''; // Primary regional map this nation exists in
-	expandedToMapIds: string[] = []; // Other regional maps this nation has expanded to
+	parentPlanetId = ''; // Planet this nation exists on
+
+	// Starting position (for settler placement)
+	startingHexX?: number; // Global X coordinate of starting position
+	startingHexY?: number; // Global Y coordinate of starting position
+	hasFoundedFirstCity = false; // Whether the settler has founded the first city
 
 	// Modifiers and bonuses
 	happinessModifiers: Array<{ source: string; value: number }> = [];

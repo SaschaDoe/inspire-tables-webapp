@@ -172,14 +172,13 @@ export class RegionalHexTile extends Entity {
 			case TerrainType.Snow:
 				// No base yields
 				break;
-			case TerrainType.Ocean:
-				this.yields.food = 1;
-				break;
-			case TerrainType.Coast:
+			case TerrainType.Water:
 				this.yields.food = 1;
 				this.yields.gold = 1;
 				break;
 			case TerrainType.Mountain:
+			case TerrainType.HighMountain:
+			case TerrainType.SnowMountain:
 				// Mountains don't have yields (impassable)
 				this.isImpassable = true;
 				this.canSupportCity = false;
@@ -242,6 +241,8 @@ export class RegionalHexTile extends Entity {
 		// Terrain modifiers
 		switch (this.terrainType) {
 			case TerrainType.Mountain:
+			case TerrainType.HighMountain:
+			case TerrainType.SnowMountain:
 				this.isImpassable = true;
 				this.movementCost = 999; // Effectively impassable
 				break;
@@ -254,11 +255,9 @@ export class RegionalHexTile extends Entity {
 			case TerrainType.Grass:
 				this.movementCost = 1;
 				break;
-			case TerrainType.Ocean:
+			case TerrainType.Water:
+			case TerrainType.IceFloe:
 				this.movementCost = 999; // Impassable without ships
-				break;
-			case TerrainType.Coast:
-				this.movementCost = 1; // For ships
 				break;
 		}
 

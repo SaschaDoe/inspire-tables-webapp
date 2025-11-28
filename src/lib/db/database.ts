@@ -19,6 +19,16 @@ export interface DbMetadata {
 	value: any;
 }
 
+/**
+ * Stored world map tiles data
+ * Stored separately from entities to avoid JSON string length limits
+ */
+export interface DbWorldMapTiles {
+	planetId: string; // Primary key - links to planet entity
+	tiles: Record<string, unknown>; // DetailedHexTile data keyed by "globalX,globalY"
+	updatedAt: Date;
+}
+
 export class InspireTablesDatabase extends Dexie {
 	// Entity tables
 	entities!: Table<DbEntity, string>; // Primary key: id
@@ -31,30 +41,34 @@ export class InspireTablesDatabase extends Dexie {
 	// Solo RPG tables
 	soloRpgSessions!: Table<SoloRpgSession, string>; // Primary key: id
 
+	// World map data (stored separately due to size)
+	worldMapTiles!: Table<DbWorldMapTiles, string>; // Primary key: planetId
+
 	// Metadata table (for counters, current IDs, etc.)
 	metadata!: Table<DbMetadata, string>; // Primary key: key
 
 	constructor() {
 		super('InspireTablesDB');
 
+		// Version 1: Original schema
 		this.version(1).stores({
-			// Entities: simple indexes only (no nested paths)
-			// Primary: id
-			// Indexes: type, campaignId, parentId
 			entities: 'id, type, campaignId, parentId',
-
-			// Legacy campaigns
 			campaigns: 'id',
-
-			// UI state
 			tabs: 'id, entityId',
 			storyboards: 'id',
-
-			// Solo RPG
 			soloRpgSessions: 'id',
-
-			// Metadata (key-value store)
 			metadata: 'key'
+		});
+
+		// Version 2: Add worldMapTiles table for storing detailed hex tiles
+		this.version(2).stores({
+			entities: 'id, type, campaignId, parentId',
+			campaigns: 'id',
+			tabs: 'id, entityId',
+			storyboards: 'id',
+			soloRpgSessions: 'id',
+			metadata: 'key',
+			worldMapTiles: 'planetId' // New table for world map detailed tiles
 		});
 	}
 }

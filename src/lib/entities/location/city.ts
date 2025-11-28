@@ -143,9 +143,9 @@ export class City extends Entity {
 	founderNationId = ''; // Original founding nation (may differ from current owner if conquered)
 
 	// Location
-	hexTileId = ''; // ID of the RegionalHexTile where the city is located
-	parentRegionalMapId = ''; // ID of the RegionalMap this city is in
-	coordinates = { x: 0, y: 0 }; // Coordinates on the regional map
+	hexTileId = ''; // ID of the DetailedHexTile where the city is located
+	parentPlanetId = ''; // ID of the Planet this city is on
+	coordinates = { x: 0, y: 0 }; // Global coordinates on the world map (DetailedHexTile coords)
 
 	// Managers (Unciv-inspired separation of concerns)
 	populationManager: CityPopulationManager;
@@ -247,9 +247,9 @@ export class City extends Entity {
 	/**
 	 * Set city location (updates expansion manager)
 	 */
-	setLocation(hexTileId: string, parentRegionalMapId: string, coordinates: { x: number; y: number }): void {
+	setLocation(hexTileId: string, parentPlanetId: string, coordinates: { x: number; y: number }): void {
 		this.hexTileId = hexTileId;
-		this.parentRegionalMapId = parentRegionalMapId;
+		this.parentPlanetId = parentPlanetId;
 		this.coordinates = coordinates;
 
 		// Reinitialize expansion manager with correct center hex

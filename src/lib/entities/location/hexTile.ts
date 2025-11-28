@@ -2,6 +2,7 @@ import { Entity } from '../base/entity';
 import type { Dungeon } from '../dungeon/dungeon';
 import type { Settlement } from './settlement';
 import { TerrainType } from './terrainType';
+import type { RegionalHexData } from './regionalHexData';
 
 export class HexTile extends Entity {
 	// Grid coordinates
@@ -14,6 +15,12 @@ export class HexTile extends Entity {
 	temperature = 50; // Temperature value (0-100)
 	dryness = 50; // Moisture/dryness (0-100, higher = drier)
 	continentId?: number; // ID of the continent this tile belongs to
+
+	// Regional hex sub-tiles (Level 2 - for seamless zoom)
+	// Each planetary hex contains a grid of regional hexes for detailed simulation
+	// Using lightweight RegionalHexData instead of RegionalHexTile (Entity) for performance
+	regionalHexes: RegionalHexData[][] = [];
+	regionalGridSize = 5; // Default 5x5 regional hexes per planetary hex
 
 	// Regional/overland map properties
 	type = ''; // Legacy type field

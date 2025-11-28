@@ -2,8 +2,11 @@ import { Application, Container } from 'pixi.js';
 import type { WorldMap } from '$lib/entities/location/worldMap';
 import type { HexTile } from '$lib/entities/location/hexTile';
 import type { RegionalHexData } from '$lib/entities/location/regionalHexData';
+import type { DetailedHexTile } from '$lib/entities/location/detailedHexTile';
+import type { Nation } from '$lib/entities/location/nation';
 import { PlanetaryHexLayer } from './PlanetaryHexLayer';
 import { RegionalHexLayer } from './RegionalHexLayer';
+import { UnitLayer } from './UnitLayer';
 import {
 	MIN_ZOOM,
 	MAX_ZOOM,
@@ -20,6 +23,7 @@ export interface HexSelectedEvent {
 export interface RegionalHexSelectedEvent {
 	planetaryHex: HexTile;
 	regionalHex: RegionalHexData;
+	detailedHex: DetailedHexTile | undefined;
 	globalX: number;
 	globalY: number;
 }
@@ -34,8 +38,10 @@ export class HexMapRenderer {
 	private worldContainer: Container;
 	private planetaryLayer: PlanetaryHexLayer;
 	private regionalLayer: RegionalHexLayer;
+	private unitLayer: UnitLayer;
 
 	private worldMap: WorldMap;
+	private nations: Nation[] = [];
 	private scale = 0.6;
 	private targetScale = 0.6;
 	private panX = 0;
@@ -59,6 +65,7 @@ export class HexMapRenderer {
 		this.worldContainer = new Container();
 		this.planetaryLayer = null!;
 		this.regionalLayer = null!;
+		this.unitLayer = null!;
 		this.worldMap = null!;
 		this.containerElement = null!;
 	}
@@ -82,14 +89,17 @@ export class HexMapRenderer {
 		container.appendChild(this.app.canvas);
 
 		// Setup world container (for zoom/pan)
+		this.worldContainer.eventMode = 'passive'; // Allow events to propagate to children
 		this.app.stage.addChild(this.worldContainer);
 
 		// Create layers
 		this.planetaryLayer = new PlanetaryHexLayer(worldMap, PLANETARY_HEX_SIZE);
 		this.regionalLayer = new RegionalHexLayer(worldMap, PLANETARY_HEX_SIZE);
+		this.unitLayer = new UnitLayer(PLANETARY_HEX_SIZE);
 
 		this.worldContainer.addChild(this.planetaryLayer.container);
 		this.worldContainer.addChild(this.regionalLayer.container);
+		this.worldContainer.addChild(this.unitLayer.container); // Units on top
 
 		// Set up event forwarding from layers
 		this.planetaryLayer.onHexClick = (hex) => {
@@ -98,9 +108,9 @@ export class HexMapRenderer {
 			}
 		};
 
-		this.regionalLayer.onRegionalHexClick = (planetaryHex, regionalHex, globalX, globalY) => {
+		this.regionalLayer.onRegionalHexClick = (planetaryHex, regionalHex, detailedHex, globalX, globalY) => {
 			if (this.onRegionalHexSelected) {
-				this.onRegionalHexSelected({ planetaryHex, regionalHex, globalX, globalY });
+				this.onRegionalHexSelected({ planetaryHex, regionalHex, detailedHex, globalX, globalY });
 			}
 		};
 
@@ -273,6 +283,14 @@ export class HexMapRenderer {
 		// Optimize: hide layers when fully transparent
 		this.planetaryLayer.container.visible = progress < 1;
 		this.regionalLayer.container.visible = progress > 0;
+
+		// Disable interaction on planetary layer when regional layer is more than 50% visible
+		// This prevents planetary hexes from blocking clicks on regional hexes
+		this.planetaryLayer.container.interactiveChildren = progress < 0.5;
+		this.regionalLayer.container.interactiveChildren = progress >= 0.5;
+
+		// Update unit layer zoom
+		this.unitLayer.updateZoom(this.scale);
 	}
 
 	private easeInOutCubic(t: number): number {
@@ -368,9 +386,29 @@ export class HexMapRenderer {
 	 */
 	updateWorldMap(worldMap: WorldMap): void {
 		this.worldMap = worldMap;
+
+		// Guard: layers are only available after init() completes
+		if (!this.isInitialized) {
+			return;
+		}
+
 		this.planetaryLayer.rebuild(worldMap);
 		this.regionalLayer.rebuild(worldMap);
 		this.centerView();
+	}
+
+	/**
+	 * Update nations to display on the map
+	 */
+	updateNations(nations: Nation[]): void {
+		this.nations = nations;
+
+		// Guard: layers are only available after init() completes
+		if (!this.isInitialized) {
+			return;
+		}
+
+		this.unitLayer.updateNations(nations);
 	}
 
 	/**
@@ -378,6 +416,7 @@ export class HexMapRenderer {
 	 */
 	destroy(): void {
 		if (this.isInitialized) {
+			this.unitLayer.destroy();
 			this.app.destroy(true, { children: true, texture: true });
 		}
 	}

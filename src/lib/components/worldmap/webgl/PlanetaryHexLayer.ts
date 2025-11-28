@@ -21,6 +21,7 @@ export class PlanetaryHexLayer {
 
 	constructor(worldMap: WorldMap, hexSize: number) {
 		this.container = new Container();
+		this.container.eventMode = 'passive'; // Allow events to propagate to children
 		this.hexSize = hexSize;
 		this.worldMap = worldMap;
 
