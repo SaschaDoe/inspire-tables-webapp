@@ -1,4 +1,4 @@
-import { Container, Graphics, Text, TextStyle, Sprite, Assets } from 'pixi.js';
+import { Container, Graphics, Text, TextStyle, Sprite, Assets, Texture } from 'pixi.js';
 import type { Nation } from '$lib/entities/location/nation';
 import { hexToPixel, getRegionalHexCenter, type Point } from './HexGeometry';
 import {
@@ -7,6 +7,9 @@ import {
 	REGIONAL_ZOOM_START,
 	REGIONAL_ZOOM_FULL
 } from './constants';
+
+// Settler sprite path
+const SETTLER_SPRITE_PATH = '/civ5-assets/units/Settler.png';
 
 /**
  * Unit position information
@@ -46,12 +49,52 @@ export class UnitLayer {
 	private units: Map<string, UnitInfo> = new Map();
 	private unitGraphics: Map<string, Container> = new Map();
 	private currentZoom = 1;
+	private settlerTexture: Texture | null = null;
+	private textureLoading = false;
 
 	constructor(hexSize: number, gridSize: number = REGIONAL_GRID_SIZE) {
 		this.container = new Container();
 		this.container.eventMode = 'passive';
 		this.hexSize = hexSize;
 		this.gridSize = gridSize;
+
+		// Load settler texture
+		this.loadTextures();
+	}
+
+	/**
+	 * Load unit textures
+	 */
+	private async loadTextures(): Promise<void> {
+		if (this.textureLoading) return;
+		this.textureLoading = true;
+
+		try {
+			this.settlerTexture = await Assets.load(SETTLER_SPRITE_PATH);
+			console.log('[UnitLayer] Settler texture loaded successfully');
+
+			// Recreate existing unit graphics with the loaded texture
+			this.recreateAllGraphics();
+		} catch (error) {
+			console.warn('[UnitLayer] Failed to load settler texture, using fallback:', error);
+			this.settlerTexture = null;
+		}
+	}
+
+	/**
+	 * Recreate all unit graphics (called after textures load)
+	 */
+	private recreateAllGraphics(): void {
+		for (const [nationId, info] of this.units) {
+			// Remove old graphic
+			const oldGraphic = this.unitGraphics.get(nationId);
+			if (oldGraphic) {
+				this.container.removeChild(oldGraphic);
+				oldGraphic.destroy();
+			}
+			// Create new graphic with texture
+			this.createUnitGraphic(info);
+		}
 	}
 
 	/**
@@ -127,55 +170,55 @@ export class UnitLayer {
 		unitContainer.x = info.centerX;
 		unitContainer.y = info.centerY;
 
-		// Draw settler icon - make it much larger and more visible
-		const graphics = new Graphics();
-
-		// Size based on regional hex size (not tiny fraction)
+		// Size based on regional hex size
 		const regionalHexSize = this.hexSize / this.gridSize;
-		const baseSize = regionalHexSize * 0.8; // 80% of hex size
+		const baseSize = regionalHexSize * 1.5; // Make it larger than the hex
 
-		// Background circle for visibility
-		graphics.circle(0, 0, baseSize * 0.6);
-		graphics.fill({ color: info.color, alpha: 0.3 });
-		graphics.stroke({ color: info.color, width: 2 });
+		// Add background circle with nation color for visibility
+		const background = new Graphics();
+		background.circle(0, 0, baseSize * 0.5);
+		background.fill({ color: info.color, alpha: 0.4 });
+		background.stroke({ color: info.color, width: 3 });
+		unitContainer.addChild(background);
 
-		// Draw a covered wagon / settler wagon icon
-		// Wagon body
-		graphics.roundRect(-baseSize * 0.4, -baseSize * 0.1, baseSize * 0.8, baseSize * 0.35, 3);
-		graphics.fill({ color: 0x8B4513 }); // Brown wood
-		graphics.stroke({ color: 0x000000, width: 1 });
+		// Use settler sprite if loaded, otherwise draw fallback
+		if (this.settlerTexture) {
+			const sprite = new Sprite(this.settlerTexture);
+			sprite.anchor.set(0.5, 0.5);
+			// Scale sprite to fit nicely in the hex
+			const spriteScale = baseSize / Math.max(sprite.width, sprite.height);
+			sprite.scale.set(spriteScale);
+			unitContainer.addChild(sprite);
+		} else {
+			// Fallback: draw a simple wagon icon
+			const graphics = new Graphics();
 
-		// Wagon cover (canvas top)
-		graphics.ellipse(0, -baseSize * 0.15, baseSize * 0.45, baseSize * 0.3);
-		graphics.fill({ color: 0xF5DEB3 }); // Wheat/canvas color
-		graphics.stroke({ color: 0x000000, width: 1 });
+			// Wagon body
+			graphics.roundRect(-baseSize * 0.3, -baseSize * 0.05, baseSize * 0.6, baseSize * 0.25, 3);
+			graphics.fill({ color: 0x8B4513 });
+			graphics.stroke({ color: 0x000000, width: 1 });
 
-		// Wheels
-		const wheelRadius = baseSize * 0.12;
-		const wheelY = baseSize * 0.25;
-		// Left wheel
-		graphics.circle(-baseSize * 0.25, wheelY, wheelRadius);
-		graphics.fill({ color: 0x654321 });
-		graphics.stroke({ color: 0x000000, width: 1 });
-		// Right wheel
-		graphics.circle(baseSize * 0.25, wheelY, wheelRadius);
-		graphics.fill({ color: 0x654321 });
-		graphics.stroke({ color: 0x000000, width: 1 });
+			// Wagon cover
+			graphics.ellipse(0, -baseSize * 0.1, baseSize * 0.35, baseSize * 0.2);
+			graphics.fill({ color: 0xF5DEB3 });
+			graphics.stroke({ color: 0x000000, width: 1 });
 
-		// Nation color banner on wagon
-		graphics.rect(-baseSize * 0.15, -baseSize * 0.35, baseSize * 0.3, baseSize * 0.15);
-		graphics.fill({ color: info.color });
-		graphics.stroke({ color: 0x000000, width: 1 });
+			// Wheels
+			graphics.circle(-baseSize * 0.2, baseSize * 0.2, baseSize * 0.08);
+			graphics.fill({ color: 0x654321 });
+			graphics.circle(baseSize * 0.2, baseSize * 0.2, baseSize * 0.08);
+			graphics.fill({ color: 0x654321 });
 
-		unitContainer.addChild(graphics);
+			unitContainer.addChild(graphics);
+		}
 
-		// Add nation name label - larger font
+		// Add nation name label
 		const style = new TextStyle({
 			fontFamily: 'Arial',
-			fontSize: 12,
+			fontSize: 14,
 			fontWeight: 'bold',
 			fill: 0xffffff,
-			stroke: { color: 0x000000, width: 3 },
+			stroke: { color: 0x000000, width: 4 },
 			align: 'center'
 		});
 
@@ -184,7 +227,7 @@ export class UnitLayer {
 			style
 		});
 		label.anchor.set(0.5, 0);
-		label.y = baseSize * 0.5;
+		label.y = baseSize * 0.55;
 		unitContainer.addChild(label);
 
 		this.container.addChild(unitContainer);
