@@ -170,22 +170,22 @@ export class UnitLayer {
 		unitContainer.x = info.centerX;
 		unitContainer.y = info.centerY;
 
-		// Size based on regional hex size
+		// Size based on regional hex size - make settler fill most of the hex
 		const regionalHexSize = this.hexSize / this.gridSize;
-		const baseSize = regionalHexSize * 1.5; // Make it larger than the hex
+		const baseSize = regionalHexSize * 0.9; // 90% of hex size
 
 		// Add background circle with nation color for visibility
 		const background = new Graphics();
-		background.circle(0, 0, baseSize * 0.5);
-		background.fill({ color: info.color, alpha: 0.4 });
-		background.stroke({ color: info.color, width: 3 });
+		background.circle(0, 0, baseSize * 0.55);
+		background.fill({ color: info.color, alpha: 0.3 });
+		background.stroke({ color: info.color, width: 2 });
 		unitContainer.addChild(background);
 
 		// Use settler sprite if loaded, otherwise draw fallback
 		if (this.settlerTexture) {
 			const sprite = new Sprite(this.settlerTexture);
 			sprite.anchor.set(0.5, 0.5);
-			// Scale sprite to fit nicely in the hex
+			// Scale sprite to fill the hex nicely (sprite is 96x96)
 			const spriteScale = baseSize / Math.max(sprite.width, sprite.height);
 			sprite.scale.set(spriteScale);
 			unitContainer.addChild(sprite);
@@ -212,22 +212,22 @@ export class UnitLayer {
 			unitContainer.addChild(graphics);
 		}
 
-		// Add nation name label
+		// Add small nation name label below
 		const style = new TextStyle({
 			fontFamily: 'Arial',
-			fontSize: 14,
+			fontSize: 6,
 			fontWeight: 'bold',
 			fill: 0xffffff,
-			stroke: { color: 0x000000, width: 4 },
+			stroke: { color: 0x000000, width: 2 },
 			align: 'center'
 		});
 
 		const label = new Text({
-			text: info.nation.name.substring(0, 12),
+			text: info.nation.name.substring(0, 10),
 			style
 		});
 		label.anchor.set(0.5, 0);
-		label.y = baseSize * 0.55;
+		label.y = baseSize * 0.5;
 		unitContainer.addChild(label);
 
 		this.container.addChild(unitContainer);
