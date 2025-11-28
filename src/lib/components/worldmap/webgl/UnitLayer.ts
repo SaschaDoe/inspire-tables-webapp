@@ -58,6 +58,8 @@ export class UnitLayer {
 	 * Update nations to display
 	 */
 	updateNations(nations: Nation[]): void {
+		console.log('[UnitLayer] updateNations called with', nations.length, 'nations');
+
 		// Clear existing units
 		this.units.clear();
 		for (const graphic of this.unitGraphics.values()) {
@@ -68,6 +70,11 @@ export class UnitLayer {
 
 		// Add new units for nations that have starting positions
 		nations.forEach((nation, index) => {
+			console.log(`[UnitLayer] Nation ${index}: ${nation.name}`, {
+				startingHexX: nation.startingHexX,
+				startingHexY: nation.startingHexY,
+				hasFoundedFirstCity: nation.hasFoundedFirstCity
+			});
 			if (nation.startingHexX !== undefined && nation.startingHexY !== undefined && !nation.hasFoundedFirstCity) {
 				const color = NATION_COLORS[index % NATION_COLORS.length];
 				const globalX = nation.startingHexX;
@@ -93,6 +100,8 @@ export class UnitLayer {
 					this.gridSize
 				);
 
+				console.log(`[UnitLayer] Creating settler for ${nation.name} at global (${globalX}, ${globalY}), planetary (${px}, ${py}), regional (${rx}, ${ry}), pixel (${center.x.toFixed(1)}, ${center.y.toFixed(1)})`);
+
 				const unitInfo: UnitInfo = {
 					nation,
 					globalX,
@@ -104,6 +113,8 @@ export class UnitLayer {
 
 				this.units.set(nation.id, unitInfo);
 				this.createUnitGraphic(unitInfo);
+			} else {
+				console.log(`[UnitLayer] Skipping nation ${nation.name}: startingHexX=${nation.startingHexX}, startingHexY=${nation.startingHexY}, hasFoundedFirstCity=${nation.hasFoundedFirstCity}`);
 			}
 		});
 	}
