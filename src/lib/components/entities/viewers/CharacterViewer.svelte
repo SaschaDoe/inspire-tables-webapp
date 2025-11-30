@@ -1,12 +1,15 @@
 <script lang="ts">
 	import type { Character } from '$lib/entities/character/character';
+	import type { EntityImage } from '$lib/entities/base/entity';
 	import { CharacterCreator } from '$lib/entities/character/characterCreator';
 	import Section from '../shared/Section.svelte';
 	import InfoGrid from '../shared/InfoGrid.svelte';
 	import AttributesGrid from '../shared/AttributesGrid.svelte';
 	import EntityList from '../shared/EntityList.svelte';
+	import ImageGenerationModal from '$lib/components/ImageGenerationModal.svelte';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { autoSaveNestedEntities, createAddEntityHandler, createEventForwarders } from './viewerUtils';
+	import { entityStore } from '$lib/stores/entityStore';
 
 	interface Props {
 		character: Character;
@@ -16,6 +19,19 @@
 	let { character, parentEntity }: Props = $props();
 
 	const dispatch = createEventDispatcher();
+
+	let isImageModalOpen = $state(false);
+
+	// Use $derived for image - it syncs with prop and can be temporarily overridden
+	let currentImage = $derived<EntityImage | undefined>(character.image);
+
+	function handleImageGenerated(imageData: string, mimeType: string) {
+		const newImage = { data: imageData, mimeType };
+		currentImage = newImage; // Temporarily override derived value for immediate UI update
+		character.image = newImage;
+		entityStore.updateEntity(character.id, { image: newImage });
+		dispatch('entityUpdated', { entity: character });
+	}
 
 	// Auto-save nested entities to navigator
 	onMount(() => {
@@ -66,6 +82,27 @@
 </script>
 
 <div class="character-viewer">
+	<!-- Character Image Section -->
+	<Section title="Portrait">
+		<div class="portrait-section">
+			{#if currentImage}
+				<img
+					src="data:{currentImage.mimeType};base64,{currentImage.data}"
+					alt="{character.name}'s portrait"
+					class="character-portrait"
+				/>
+			{:else}
+				<div class="no-portrait">
+					<span class="no-portrait-icon">👤</span>
+					<span class="no-portrait-text">No portrait yet</span>
+				</div>
+			{/if}
+			<button class="generate-image-btn" onclick={() => isImageModalOpen = true}>
+				{currentImage ? 'Regenerate Portrait' : 'Generate Portrait'}
+			</button>
+		</div>
+	</Section>
+
 	<Section title="Basic Information">
 		<InfoGrid items={basicInfo} />
 	</Section>
@@ -104,9 +141,72 @@
 	/>
 </div>
 
+<ImageGenerationModal
+	bind:isOpen={isImageModalOpen}
+	onClose={() => isImageModalOpen = false}
+	onImageGenerated={handleImageGenerated}
+	entity={character}
+	entityType="character"
+/>
+
 <style>
 	.character-viewer {
 		padding: 0;
+	}
+
+	.portrait-section {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.character-portrait {
+		max-width: 300px;
+		max-height: 300px;
+		border-radius: 0.75rem;
+		border: 2px solid rgb(168 85 247 / 0.3);
+		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+	}
+
+	.no-portrait {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 200px;
+		height: 200px;
+		background: rgb(30 27 75 / 0.5);
+		border: 2px dashed rgb(168 85 247 / 0.3);
+		border-radius: 0.75rem;
+		gap: 0.5rem;
+	}
+
+	.no-portrait-icon {
+		font-size: 3rem;
+		opacity: 0.5;
+	}
+
+	.no-portrait-text {
+		color: rgb(216 180 254 / 0.7);
+		font-size: 0.875rem;
+	}
+
+	.generate-image-btn {
+		padding: 0.625rem 1.25rem;
+		background: rgb(168 85 247);
+		color: white;
+		border: none;
+		border-radius: 0.5rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s;
+		font-size: 0.875rem;
+	}
+
+	.generate-image-btn:hover {
+		background: rgb(192 132 252);
+		transform: translateY(-2px);
 	}
 
 	.personality-grid {
