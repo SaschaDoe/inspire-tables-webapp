@@ -73,7 +73,7 @@
 				{ type: EntityType.Region, label: 'Regions', icon: '🏞️' },
 				{ type: EntityType.City, label: 'Cities', icon: '🏘️' },
 				{ type: EntityType.Building, label: 'Buildings', icon: '🏛️' },
-				{ type: EntityType.HexTile, label: 'Hex Tiles', icon: '⬡' },
+				// HexTile removed - hex tiles are now shown nested under their parent planet
 				{ type: EntityType.Dungeon, label: 'Dungeons', icon: '🏰' },
 				{ type: EntityType.Room, label: 'Rooms', icon: '🚪' },
 				{ type: EntityType.Entrance, label: 'Entrances', icon: '🗿' }
@@ -124,10 +124,56 @@
 	// Use Svelte 5 runes for reactive state
 	let expandedCategories = new SvelteSet<string>(['Quick Access', 'Meta']);
 	let expandedSections = new SvelteSet<string>();
+	let expandedPlanets = new SvelteSet<string>(); // Track which planets are expanded to show hex tiles
+
+	/**
+	 * Get hex tiles that belong to a specific planet
+	 */
+	function getHexTilesForPlanet(planetId: string): Entity[] {
+		return $hexTileEntities.filter(hexTile => {
+			// Check relationships for belongs_to planet
+			const belongsToPlanet = hexTile.relationships?.some(
+				rel => rel.type === 'belongs_to' && rel.targetId === planetId
+			);
+			// Also check the generatedEntity's parentId
+			const generatedEntity = hexTile.customFields?.generatedEntity;
+			const parentIdMatches = generatedEntity?.parentId === planetId;
+			// Or check if the ID contains the planet ID
+			const idContainsPlanet = hexTile.id.includes(planetId);
+
+			return belongsToPlanet || parentIdMatches || idContainsPlanet;
+		});
+	}
+
+	function togglePlanetExpand(planetId: string, event: MouseEvent) {
+		event.stopPropagation(); // Prevent entity click
+		if (expandedPlanets.has(planetId)) {
+			expandedPlanets.delete(planetId);
+		} else {
+			expandedPlanets.add(planetId);
+		}
+	}
 
 	// Auto-expand section containing the selected entity
 	$effect(() => {
 		if (!selectedEntityId) return;
+
+		// Check if it's a hex tile - if so, expand its parent planet
+		const hexTile = $hexTileEntities.find(e => e.id === selectedEntityId);
+		if (hexTile) {
+			// Find parent planet and expand it
+			const parentRelation = hexTile.relationships?.find(r => r.type === 'belongs_to' && r.targetType === 'planet');
+			const generatedEntity = hexTile.customFields?.generatedEntity;
+			const parentPlanetId = parentRelation?.targetId || generatedEntity?.parentId;
+
+			if (parentPlanetId) {
+				expandedPlanets.add(parentPlanetId);
+				// Also expand Locations category and Planets section
+				expandedCategories.add('Locations');
+				expandedSections.add(EntityType.Planet);
+			}
+			return;
+		}
 
 		// Find which section contains this entity
 		for (const category of categories) {
@@ -286,16 +332,64 @@
 											<div class="empty-message">No {section.label.toLowerCase()} yet</div>
 										{:else}
 											{#each entities as entity (entity.id)}
-												<button
-													class="entity-item"
-													class:selected={entity.id === selectedEntityId}
-													onclick={() => handleEntityClick(entity)}
-												>
-													<span class="entity-name">{entity.name}</span>
-													{#if entityStore.isFavorite(entity.id)}
-														<span class="favorite-badge">⭐</span>
-													{/if}
-												</button>
+												{#if section.type === EntityType.Planet}
+													{@const hexTiles = getHexTilesForPlanet(entity.id)}
+													{@const hasHexTiles = hexTiles.length > 0}
+													<div class="planet-container">
+														<div class="entity-item-row">
+															{#if hasHexTiles}
+																<button
+																	class="expand-toggle"
+																	class:expanded={expandedPlanets.has(entity.id)}
+																	onclick={(e) => togglePlanetExpand(entity.id, e)}
+																	title={expandedPlanets.has(entity.id) ? 'Collapse hex tiles' : 'Show hex tiles'}
+																>
+																	{expandedPlanets.has(entity.id) ? '▼' : '▶'}
+																</button>
+															{:else}
+																<span class="expand-placeholder"></span>
+															{/if}
+															<button
+																class="entity-item planet-item"
+																class:selected={entity.id === selectedEntityId}
+																onclick={() => handleEntityClick(entity)}
+															>
+																<span class="entity-name">{entity.name}</span>
+																{#if hasHexTiles}
+																	<span class="hex-count" title="{hexTiles.length} saved hex tiles">⬡{hexTiles.length}</span>
+																{/if}
+																{#if entityStore.isFavorite(entity.id)}
+																	<span class="favorite-badge">⭐</span>
+																{/if}
+															</button>
+														</div>
+														{#if expandedPlanets.has(entity.id) && hasHexTiles}
+															<div class="hex-tiles-list">
+																{#each hexTiles as hexTile (hexTile.id)}
+																	<button
+																		class="entity-item hex-tile-item"
+																		class:selected={hexTile.id === selectedEntityId}
+																		onclick={() => handleEntityClick(hexTile)}
+																	>
+																		<span class="hex-icon">⬡</span>
+																		<span class="entity-name">{hexTile.name}</span>
+																	</button>
+																{/each}
+															</div>
+														{/if}
+													</div>
+												{:else}
+													<button
+														class="entity-item"
+														class:selected={entity.id === selectedEntityId}
+														onclick={() => handleEntityClick(entity)}
+													>
+														<span class="entity-name">{entity.name}</span>
+														{#if entityStore.isFavorite(entity.id)}
+															<span class="favorite-badge">⭐</span>
+														{/if}
+													</button>
+												{/if}
 											{/each}
 										{/if}
 
@@ -480,6 +574,89 @@
 	}
 
 	.favorite-badge {
+		font-size: 0.75rem;
+	}
+
+	/* Planet container with nested hex tiles */
+	.planet-container {
+		margin-bottom: 0.125rem;
+	}
+
+	.entity-item-row {
+		display: flex;
+		align-items: center;
+		gap: 0;
+	}
+
+	.expand-toggle {
+		width: 20px;
+		height: 20px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: none;
+		border: none;
+		color: var(--text-2, #999);
+		cursor: pointer;
+		font-size: 0.625rem;
+		flex-shrink: 0;
+		border-radius: 3px;
+		transition: all 0.2s;
+	}
+
+	.expand-toggle:hover {
+		background: var(--accent-hover, #3a3a3a);
+		color: var(--text-1, #e0e0e0);
+	}
+
+	.expand-toggle.expanded {
+		color: rgb(192 132 252);
+	}
+
+	.expand-placeholder {
+		width: 20px;
+		flex-shrink: 0;
+	}
+
+	.planet-item {
+		flex: 1;
+	}
+
+	.hex-count {
+		font-size: 0.6875rem;
+		color: rgb(147 51 234);
+		background: rgb(147 51 234 / 0.15);
+		padding: 0.125rem 0.375rem;
+		border-radius: 10px;
+		font-weight: 500;
+	}
+
+	.hex-tiles-list {
+		padding-left: 1.25rem;
+		border-left: 2px solid rgb(147 51 234 / 0.3);
+		margin-left: 9px;
+		margin-top: 0.125rem;
+	}
+
+	.hex-tile-item {
+		padding-left: 0.5rem;
+	}
+
+	.hex-tile-item .entity-name {
+		font-size: 0.75rem;
+		color: rgb(203 213 225);
+	}
+
+	.hex-tile-item:hover .entity-name {
+		color: white;
+	}
+
+	.hex-tile-item.selected .entity-name {
+		color: white;
+	}
+
+	.hex-icon {
+		color: rgb(147 51 234);
 		font-size: 0.75rem;
 	}
 
