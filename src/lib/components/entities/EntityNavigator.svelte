@@ -73,7 +73,6 @@
 				{ type: EntityType.Region, label: 'Regions', icon: '🏞️' },
 				{ type: EntityType.City, label: 'Cities', icon: '🏘️' },
 				{ type: EntityType.Building, label: 'Buildings', icon: '🏛️' },
-				// HexTile removed - hex tiles are now shown nested under their parent planet
 				{ type: EntityType.Dungeon, label: 'Dungeons', icon: '🏰' },
 				{ type: EntityType.Room, label: 'Rooms', icon: '🚪' },
 				{ type: EntityType.Entrance, label: 'Entrances', icon: '🗿' }
