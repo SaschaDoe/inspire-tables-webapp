@@ -115,9 +115,9 @@ export class Unit extends Entity {
 	createdInCityId?: string; // ID of the city that produced this unit
 
 	// Location and movement
-	currentHexTileId = ''; // ID of the RegionalHexTile where unit is located
-	parentRegionalMapId = ''; // ID of the RegionalMap this unit is in
-	coordinates = { x: 0, y: 0 }; // Coordinates on the regional map
+	currentHexTileId = ''; // ID of the DetailedHexTile where unit is located
+	parentPlanetId = ''; // ID of the Planet this unit is on
+	coordinates = { x: 0, y: 0 }; // Global coordinates on the world map
 
 	movementPoints = 2; // Current movement points
 	maxMovementPoints = 2; // Maximum movement points per turn

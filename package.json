@@ -10,6 +10,10 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"test": "vitest run",
+		"test:ui": "vitest --ui",
+		"test:watch": "vitest",
+		"test:coverage": "vitest run --coverage",
 		"generate:metadata": "tsx scripts/generateTableMetadata.ts",
 		"generate:oracle-metadata": "tsx scripts/generateOracleMetadata.ts",
 		"fix:show-defaults": "tsx scripts/fixDefaultTitles.ts",
@@ -28,20 +32,25 @@
 		"@tailwindcss/vite": "^4.1.17",
 		"@types/node": "^22.10.5",
 		"@types/three": "^0.181.0",
+		"@vitest/ui": "^4.0.13",
 		"autoprefixer": "^10.4.21",
 		"glob": "^11.0.0",
+		"happy-dom": "^20.0.10",
+		"jsdom": "^27.2.0",
 		"postcss": "^8.5.6",
 		"svelte": "^5.41.0",
 		"svelte-check": "^4.3.3",
 		"tailwindcss": "^4.1.17",
 		"tsx": "^4.19.2",
 		"typescript": "^5.9.3",
-		"vite": "^7.1.10"
+		"vite": "^7.1.10",
+		"vitest": "^4.0.13"
 	},
 	"dependencies": {
 		"cytoscape": "^3.33.1",
 		"dexie": "^4.2.1",
 		"open-simplex-noise": "^2.5.0",
+		"pixi.js": "^8.14.3",
 		"three": "^0.181.1"
 	}
 }

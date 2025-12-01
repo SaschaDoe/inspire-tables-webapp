@@ -8,7 +8,6 @@
 	import { HexTile } from '$lib/entities/location/hexTile';
 	import { TERRAIN_COLORS } from '$lib/entities/location/terrainType';
 	import EntityViewer from '../EntityViewer.svelte';
-	import { PlanetWorkflow } from '$lib/utils/planetWorkflow';
 
 	interface Props {
 		continent: Continent;
@@ -153,13 +152,6 @@
 		return { x: pixelX, y: pixelY };
 	});
 
-	// Get regional maps linked to this continent (Phase 4: Planet Workflow Integration)
-	const continentRegionalMaps = $derived.by(() => {
-		if (!continent.regionalMapIds || continent.regionalMapIds.length === 0) {
-			return [];
-		}
-		return PlanetWorkflow.getContinentRegionalMaps(continent);
-	});
 
 	// Initialize pan to center the continent
 	$effect(() => {
@@ -297,39 +289,6 @@
 			{/each}
 		</div>
 	</Section>
-
-	<!-- Regional Maps (Phase 4: Planet Workflow Integration) -->
-	{#if continentRegionalMaps.length > 0}
-		<Section title="Regional Maps ({continentRegionalMaps.length})">
-			<div class="regional-maps-grid">
-				{#each continentRegionalMaps as regionalMap (regionalMap.id)}
-					<button class="regional-map-card" onclick={() => dispatch('openEntity', { entity: regionalMap })}>
-						<div class="regional-map-header">
-							<span class="regional-map-icon">🗺️</span>
-							<span class="regional-map-name">{regionalMap.name}</span>
-						</div>
-						<div class="regional-map-info">
-							<div class="regional-map-stat">
-								<span class="stat-label">Dimensions:</span>
-								<span class="stat-value">{regionalMap.width}×{regionalMap.height}</span>
-							</div>
-							<div class="regional-map-stat">
-								<span class="stat-label">Hexes:</span>
-								<span class="stat-value">{regionalMap.hexTileIds.length}</span>
-							</div>
-							<div class="regional-map-stat">
-								<span class="stat-label">Simulation:</span>
-								<span class="stat-value">{regionalMap.simulationInitialized ? '✓ Initialized' : '○ Not initialized'}</span>
-							</div>
-						</div>
-						<div class="regional-map-action">
-							<span>View Regional Map →</span>
-						</div>
-					</button>
-				{/each}
-			</div>
-		</Section>
-	{/if}
 
 	<!-- Hex Map Visualization -->
 	<Section title="Continent Map">

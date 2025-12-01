@@ -43,7 +43,7 @@ export class EventLogger {
 		event.turnNumber = turnNumber;
 		event.hexTileId = hexTileId || city.hexTileId;
 		event.coordinates = city.coordinates;
-		event.parentRegionalMapId = city.parentRegionalMapId;
+		event.parentPlanetId = city.parentPlanetId;
 
 		// Participants
 		event.addParticipant('nation', nation.id, nation.name, 'primary');

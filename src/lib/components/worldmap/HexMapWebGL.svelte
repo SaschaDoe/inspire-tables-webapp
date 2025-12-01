@@ -2,20 +2,25 @@
 	import { onMount, onDestroy, createEventDispatcher } from 'svelte';
 	import type { WorldMap } from '$lib/entities/location/worldMap';
 	import type { Nation } from '$lib/entities/location/nation';
+	import type { City } from '$lib/entities/location/city';
+	import type { Unit } from '$lib/entities/military/unit';
 	import { HexMapRenderer } from './webgl/HexMapRenderer';
 
 	interface Props {
 		worldMap: WorldMap;
 		nations?: Nation[];
+		cities?: City[];
+		units?: Unit[];
 	}
 
-	let { worldMap, nations = [] }: Props = $props();
+	let { worldMap, nations = [], cities = [], units = [] }: Props = $props();
 
 	const dispatch = createEventDispatcher();
 
 	let containerEl: HTMLDivElement;
 	let renderer: HexMapRenderer | null = $state(null);
-	let zoomPercent = $state(60);
+	let isLoading = $state(true);
+	let zoomPercent = $state(0);
 	let viewMode = $state('Planetary View');
 
 	/**
@@ -36,6 +41,7 @@
 	let updateInterval: number | null = null;
 
 	onMount(async () => {
+		isLoading = true;
 		renderer = new HexMapRenderer();
 
 		// Set up event handlers
@@ -54,6 +60,20 @@
 		});
 
 		await renderer.init(containerEl, worldMap);
+
+		// Apply all entities AFTER init is complete (fixes navigation back issue)
+		// The $effect blocks may have fired before init() completed, so we need to apply manually
+		if (nations.length > 0) {
+			renderer.updateNations(nations);
+		}
+		if (cities.length > 0) {
+			renderer.updateCities(cities);
+		}
+		if (units.length > 0) {
+			renderer.updateUnits(units);
+		}
+
+		isLoading = false;
 
 		// Update zoom display
 		updateInterval = window.setInterval(() => {
@@ -85,6 +105,20 @@
 		}
 	});
 
+	// Watch for cities changes
+	$effect(() => {
+		if (renderer && cities) {
+			renderer.updateCities(cities);
+		}
+	});
+
+	// Watch for units changes
+	$effect(() => {
+		if (renderer && units) {
+			renderer.updateUnits(units);
+		}
+	});
+
 	function handleZoomIn() {
 		renderer?.zoomIn();
 	}
@@ -106,7 +140,15 @@
 		<span class="zoom-level">{zoomPercent}%</span>
 		<span class="view-mode">{viewMode}</span>
 	</div>
-	<div bind:this={containerEl} class="webgl-canvas-container"></div>
+	<div class="canvas-wrapper">
+		<div bind:this={containerEl} class="webgl-canvas-container"></div>
+		{#if isLoading}
+			<div class="loading-overlay">
+				<div class="loading-spinner"></div>
+				<span class="loading-text">Loading map...</span>
+			</div>
+		{/if}
+	</div>
 </div>
 
 <style>
@@ -182,5 +224,47 @@
 
 	.webgl-canvas-container :global(canvas) {
 		display: block;
+	}
+
+	.canvas-wrapper {
+		position: relative;
+		width: 100%;
+	}
+
+	.loading-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+		background: rgb(15 23 42 / 0.9);
+		border-radius: 0.375rem;
+		z-index: 10;
+	}
+
+	.loading-spinner {
+		width: 48px;
+		height: 48px;
+		border: 4px solid rgb(71 85 105);
+		border-top-color: rgb(147 51 234);
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	.loading-text {
+		color: rgb(203 213 225);
+		font-size: 0.875rem;
+		font-weight: 500;
 	}
 </style>

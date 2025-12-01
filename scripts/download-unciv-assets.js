@@ -1,80 +1,83 @@
 #!/usr/bin/env node
 
 /**
- * Download Unciv Graphics Assets
+ * Download HexaRealm Tileset Graphics
  *
  * This script downloads terrain tiles, resource icons, and feature overlays
- * from the Unciv repository for use in the regional map viewer.
+ * from the HexaRealm-Tileset repository (an Unciv tileset mod) for use in
+ * the regional map viewer.
  *
+ * Source: https://github.com/GeneralWadaling/HexaRealm-Tileset
  * Usage: node scripts/download-unciv-assets.js
  */
 
-const https = require('https');
-const fs = require('fs');
-const path = require('path');
+import https from 'https';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const UNCIV_BASE_URL = 'https://raw.githubusercontent.com/yairm210/Unciv/master/android/assets/ExtraImages';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const TILESET_BASE_URL = 'https://raw.githubusercontent.com/GeneralWadaling/HexaRealm-Tileset/main/Images/TileSets/HexaRealm/Tiles';
 const ASSETS_DIR = path.join(__dirname, '..', 'static', 'civ5-assets');
 
-// Asset mappings: [filename, unciv_path]
+// Asset mappings: [local_filename, tileset_filename]
+// HexaRealm has all files in the Tiles/ folder
 const ASSETS = {
 	terrain: [
-		['Grassland.png', 'TerrainIcons/Grassland.png'],
-		['Plains.png', 'TerrainIcons/Plains.png'],
-		['Desert.png', 'TerrainIcons/Desert.png'],
-		['Tundra.png', 'TerrainIcons/Tundra.png'],
-		['Snow.png', 'TerrainIcons/Snow.png'],
-		['Ocean.png', 'TerrainIcons/Ocean.png'],
-		['Coast.png', 'TerrainIcons/Coast.png'],
-		['Mountain.png', 'TerrainIcons/Mountain.png'],
-		['Hill.png', 'TerrainIcons/Hill.png']
+		['Grassland.png', 'Grassland.png'],
+		['Plains.png', 'Plains.png'],
+		['Desert.png', 'Desert.png'],
+		['Tundra.png', 'Tundra.png'],
+		['Snow.png', 'Snow.png'],
+		['Ocean.png', 'Ocean.png'],
+		['Coast.png', 'Coast.png'],
+		['Mountain.png', 'Mountain.png'],
+		['Hill.png', 'Hill.png']
 	],
 	resources: [
 		// Strategic
-		['Iron.png', 'ResourceIcons/Iron.png'],
-		['Horses.png', 'ResourceIcons/Horses.png'],
-		['Coal.png', 'ResourceIcons/Coal.png'],
-		['Oil.png', 'ResourceIcons/Oil.png'],
-		['Aluminum.png', 'ResourceIcons/Aluminum.png'],
-		['Uranium.png', 'ResourceIcons/Uranium.png'],
+		['Iron.png', 'Iron.png'],
+		['Horses.png', 'Horses.png'],
+		['Coal.png', 'Coal.png'],
+		['Oil.png', 'Oil.png'],
+		['Aluminum.png', 'Aluminium.png'], // Note: spelled differently in tileset
+		['Uranium.png', 'Uranium.png'],
 
 		// Luxury
-		['Gold.png', 'ResourceIcons/Gold.png'],
-		['Silver.png', 'ResourceIcons/Silver.png'],
-		['Gems.png', 'ResourceIcons/Gems.png'],
-		['Pearls.png', 'ResourceIcons/Pearls.png'],
-		['Silk.png', 'ResourceIcons/Silk.png'],
-		['Spices.png', 'ResourceIcons/Spices.png'],
-		['Dyes.png', 'ResourceIcons/Dyes.png'],
-		['Incense.png', 'ResourceIcons/Incense.png'],
-		['Wine.png', 'ResourceIcons/Wine.png'],
-		['Cotton.png', 'ResourceIcons/Cotton.png'],
-		['Furs.png', 'ResourceIcons/Furs.png'],
-		['Ivory.png', 'ResourceIcons/Ivory.png'],
+		['Gold.png', 'Gold Ore.png'], // Note: "Gold Ore" in tileset
+		['Silver.png', 'Silver.png'],
+		['Gems.png', 'Gems.png'],
+		['Pearls.png', 'Pearls.png'],
+		['Silk.png', 'Silk.png'],
+		['Spices.png', 'Spices.png'],
+		['Dyes.png', 'Dyes.png'],
+		['Incense.png', 'Incense.png'],
+		['Wine.png', 'Wine.png'],
+		['Cotton.png', 'Cotton.png'],
+		['Furs.png', 'Furs.png'],
+		['Ivory.png', 'Ivory.png'],
 
 		// Bonus
-		['Wheat.png', 'ResourceIcons/Wheat.png'],
-		['Cattle.png', 'ResourceIcons/Cattle.png'],
-		['Deer.png', 'ResourceIcons/Deer.png'],
-		['Fish.png', 'ResourceIcons/Fish.png'],
-		['Stone.png', 'ResourceIcons/Stone.png'],
-		['Sheep.png', 'ResourceIcons/Sheep.png'],
-		['Bananas.png', 'ResourceIcons/Bananas.png'],
-		['Bison.png', 'ResourceIcons/Bison.png']
+		['Wheat.png', 'Wheat.png'],
+		['Cattle.png', 'Cattle.png'],
+		['Deer.png', 'Deer.png'],
+		['Fish.png', 'Fish.png'],
+		['Stone.png', 'Stone.png'],
+		['Sheep.png', 'Sheep.png'],
+		['Bananas.png', 'Bananas.png'],
+		['Bison.png', 'Bison.png']
 	],
 	features: [
-		['Forest.png', 'TerrainFeatureIcons/Forest.png'],
-		['Jungle.png', 'TerrainFeatureIcons/Jungle.png'],
-		['Marsh.png', 'TerrainFeatureIcons/Marsh.png'],
-		['Ice.png', 'TerrainFeatureIcons/Ice.png']
+		['Forest.png', 'Forest.png'],
+		['Jungle.png', 'Jungle.png'],
+		['Marsh.png', 'Marsh.png'],
+		['Ice.png', 'Ice.png']
 	],
 	rivers: [
-		['River-Bottom.png', 'RiverIcons/River-Bottom.png'],
-		['River-BottomLeft.png', 'RiverIcons/River-BottomLeft.png'],
-		['River-BottomRight.png', 'RiverIcons/River-BottomRight.png'],
-		['River-TopLeft.png', 'RiverIcons/River-TopLeft.png'],
-		['River-TopRight.png', 'RiverIcons/River-TopRight.png'],
-		['River-Top.png', 'RiverIcons/River-Top.png']
+		// HexaRealm doesn't have separate river sprites, we'll skip these
+		// The viewer will fall back to simple blue lines
 	]
 };
 
@@ -113,6 +116,12 @@ function downloadFile(url, dest) {
  * Download all assets for a category
  */
 async function downloadCategory(category, assets) {
+	// Skip empty categories
+	if (!assets || assets.length === 0) {
+		console.log(`\n⏭️  Skipping ${category} - no assets to download`);
+		return;
+	}
+
 	const categoryDir = path.join(ASSETS_DIR, category);
 
 	// Ensure directory exists
@@ -125,8 +134,8 @@ async function downloadCategory(category, assets) {
 	let successCount = 0;
 	let failCount = 0;
 
-	for (const [filename, uncivPath] of assets) {
-		const url = `${UNCIV_BASE_URL}/${uncivPath}`;
+	for (const [filename, tilesetPath] of assets) {
+		const url = `${TILESET_BASE_URL}/${tilesetPath}`;
 		const dest = path.join(categoryDir, filename);
 
 		try {
@@ -146,9 +155,10 @@ async function downloadCategory(category, assets) {
  * Main download function
  */
 async function main() {
-	console.log('🎨 Downloading Unciv Graphics Assets');
-	console.log('=====================================\n');
-	console.log(`Target directory: ${ASSETS_DIR}`);
+	console.log('🎨 Downloading HexaRealm Tileset Graphics');
+	console.log('==========================================\n');
+	console.log(`Source: HexaRealm-Tileset by GeneralWadaling`);
+	console.log(`Target directory: ${ASSETS_DIR}\n`);
 
 	// Check if directory exists
 	if (!fs.existsSync(ASSETS_DIR)) {
@@ -164,8 +174,8 @@ async function main() {
 		}
 
 		console.log('\n✅ Download complete!');
-		console.log('\nNote: Some files may not be available in Unciv.');
-		console.log('The viewer will fall back to colored hexes for missing assets.');
+		console.log('\nNote: Rivers will use simple lines (HexaRealm has no separate river sprites).');
+		console.log('The viewer will fall back to colored hexes for any missing assets.');
 
 	} catch (err) {
 		console.error('\n❌ Error during download:', err);
@@ -174,8 +184,6 @@ async function main() {
 }
 
 // Run if called directly
-if (require.main === module) {
-	main().catch(console.error);
-}
+main().catch(console.error);
 
-module.exports = { downloadFile, downloadCategory };
+export { downloadFile, downloadCategory };

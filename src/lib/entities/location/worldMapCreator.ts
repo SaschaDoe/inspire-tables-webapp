@@ -13,13 +13,29 @@ import {
 	calculateRegionalYields,
 	calculateRegionalDefense
 } from './regionalHexData';
+import {
+	DetailedHexTile,
+	StrategicResource as DetailedStrategicResource,
+	LuxuryResource as DetailedLuxuryResource
+} from './detailedHexTile';
+
+export interface WorldMapProgress {
+	phase: 'terrain' | 'regional' | 'continents' | 'entities' | 'complete';
+	phaseLabel: string;
+	current: number;
+	total: number;
+	percent: number;
+}
+
+export type ProgressCallback = (progress: WorldMapProgress) => void;
 
 export class WorldMapCreator {
 	private static readonly NOISE_SCALE = 4.0;
 	private static readonly REGIONAL_GRID_SIZE = 10; // 10x10 regional hexes per planetary hex
 
 	/**
-	 * Create a world map for a planet
+	 * Create a world map for a planet (synchronous - may freeze UI for large maps)
+	 * @deprecated Use createAsync() instead for better UI responsiveness
 	 */
 	static create(planet: Planet): WorldMap {
 		// Skip world map generation for gas giants
@@ -34,6 +50,10 @@ export class WorldMapCreator {
 		worldMap.width = width;
 		worldMap.height = height;
 		worldMap.seed = planet.seed;
+		worldMap.planetId = planet.id;
+		worldMap.gridSize = this.REGIONAL_GRID_SIZE;
+		worldMap.detailedWidth = width * this.REGIONAL_GRID_SIZE;
+		worldMap.detailedHeight = height * this.REGIONAL_GRID_SIZE;
 
 		// Generate hex grid
 		worldMap.hexTiles = this.generateHexGrid(planet, width, height);
@@ -48,6 +68,312 @@ export class WorldMapCreator {
 		this.createContinentEntities(planet, worldMap);
 
 		return worldMap;
+	}
+
+	/**
+	 * Create a world map for a planet (async with progress updates)
+	 * This version yields to the UI periodically to prevent freezing
+	 */
+	static async createAsync(
+		planet: Planet,
+		onProgress?: ProgressCallback
+	): Promise<WorldMap> {
+		// Skip world map generation for gas giants
+		if (planet.type === 'gas giant') {
+			throw new Error('Gas giants cannot have surface maps');
+		}
+
+		const worldMap = new WorldMap();
+
+		// Determine map size based on planet size
+		const { width, height } = this.getMapDimensions(planet.size);
+		worldMap.width = width;
+		worldMap.height = height;
+		worldMap.seed = planet.seed;
+		worldMap.planetId = planet.id;
+		worldMap.gridSize = this.REGIONAL_GRID_SIZE;
+		worldMap.detailedWidth = width * this.REGIONAL_GRID_SIZE;
+		worldMap.detailedHeight = height * this.REGIONAL_GRID_SIZE;
+
+		// Phase 1: Generate hex grid (terrain)
+		onProgress?.({
+			phase: 'terrain',
+			phaseLabel: 'Generating terrain...',
+			current: 0,
+			total: height,
+			percent: 0
+		});
+
+		worldMap.hexTiles = await this.generateHexGridAsync(planet, width, height, onProgress);
+
+		// Phase 2: Generate regional hexes (the slow part)
+		onProgress?.({
+			phase: 'regional',
+			phaseLabel: 'Generating detailed tiles...',
+			current: 0,
+			total: width * height,
+			percent: 25
+		});
+
+		await this.generateRegionalHexesAsync(worldMap, planet, onProgress);
+
+		// Phase 3: Detect continents
+		onProgress?.({
+			phase: 'continents',
+			phaseLabel: 'Detecting continents...',
+			current: 0,
+			total: 1,
+			percent: 85
+		});
+
+		await this.yieldToUI();
+		worldMap.continents = ContinentDetector.detectContinents(worldMap.hexTiles);
+
+		// Phase 4: Create continent entities
+		onProgress?.({
+			phase: 'entities',
+			phaseLabel: 'Creating entities...',
+			current: 0,
+			total: 1,
+			percent: 95
+		});
+
+		await this.yieldToUI();
+		this.createContinentEntities(planet, worldMap);
+
+		// Complete
+		onProgress?.({
+			phase: 'complete',
+			phaseLabel: 'Complete!',
+			current: 1,
+			total: 1,
+			percent: 100
+		});
+
+		return worldMap;
+	}
+
+	/**
+	 * Yield to UI to prevent freezing
+	 */
+	private static yieldToUI(): Promise<void> {
+		return new Promise(resolve => setTimeout(resolve, 0));
+	}
+
+	/**
+	 * Generate hex grid async with progress updates
+	 */
+	private static async generateHexGridAsync(
+		planet: Planet,
+		width: number,
+		height: number,
+		onProgress?: ProgressCallback
+	): Promise<HexTile[][]> {
+		const grid: HexTile[][] = [];
+		const elevationScale = this.getElevationScale(planet.size);
+		const tempRange = this.getBaseTemperature(planet.type);
+		const waterThreshold = this.getWaterThreshold(planet.type, planet.seed);
+
+		// Create noise functions
+		const elevationNoise = makeNoise2D(planet.seed);
+		const temperatureNoise = makeNoise2D(planet.seed + 1);
+		const drynessNoise = makeNoise2D(planet.seed + 2);
+		const continentNoise = makeNoise2D(planet.seed + 3);
+
+		for (let y = 0; y < height; y++) {
+			grid[y] = [];
+			for (let x = 0; x < width; x++) {
+				const hexTile = new HexTile();
+				hexTile.x = x;
+				hexTile.y = y;
+				hexTile.parentId = planet.id;
+
+				// Calculate normalized coordinates (-1 to 1)
+				const nx = (x / width) * 2 - 1;
+				const ny = (y / height) * 2 - 1;
+
+				// Calculate elevation based on planet type
+				let elevation = elevationNoise(nx * this.NOISE_SCALE, ny * this.NOISE_SCALE);
+				elevation = (elevation + 1) / 2;
+				elevation = this.applyContinentFactor(elevation, nx, ny, planet.type, continentNoise);
+
+				if (elevation < waterThreshold) {
+					elevation = 0;
+				} else {
+					elevation = ((elevation - waterThreshold) / (1 - waterThreshold)) * elevationScale;
+					elevation = Math.floor(elevation) + 1;
+				}
+
+				if (x === 0 || x === width - 1) {
+					if (planet.type !== 'desert' && planet.type !== 'volcanic') {
+						elevation = 0;
+					}
+				}
+
+				hexTile.elevation = elevation;
+
+				const tempNoise = temperatureNoise(nx * this.NOISE_SCALE, ny * this.NOISE_SCALE);
+				const tempVariation = tempNoise * 20;
+				const baseTemp = tempRange.min + (tempRange.max - tempRange.min) / 2;
+				const latitudeFactor = Math.abs(ny);
+				let latitudePenalty = this.getLatitudePenalty(planet.type, latitudeFactor);
+
+				hexTile.temperature = Math.max(0, Math.min(100, baseTemp + tempVariation - latitudePenalty));
+
+				const dryNoise = drynessNoise(nx * this.NOISE_SCALE, ny * this.NOISE_SCALE);
+				const baseDryness = this.getBaseDryness(planet.type, elevation);
+				hexTile.dryness = Math.max(0, Math.min(100, baseDryness + dryNoise * 30));
+
+				hexTile.terrainType = this.determineTerrainType(
+					elevation,
+					hexTile.temperature,
+					hexTile.dryness,
+					planet.type,
+					y,
+					height
+				);
+
+				grid[y][x] = hexTile;
+			}
+
+			// Yield to UI every 10 rows
+			if (y % 10 === 0) {
+				onProgress?.({
+					phase: 'terrain',
+					phaseLabel: 'Generating terrain...',
+					current: y,
+					total: height,
+					percent: Math.floor((y / height) * 25)
+				});
+				await this.yieldToUI();
+			}
+		}
+
+		return grid;
+	}
+
+	/**
+	 * Get latitude penalty based on planet type
+	 */
+	private static getLatitudePenalty(planetType: string, latitudeFactor: number): number {
+		switch (planetType) {
+			case 'ice':
+				return latitudeFactor * 5;
+			case 'desert':
+			case 'volcanic':
+				return latitudeFactor * 5;
+			case 'jungle':
+				return latitudeFactor * 8;
+			case 'earth-like':
+			case 'water':
+				return latitudeFactor * 40;
+			default:
+				return latitudeFactor * 30;
+		}
+	}
+
+	/**
+	 * Get base dryness based on planet type and elevation
+	 */
+	private static getBaseDryness(planetType: string, elevation: number): number {
+		switch (planetType) {
+			case 'desert':
+				return elevation > 0 ? 90 : 80;
+			case 'ice':
+				return elevation > 0 ? 75 : 60;
+			case 'jungle':
+			case 'water':
+				return elevation > 0 ? 30 : 10;
+			case 'volcanic':
+				return elevation > 0 ? 70 : 50;
+			default:
+				return elevation > 0 ? 60 : 20;
+		}
+	}
+
+	/**
+	 * Generate regional hexes async with progress updates
+	 */
+	private static async generateRegionalHexesAsync(
+		worldMap: WorldMap,
+		planet: Planet,
+		onProgress?: ProgressCallback
+	): Promise<void> {
+		const gridSize = this.REGIONAL_GRID_SIZE;
+
+		const regionalSeed = planet.seed + 10000;
+		const featureNoise = makeNoise2D(regionalSeed);
+		const resourceNoise = makeNoise2D(regionalSeed + 1);
+		const riverNoise = makeNoise2D(regionalSeed + 2);
+		const blendNoise = makeNoise2D(regionalSeed + 3);
+
+		worldMap.detailedHexTiles.clear();
+
+		const totalHexes = worldMap.width * worldMap.height;
+		let processedHexes = 0;
+
+		for (let py = 0; py < worldMap.height; py++) {
+			for (let px = 0; px < worldMap.width; px++) {
+				const planetaryHex = worldMap.hexTiles[py][px];
+				planetaryHex.regionalGridSize = gridSize;
+				planetaryHex.regionalHexes = [];
+
+				const neighbors = this.getPlanetaryNeighbors(worldMap, px, py);
+
+				for (let ry = 0; ry < gridSize; ry++) {
+					planetaryHex.regionalHexes[ry] = [];
+					for (let rx = 0; rx < gridSize; rx++) {
+						const regionalHex = this.createRegionalHex(
+							planetaryHex,
+							rx,
+							ry,
+							px,
+							py,
+							gridSize,
+							featureNoise,
+							resourceNoise,
+							riverNoise,
+							blendNoise,
+							neighbors,
+							planet
+						);
+						planetaryHex.regionalHexes[ry][rx] = regionalHex;
+
+						const detailedTile = this.createDetailedHexTile(
+							worldMap.planetId,
+							planetaryHex.id,
+							px,
+							py,
+							rx,
+							ry,
+							gridSize,
+							regionalHex
+						);
+						worldMap.detailedHexTiles.set(detailedTile.getKey(), detailedTile);
+					}
+				}
+
+				this.connectRiversInRegion(planetaryHex.regionalHexes, riverNoise, px, py);
+
+				processedHexes++;
+
+				// Yield to UI every 25 planetary hexes
+				if (processedHexes % 25 === 0) {
+					const percent = 25 + Math.floor((processedHexes / totalHexes) * 60);
+					onProgress?.({
+						phase: 'regional',
+						phaseLabel: `Generating detailed tiles... (${processedHexes}/${totalHexes})`,
+						current: processedHexes,
+						total: totalHexes,
+						percent
+					});
+					await this.yieldToUI();
+				}
+			}
+		}
+
+		// Sync rivers after all regional hexes are generated
+		this.syncRiversToDetailedTiles(worldMap);
 	}
 
 	/**
@@ -492,6 +818,7 @@ export class WorldMapCreator {
 
 	/**
 	 * Generate regional hexes for all planetary hexes (Level 2 - seamless zoom)
+	 * Also creates DetailedHexTile entities for simulation
 	 */
 	private static generateRegionalHexes(worldMap: WorldMap, planet: Planet): void {
 		const gridSize = this.REGIONAL_GRID_SIZE;
@@ -502,6 +829,9 @@ export class WorldMapCreator {
 		const resourceNoise = makeNoise2D(regionalSeed + 1);
 		const riverNoise = makeNoise2D(regionalSeed + 2);
 		const blendNoise = makeNoise2D(regionalSeed + 3); // For terrain blending at edges
+
+		// Clear existing detailed hex tiles
+		worldMap.detailedHexTiles.clear();
 
 		for (let py = 0; py < worldMap.height; py++) {
 			for (let px = 0; px < worldMap.width; px++) {
@@ -531,11 +861,152 @@ export class WorldMapCreator {
 							planet
 						);
 						planetaryHex.regionalHexes[ry][rx] = regionalHex;
+
+						// Also create DetailedHexTile entity for simulation
+						const detailedTile = this.createDetailedHexTile(
+							worldMap.planetId,
+							planetaryHex.id,
+							px,
+							py,
+							rx,
+							ry,
+							gridSize,
+							regionalHex
+						);
+						worldMap.detailedHexTiles.set(detailedTile.getKey(), detailedTile);
 					}
 				}
 
 				// Connect rivers within the regional grid
 				this.connectRiversInRegion(planetaryHex.regionalHexes, riverNoise, px, py);
+			}
+		}
+
+		// Update DetailedHexTiles with connected river data
+		this.syncRiversToDetailedTiles(worldMap);
+	}
+
+	/**
+	 * Create a DetailedHexTile entity from RegionalHexData
+	 */
+	private static createDetailedHexTile(
+		planetId: string,
+		parentHexId: string,
+		generalX: number,
+		generalY: number,
+		localX: number,
+		localY: number,
+		gridSize: number,
+		regionalData: RegionalHexData
+	): DetailedHexTile {
+		const globalX = generalX * gridSize + localX;
+		const globalY = generalY * gridSize + localY;
+
+		const tile = new DetailedHexTile(
+			planetId,
+			parentHexId,
+			globalX,
+			globalY,
+			localX,
+			localY
+		);
+
+		// Copy terrain data from RegionalHexData
+		tile.terrainType = regionalData.terrainType;
+		tile.elevation = regionalData.elevation;
+		tile.feature = regionalData.feature;
+		tile.hasRiver = regionalData.hasRiver;
+		tile.riverSides = [...regionalData.riverSides];
+
+		// Map resources (need to convert between enum types)
+		tile.strategicResource = this.mapStrategicResource(regionalData.strategicResource);
+		tile.luxuryResource = this.mapLuxuryResource(regionalData.luxuryResource);
+		tile.bonusResource = regionalData.bonusResource;
+
+		// Copy yields
+		tile.yields = {
+			food: regionalData.yields.food,
+			production: regionalData.yields.production,
+			gold: regionalData.yields.gold,
+			science: regionalData.yields.science,
+			culture: regionalData.yields.culture,
+			faith: 0
+		};
+
+		// Copy defense/movement
+		tile.defensiveBonus = regionalData.defensiveBonus;
+		tile.movementCost = regionalData.movementCost;
+		tile.isImpassable = regionalData.isImpassable;
+		tile.isCoastal = regionalData.isCoastal;
+
+		return tile;
+	}
+
+	/**
+	 * Map legacy StrategicResource to DetailedHexTile StrategicResource
+	 */
+	private static mapStrategicResource(resource: StrategicResource): DetailedStrategicResource {
+		switch (resource) {
+			case StrategicResource.Iron: return DetailedStrategicResource.Iron;
+			case StrategicResource.Horses: return DetailedStrategicResource.Horses;
+			case StrategicResource.Coal: return DetailedStrategicResource.Coal;
+			case StrategicResource.Oil: return DetailedStrategicResource.Oil;
+			case StrategicResource.Aluminum: return DetailedStrategicResource.Aluminum;
+			case StrategicResource.Uranium: return DetailedStrategicResource.Uranium;
+			default: return DetailedStrategicResource.None;
+		}
+	}
+
+	/**
+	 * Map legacy LuxuryResource to DetailedHexTile LuxuryResource
+	 */
+	private static mapLuxuryResource(resource: LuxuryResource): DetailedLuxuryResource {
+		switch (resource) {
+			case LuxuryResource.Gold: return DetailedLuxuryResource.Gold;
+			case LuxuryResource.Silver: return DetailedLuxuryResource.Silver;
+			case LuxuryResource.Gems: return DetailedLuxuryResource.Gems;
+			case LuxuryResource.Marble: return DetailedLuxuryResource.Marble;
+			case LuxuryResource.Ivory: return DetailedLuxuryResource.Ivory;
+			case LuxuryResource.Furs: return DetailedLuxuryResource.Furs;
+			case LuxuryResource.Dyes: return DetailedLuxuryResource.Dyes;
+			case LuxuryResource.Spices: return DetailedLuxuryResource.Spices;
+			case LuxuryResource.Silk: return DetailedLuxuryResource.Silk;
+			case LuxuryResource.Sugar: return DetailedLuxuryResource.Sugar;
+			case LuxuryResource.Cotton: return DetailedLuxuryResource.Cotton;
+			case LuxuryResource.Wine: return DetailedLuxuryResource.Wine;
+			case LuxuryResource.Incense: return DetailedLuxuryResource.Incense;
+			default: return DetailedLuxuryResource.None;
+		}
+	}
+
+	/**
+	 * Sync river data from RegionalHexData to DetailedHexTiles after river connection
+	 */
+	private static syncRiversToDetailedTiles(worldMap: WorldMap): void {
+		for (let py = 0; py < worldMap.height; py++) {
+			for (let px = 0; px < worldMap.width; px++) {
+				const planetaryHex = worldMap.hexTiles[py][px];
+				if (!planetaryHex.regionalHexes) continue;
+
+				for (let ry = 0; ry < planetaryHex.regionalHexes.length; ry++) {
+					const row = planetaryHex.regionalHexes[ry];
+					if (!row) continue;
+
+					for (let rx = 0; rx < row.length; rx++) {
+						const regionalHex = row[rx];
+						if (!regionalHex) continue;
+
+						const globalX = px * worldMap.gridSize + rx;
+						const globalY = py * worldMap.gridSize + ry;
+						const detailedTile = worldMap.getDetailedHex(globalX, globalY);
+
+						if (detailedTile) {
+							// Sync river data after connectRiversInRegion has processed
+							detailedTile.hasRiver = regionalHex.hasRiver;
+							detailedTile.riverSides = [...regionalHex.riverSides];
+						}
+					}
+				}
 			}
 		}
 	}
@@ -784,14 +1255,16 @@ export class WorldMapCreator {
 	 * Check if two terrain types are similar (shouldn't blend)
 	 */
 	private static areTerrainsSimilar(t1: TerrainType, t2: TerrainType): boolean {
-		// Group similar terrains
+		// Group similar terrains - these won't have noise-based blending between them
 		const waterTypes = [TerrainType.Water, TerrainType.Ocean, TerrainType.Coast, TerrainType.SaltLake];
-		const grassTypes = [TerrainType.Grass, TerrainType.GrassHills, TerrainType.Jungle, TerrainType.JungleHills];
+		const grassTypes = [TerrainType.Grass, TerrainType.GrassHills];
+		const jungleTypes = [TerrainType.Jungle, TerrainType.JungleHills];
 		const desertTypes = [TerrainType.Desert, TerrainType.AshPlains];
-		const coldTypes = [TerrainType.Snow, TerrainType.Tundra, TerrainType.IceFloe];
+		// Note: Snow and Tundra are NOT grouped together - they should blend with noise
+		// IceFloe is water-like and handled separately
 		const mountainTypes = [TerrainType.Mountain, TerrainType.HighMountain, TerrainType.SnowMountain];
 
-		const groups = [waterTypes, grassTypes, desertTypes, coldTypes, mountainTypes];
+		const groups = [waterTypes, grassTypes, jungleTypes, desertTypes, mountainTypes];
 
 		for (const group of groups) {
 			if (group.includes(t1) && group.includes(t2)) {
@@ -1001,9 +1474,10 @@ export class WorldMapCreator {
 					}
 				}
 
-				// If no connections found, add at least one side
+				// If no connections found, this hex shouldn't have a visible river
+				// (isolated river points look like artifacts)
 				if (hex.riverSides.length === 0) {
-					hex.riverSides = [Math.floor(Math.abs(riverNoise(px * 100 + rx, py * 100 + ry)) * 6)];
+					hex.hasRiver = false;
 				}
 			}
 		}

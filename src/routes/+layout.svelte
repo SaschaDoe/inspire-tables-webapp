@@ -5,11 +5,14 @@
 	import '../app.css';
 	import BurgerMenu from '$lib/components/BurgerMenu.svelte';
 	import OracleImageModal from '$lib/components/OracleImageModal.svelte';
+	import ApiSettingsModal from '$lib/components/ApiSettingsModal.svelte';
 	import { migrateFromLocalStorage } from '$lib/db/migration';
+	import { initializeProviders } from '$lib/ai/apiKeyService';
 
 	let { children } = $props();
 
 	let isOracleModalOpen = $state(false);
+	let isApiSettingsOpen = $state(false);
 	let migrationStatus = $state<'pending' | 'running' | 'complete' | 'error'>('pending');
 	let migrationError = $state<string | null>(null);
 
@@ -26,6 +29,9 @@
 					alreadyMigrated: result.alreadyMigrated
 				});
 			}
+
+			// Initialize AI providers with stored API keys
+			await initializeProviders();
 
 			migrationStatus = 'complete';
 		} catch (error) {
@@ -56,14 +62,23 @@
 	function closeOracleModal() {
 		isOracleModalOpen = false;
 	}
+
+	function openApiSettings() {
+		isApiSettingsOpen = true;
+	}
+
+	function closeApiSettings() {
+		isApiSettingsOpen = false;
+	}
 </script>
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<BurgerMenu onOracleImageClick={openOracleModal} />
+<BurgerMenu onOracleImageClick={openOracleModal} onApiSettingsClick={openApiSettings} />
 <OracleImageModal bind:isOpen={isOracleModalOpen} onClose={closeOracleModal} />
+<ApiSettingsModal bind:isOpen={isApiSettingsOpen} onClose={closeApiSettings} />
 
 {#if migrationStatus === 'running'}
 	<div

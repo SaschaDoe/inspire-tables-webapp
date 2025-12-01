@@ -16,6 +16,7 @@
 import type { Creator } from './base/creator';
 import { CharacterCreator } from './character/characterCreator';
 import { VillainCreator } from './character/villainCreator';
+import { FableCharacterCreator } from './fableCharacter/fableCharacterCreator';
 import { ArtefactCreator } from './artefact/artefactCreator';
 import { DungeonCreator } from './dungeon/dungeonCreator';
 import { MonsterCreator } from './monster/monsterCreator';
@@ -24,7 +25,7 @@ import { ClueCreator } from './clue/clueCreator';
 import { AdventureCreator } from './adventure/adventureCreator';
 import { RegionCreator } from './location/regionCreator';
 import { BuildingCreator } from './location/buildingCreator';
-import { SettlementCreator } from './location/settlementCreator';
+import { CityCreator } from './location/cityCreator';
 import { HexTileCreator } from './location/hexTileCreator';
 import { TalentCreator } from './talent/talentCreator';
 import { TrapCreator } from './dungeon/trapCreator';
@@ -170,12 +171,12 @@ export const entityRegistry: Record<string, EntityTypeInfo> = {
 		creator: () => new RegionCreator(),
 		category: 'Locations'
 	},
-	settlement: {
-		name: 'settlement',
-		displayName: 'Settlement',
+	city: {
+		name: 'city',
+		displayName: 'City',
 		icon: '🏘️',
-		description: 'Generate a town or city with size, fame, and events',
-		creator: () => new SettlementCreator(),
+		description: 'Generate a city or settlement with size, fame, and events',
+		creator: () => new CityCreator(),
 		category: 'Locations'
 	},
 	building: {
@@ -276,6 +277,14 @@ export const entityRegistry: Record<string, EntityTypeInfo> = {
 		icon: '👹',
 		description: 'Generate a fearsome monster or creature for encounters',
 		creator: () => new MonsterCreator(),
+		category: 'Characters'
+	},
+	fableCharacter: {
+		name: 'fableCharacter',
+		displayName: 'Fable Character',
+		icon: '🦊',
+		description: 'Generate a charming animal character for children\'s fables and stories',
+		creator: () => new FableCharacterCreator(),
 		category: 'Characters'
 	},
 

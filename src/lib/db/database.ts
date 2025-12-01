@@ -4,6 +4,7 @@ import type { Campaign } from '$lib/entities/campaign';
 import type { Tab } from '$lib/stores/tabStore';
 import type { StoryBoard } from '$lib/types/storyboard';
 import type { SoloRpgSession } from '$lib/stores/soloRpgStore.svelte';
+import type { StoredApiKey } from '$lib/ai/types';
 import { browser } from '$app/environment';
 
 export interface DbEntity extends Entity {
@@ -47,6 +48,9 @@ export class InspireTablesDatabase extends Dexie {
 	// Metadata table (for counters, current IDs, etc.)
 	metadata!: Table<DbMetadata, string>; // Primary key: key
 
+	// API keys for AI providers
+	apiKeys!: Table<StoredApiKey, string>; // Primary key: id
+
 	constructor() {
 		super('InspireTablesDB');
 
@@ -69,6 +73,18 @@ export class InspireTablesDatabase extends Dexie {
 			soloRpgSessions: 'id',
 			metadata: 'key',
 			worldMapTiles: 'planetId' // New table for world map detailed tiles
+		});
+
+		// Version 3: Add apiKeys table for AI provider API keys
+		this.version(3).stores({
+			entities: 'id, type, campaignId, parentId',
+			campaigns: 'id',
+			tabs: 'id, entityId',
+			storyboards: 'id',
+			soloRpgSessions: 'id',
+			metadata: 'key',
+			worldMapTiles: 'planetId',
+			apiKeys: 'id, providerId' // New table for API keys
 		});
 	}
 }

@@ -522,8 +522,8 @@ export const regionEntities = derived(entityStore, $entityStore =>
 	Array.from($entityStore.entities.values()).filter(e => e.type === 'region')
 );
 
-export const settlementEntities = derived(entityStore, $entityStore =>
-	Array.from($entityStore.entities.values()).filter(e => e.type === 'settlement')
+export const cityEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'city')
 );
 
 export const dungeonEntities = derived(entityStore, $entityStore =>
@@ -544,4 +544,12 @@ export const roomEntities = derived(entityStore, $entityStore =>
 
 export const entranceEntities = derived(entityStore, $entityStore =>
 	Array.from($entityStore.entities.values()).filter(e => e.type === 'entrance')
+);
+
+export const fableCharacterEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'fableCharacter')
+);
+
+export const hexTileEntities = derived(entityStore, $entityStore =>
+	Array.from($entityStore.entities.values()).filter(e => e.type === 'hexTile')
 );

@@ -11,7 +11,6 @@
 	import type { Adventure } from '$lib/entities/adventure/adventure';
 	import type { Quest } from '$lib/entities/quest/quest';
 	import type { Faction } from '$lib/entities/faction/faction';
-	import type { Settlement } from '$lib/entities/location/settlement';
 	import type { City } from '$lib/entities/location/city';
 	import type { Nation } from '$lib/entities/location/nation';
 	import type { Universe } from '$lib/entities/celestial/universe';
@@ -22,6 +21,8 @@
 	import type { Planet } from '$lib/entities/celestial/planet';
 	import type { Continent } from '$lib/entities/location/continent';
 	import type { Campaign } from '$lib/entities/campaign';
+	import type { FableCharacter } from '$lib/entities/fableCharacter/fableCharacter';
+	import type { HexTile } from '$lib/entities/location/hexTile';
 
 	// Import specialized viewers
 	import CampaignViewer from './viewers/CampaignViewer.svelte';
@@ -36,7 +37,6 @@
 	import AdventureViewer from './viewers/AdventureViewer.svelte';
 	import QuestViewer from './viewers/QuestViewer.svelte';
 	import FactionViewer from './viewers/FactionViewer.svelte';
-	import SettlementViewer from './viewers/SettlementViewer.svelte';
 	import CityViewer from './viewers/CityViewer.svelte';
 	import NationViewer from './viewers/NationViewer.svelte';
 	import UniverseViewer from './viewers/UniverseViewer.svelte';
@@ -46,6 +46,8 @@
 	import SolarSystemViewer from './viewers/SolarSystemViewer.svelte';
 	import PlanetViewer from './viewers/PlanetViewer.svelte';
 	import ContinentViewer from './viewers/ContinentViewer.svelte';
+	import FableCharacterViewer from './viewers/FableCharacterViewer.svelte';
+	import HexTileViewer from './viewers/HexTileViewer.svelte';
 
 	// Import generic fallback viewer for entity types without specialized viewers
 	import GenericEntityViewer from './viewers/GenericEntityViewer.svelte';
@@ -101,8 +103,6 @@
 				return QuestViewer;
 			case 'faction':
 				return FactionViewer;
-			case 'settlement':
-				return SettlementViewer;
 			case 'city':
 				return CityViewer;
 			case 'nation':
@@ -121,6 +121,10 @@
 				return PlanetViewer;
 			case 'continent':
 				return ContinentViewer;
+			case 'fableCharacter':
+				return FableCharacterViewer;
+			case 'hexTile':
+				return HexTileViewer;
 			default:
 				return GenericEntityViewer;
 		}
@@ -159,8 +163,6 @@
 				return { quest: entity as Quest };
 			case 'faction':
 				return { faction: entity as Faction, parentEntity };
-			case 'settlement':
-				return { settlement: entity as Settlement };
 			case 'city':
 				return { city: entity as City };
 			case 'nation':
@@ -179,6 +181,10 @@
 				return { planet: entity as Planet, parentEntity };
 			case 'continent':
 				return { continent: entity as Continent, parentEntity };
+			case 'fableCharacter':
+				return { fableCharacter: entity as FableCharacter, parentEntity };
+			case 'hexTile':
+				return { hexTile: entity as HexTile, parentEntity };
 			default:
 				return { entity, entityType };
 		}
@@ -210,8 +216,6 @@
 		<QuestViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'faction'}
 		<FactionViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
-	{:else if entityType === 'settlement'}
-		<SettlementViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'city'}
 		<CityViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'nation'}
@@ -230,6 +234,10 @@
 		<PlanetViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else if entityType === 'continent'}
 		<ContinentViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
+	{:else if entityType === 'fableCharacter'}
+		<FableCharacterViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
+	{:else if entityType === 'hexTile'}
+		<HexTileViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{:else}
 		<GenericEntityViewer {...viewerProps} on:openEntity={handleOpenEntity} on:entityUpdated={handleEntityUpdated} />
 	{/if}

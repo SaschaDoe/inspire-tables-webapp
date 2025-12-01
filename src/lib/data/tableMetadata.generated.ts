@@ -1,6 +1,6 @@
 // THIS FILE IS AUTO-GENERATED - DO NOT EDIT MANUALLY
 // Run 'npm run generate:metadata' to regenerate this file
-// Generated on: 2025-11-14T03:42:03.541Z
+// Generated on: 2025-11-30T11:54:05.431Z
 
 import { TableType } from '$lib/tables/tableType';
 
@@ -561,6 +561,12 @@ export const tableMetadata: TableCategory[] = [
 				"className": "ArtworkTable"
 			},
 			{
+				"title": "Big Animal Artefact",
+				type: TableType.Artefact,
+				"importPath": "fableTables/bigAnimalArtefactTable",
+				"className": "BigAnimalArtefactTable"
+			},
+			{
 				"title": "Gemstone",
 				type: TableType.Artefact,
 				"importPath": "artefactTables/gemstoneTable",
@@ -571,6 +577,12 @@ export const tableMetadata: TableCategory[] = [
 				type: TableType.Artefact,
 				"importPath": "artefactTables/jewelryTable",
 				"className": "JewelryTable"
+			},
+			{
+				"title": "Little Animal Artefact",
+				type: TableType.Artefact,
+				"importPath": "fableTables/littleAnimalArtefactTable",
+				"className": "LittleAnimalArtefactTable"
 			},
 			{
 				"title": "Magical Artefact",
@@ -589,6 +601,12 @@ export const tableMetadata: TableCategory[] = [
 				type: TableType.Artefact,
 				"importPath": "artefactTables/profaneArtefactTable",
 				"className": "ProfaneArtefactTable"
+			},
+			{
+				"title": "Small Animal Artefact",
+				type: TableType.Artefact,
+				"importPath": "fableTables/smallAnimalArtefactTable",
+				"className": "SmallAnimalArtefactTable"
 			},
 			{
 				"title": "Treasure",
@@ -898,6 +916,12 @@ export const tableMetadata: TableCategory[] = [
 		type: TableType.Campaign,
 		"tables": [
 			{
+				"title": "Campaign Name",
+				type: TableType.Campaign,
+				"importPath": "campaignTables/campaignNameTable",
+				"className": "CampaignNameTable"
+			},
+			{
 				"title": "Campaign Statement",
 				type: TableType.Campaign,
 				"importPath": "campaignTables/campaignStatementTable",
@@ -955,6 +979,30 @@ export const tableMetadata: TableCategory[] = [
 				type: TableType.Other,
 				"importPath": "otherTables/bodyPartsTable",
 				"className": "BodyPartsTable"
+			},
+			{
+				"title": "Campaign Duration",
+				type: TableType.Other,
+				"importPath": "campaignTables/campaignDurationTable",
+				"className": "CampaignDurationTable"
+			},
+			{
+				"title": "Campaign Power Scale",
+				type: TableType.Other,
+				"importPath": "campaignTables/campaignPowerScaleTable",
+				"className": "CampaignPowerScaleTable"
+			},
+			{
+				"title": "Campaign Time Period",
+				type: TableType.Other,
+				"importPath": "campaignTables/campaignTimePeriodTable",
+				"className": "CampaignTimePeriodTable"
+			},
+			{
+				"title": "Campaign Tone",
+				type: TableType.Other,
+				"importPath": "campaignTables/campaignToneTable",
+				"className": "CampaignToneTable"
 			},
 			{
 				"title": "Casting Method",
@@ -1507,6 +1555,17 @@ export const tableMetadata: TableCategory[] = [
 				type: TableType.Other,
 				"importPath": "celestialTables/cosmicBirthTable",
 				"className": "WorldCreationMethodTable"
+			}
+		]
+	},
+	{
+		type: TableType.ChildFriendly,
+		"tables": [
+			{
+				"title": "Child-Friendly Plot",
+				type: TableType.ChildFriendly,
+				"importPath": "childFriendlyTables/childFriendlyPlotTable",
+				"className": "ChildFriendlyPlotTable"
 			}
 		]
 	},

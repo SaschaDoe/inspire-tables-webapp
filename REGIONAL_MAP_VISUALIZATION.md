@@ -45,17 +45,16 @@ Run the download script from the project root:
 node scripts/download-unciv-assets.js
 ```
 
-This will download all necessary graphics from the Unciv repository to `static/civ5-assets/`.
+This will download all necessary graphics from the HexaRealm-Tileset repository to `static/civ5-assets/`.
 
 ### Option 2: Manual Download
 
-1. Visit the Unciv repository: https://github.com/yairm210/Unciv/tree/master/android/assets/ExtraImages
+1. Visit the HexaRealm-Tileset repository: https://github.com/GeneralWadaling/HexaRealm-Tileset/tree/main/Images/TileSets/HexaRealm/Tiles
 
-2. Download these folders:
-   - `TerrainIcons/` → Save to `static/civ5-assets/terrain/`
-   - `ResourceIcons/` → Save to `static/civ5-assets/resources/`
-   - `TerrainFeatureIcons/` → Save to `static/civ5-assets/features/`
-   - `RiverIcons/` → Save to `static/civ5-assets/rivers/`
+2. Download individual PNG files:
+   - Terrain tiles (Grassland.png, Plains.png, Desert.png, etc.) → Save to `static/civ5-assets/terrain/`
+   - Resource icons (Iron.png, Wheat.png, Gold.png, etc.) → Save to `static/civ5-assets/resources/`
+   - Feature overlays (ForestG.png→Forest.png, JungleG.png→Jungle.png, Marsh.png, Ice.png) → Save to `static/civ5-assets/features/`
 
 3. See `static/civ5-assets/README.md` for detailed file naming requirements.
 

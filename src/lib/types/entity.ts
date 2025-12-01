@@ -11,6 +11,7 @@ export enum EntityType {
 	Character = 'character',
 	Villain = 'villain',
 	Monster = 'monster',
+	FableCharacter = 'fableCharacter',
 
 	// Locations - Celestial
 	Universe = 'universe',
@@ -25,7 +26,7 @@ export enum EntityType {
 	Continent = 'continent',
 	Nation = 'nation',
 	Region = 'region',
-	Settlement = 'settlement',
+	City = 'city',
 	Building = 'building',
 	HexTile = 'hexTile',
 	PlanetaryHexTile = 'planetaryHexTile',
@@ -66,7 +67,6 @@ export enum EntityType {
 	Battle = 'battle',
 
 	// Simulation Entities
-	City = 'city',
 	Unit = 'unit',
 	Army = 'army',
 	Fleet = 'fleet',

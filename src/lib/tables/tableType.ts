@@ -13,5 +13,6 @@ export enum TableType {
 	Dungeon = 'Dungeon',
 	Campaign = 'Campaign',
 	SoloRPG = 'Solo RPG',
-	Name = 'Name'
+	Name = 'Name',
+	ChildFriendly = 'Child-Friendly'
 }

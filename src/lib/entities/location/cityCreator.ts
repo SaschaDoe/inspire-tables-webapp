@@ -56,19 +56,19 @@ export class CityCreator extends Creator<City> {
 	 * @param name City name
 	 * @param ownerNationId Nation that owns this city
 	 * @param founderNationId Nation that founded this city
-	 * @param hexTileId RegionalHexTile ID where city is located
-	 * @param parentRegionalMapId RegionalMap ID this city belongs to
-	 * @param coordinates {x, y} coordinates on regional map
+	 * @param hexTileId DetailedHexTile ID where city is located
+	 * @param parentPlanetId Planet ID this city belongs to
+	 * @param coordinates {x, y} global coordinates on world map
 	 * @param foundedYear Simulation year when city was founded
 	 * @param isCapital Whether this is the nation's capital
 	 * @returns Initialized City entity ready for simulation
 	 */
-	static createFromSimulation(params: {
+	static createForSimulation(params: {
 		name: string;
 		ownerNationId: string;
 		founderNationId: string;
 		hexTileId: string;
-		parentRegionalMapId: string;
+		parentPlanetId: string;
 		coordinates: { x: number; y: number };
 		foundedYear: number;
 		isCapital?: boolean;
@@ -86,24 +86,57 @@ export class CityCreator extends Creator<City> {
 		city.isCapital = params.isCapital || false;
 
 		// Set location (this also reinitializes the expansion manager)
-		city.setLocation(params.hexTileId, params.parentRegionalMapId, params.coordinates);
+		city.setLocation(params.hexTileId, params.parentPlanetId, params.coordinates);
 
 		// Initialize simulation properties
 		city.population = 1; // Start at pop 1 (Civ 5 style)
 		city.foodStored = 0;
 		city.calculateFoodNeededForGrowth();
 
-		// Managers are already initialized in City constructor, but ensure they're ready
-		city.populationManager.initialize(city.population);
-		city.productionManager.initialize();
-
 		// Calculate initial yields (city center provides 2 food, 1 production)
 		city.calculateYields();
 
-		// Generate simulation description
-		city.description = `Founded in ${params.foundedYear} by ${params.founderNationId}`;
+		// Also populate RPG properties so Settlement Overview shows values
+		city.size = CityCreator.calculateSizeFromPopulation(city.population);
+		city.fame = new TownFameTable().roleWithCascade().text;
+
+		// Generate description that works for both views
+		city.description = `A ${city.size} known for ${city.fame}. Founded in year ${params.foundedYear}.`;
+		city.rpgDescription = city.description;
 
 		return city;
+	}
+
+	/**
+	 * Calculate size category from population (for simulation cities)
+	 * This is the reverse of calculatePopulationFromSize
+	 */
+	static calculateSizeFromPopulation(population: number): string {
+		// Civ 5 pop 1 = ~10,000 people equivalent in real terms
+		// But for RPG flavor, we map simulation pop to size categories
+		if (population <= 1) return 'hamlet';
+		if (population <= 3) return 'village';
+		if (population <= 6) return 'town';
+		if (population <= 10) return 'large town';
+		if (population <= 15) return 'city';
+		if (population <= 25) return 'large city';
+		return 'metropolis';
+	}
+
+	/**
+	 * Update RPG properties when simulation population changes
+	 * Call this after population changes to keep size in sync
+	 */
+	static updateRPGPropertiesFromSimulation(city: City): void {
+		if (!city.isSimulationGenerated) return;
+
+		const newSize = CityCreator.calculateSizeFromPopulation(city.population);
+		if (city.size !== newSize) {
+			city.size = newSize;
+			// Update description to reflect new size
+			city.description = `A ${city.size} known for ${city.fame || 'its founding'}. Population: ${city.population}.`;
+			city.rpgDescription = city.description;
+		}
 	}
 
 	/**

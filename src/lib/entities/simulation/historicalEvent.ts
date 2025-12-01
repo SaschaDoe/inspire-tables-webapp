@@ -38,6 +38,7 @@ export enum HistoricalEventType {
 	PolicyUnlocked = 'policy_unlocked',
 	EraEntered = 'era_entered',
 	WonderCompleted = 'wonder_completed',
+	BuildingConstructed = 'building_constructed',
 
 	// Territory and exploration
 	HexDiscovered = 'hex_discovered',
@@ -116,9 +117,9 @@ export class HistoricalEvent extends Entity {
 	// When and where
 	year = 0; // Simulation year when event occurred
 	turnNumber = 0; // Turn number (for precise ordering within a year)
-	hexTileId?: string; // RegionalHexTile where event occurred (if location-specific)
-	coordinates?: { x: number; y: number }; // Coordinates (for display on map)
-	parentRegionalMapId = ''; // Regional map where event occurred
+	hexTileId?: string; // DetailedHexTile where event occurred (if location-specific)
+	coordinates?: { x: number; y: number }; // Global coordinates (for display on map)
+	parentPlanetId = ''; // Planet where event occurred
 
 	// Who was involved
 	participants: EventParticipant[] = []; // All entities involved in the event

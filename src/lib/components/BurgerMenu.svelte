@@ -4,9 +4,10 @@
 
 	interface Props {
 		onOracleImageClick: () => void;
+		onApiSettingsClick: () => void;
 	}
 
-	let { onOracleImageClick }: Props = $props();
+	let { onOracleImageClick, onApiSettingsClick }: Props = $props();
 
 	let isOpen = $state(false);
 
@@ -19,7 +20,12 @@
 		isOpen = false;
 	}
 
-	function handleRemoveAllEntities() {
+	function handleApiSettingsClick() {
+		onApiSettingsClick();
+		isOpen = false;
+	}
+
+	async function handleRemoveAllEntities() {
 		const confirmed = confirm(
 			'⚠️ WARNING: This will permanently delete ALL entities, campaigns, and data!\n\n' +
 			'This action cannot be undone.\n\n' +
@@ -27,8 +33,10 @@
 		);
 
 		if (confirmed) {
-			entityStore.clearAll();
-			tabStore.closeAllTabs(); // Close all tabs before reload
+			// Wait for entity store to clear (includes database)
+			await entityStore.clearAll();
+			// Wait for tab store to clear (includes database)
+			await tabStore.clearAllTabs();
 			isOpen = false;
 
 			// Reload the page to reset UI state
@@ -102,6 +110,12 @@
 					<button onclick={handleOracleClick} class="menu-item menu-button">
 						<span class="menu-icon">🔮</span>
 						<span class="menu-label">Oracle Image</span>
+					</button>
+				</li>
+				<li>
+					<button onclick={handleApiSettingsClick} class="menu-item menu-button">
+						<span class="menu-icon">🔑</span>
+						<span class="menu-label">AI Settings</span>
 					</button>
 				</li>
 				<li>

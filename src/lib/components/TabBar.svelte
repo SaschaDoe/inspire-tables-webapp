@@ -95,7 +95,7 @@
 			continent: '🗾',
 			nation: '🏛️',
 			region: '🏞️',
-			settlement: '🏘️',
+			city: '🏘️',
 			building: '🏢',
 			hexTile: '⬢',
 			location: '📍',

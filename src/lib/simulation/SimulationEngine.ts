@@ -247,7 +247,7 @@ export class SimulationEngine {
 	 */
 	private processCityYields(): void {
 		for (const cityId of this.cityIds) {
-			const city = entityStore.getEntity(cityId) as City;
+			const city = this.getCity(cityId);
 			if (!city) continue;
 
 			// Skip yield calculation if yields have been manually set (for testing)
@@ -271,22 +271,22 @@ export class SimulationEngine {
 	 */
 	private processNationYields(): void {
 		for (const nationId of this.nationIds) {
-			const nation = entityStore.getEntity(nationId) as Nation;
+			const nation = this.getNation(nationId);
 			if (!nation || !nation.isActive) continue;
 
 			// Reset yields
 			nation.yields = {
 				food: 0,
 				production: 0,
-				gold: nation.yields.gold || 2, // Base gold per turn
+				gold: nation.yields?.gold || 2, // Base gold per turn
 				science: 0,
 				culture: 0,
 				happiness: 0
 			};
 
 			// Accumulate yields from all cities
-			for (const cityId of nation.cityIds) {
-				const city = entityStore.getEntity(cityId) as City;
+			for (const cityId of nation.cityIds || []) {
+				const city = this.getCity(cityId);
 				if (!city) continue;
 
 				// Cities contribute to nation yields
@@ -302,11 +302,15 @@ export class SimulationEngine {
 			nation.culturePerTurn = nation.yields.culture;
 
 			// Accumulate resources
+			if (!nation.resources) {
+				nation.resources = { gold: 0, science: 0, culture: 0 };
+			}
 			nation.resources.gold += nation.yields.gold;
 			nation.resources.science += nation.yields.science;
 			nation.resources.culture += nation.yields.culture;
 
-			// Note: Entity is modified in place, no need to save back to store during simulation
+			// Save nation back to entity store
+			this.saveNation(nation);
 		}
 	}
 
@@ -315,7 +319,7 @@ export class SimulationEngine {
 	 */
 	private processCities(): void {
 		for (const cityId of this.cityIds) {
-			const city = entityStore.getEntity(cityId) as City;
+			const city = this.getCity(cityId);
 			if (!city) continue;
 
 			// Get available tiles for expansion (tiles within radius not owned by anyone)
@@ -341,7 +345,8 @@ export class SimulationEngine {
 				this.createBorderExpansionEvent(city, result.acquiredHexId);
 			}
 
-			// Note: Entity is modified in place, no need to save back to store during simulation
+			// Save city back to entity store
+			this.saveCity(city);
 		}
 	}
 
@@ -350,7 +355,7 @@ export class SimulationEngine {
 	 */
 	private processNations(): void {
 		for (const nationId of this.nationIds) {
-			const nation = entityStore.getEntity(nationId) as Nation;
+			const nation = this.getNation(nationId);
 			if (!nation || !nation.isActive) continue;
 
 			// Process nation turn (managers handle tech, policies, diplomacy)
@@ -364,7 +369,71 @@ export class SimulationEngine {
 				// AI will choose a policy in AI phase
 			}
 
-			// Note: Entity is modified in place, no need to save back to store during simulation
+			// Save nation back to entity store
+			this.saveNation(nation);
+		}
+	}
+
+	/**
+	 * Helper to get a Nation object from entity store
+	 */
+	private getNation(nationId: string): Nation | null {
+		const entity = entityStore.getEntity(nationId);
+		if (!entity) return null;
+
+		// Check if it's stored in customFields.generatedEntity (entity store format)
+		if (entity.customFields?.generatedEntity) {
+			const nation = entity.customFields.generatedEntity as Nation;
+			return Object.assign(new Nation(), nation);
+		}
+
+		// Otherwise assume it's already a Nation (direct reference)
+		return entity as unknown as Nation;
+	}
+
+	/**
+	 * Helper to get a City object from entity store
+	 */
+	private getCity(cityId: string): City | null {
+		const entity = entityStore.getEntity(cityId);
+		if (!entity) return null;
+
+		if (entity.customFields?.generatedEntity) {
+			const city = entity.customFields.generatedEntity as City;
+			return Object.assign(new City(), city);
+		}
+
+		// Direct entity (used in tests)
+		if ((entity as any).yields !== undefined) {
+			return entity as unknown as City;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Helper to save a Nation back to entity store
+	 */
+	private saveNation(nation: Nation): void {
+		const entity = entityStore.getEntity(nation.id);
+		if (entity) {
+			entityStore.updateEntity(nation.id, {
+				...entity,
+				customFields: { ...entity.customFields, generatedEntity: nation }
+			});
+		}
+	}
+
+	/**
+	 * Helper to save a City back to entity store
+	 */
+	private saveCity(city: City): void {
+		const entity = entityStore.getEntity(city.id);
+		if (entity) {
+			entityStore.updateEntity(city.id, {
+				...entity,
+				customFields: { ...entity.customFields, generatedEntity: city }
+			});
 		}
 	}
 
@@ -372,9 +441,21 @@ export class SimulationEngine {
 	 * Process AI decisions for all nations
 	 */
 	private processAIDecisions(): void {
+		console.log(`[AI] Processing AI decisions for ${this.nationIds.length} nations`);
+
 		for (const nationId of this.nationIds) {
-			const nation = entityStore.getEntity(nationId) as Nation;
-			if (!nation || !nation.isActive || !nation.isAIControlled) continue;
+			const nation = this.getNation(nationId);
+			if (!nation) {
+				console.log(`  [AI] Nation ${nationId} not found in store`);
+				continue;
+			}
+
+			console.log(`  [AI] Checking nation ${nation.name}: isActive=${nation.isActive}, isAIControlled=${nation.isAIControlled}`);
+
+			if (!nation.isActive || !nation.isAIControlled) {
+				console.log(`  [AI] Skipping ${nation.name} - not active or not AI controlled`);
+				continue;
+			}
 
 			// AI decision: Should we found a new city?
 			if (this.shouldAIFoundCity(nation)) {
@@ -394,26 +475,68 @@ export class SimulationEngine {
 	 * Check if AI should found a new city
 	 */
 	private shouldAIFoundCity(nation: Nation): boolean {
-		// Simple heuristic: Found a new city every 10 turns if we have few cities
-		const cityCount = nation.cityIds.length;
-		const expansionDesire = nation.cultureTraits.expansionist;
+		// If nation has no cities yet, found one immediately
+		const cityCount = nation.cityIds?.length || 0;
+		if (cityCount === 0) {
+			console.log(`  [AI] ${nation.name} has no cities - should found first city`);
+			return true;
+		}
+
+		const expansionDesire = nation.cultureTraits?.expansionist || 50;
 
 		// More expansionist cultures found cities more frequently
 		const turnsPerCity = Math.max(5, 15 - Math.floor(expansionDesire / 10));
 
-		return cityCount < 5 && this.currentTurn % turnsPerCity === 0;
+		const shouldFound = cityCount < 5 && this.currentTurn % turnsPerCity === 0;
+		if (shouldFound) {
+			console.log(`  [AI] ${nation.name} deciding to found city (turn ${this.currentTurn}, turnsPerCity=${turnsPerCity})`);
+		}
+		return shouldFound;
 	}
 
 	/**
 	 * AI founds a new city
 	 */
 	private aiFoundCity(nation: Nation): void {
-		// Find a good location for a new city
-		const location = this.findCityFoundingLocation(nation);
+		console.log(`  [AI] ${nation.name} attempting to found a city...`);
+
+		// First, try to find a settler unit belonging to this nation
+		let settlerLocation: { hexTileId: string; coordinates: { x: number; y: number } } | null = null;
+		let settlerEntityId: string | null = null;
+
+		// Check nation's military units for a settler
+		for (const unitId of nation.militaryUnits || []) {
+			const unitEntity = entityStore.getEntity(unitId);
+			if (unitEntity?.customFields?.generatedEntity) {
+				const unit = unitEntity.customFields.generatedEntity as any;
+				if (unit.unitType === 'settler' && unit.coordinates) {
+					settlerLocation = {
+						hexTileId: unit.currentHexTileId || '',
+						coordinates: { x: unit.coordinates.x, y: unit.coordinates.y }
+					};
+					settlerEntityId = unitId;
+					break;
+				}
+			}
+		}
+
+		// If no settler found but nation has starting position and hasn't founded first city, use that
+		if (!settlerLocation && !nation.hasFoundedFirstCity && nation.startingHexX !== undefined && nation.startingHexY !== undefined) {
+			const tile = this.worldMap?.getDetailedHex(nation.startingHexX, nation.startingHexY);
+			settlerLocation = {
+				hexTileId: tile?.id || '',
+				coordinates: { x: nation.startingHexX, y: nation.startingHexY }
+			};
+		}
+
+		// Use settler location if available, otherwise find a good location
+		const location = settlerLocation || this.findCityFoundingLocation(nation);
 		if (!location) {
-			console.log(`  ${nation.name} could not find a suitable city location`);
+			console.log(`  [AI] ${nation.name} could not find a suitable city location`);
 			return;
 		}
+
+		console.log(`  [AI] Found location at (${location.coordinates.x}, ${location.coordinates.y})`);
 
 		// Create the city
 		const city = new City();
@@ -421,9 +544,11 @@ export class SimulationEngine {
 		city.ownerNationId = nation.id;
 		city.founderNationId = nation.id;
 		city.foundedYear = this.currentYear;
-		city.setLocation(location.hexTileId, this.planetId, location.coordinates);
+		city.parentPlanetId = this.planetId;
+		city.hexTileId = location.hexTileId;
+		city.coordinates = { x: location.coordinates.x, y: location.coordinates.y };
 		city.population = 1;
-		city.isCapital = nation.cityIds.length === 0; // First city is capital
+		city.isCapital = (nation.cityIds?.length || 0) === 0; // First city is capital
 
 		// Mark the tile as a city center
 		const tile = this.worldMap?.getDetailedHex(location.coordinates.x, location.coordinates.y);
@@ -434,18 +559,59 @@ export class SimulationEngine {
 			if (city.isCapital) tile.isCapital = true;
 		}
 
-		// Save city
-		entityStore.createEntity(city);
+		// Save city to entity store
+		const cityEntity = {
+			id: city.id,
+			type: 'city' as any,
+			name: city.name,
+			description: `City of ${nation.name}`,
+			tags: ['city'],
+			metadata: {
+				createdAt: new Date(),
+				updatedAt: new Date()
+			},
+			relationships: [
+				{ type: 'belongs_to', targetId: nation.id, targetType: 'nation' }
+			],
+			customFields: { generatedEntity: city }
+		};
+		entityStore.createEntity(cityEntity);
 		this.cityIds.push(city.id);
 
 		// Add to nation
-		nation.addCity(city.id, this.currentYear, city.isCapital);
-		// Note: Nation modified in place, no need to save during simulation
+		if (!nation.cityIds) nation.cityIds = [];
+		nation.cityIds.push(city.id);
+		nation.hasFoundedFirstCity = true;
+
+		// Update nation in entity store
+		const nationEntity = entityStore.getEntity(nation.id);
+		if (nationEntity) {
+			entityStore.updateEntity(nation.id, {
+				...nationEntity,
+				customFields: { generatedEntity: nation }
+			});
+		}
+
+		// Consume the settler (delete from entity store)
+		if (settlerEntityId) {
+			// Remove from nation's military units
+			nation.militaryUnits = (nation.militaryUnits || []).filter(id => id !== settlerEntityId);
+			// Update nation again with removed settler
+			if (nationEntity) {
+				entityStore.updateEntity(nation.id, {
+					...nationEntity,
+					customFields: { generatedEntity: nation }
+				});
+			}
+			// Delete settler entity
+			entityStore.deleteEntity(settlerEntityId);
+			console.log(`  [AI] Settler ${settlerEntityId} consumed to found city`);
+		}
 
 		// Create event
 		this.createCityFoundedEvent(nation, city, location.hexTileId);
 
-		console.log(`  ${nation.name} founded ${city.name} at (${location.coordinates.x}, ${location.coordinates.y})`);
+		console.log(`  [AI] ${nation.name} founded ${city.name} at (${location.coordinates.x}, ${location.coordinates.y})`);
 	}
 
 	/**
@@ -637,15 +803,35 @@ export class SimulationEngine {
 		event.significance = data.significance;
 		event.participants = data.participants;
 		event.hexTileId = data.hexTileId;
+		event.parentPlanetId = this.planetId;
 		if (data.stateChanges) {
 			for (const change of data.stateChanges) {
 				event.recordStateChange(change.entityId, change.entityType, change.property, change.oldValue, change.newValue);
 			}
 		}
 
-		// Save event
-		entityStore.createEntity(event);
+		// Save event with proper Entity structure for entity store
+		const eventEntity = {
+			id: event.id,
+			type: 'historicalEvent' as any,
+			name: event.name,
+			description: event.description,
+			tags: [data.type, `turn-${this.currentTurn}`],
+			metadata: {
+				createdAt: new Date(),
+				updatedAt: new Date()
+			},
+			relationships: data.participants.map(p => ({
+				type: 'reference' as const,
+				targetId: p.entityId,
+				targetType: p.entityType
+			})),
+			customFields: { generatedEntity: event }
+		};
+		entityStore.createEntity(eventEntity);
 		this.historicalEventIds.push(event.id);
+
+		console.log(`[SimulationEngine] Created event: ${event.name} (Year ${event.year}, Turn ${this.currentTurn})`);
 
 		// Index by year
 		if (!this.eventsByYear.has(data.year)) {

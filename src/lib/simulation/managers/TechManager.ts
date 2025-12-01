@@ -24,6 +24,7 @@ export class TechManager {
 	// Researched techs
 	researchedTechs: string[] = []; // IDs of techs already researched
 	currentResearch?: string; // ID of tech currently being researched
+	currentTechCost?: number; // Cost of the tech currently being researched
 	researchProgress: number = 0; // Science accumulated toward current tech
 
 	// Era tracking
@@ -66,6 +67,7 @@ export class TechManager {
 
 		// Switch research (lose some progress)
 		this.currentResearch = techId;
+		this.currentTechCost = techCost;
 		// Keep some progress when switching (optional - can be configurable)
 	}
 
@@ -169,6 +171,7 @@ export class TechManager {
 
 			// Clear current research
 			this.currentResearch = undefined;
+			this.currentTechCost = undefined;
 			this.researchProgress = 0;
 
 			return {
@@ -199,6 +202,7 @@ export class TechManager {
 		// If we were researching this tech, clear it
 		if (this.currentResearch === techId) {
 			this.currentResearch = undefined;
+			this.currentTechCost = undefined;
 			this.researchProgress = 0;
 		}
 
@@ -336,6 +340,7 @@ export class TechManager {
 		const cloned = new TechManager();
 		cloned.researchedTechs = [...this.researchedTechs];
 		cloned.currentResearch = this.currentResearch;
+		cloned.currentTechCost = this.currentTechCost;
 		cloned.researchProgress = this.researchProgress;
 		cloned.currentEra = this.currentEra;
 		cloned.sciencePerTurn = this.sciencePerTurn;
@@ -352,6 +357,7 @@ export class TechManager {
 		return {
 			researchedTechs: this.researchedTechs,
 			currentResearch: this.currentResearch,
+			currentTechCost: this.currentTechCost,
 			researchProgress: this.researchProgress,
 			currentEra: this.currentEra,
 			sciencePerTurn: this.sciencePerTurn,
@@ -368,6 +374,7 @@ export class TechManager {
 		const manager = new TechManager();
 		manager.researchedTechs = data.researchedTechs ?? [];
 		manager.currentResearch = data.currentResearch;
+		manager.currentTechCost = data.currentTechCost;
 		manager.researchProgress = data.researchProgress ?? 0;
 		manager.currentEra = data.currentEra ?? Era.Prehistoric;
 		manager.sciencePerTurn = data.sciencePerTurn ?? 0;

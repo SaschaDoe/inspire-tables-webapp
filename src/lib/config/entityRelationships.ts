@@ -129,11 +129,11 @@ export const entityRelationships: EntityRelationships = {
 			autoGenerate: true
 		},
 		{
-			propertyName: 'settlements',
-			childType: 'Settlement',
+			propertyName: 'cities',
+			childType: 'City',
 			minCount: 1,
 			maxCount: 20,
-			label: 'Settlements',
+			label: 'Cities',
 			autoGenerate: false
 		},
 		{
@@ -148,11 +148,11 @@ export const entityRelationships: EntityRelationships = {
 
 	Region: [
 		{
-			propertyName: 'settlements',
-			childType: 'Settlement',
+			propertyName: 'cities',
+			childType: 'City',
 			minCount: 1,
 			maxCount: 5,
-			label: 'Settlements',
+			label: 'Cities',
 			autoGenerate: false
 		},
 		{
@@ -165,7 +165,7 @@ export const entityRelationships: EntityRelationships = {
 		}
 	],
 
-	Settlement: [
+	City: [
 		{
 			propertyName: 'coatOfArms',
 			childType: 'Sign',

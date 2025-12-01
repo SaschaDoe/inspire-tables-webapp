@@ -18,7 +18,7 @@ import ArtefactViewer from './viewers/ArtefactViewer.svelte';
 import AdventureViewer from './viewers/AdventureViewer.svelte';
 import QuestViewer from './viewers/QuestViewer.svelte';
 import FactionViewer from './viewers/FactionViewer.svelte';
-import SettlementViewer from './viewers/SettlementViewer.svelte';
+import CityViewer from './viewers/CityViewer.svelte';
 import UniverseViewer from './viewers/UniverseViewer.svelte';
 import SphereViewer from './viewers/SphereViewer.svelte';
 import SphereConnectionViewer from './viewers/SphereConnectionViewer.svelte';
@@ -26,6 +26,8 @@ import GalaxyViewer from './viewers/GalaxyViewer.svelte';
 import SolarSystemViewer from './viewers/SolarSystemViewer.svelte';
 import PlanetViewer from './viewers/PlanetViewer.svelte';
 import ContinentViewer from './viewers/ContinentViewer.svelte';
+import FableCharacterViewer from './viewers/FableCharacterViewer.svelte';
+import HexTileViewer from './viewers/HexTileViewer.svelte';
 
 export interface ViewerConfig {
 	component: ComponentType;
@@ -86,9 +88,9 @@ export const viewerRegistry: Record<string, ViewerConfig> = {
 		component: FactionViewer,
 		propName: 'faction'
 	},
-	settlement: {
-		component: SettlementViewer,
-		propName: 'settlement'
+	city: {
+		component: CityViewer,
+		propName: 'city'
 	},
 	universe: {
 		component: UniverseViewer,
@@ -123,6 +125,15 @@ export const viewerRegistry: Record<string, ViewerConfig> = {
 	continent: {
 		component: ContinentViewer,
 		propName: 'continent'
+	},
+	fableCharacter: {
+		component: FableCharacterViewer,
+		propName: 'fableCharacter'
+	},
+	hexTile: {
+		component: HexTileViewer,
+		propName: 'hexTile',
+		needsParentEntity: true
 	}
 };
 

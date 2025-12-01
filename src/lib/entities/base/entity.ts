@@ -58,10 +58,16 @@ async function saveCurrentId(): Promise<void> {
 	}
 }
 
+export interface EntityImage {
+	data: string; // Base64 encoded image
+	mimeType: string;
+}
+
 export class Entity {
 	id: string;
 	name: string = '';
 	description: string = '';
+	image?: EntityImage; // Optional generated image
 
 	constructor() {
 		// Ensure ID is loaded before using it

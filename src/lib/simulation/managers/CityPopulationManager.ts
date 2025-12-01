@@ -177,9 +177,17 @@ export class CityPopulationManager {
 
 	/**
 	 * Calculate turns until next population (estimate)
+	 * Note: This is a pure calculation - doesn't modify manager state
 	 */
 	getTurnsUntilGrowth(foodYield: number): number {
-		const surplus = this.calculateGrowthRate(foodYield);
+		// Calculate surplus without modifying state
+		const consumption = this.getFoodConsumption();
+		let surplus = foodYield - consumption;
+
+		// Apply food modifiers
+		for (const modifier of this.foodModifiers) {
+			surplus += modifier.value;
+		}
 
 		if (surplus <= 0) {
 			return Infinity; // Never grow with negative surplus

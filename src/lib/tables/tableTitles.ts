@@ -391,4 +391,12 @@ export enum TableTitles {
 	SouthAmericanMaleName = 'South American Male Name',
 	TransitionAdjective = 'Transition Adjective',
 	VillainAdjective = 'Villain Adjective',
+
+	// Child-Friendly Plot Tables
+	ChildFriendlyProblem = 'Child-Friendly Plot',
+
+	// Fable Character Tables
+	LittleAnimalArtefact = 'Little Animal Artefact',
+	SmallAnimalArtefact = 'Small Animal Artefact',
+	BigAnimalArtefact = 'Big Animal Artefact',
 }

@@ -14,12 +14,14 @@
 		continentEntities,
 		nationEntities,
 		regionEntities,
-		settlementEntities,
+		cityEntities,
 		dungeonEntities,
 		characterEntities,
 		factionEntities,
 		roomEntities,
-		entranceEntities
+		entranceEntities,
+		fableCharacterEntities,
+		hexTileEntities
 	} from '$lib/stores/entityStore';
 	import { EntityType, type Entity } from '$lib/types/entity';
 	import { SvelteSet } from 'svelte/reactivity';
@@ -69,7 +71,7 @@
 				{ type: EntityType.Continent, label: 'Continents', icon: '🗾' },
 				{ type: EntityType.Nation, label: 'Nations', icon: '🏛️' },
 				{ type: EntityType.Region, label: 'Regions', icon: '🏞️' },
-				{ type: EntityType.Settlement, label: 'Settlements', icon: '🏘️' },
+				{ type: EntityType.City, label: 'Cities', icon: '🏘️' },
 				{ type: EntityType.Building, label: 'Buildings', icon: '🏛️' },
 				{ type: EntityType.HexTile, label: 'Hex Tiles', icon: '⬡' },
 				{ type: EntityType.Dungeon, label: 'Dungeons', icon: '🏰' },
@@ -84,6 +86,7 @@
 				{ type: EntityType.Character, label: 'Characters', icon: '🧙' },
 				{ type: EntityType.Villain, label: 'Villains', icon: '😈' },
 				{ type: EntityType.Monster, label: 'Monsters', icon: '👹' },
+				{ type: EntityType.FableCharacter, label: 'Fable Characters', icon: '🦊' },
 				{ type: EntityType.Faction, label: 'Factions', icon: '⚔️' },
 				{ type: EntityType.Organization, label: 'Organizations', icon: '🏢' }
 			]
@@ -189,18 +192,22 @@
 				return $nationEntities;
 			case EntityType.Region:
 				return $regionEntities;
-			case EntityType.Settlement:
-				return $settlementEntities;
+			case EntityType.City:
+				return $cityEntities;
 			case EntityType.Dungeon:
 				return $dungeonEntities;
 			case EntityType.Character:
 				return $characterEntities;
+			case EntityType.FableCharacter:
+				return $fableCharacterEntities;
 			case EntityType.Faction:
 				return $factionEntities;
 			case EntityType.Room:
 				return $roomEntities;
 			case EntityType.Entrance:
 				return $entranceEntities;
+			case EntityType.HexTile:
+				return $hexTileEntities;
 			default:
 				return [];
 		}

@@ -9,9 +9,9 @@
 	import PlanetRenderer from '$lib/components/three/PlanetRenderer.svelte';
 	import HexMapWebGL from '$lib/components/worldmap/HexMapWebGL.svelte';
 	import type { Entity } from '$lib/types/entity';
-	import { WorldMapCreator } from '$lib/entities/location/worldMapCreator';
+	import { WorldMapCreator, type WorldMapProgress } from '$lib/entities/location/worldMapCreator';
 	import { WorldMap } from '$lib/entities/location/worldMap';
-	import type { HexTile } from '$lib/entities/location/hexTile';
+	import { HexTile } from '$lib/entities/location/hexTile';
 	import type { RegionalHexData } from '$lib/entities/location/regionalHexData';
 	import type { DetailedHexTile } from '$lib/entities/location/detailedHexTile';
 	import { TerrainType } from '$lib/entities/location/terrainType';
@@ -19,6 +19,12 @@
 	import { NationCreator } from '$lib/entities/location/nationCreator';
 	import { Nation } from '$lib/entities/location/nation';
 	import { worldMapTileStore } from '$lib/stores/worldMapTileStore';
+	import { SimulationEngine } from '$lib/simulation/SimulationEngine';
+	import { Unit, UnitType } from '$lib/entities/military/unit';
+	import { City } from '$lib/entities/location/city';
+	import type { HistoricalEvent } from '$lib/entities/simulation/historicalEvent';
+	import EventHistoryPanel from '$lib/components/simulation/EventHistoryPanel.svelte';
+	import TileEntityPanel from '$lib/components/simulation/TileEntityPanel.svelte';
 
 	interface Props {
 		planet: Planet;
@@ -39,9 +45,20 @@
 	// Simulation state
 	let simulationRunning = $state(false);
 	let simulationTurn = $state(0);
+	let simulationYear = $state(-10000);
+
+	// Simulation engine
+	let simulationEngine: SimulationEngine | null = $state(null);
 
 	// Nations on this planet
 	let nations: Nation[] = $state([]);
+
+	// Units and cities on this planet
+	let units: Unit[] = $state([]);
+	let cities: City[] = $state([]);
+
+	// Historical events
+	let historicalEvents: HistoricalEvent[] = $state([]);
 
 	// Reference to the hex map component for panning
 	let hexMapComponent: HexMapWebGL | null = $state(null);
@@ -49,6 +66,10 @@
 	// Local world map state - keeps detailed tiles in memory even after store saves
 	// (The store only saves lightweight version without detailed tiles)
 	let localWorldMap: WorldMap | null = $state(null);
+
+	// World map generation progress state
+	let isGenerating = $state(false);
+	let generationProgress: WorldMapProgress | null = $state(null);
 
 	// Get the active world map - prefer local state (has detailed tiles) over planet prop
 	const activeWorldMap = $derived(localWorldMap ?? planet.worldMap ?? null);
@@ -98,31 +119,104 @@
 			}
 		}
 
-		// Load nations for this planet from entity store
-		loadNationsFromStore();
+		// Load nations, units, cities for this planet from entity store
+		loadEntitiesFromStore();
+
+		// Initialize simulation engine if we have nations
+		initializeSimulationEngine();
 	});
 
 	/**
-	 * Load nations that belong to this planet from entity store
+	 * Initialize the simulation engine
 	 */
-	function loadNationsFromStore() {
-		// Get all nation entities from the store
-		const allEntities = entityStore.getAllEntities();
-		const nationEntities = allEntities.filter(e => e.type === 'nation');
+	function initializeSimulationEngine() {
+		if (!activeWorldMap) return;
 
+		simulationEngine = new SimulationEngine({
+			startYear: -10000,
+			yearsPerTurn: 1,
+			autoSave: false,
+			enableEntityBridge: true
+		});
+
+		// Initialize with planet and world map
+		simulationEngine.initialize(planet.id, activeWorldMap);
+
+		// Add existing nations and cities to engine
+		for (const nation of nations) {
+			simulationEngine.addNation(nation);
+		}
+		for (const city of cities) {
+			simulationEngine.addCity(city);
+		}
+
+		console.log('[PlanetViewer] SimulationEngine initialized');
+	}
+
+	/**
+	 * Load nations, units, cities, and events from entity store
+	 */
+	function loadEntitiesFromStore() {
+		const allEntities = entityStore.getAllEntities();
+
+		// Load nations
+		const nationEntities = allEntities.filter(e => e.type === 'nation');
 		const loadedNations: Nation[] = [];
 		for (const entity of nationEntities) {
 			const generatedEntity = entity.customFields?.generatedEntity as Nation | undefined;
 			if (generatedEntity && generatedEntity.parentPlanetId === planet.id) {
-				// Reconstruct the Nation object
 				const nation = Object.assign(new Nation(), generatedEntity);
 				loadedNations.push(nation);
 			}
 		}
-
 		if (loadedNations.length > 0) {
 			nations = loadedNations;
 			console.log(`[PlanetViewer] Loaded ${loadedNations.length} nations from entity store`);
+		}
+
+		// Load units
+		const unitEntities = allEntities.filter(e => e.type === 'unit');
+		const loadedUnits: Unit[] = [];
+		for (const entity of unitEntities) {
+			const generatedEntity = entity.customFields?.generatedEntity as Unit | undefined;
+			if (generatedEntity && generatedEntity.parentPlanetId === planet.id) {
+				const unit = Object.assign(new Unit(), generatedEntity);
+				loadedUnits.push(unit);
+			}
+		}
+		if (loadedUnits.length > 0) {
+			units = loadedUnits;
+			console.log(`[PlanetViewer] Loaded ${loadedUnits.length} units from entity store`);
+		}
+
+		// Load cities
+		const cityEntities = allEntities.filter(e => e.type === 'city');
+		const loadedCities: City[] = [];
+		for (const entity of cityEntities) {
+			const generatedEntity = entity.customFields?.generatedEntity as City | undefined;
+			if (generatedEntity && generatedEntity.parentPlanetId === planet.id) {
+				const city = Object.assign(new City(), generatedEntity);
+				loadedCities.push(city);
+			}
+		}
+		if (loadedCities.length > 0) {
+			cities = loadedCities;
+			console.log(`[PlanetViewer] Loaded ${loadedCities.length} cities from entity store`);
+		}
+
+		// Load historical events
+		const eventEntities = allEntities.filter(e => e.type === 'historicalEvent');
+		const loadedEvents: HistoricalEvent[] = [];
+		for (const entity of eventEntities) {
+			const generatedEntity = entity.customFields?.generatedEntity as HistoricalEvent | undefined;
+			if (generatedEntity) {
+				// Check if event is related to this planet (via participants or hexTileId)
+				loadedEvents.push(generatedEntity);
+			}
+		}
+		if (loadedEvents.length > 0) {
+			historicalEvents = loadedEvents;
+			console.log(`[PlanetViewer] Loaded ${loadedEvents.length} historical events from entity store`);
 		}
 	}
 
@@ -166,9 +260,17 @@
 	async function generateWorldMap() {
 		console.log('[PlanetViewer] Generate World Map button clicked');
 		showWorldMapError = null;
+		isGenerating = true;
+		generationProgress = null;
+
 		try {
 			console.log('[PlanetViewer] Creating world map for planet:', planet.name);
-			const newWorldMap = WorldMapCreator.create(planet);
+
+			// Use async generation with progress callback
+			const newWorldMap = await WorldMapCreator.createAsync(planet, (progress) => {
+				generationProgress = progress;
+			});
+
 			console.log('[PlanetViewer] World map created successfully');
 			console.log('[PlanetViewer] Detailed tiles count:', newWorldMap.detailedHexTiles.size);
 
@@ -226,6 +328,9 @@
 		} catch (error) {
 			console.error('[PlanetViewer] Error generating world map:', error);
 			showWorldMapError = error instanceof Error ? error.message : 'Failed to generate world map';
+		} finally {
+			isGenerating = false;
+			generationProgress = null;
 		}
 	}
 
@@ -316,6 +421,113 @@
 		selectedHex = event.detail.tiles[0] || null;
 	}
 
+	/**
+	 * Save the selected hex tile to the navigator
+	 * Copies the hex tile data and its regional hexes into an entity
+	 */
+	function saveHexToNavigator() {
+		console.log('[PlanetViewer] saveHexToNavigator called');
+		console.log('[PlanetViewer] selectedHex:', selectedHex);
+		console.log('[PlanetViewer] activeWorldMap:', activeWorldMap ? 'exists' : 'null');
+		console.log('[PlanetViewer] isHexSaved:', isHexSaved);
+
+		if (!selectedHex || !activeWorldMap) {
+			console.error('[PlanetViewer] No hex selected or no world map');
+			return;
+		}
+
+		// Create a new HexTile instance with proper class
+		const hexTileEntity = new HexTile();
+
+		// Copy all properties from the selected hex
+		hexTileEntity.id = `hexTile-${planet.id}-${selectedHex.x}-${selectedHex.y}`;
+		hexTileEntity.name = `Hex (${selectedHex.x}, ${selectedHex.y}) - ${TerrainType[selectedHex.terrainType]}`;
+		hexTileEntity.x = selectedHex.x;
+		hexTileEntity.y = selectedHex.y;
+		hexTileEntity.terrainType = selectedHex.terrainType;
+		hexTileEntity.elevation = selectedHex.elevation;
+		hexTileEntity.temperature = selectedHex.temperature;
+		hexTileEntity.dryness = selectedHex.dryness;
+		hexTileEntity.continentId = selectedHex.continentId;
+		hexTileEntity.parentId = planet.id;
+		hexTileEntity.regionalGridSize = selectedHex.regionalGridSize || activeWorldMap.gridSize;
+
+		// Copy regional hexes from the world map's hex tile
+		const worldMapHex = activeWorldMap.hexTiles[selectedHex.y]?.[selectedHex.x];
+		if (worldMapHex?.regionalHexes) {
+			hexTileEntity.regionalHexes = worldMapHex.regionalHexes;
+		}
+
+		// Copy other properties
+		hexTileEntity.type = selectedHex.type || '';
+		hexTileEntity.feature = selectedHex.feature || '';
+		hexTileEntity.weather = selectedHex.weather || '';
+		hexTileEntity.dungeons = selectedHex.dungeons || [];
+		hexTileEntity.hazards = selectedHex.hazards || [];
+		hexTileEntity.settlements = selectedHex.settlements || [];
+		hexTileEntity.techLevel = selectedHex.techLevel || '';
+		hexTileEntity.discovered = selectedHex.discovered || false;
+
+		// Create the entity for the navigator
+		const entity: Entity = {
+			id: hexTileEntity.id,
+			type: 'hexTile' as any,
+			name: hexTileEntity.name,
+			description: `A ${TerrainType[hexTileEntity.terrainType]} hex tile at coordinates (${hexTileEntity.x}, ${hexTileEntity.y}) on ${planet.name}`,
+			tags: [TerrainType[hexTileEntity.terrainType].toLowerCase()],
+			metadata: {
+				createdAt: new Date(),
+				updatedAt: new Date()
+			},
+			relationships: [
+				{ type: 'belongs_to', targetId: planet.id, targetType: 'planet' }
+			],
+			customFields: { generatedEntity: hexTileEntity }
+		};
+
+		// Check if already saved
+		const existingEntity = entityStore.getEntity(hexTileEntity.id);
+		console.log('[PlanetViewer] existingEntity check:', existingEntity ? 'found' : 'not found');
+		console.log('[PlanetViewer] Entity to save:', {
+			id: entity.id,
+			type: entity.type,
+			name: entity.name,
+			hasRegionalHexes: hexTileEntity.regionalHexes?.length > 0
+		});
+
+		if (existingEntity) {
+			// Update existing
+			entityStore.updateEntity(hexTileEntity.id, entity);
+			console.log(`[PlanetViewer] Updated hex tile entity: ${hexTileEntity.name}`);
+		} else {
+			// Create new
+			entityStore.createEntity(entity);
+			console.log(`[PlanetViewer] Created hex tile entity: ${hexTileEntity.name}`);
+		}
+
+		// Verify entity was saved
+		const verifyEntity = entityStore.getEntity(entity.id);
+		console.log('[PlanetViewer] Verify entity saved:', verifyEntity ? 'success' : 'failed');
+
+		// Open the saved hex tile in a new tab
+		console.log('[PlanetViewer] Dispatching openEntity event');
+		dispatch('openEntity', { entity });
+	}
+
+	/**
+	 * Check if the selected hex is already saved to navigator
+	 * Note: We check the entity store reactively using $hexTileEntities
+	 */
+	const isHexSaved = $derived.by(() => {
+		if (!selectedHex) return false;
+		const hexId = `hexTile-${planet.id}-${selectedHex.x}-${selectedHex.y}`;
+		// Use the reactive store to trigger updates
+		const entity = entityStore.getEntity(hexId);
+		const isSaved = entity !== null && entity !== undefined;
+		console.log('[PlanetViewer] isHexSaved check:', { hexId, isSaved, entity: entity ? 'exists' : 'null' });
+		return isSaved;
+	});
+
 	// When continent selection mode is enabled, automatically show continents
 	$effect(() => {
 		if (continentSelectionMode) {
@@ -347,20 +559,102 @@
 	function processTurn() {
 		if (!activeWorldMap) return;
 
-		simulationTurn++;
+		// Initialize engine if not already done
+		if (!simulationEngine) {
+			initializeSimulationEngine();
+		}
+
+		if (!simulationEngine) {
+			console.error('[PlanetViewer] Failed to initialize simulation engine');
+			return;
+		}
+
+		// Make sure engine is running
+		if (!simulationEngine.isRunning) {
+			simulationEngine.start();
+		}
+
+		// Process the turn
+		simulationEngine.processTurn();
+
+		// Update local state from engine
+		simulationTurn = simulationEngine.currentTurn;
+		simulationYear = simulationEngine.currentYear;
 		activeWorldMap.currentTurn = simulationTurn;
 
-		// Here you would call the actual simulation engine
-		// SimulationEngine.processTurn(activeWorldMap);
+		// Reload entities to get updated state
+		refreshEntitiesFromEngine();
 
-		console.log(`[PlanetViewer] Processed turn ${simulationTurn}`);
-		console.log(`[PlanetViewer] DetailedHexTiles count: ${activeWorldMap.detailedHexTiles.size}`);
+		console.log(`[PlanetViewer] Processed turn ${simulationTurn} (Year ${simulationYear})`);
+		console.log(`[PlanetViewer] Nations: ${nations.length}, Cities: ${cities.length}, Units: ${units.length}`);
+	}
+
+	/**
+	 * Refresh entities from simulation engine state
+	 */
+	function refreshEntitiesFromEngine() {
+		if (!simulationEngine) return;
+
+		// Get updated cities from entity store
+		const allEntities = entityStore.getAllEntities();
+
+		// Refresh cities
+		const cityEntities = allEntities.filter(e => e.type === 'city');
+		const loadedCities: City[] = [];
+		for (const entity of cityEntities) {
+			const generatedEntity = entity.customFields?.generatedEntity as City | undefined;
+			if (generatedEntity && generatedEntity.parentPlanetId === planet.id) {
+				const city = Object.assign(new City(), generatedEntity);
+				loadedCities.push(city);
+			}
+		}
+		cities = loadedCities;
+
+		// Refresh units
+		const unitEntities = allEntities.filter(e => e.type === 'unit');
+		const loadedUnits: Unit[] = [];
+		for (const entity of unitEntities) {
+			const generatedEntity = entity.customFields?.generatedEntity as Unit | undefined;
+			if (generatedEntity && generatedEntity.parentPlanetId === planet.id) {
+				const unit = Object.assign(new Unit(), generatedEntity);
+				loadedUnits.push(unit);
+			}
+		}
+		units = loadedUnits;
+
+		// Refresh historical events
+		const eventEntities = allEntities.filter(e => e.type === 'historicalEvent');
+		const loadedEvents: HistoricalEvent[] = [];
+		for (const entity of eventEntities) {
+			const generatedEntity = entity.customFields?.generatedEntity as HistoricalEvent | undefined;
+			if (generatedEntity) {
+				loadedEvents.push(generatedEntity);
+			}
+		}
+		historicalEvents = loadedEvents;
+
+		// Refresh nations to get updated hasFoundedFirstCity flag
+		const nationEntities = allEntities.filter(e => e.type === 'nation');
+		const loadedNations: Nation[] = [];
+		for (const entity of nationEntities) {
+			const generatedEntity = entity.customFields?.generatedEntity as Nation | undefined;
+			if (generatedEntity && generatedEntity.parentPlanetId === planet.id) {
+				const nation = Object.assign(new Nation(), generatedEntity);
+				loadedNations.push(nation);
+			}
+		}
+		nations = loadedNations;
+
+		// Note: Do NOT increment mapKey here - that would reset the map zoom/pan.
+		// The cities/units/nations arrays changing will trigger reactivity
+		// and the $effect blocks in HexMapWebGL will update the renderer.
 	}
 
 	function resetSimulation() {
 		if (!activeWorldMap) return;
 
 		simulationTurn = 0;
+		simulationYear = -10000;
 		activeWorldMap.currentTurn = 0;
 		simulationRunning = false;
 		activeWorldMap.simulationEnabled = false;
@@ -370,10 +664,32 @@
 			tile.ownerNationId = null;
 			tile.ownerCityId = null;
 			tile.isWorked = false;
+			tile.isCityCenter = false;
+			tile.isCapital = false;
 		}
 
-		// Clear nations
+		// Delete all entities from store
+		for (const nation of nations) {
+			entityStore.deleteEntity(nation.id);
+		}
+		for (const city of cities) {
+			entityStore.deleteEntity(city.id);
+		}
+		for (const unit of units) {
+			entityStore.deleteEntity(unit.id);
+		}
+
+		// Clear all entity arrays
 		nations = [];
+		cities = [];
+		units = [];
+		historicalEvents = [];
+
+		// Reset simulation engine
+		simulationEngine = null;
+
+		// Force map re-render
+		mapKey++;
 
 		console.log('[PlanetViewer] Simulation reset');
 	}
@@ -385,22 +701,30 @@
 		if (!activeWorldMap) return null;
 
 		const tiles = activeWorldMap.detailedHexTiles;
-		const candidates: DetailedHexTile[] = [];
+		const preferredCandidates: DetailedHexTile[] = [];
+		const fallbackCandidates: DetailedHexTile[] = [];
 
 		// Minimum distance from other nation starting positions (in tiles)
 		const MIN_DISTANCE = 20;
 
+		// Unspawnable terrain types (can never spawn here)
+		const unspawnableTerrain = [
+			TerrainType.Water, TerrainType.Ocean, TerrainType.Coast,
+			TerrainType.Mountain, TerrainType.HighMountain, TerrainType.SnowMountain,
+			TerrainType.Lava
+		];
+
+		// Harsh terrain types - only spawn if explicitly preferred
+		const harshTerrain = [
+			TerrainType.Snow, TerrainType.SnowHills,
+			TerrainType.Desert, TerrainType.DesertHills,
+			TerrainType.Tundra, TerrainType.TundraHills
+		];
+
 		// Collect all valid candidates
 		for (const tile of tiles.values()) {
-			// Skip water, mountains, and already owned tiles
-			if (tile.terrainType === TerrainType.Water ||
-				tile.terrainType === TerrainType.Ocean ||
-				tile.terrainType === TerrainType.Coast ||
-				tile.terrainType === TerrainType.Mountain ||
-				tile.terrainType === TerrainType.HighMountain ||
-				tile.terrainType === TerrainType.SnowMountain ||
-				tile.terrainType === TerrainType.Lava ||
-				tile.ownerNationId) {
+			// Skip unspawnable tiles and already owned tiles
+			if (unspawnableTerrain.includes(tile.terrainType) || tile.ownerNationId) {
 				continue;
 			}
 
@@ -419,14 +743,25 @@
 			}
 			if (tooClose) continue;
 
-			// Prioritize preferred terrain types
+			// Check if this is a preferred terrain
 			if (preferredTerrains.includes(tile.terrainType)) {
-				// Higher priority for preferred terrain
-				candidates.push(tile);
-				candidates.push(tile); // Add twice to weight it higher
-			} else {
-				// Add all valid land tiles as fallback
-				candidates.push(tile);
+				preferredCandidates.push(tile);
+			} else if (!harshTerrain.includes(tile.terrainType)) {
+				// Only add non-harsh terrain as fallback
+				// (harsh terrain only allowed if explicitly preferred)
+				fallbackCandidates.push(tile);
+			}
+		}
+
+		// Strongly prefer preferred terrain - only use fallback if no preferred tiles available
+		let candidates = preferredCandidates.length > 0 ? preferredCandidates : fallbackCandidates;
+
+		if (candidates.length === 0) {
+			// Last resort: allow any non-unspawnable tile (including harsh terrain)
+			for (const tile of tiles.values()) {
+				if (!unspawnableTerrain.includes(tile.terrainType) && !tile.ownerNationId) {
+					candidates.push(tile);
+				}
 			}
 		}
 
@@ -435,6 +770,90 @@
 		// Pick a random candidate
 		const index = Math.floor(Math.random() * candidates.length);
 		return candidates[index];
+	}
+
+	/**
+	 * Generate weighted terrain preferences for a nation
+	 * Common terrains are more likely, snow/desert are rare, water is impossible
+	 */
+	function generateTerrainPreferences(): TerrainType[] {
+		const preferences: TerrainType[] = [];
+
+		// Weighted terrain pools
+		// Common terrains (high chance to be primary): Grass, Plains, Hills
+		// Uncommon terrains (medium chance): Forest tiles (via Grass), Coastal preference
+		// Rare terrains (low chance): Tundra, Desert
+		// Very rare terrains (almost never): Snow
+		// Impossible: Water, Ocean
+
+		const weightedPrimary = [
+			// Common (weight ~60%)
+			{ terrain: TerrainType.Grass, weight: 25 },
+			{ terrain: TerrainType.Plains, weight: 20 },
+			{ terrain: TerrainType.GrassHills, weight: 15 },
+			// Uncommon (weight ~25%)
+			{ terrain: TerrainType.Hills, weight: 10 },
+			{ terrain: TerrainType.Coast, weight: 8 },
+			{ terrain: TerrainType.PlainsHills, weight: 7 },
+			// Rare (weight ~12%)
+			{ terrain: TerrainType.Tundra, weight: 6 },
+			{ terrain: TerrainType.Desert, weight: 5 },
+			// Very rare (weight ~3%)
+			{ terrain: TerrainType.Snow, weight: 2 },
+			{ terrain: TerrainType.DesertHills, weight: 2 }
+		];
+
+		// Calculate total weight
+		const totalWeight = weightedPrimary.reduce((sum, t) => sum + t.weight, 0);
+
+		// Pick primary terrain
+		let roll = Math.random() * totalWeight;
+		let primaryTerrain = TerrainType.Grass;
+		for (const entry of weightedPrimary) {
+			roll -= entry.weight;
+			if (roll <= 0) {
+				primaryTerrain = entry.terrain;
+				break;
+			}
+		}
+		preferences.push(primaryTerrain);
+
+		// Add 3-4 secondary terrains based on primary
+		const secondaryTerrains = getSecondaryTerrains(primaryTerrain);
+		for (const secondary of secondaryTerrains.slice(0, 4)) {
+			if (!preferences.includes(secondary)) {
+				preferences.push(secondary);
+			}
+		}
+
+		return preferences;
+	}
+
+	/**
+	 * Get secondary terrain types that complement a primary terrain
+	 */
+	function getSecondaryTerrains(primary: TerrainType): TerrainType[] {
+		switch (primary) {
+			case TerrainType.Grass:
+				return [TerrainType.Plains, TerrainType.GrassHills, TerrainType.PlainsHills, TerrainType.Coast];
+			case TerrainType.Plains:
+				return [TerrainType.Grass, TerrainType.PlainsHills, TerrainType.GrassHills, TerrainType.Hills];
+			case TerrainType.GrassHills:
+			case TerrainType.PlainsHills:
+			case TerrainType.Hills:
+				return [TerrainType.Grass, TerrainType.Plains, TerrainType.GrassHills, TerrainType.PlainsHills];
+			case TerrainType.Coast:
+				return [TerrainType.Grass, TerrainType.Plains, TerrainType.GrassHills, TerrainType.Coast];
+			case TerrainType.Tundra:
+				return [TerrainType.TundraHills, TerrainType.Plains, TerrainType.Snow, TerrainType.Grass];
+			case TerrainType.Desert:
+			case TerrainType.DesertHills:
+				return [TerrainType.Desert, TerrainType.DesertHills, TerrainType.Plains, TerrainType.Hills];
+			case TerrainType.Snow:
+				return [TerrainType.Tundra, TerrainType.TundraHills, TerrainType.Snow, TerrainType.SnowHills];
+			default:
+				return [TerrainType.Grass, TerrainType.Plains, TerrainType.GrassHills, TerrainType.Hills];
+		}
 	}
 
 	/**
@@ -449,6 +868,9 @@
 		// Create a new nation using the creator
 		const creator = new NationCreator();
 		const nation = creator.create();
+
+		// Override terrain preferences with weighted random selection
+		nation.preferredTerrainTypes = generateTerrainPreferences();
 
 		// Set parent planet
 		nation.parentPlanetId = planet.id;
@@ -467,7 +889,10 @@
 		nation.startingHexY = startingHex.globalY;
 		nation.hasFoundedFirstCity = false;
 
-		// Save nation to entity store so it can be navigated to
+		// Create a settler unit for this nation at the starting position (creates entity and modifies nation.militaryUnits)
+		const settler = createSettlerForNation(nation, startingHex);
+
+		// Save nation to entity store (AFTER settler is added to nation.militaryUnits)
 		const nationEntity: Entity = {
 			id: nation.id,
 			type: 'nation' as any,
@@ -483,12 +908,67 @@
 		};
 		entityStore.createEntity(nationEntity);
 
+		// Add to simulation engine if available
+		if (simulationEngine) {
+			simulationEngine.addNation(nation);
+		}
+
 		// Add to nations list
 		nations = [...nations, nation];
 
+		// Add settler to units list
+		if (settler) {
+			units = [...units, settler];
+		}
+
 		console.log(`[PlanetViewer] Added nation "${nation.name}" at (${startingHex.globalX}, ${startingHex.globalY})`);
+		console.log(`[PlanetViewer] Created settler "${settler?.name}" for nation`);
 		console.log(`[PlanetViewer] Preferred terrain: ${nation.preferredTerrainTypes.map(t => TerrainType[t]).join(', ')}`);
 		console.log(`[PlanetViewer] Actual terrain: ${TerrainType[startingHex.terrainType]}`);
+	}
+
+	/**
+	 * Create a settler unit for a nation
+	 */
+	function createSettlerForNation(nation: Nation, startingHex: DetailedHexTile): Unit {
+		const settler = new Unit();
+		settler.name = `${nation.name} Settler`;
+		settler.unitType = UnitType.Settler;
+		settler.ownerNationId = nation.id;
+		settler.parentPlanetId = planet.id;
+		settler.currentHexTileId = startingHex.id;
+		settler.coordinates = { x: startingHex.globalX, y: startingHex.globalY };
+		settler.createdYear = simulationYear;
+
+		// Initialize settler stats
+		settler.combatStrength = 0;
+		settler.maxMovementPoints = 2;
+		settler.movementPoints = 2;
+
+		// Save settler to entity store
+		const settlerEntity: Entity = {
+			id: settler.id,
+			type: 'unit' as any,
+			name: settler.name,
+			description: `Settler unit for ${nation.name}`,
+			tags: ['settler', 'unit'],
+			metadata: {
+				createdAt: new Date(),
+				updatedAt: new Date()
+			},
+			relationships: [
+				{ type: 'belongs_to', targetId: nation.id, targetType: 'nation' }
+			],
+			customFields: { generatedEntity: settler }
+		};
+		entityStore.createEntity(settlerEntity);
+
+		// Add to nation's military units
+		nation.militaryUnits.push(settler.id);
+
+		console.log(`[PlanetViewer] Created settler for ${nation.name} at (${startingHex.globalX}, ${startingHex.globalY})`);
+
+		return settler;
 	}
 
 	/**
@@ -521,6 +1001,141 @@
 		if (nation.startingHexX !== undefined && nation.startingHexY !== undefined) {
 			// Pan to the nation's starting position and zoom to 70% (good regional view with settler visible)
 			hexMapComponent?.panToGlobalHex(nation.startingHexX, nation.startingHexY, 70);
+		}
+	}
+
+	/**
+	 * Handle unit action (e.g., Found City)
+	 */
+	function handleUnitAction(event: CustomEvent<{ unit: Unit; action: string }>) {
+		const { unit, action } = event.detail;
+
+		if (action === 'foundCity') {
+			foundCityWithSettler(unit);
+		} else if (action === 'fortify') {
+			unit.fortify();
+			units = [...units]; // Trigger reactivity
+		}
+	}
+
+	/**
+	 * Found a city with a settler unit
+	 */
+	function foundCityWithSettler(settler: Unit) {
+		if (!activeWorldMap) return;
+
+		// Get the nation
+		const nation = nations.find(n => n.id === settler.ownerNationId);
+		if (!nation) {
+			console.error('[PlanetViewer] Nation not found for settler');
+			return;
+		}
+
+		// Get the tile where settler is
+		const tile = activeWorldMap.getDetailedHex(settler.coordinates.x, settler.coordinates.y);
+		if (!tile) {
+			console.error('[PlanetViewer] Tile not found for settler');
+			return;
+		}
+
+		// Check if valid location for city
+		if (tile.isCityCenter || tile.ownerCityId) {
+			console.error('[PlanetViewer] Cannot found city - tile already has a city');
+			return;
+		}
+
+		// Create the city
+		const city = new City();
+		city.name = `${nation.name} City ${nation.cityIds.length + 1}`;
+		city.ownerNationId = nation.id;
+		city.founderNationId = nation.id;
+		city.foundedYear = simulationYear;
+		city.parentPlanetId = planet.id;
+		city.hexTileId = tile.id;
+		city.coordinates = { x: tile.globalX, y: tile.globalY };
+		city.population = 1;
+		city.isCapital = nation.cityIds.length === 0;
+
+		// Mark the tile as city center
+		tile.isCityCenter = true;
+		tile.ownerNationId = nation.id;
+		tile.ownerCityId = city.id;
+		if (city.isCapital) tile.isCapital = true;
+
+		// Save city to entity store
+		const cityEntity: Entity = {
+			id: city.id,
+			type: 'city' as any,
+			name: city.name,
+			description: `City of ${nation.name}`,
+			tags: ['city'],
+			metadata: {
+				createdAt: new Date(),
+				updatedAt: new Date()
+			},
+			relationships: [
+				{ type: 'belongs_to', targetId: nation.id, targetType: 'nation' }
+			],
+			customFields: { generatedEntity: city }
+		};
+		entityStore.createEntity(cityEntity);
+
+		// Add to nation
+		nation.cityIds.push(city.id);
+		nation.hasFoundedFirstCity = true;
+
+		// Update nation entity
+		const nationEntity = entityStore.getEntity(nation.id);
+		if (nationEntity) {
+			entityStore.updateEntity(nation.id, {
+				...nationEntity,
+				customFields: { generatedEntity: nation }
+			});
+		}
+
+		// Add city to simulation engine
+		if (simulationEngine) {
+			simulationEngine.addCity(city);
+		}
+
+		// Remove settler (consumed by city founding)
+		entityStore.deleteEntity(settler.id);
+		units = units.filter(u => u.id !== settler.id);
+
+		// Add city to local list
+		cities = [...cities, city];
+
+		// Create historical event
+		const event = {
+			id: crypto.randomUUID(),
+			eventType: 'CityFounded',
+			name: `${nation.name} Founds ${city.name}`,
+			description: `${nation.name} has founded the ${city.isCapital ? 'capital city of ' : 'city of '}${city.name}.`,
+			year: simulationYear,
+			turnNumber: simulationTurn,
+			significance: city.isCapital ? 'Major' : 'Normal',
+			participants: [
+				{ entityType: 'nation', entityId: nation.id, entityName: nation.name, role: 'primary' },
+				{ entityType: 'city', entityId: city.id, entityName: city.name, role: 'primary' }
+			],
+			hexTileId: tile.id
+		} as HistoricalEvent;
+		historicalEvents = [...historicalEvents, event];
+
+		// Force map re-render
+		mapKey++;
+
+		console.log(`[PlanetViewer] ${nation.name} founded ${city.name} at (${tile.globalX}, ${tile.globalY})`);
+	}
+
+	/**
+	 * Handle opening an entity from the tile panel
+	 */
+	function handleOpenEntityFromTile(event: CustomEvent<{ entity: Unit | City }>) {
+		const entity = event.detail.entity;
+		const storedEntity = entityStore.getEntity(entity.id);
+		if (storedEntity) {
+			dispatch('openEntity', { entity: storedEntity });
 		}
 	}
 
@@ -616,8 +1231,9 @@
 					</div>
 					<div class="simulation-info">
 						<span class="turn-counter">Turn: {simulationTurn}</span>
-						<span class="tile-count">
-							Tiles: {activeWorldMap.detailedHexTiles?.size ?? 0}
+						<span class="year-counter">Year: {simulationYear < 0 ? `${Math.abs(simulationYear)} BCE` : `${simulationYear} CE`}</span>
+						<span class="entity-counts">
+							Nations: {nations.length} | Cities: {cities.length} | Units: {units.length}
 						</span>
 					</div>
 
@@ -680,13 +1296,25 @@
 						bind:this={hexMapComponent}
 						worldMap={activeWorldMap}
 						{nations}
+						{cities}
+						{units}
 						on:hexSelected={handleHexSelected}
 						on:regionalHexSelected={handleRegionalHexSelected}
 					/>
 				{/key}
 				{#if selectedHex}
 					<div class="hex-info-panel">
-						<h4 class="hex-info-title">Selected Hex (General)</h4>
+						<div class="hex-info-header">
+							<h4 class="hex-info-title">Selected Hex (General)</h4>
+							<button
+								class="save-hex-btn"
+								class:saved={isHexSaved}
+								onclick={saveHexToNavigator}
+								title={isHexSaved ? 'Open in Navigator' : 'Save to Navigator'}
+							>
+								{isHexSaved ? 'Open' : 'Save'}
+							</button>
+						</div>
 						<InfoGrid items={hexInfo} />
 						{#if !selectedDetailedHex}
 							<p class="zoom-hint">Zoom in (160%+) to select specific detailed tiles</p>
@@ -698,14 +1326,51 @@
 						<h4 class="hex-info-title">Detailed Tile (Center of Selection)</h4>
 						<InfoGrid items={detailedHexInfo} />
 					</div>
+
+					<!-- Tile Entity Panel - shows units/cities on selected tile -->
+					<TileEntityPanel
+						tile={selectedDetailedHex}
+						{units}
+						{cities}
+						on:unitAction={handleUnitAction}
+						on:openEntity={handleOpenEntityFromTile}
+					/>
 				{/if}
+
+				<!-- Event History Panel -->
+				<Section title="Simulation History">
+					<EventHistoryPanel
+						events={historicalEvents}
+						currentYear={simulationYear}
+						maxEvents={100}
+					/>
+				</Section>
 			{:else}
 				<div class="no-map-container">
 					{#if showWorldMapError}
 						<p class="error-message">{showWorldMapError}</p>
 					{/if}
-					<p class="no-map-text">No world map generated yet.</p>
-					<button class="generate-btn" onclick={generateWorldMap}>Generate World Map</button>
+					{#if isGenerating && generationProgress}
+						<div class="generation-progress">
+							<div class="progress-spinner"></div>
+							<p class="progress-label">{generationProgress.phaseLabel}</p>
+							<div class="progress-bar-container">
+								<div
+									class="progress-bar-fill"
+									style="width: {generationProgress.percent}%"
+								></div>
+							</div>
+							<p class="progress-percent">{generationProgress.percent}%</p>
+						</div>
+					{:else if isGenerating}
+						<div class="generation-progress">
+							<div class="progress-spinner"></div>
+							<p class="progress-label">Initializing...</p>
+						</div>
+					{:else}
+						<p class="no-map-text">No world map generated yet.</p>
+						<button class="generate-btn" onclick={generateWorldMap}>Generate World Map</button>
+					{/if}
 				</div>
 			{/if}
 		</Section>
@@ -913,11 +1578,100 @@
 		gap: 1rem;
 	}
 
+	.hex-info-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 0.5rem;
+	}
+
 	.hex-info-title {
-		margin: 0 0 0.75rem 0;
+		margin: 0;
 		color: rgb(192 132 252);
 		font-size: 1rem;
 		font-weight: 600;
+	}
+
+	.save-hex-btn {
+		padding: 0.4rem 0.75rem;
+		background: linear-gradient(135deg, rgb(34 197 94), rgb(22 163 74));
+		color: white;
+		border: none;
+		border-radius: 0.375rem;
+		font-size: 0.75rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.save-hex-btn:hover {
+		background: linear-gradient(135deg, rgb(22 163 74), rgb(21 128 61));
+		transform: translateY(-1px);
+	}
+
+	.save-hex-btn.saved {
+		background: linear-gradient(135deg, rgb(59 130 246), rgb(37 99 235));
+	}
+
+	.save-hex-btn.saved:hover {
+		background: linear-gradient(135deg, rgb(37 99 235), rgb(29 78 216));
+	}
+
+	/* Generation Progress */
+	.generation-progress {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		padding: 2rem;
+		width: 100%;
+	}
+
+	.progress-spinner {
+		width: 48px;
+		height: 48px;
+		border: 4px solid rgb(71 85 105);
+		border-top-color: rgb(147 51 234);
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	.progress-label {
+		color: rgb(203 213 225);
+		font-size: 0.875rem;
+		font-weight: 500;
+		margin: 0;
+		text-align: center;
+	}
+
+	.progress-bar-container {
+		width: 100%;
+		max-width: 300px;
+		height: 12px;
+		background: rgb(30 41 59);
+		border-radius: 6px;
+		overflow: hidden;
+		border: 1px solid rgb(71 85 105);
+	}
+
+	.progress-bar-fill {
+		height: 100%;
+		background: linear-gradient(90deg, rgb(147 51 234), rgb(192 132 252));
+		border-radius: 6px;
+		transition: width 0.2s ease-out;
+	}
+
+	.progress-percent {
+		color: rgb(147 51 234);
+		font-size: 1rem;
+		font-weight: 700;
+		margin: 0;
 	}
 
 	.description-text {
@@ -1026,6 +1780,15 @@
 	.turn-counter {
 		color: rgb(147 197 253);
 		font-weight: 600;
+	}
+
+	.year-counter {
+		color: rgb(250 204 21);
+		font-weight: 600;
+	}
+
+	.entity-counts {
+		color: rgb(134 239 172);
 	}
 
 	.tile-count {

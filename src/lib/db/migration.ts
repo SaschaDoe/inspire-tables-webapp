@@ -9,6 +9,18 @@ export interface MigrationResult {
 }
 
 /**
+ * Wrap a promise with a timeout
+ */
+function withTimeout<T>(promise: Promise<T>, ms: number, errorMessage: string): Promise<T> {
+	return Promise.race([
+		promise,
+		new Promise<T>((_, reject) =>
+			setTimeout(() => reject(new Error(errorMessage)), ms)
+		)
+	]);
+}
+
+/**
  * Migrates data from localStorage to IndexedDB (Dexie)
  * This runs once on first load after upgrading to Dexie
  */
@@ -20,8 +32,12 @@ export async function migrateFromLocalStorage(): Promise<MigrationResult> {
 	}
 
 	try {
-		// Check if already migrated
-		const migrationStatus = await db.metadata.get('migrationVersion');
+		// Check if already migrated (with timeout to prevent hanging)
+		const migrationStatus = await withTimeout(
+			db.metadata.get('migrationVersion'),
+			5000,
+			'Database connection timeout - try refreshing the page or clearing IndexedDB'
+		);
 		if (migrationStatus && migrationStatus.value >= 1) {
 			console.log('[Migration] Already migrated to version', migrationStatus.value);
 			return { success: true, alreadyMigrated: true };

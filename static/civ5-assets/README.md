@@ -4,12 +4,13 @@ This folder contains graphics assets from **Unciv** (open-source Civilization V 
 
 ## Attribution
 
-**Source**: [Unciv](https://github.com/yairm210/Unciv)
+**Source**: [HexaRealm-Tileset](https://github.com/GeneralWadaling/HexaRealm-Tileset) (Unciv tileset mod)
+**Base Game**: [Unciv](https://github.com/yairm210/Unciv)
 **License**: MPL-2.0 and GPLv3
-**Authors**: Yair Morgenstern and Unciv contributors
-**Repository**: https://github.com/yairm210/Unciv
+**Authors**: GeneralWadaling (HexaRealm), Yair Morgenstern (Unciv), and contributors
+**Repository**: https://github.com/GeneralWadaling/HexaRealm-Tileset
 
-These assets are used under the terms of the Mozilla Public License 2.0 and GNU General Public License v3.
+These assets are from the HexaRealm tileset mod for Unciv, used under the terms of the Mozilla Public License 2.0 and GNU General Public License v3.
 
 ## Asset Organization
 

@@ -348,6 +348,34 @@ function createTabStore() {
 			});
 		},
 
+		// Clear ALL tabs (including pinned) and immediately persist to database
+		// Used when clearing all entities - awaits database clear
+		async clearAllTabs() {
+			const newState: TabState = {
+				tabs: [],
+				activeTabId: null,
+				navigationHistory: [],
+				currentHistoryIndex: -1
+			};
+
+			set(newState);
+
+			// Clear from Dexie immediately (no debounce)
+			if (useIndexedDB && browser) {
+				try {
+					await db.transaction('rw', [db.tabs, db.metadata], async () => {
+						await db.tabs.clear();
+						await db.metadata.delete('tabState');
+					});
+				} catch (error) {
+					console.error('[TabStore] Error clearing Dexie:', error);
+				}
+			}
+
+			// Also clear localStorage
+			localStorage.removeItem('tabs');
+		},
+
 		// Close all tabs to the right of the specified tab
 		closeTabsToRight(tabId: string) {
 			update(state => {

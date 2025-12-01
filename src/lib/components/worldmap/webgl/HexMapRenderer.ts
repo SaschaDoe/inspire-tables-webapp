@@ -529,6 +529,30 @@ export class HexMapRenderer {
 	}
 
 	/**
+	 * Update cities to display on the map
+	 */
+	updateCities(cities: any[]): void {
+		// Guard: layers are only available after init() completes
+		if (!this.isInitialized) {
+			return;
+		}
+
+		this.unitLayer.updateCities(cities);
+	}
+
+	/**
+	 * Update units to display on the map
+	 */
+	updateUnits(units: any[]): void {
+		// Guard: layers are only available after init() completes
+		if (!this.isInitialized) {
+			return;
+		}
+
+		this.unitLayer.updateUnits(units);
+	}
+
+	/**
 	 * Cleanup
 	 */
 	destroy(): void {
